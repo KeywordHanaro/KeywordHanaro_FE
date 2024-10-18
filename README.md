@@ -6,10 +6,13 @@
 
 <table>
   <tr>
-    <td><img src="https://github.com/JungSungYeob.png" width="100px" /></td>
-    <td><img src="https://github.com/kyeongjeong.png" width="100px" /></td>
-    <td><img src="https://github.com/Kim-Min-Gyeong.png" width="100px" /></td>
-    <td><img src="https://github.com/sonshn.png" width="100px" /></td>
+    <td><img src="https://github.com/ezenjun.png" width="100px" /></td>
+		<td><img src="https://github.com/JungSungYeob.png" width="100px" /></td>
+    <td><img src="https://github.com/DOEABLE.png" width="100px" /></td>
+    <td><img src="https://github.com/99andrew99.png" width="100px" /></td>
+		<td><img src="https://github.com/insun-k.png" width="100px" /></td>
+    <td><img src="https://github.com/ninw0205.png" width="100px" /></td>
+    <td><img src="https://github.com/mseoa.png" width="100px" /></td>
   </tr>
   <tr>
 	<td align="center"><a href="https://github.com/ezenjun">박준용</a>
@@ -22,7 +25,7 @@
     	</td>
     	<td align="center"><a href="https://github.com/insun-k">김인선</a>
     	</td>
-	<td align="center"><a href="https://github.com/KeywordHanaro">남인우</a>
+	<td align="center"><a href="https://github.com/ninw0205">남인우</a>
     	</td>
    	 <td align="center"><a href="https://github.com/mseoa">문서아</a>
     	</td>	
