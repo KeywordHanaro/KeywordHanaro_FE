@@ -63,13 +63,15 @@
     @apply bg-background text-foreground sm:max-w-[640px] w-full;
   }
   html {
-    @apply flex justify-center w-full;
+    @apply flex justify-center w-full text-fontBlack;
+
   }
 }
 
 @layer components {
   .input-box {
     @apply flex flex-col text-right p-2 relative;
+
   }
   .btn-sm {
     @apply text-center text-sm font-bold w-[116px] h-[40px] m-2;
@@ -85,6 +87,7 @@
   }
   .btn-del {
     @apply text-sm text-red-500 border-red-500 bg-transparent w-12 h-9 border-2 m-2;
+
   }
 }
 
