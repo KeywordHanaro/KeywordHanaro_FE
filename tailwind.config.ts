@@ -11,10 +11,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        errorRed: '#D80000',
+        hanaPrimary: '#069894',
+        placeholderGray: '#B9B9B9',
+        disableGray: '#C0C0C0',
+        iconGray: '#8297AC',
+        fontBlack: '#212529',
+        ToggleBgWhite: '#EAECEF',
+
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
-        customGreen: '#069894',
-        customWhite: '#EFF0F4',
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
