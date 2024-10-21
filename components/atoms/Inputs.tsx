@@ -1,19 +1,28 @@
 'use client';
 
 import clsx from 'clsx';
+import { IoSearch } from 'react-icons/io5';
 import { TiDelete } from 'react-icons/ti';
 import { ChangeEvent, ForwardedRef, forwardRef, useState } from 'react';
 
-export type DefaultInputProps = {
+type DefaultInputProps = {
   placeHolder?: string;
-  name: string;
+  name?: string;
   type?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   classNames?: string;
   value?: string;
   required?: boolean;
-  error: string;
+  error?: string;
 };
+
+type SearchInputProps = {
+  placeHolder?:string;
+  name?:string;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  classNames?: string;
+  value?:string;
+}
 
 function DefaultInput(
   {
@@ -56,7 +65,7 @@ function DefaultInput(
           className={clsx(
             { classNames },
             'peer border border-gray-500 px-4 rounded-xl h-11',
-            isTouched && 'invalid:border-red-600'
+            isTouched && 'invalid:border-red-600 valid:border-primaryGreen'
           )}
           placeholder={placeHolder}
           onChange={handleChange}
@@ -67,7 +76,6 @@ function DefaultInput(
         {inputValue && (
           <div className='absolute h-11 w-fit right-0 flex'>
             <a
-              type='button'
               onClick={handleClear}
               className='absolute right-4 top-1/2 transform -translate-y-1/2 focus:outline-none cursor-pointer'
             >
@@ -86,12 +94,34 @@ function DefaultInput(
 }
 const DefaultInputRef = forwardRef(DefaultInput);
 
-// function SearchInput() {
-//   return (
-//     <>
-//       <div></div>
-//     </>
-//   );
-// }
+function SearchInput(
+  { name, placeHolder, classNames, onSubmit }: SearchInputProps,
+  ref: ForwardedRef<HTMLInputElement>
+) {
+  return (
+    <>
+        <form onSubmit={onSubmit} className='input-box'>
+          <input
+            className={clsx(
+              'border border-primaryGreen px-4 rounded-xl h-11 text-primaryGreen',
+              classNames
+            )}
+            name={name}
+            placeholder={placeHolder}
+            ref={ref}
+          />
+          <div className='absolute h-11 w-fit right-0 flex z-100'>
+            <button
+              type='button'
+              className='absolute right-4 top-1/2 transform -translate-y-1/2 focus:outline-none cursor-pointer'
+            >
+              <IoSearch size={20} />
+            </button>
+          </div>
+        </form>
+    </>
+  );
+}
+const SearchInpuRef = forwardRef(SearchInput);
 
-export { DefaultInputRef };
+export { DefaultInputRef, SearchInpuRef };
