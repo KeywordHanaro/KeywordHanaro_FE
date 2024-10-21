@@ -64,8 +64,8 @@ function DefaultInput(
           type={type}
           className={clsx(
             { classNames },
-            'peer border border-gray-500 px-4 rounded-xl h-11',
-            isTouched && 'invalid:border-errorRed valid:border-hanaPrimary'
+            'peer border border-placeholderGray px-4 rounded-xl h-11',
+            isTouched && 'invalid:border-errorRed invalid:text-errorRed valid:border-hanaPrimary valid:text-hanaPrimary'
           )}
           placeholder={placeHolder}
           onChange={handleChange}
