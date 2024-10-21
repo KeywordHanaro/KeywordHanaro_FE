@@ -1,16 +1,13 @@
 'use client';
 
-
 import {
   AccountInputRef,
   DefaultInputRef,
   SearchInpuRef,
   AccountRefProps,
 } from '@/components/atoms/Inputs';
-import { useEffect, useRef } from 'react';
-import { DefaultInputRef, SearchInpuRef } from '@/components/atoms/Inputs';
 import { Chip } from '@/components/atoms/chips';
-
+import { useEffect, useRef } from 'react';
 
 export default function CompsTestPage() {
   const AccoutRef = useRef<AccountRefProps>(null);
