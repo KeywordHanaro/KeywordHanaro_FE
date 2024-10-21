@@ -20,8 +20,8 @@ export const Button = ({
       className={clsx(
         'p-2 rounded-xl',
         isDisabled
-          ? 'bg-customWhite text-black cursor-not-allowed' // unclickable
-          : 'bg-customGreen text-white', // clickable
+          ? 'bg-ToggleBgWhite text-black cursor-not-allowed' // unclickable
+          : 'bg-hanaPrimary text-white', // clickable
         size === 'sm' && 'btn-sm',
         size === 'md' && 'btn-md',
         size === 'lg' && 'btn-lg',
