@@ -131,6 +131,7 @@ function SearchInput(
         <input
           className={clsx(
             'border border-hanaPrimary px-4 rounded-xl h-11 text-hanaPrimary',
+
             classNames
           )}
           name={name}
@@ -140,6 +141,7 @@ function SearchInput(
         <div className='absolute h-11 w-fit right-0 flex z-100'>
           <button
             type='submit'
+
             className='absolute right-4 top-1/2 transform -translate-y-1/2 focus:outline-none cursor-pointer'
           >
             <IoSearch size={20} />
