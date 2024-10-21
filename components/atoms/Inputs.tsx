@@ -17,12 +17,12 @@ type DefaultInputProps = {
 };
 
 type SearchInputProps = {
-  placeHolder?:string;
-  name?:string;
+  placeHolder?: string;
+  name?: string;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   classNames?: string;
-  value?:string;
-}
+  value?: string;
+};
 
 function DefaultInput(
   {
@@ -65,7 +65,7 @@ function DefaultInput(
           className={clsx(
             { classNames },
             'peer border border-gray-500 px-4 rounded-xl h-11',
-            isTouched && 'invalid:border-red-600 valid:border-primaryGreen'
+            isTouched && 'invalid:border-errorRed valid:border-hanaPrimary'
           )}
           placeholder={placeHolder}
           onChange={handleChange}
@@ -84,7 +84,7 @@ function DefaultInput(
           </div>
         )}
         {isTouched && (
-          <span className='peer-invalid:block hidden text-red-600'>
+          <span className='peer-invalid:block hidden text-errorRed'>
             <small>{error}</small>
           </span>
         )}
@@ -98,27 +98,33 @@ function SearchInput(
   { name, placeHolder, classNames, onSubmit }: SearchInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
+  const SearchHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmit(e);
+    console.log('button click');
+  };
+
   return (
     <>
-        <form onSubmit={onSubmit} className='input-box'>
-          <input
-            className={clsx(
-              'border border-primaryGreen px-4 rounded-xl h-11 text-primaryGreen',
-              classNames
-            )}
-            name={name}
-            placeholder={placeHolder}
-            ref={ref}
-          />
-          <div className='absolute h-11 w-fit right-0 flex z-100'>
-            <button
-              type='button'
-              className='absolute right-4 top-1/2 transform -translate-y-1/2 focus:outline-none cursor-pointer'
-            >
-              <IoSearch size={20} />
-            </button>
-          </div>
-        </form>
+      <form onSubmit={SearchHandler} className='input-box'>
+        <input
+          className={clsx(
+            'border border-hanaPrimary px-4 rounded-xl h-11 text-hanaPrimary',
+            classNames
+          )}
+          name={name}
+          placeholder={placeHolder}
+          ref={ref}
+        />
+        <div className='absolute h-11 w-fit right-0 flex z-100'>
+          <button
+            type='submit'
+            className='absolute right-4 top-1/2 transform -translate-y-1/2 focus:outline-none cursor-pointer'
+          >
+            <IoSearch size={20} />
+          </button>
+        </div>
+      </form>
     </>
   );
 }
