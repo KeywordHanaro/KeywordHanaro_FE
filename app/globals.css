@@ -63,7 +63,7 @@
     @apply bg-background text-foreground sm:max-w-[640px] w-full;
   }
   html{
-    @apply flex justify-center w-full
+    @apply flex justify-center w-full text-fontBlack
   }
 }
 
