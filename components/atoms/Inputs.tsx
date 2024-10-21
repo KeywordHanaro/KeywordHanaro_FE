@@ -29,22 +29,22 @@ function DefaultInput(
   ref: ForwardedRef<HTMLInputElement>
 ) {
   const [isTouched, setIsTouched] = useState(false);
-
   const [inputValue, setInputValue] = useState(value);
 
+  /** input onchange 핸들러 */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
       onChange(e);
     }
     setInputValue(e.target.value);
   };
-
+  /** 입력 초기화 버튼 핸들러 */
   const handleClear = () => {
-    setInputValue(''); // 입력 필드 초기화
+    setInputValue('');
   };
-
+  /** 사용자 입력 감지 핸들러 */
   const handleBlur = () => {
-    setIsTouched(true); // 입력이 완료되면 상태 업데이트
+    setIsTouched(true);
   };
   return (
     <>
@@ -55,7 +55,7 @@ function DefaultInput(
           type={type}
           className={clsx(
             { classNames },
-            'peer border border-gray-500 py-2 px-4 rounded-xl h-11',
+            'peer border border-gray-500 px-4 rounded-xl h-11',
             isTouched && 'invalid:border-red-600'
           )}
           placeholder={placeHolder}
@@ -71,11 +71,10 @@ function DefaultInput(
               onClick={handleClear}
               className='absolute right-4 top-1/2 transform -translate-y-1/2 focus:outline-none cursor-pointer'
             >
-              <TiDelete className='h-5 w-5' />
+              <TiDelete size={20} />
             </a>
           </div>
         )}
-
         {isTouched && (
           <span className='peer-invalid:block hidden text-red-600'>
             <small>{error}</small>

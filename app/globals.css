@@ -60,13 +60,18 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground sm:max-w-[640px] w-full;
+  }
+  html{
+    @apply flex justify-center w-full
   }
 }
 
 
 @layer components{
-  
+  .input-box{
+    @apply flex flex-col text-right p-2 relative
+  }
 }
 
 @layer utilities {
