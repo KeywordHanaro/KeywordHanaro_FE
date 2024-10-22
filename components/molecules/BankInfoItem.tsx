@@ -29,7 +29,12 @@ export default function BankInfoItem({
         )}
       >
         {logo ? (
-          <Image src={logo} className='rounded-full' layout='fill' alt='logo' />
+          <Image
+            src={logo}
+            className='rounded-full border '
+            layout='fill'
+            alt='logo'
+          />
         ) : (
           <div className='w-full h-full rounded-full' />
         )}
