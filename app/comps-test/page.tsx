@@ -5,6 +5,8 @@ import {
   DefaultInputRef,
   SearchInpuRef,
   AccountRefProps,
+  MoneyInputRef,
+  KeywordInputRef,
 } from '@/components/atoms/Inputs';
 import UserCheckBox from '@/components/atoms/UserCheckBox';
 import CheckBox from '@/components/atoms/checkBox';
@@ -14,6 +16,7 @@ import { useEffect, useRef, useState } from 'react';
 
 export default function CompsTestPage() {
   const AccoutRef = useRef<AccountRefProps>(null);
+  const MoneyRef = useRef<HTMLInputElement>(null);
 
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [userChecked, setUserChecked] = useState<boolean>(false);
@@ -22,6 +25,7 @@ export default function CompsTestPage() {
     const intervalId = setInterval(() => {
       console.log(AccoutRef.current?.bankId);
       console.log(AccoutRef.current?.inputRef.current?.value);
+      console.log(Number(MoneyRef.current?.value.replace(/[^0-9]/g, '')));
     }, 1000);
     return () => {
       clearInterval(intervalId);
@@ -75,6 +79,9 @@ export default function CompsTestPage() {
         </form>
         <SearchInpuRef name='hi' onSubmit={handleSubmit} />
         <AccountInputRef placeHolder='hi' ref={AccoutRef} />
+
+        <MoneyInputRef ref={MoneyRef} placeHolder='얼마를 보낼까요?'/>
+        <KeywordInputRef placeHolder='키워드 이름을 작성해주세요'/>
       </div>
       <hr />
       <div className='flex'>
