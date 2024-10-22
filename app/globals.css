@@ -60,10 +60,10 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground sm:max-w-[640px] w-full;
+    @apply bg-background text-foreground sm:max-w-[640px] w-full font-pretendard;
   }
   html {
-    @apply flex justify-center w-full text-fontBlack;
+    @apply flex justify-center w-full text-fontBlack font-pretendard;
   }
   input {
     @apply focus:outline-none;
@@ -75,19 +75,19 @@
     @apply flex flex-col text-right p-2 relative;
   }
   .btn-sm {
-    @apply text-center text-sm font-bold w-[116px] h-[40px] m-2;
+    @apply text-center text-sm font-bold w-[116px] h-[40px];
   }
   .btn-md {
-    @apply text-center text-sm font-bold w-[150px] h-[50px] m-2;
+    @apply text-center text-sm font-bold w-[150px] h-[50px];
   }
   .btn-lg {
-    @apply text-center text-sm font-bold w-[300px] h-[50px] m-2;
+    @apply text-center text-sm font-bold w-[300px] h-[50px];
   }
   .btn-edit {
-    @apply text-sm text-gray-500 border-gray-500 bg-transparent w-12 h-9 border-2 m-2;
+    @apply text-[11px] text-subGray border-subGray bg-white  border-[0.5px];
   }
   .btn-del {
-    @apply text-sm text-red-500 border-red-500 bg-transparent w-12 h-9 border-2 m-2;
+    @apply text-[11px] text-errorRed border-errorRed bg-white border-[0.5px];
   }
 }
 
