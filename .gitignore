@@ -8,6 +8,7 @@
 
 # testing
 /coverage
+/app/comps-test/
 
 # next.js
 /.next/
