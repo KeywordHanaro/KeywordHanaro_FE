@@ -23,3 +23,4 @@ export default function UserCheckBox({ checked, onChange }: UserCheckBoxProps) {
     </label>
   );
 }
+

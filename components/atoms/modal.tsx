@@ -24,3 +24,4 @@ export function Modal({ open, onChange, title, children }: ModalProps) {
     </Dialog>
   );
 }
+

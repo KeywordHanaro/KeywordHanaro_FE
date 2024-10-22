@@ -23,3 +23,4 @@ export default function CheckBox({ checked, onChange }: CheckboxAtomProps) {
     </label>
   );
 }
+

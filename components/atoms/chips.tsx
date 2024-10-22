@@ -25,3 +25,4 @@ export function Chip({ item, canDelete, onRemove }: ChipProps) {
     </Badge>
   );
 }
+
