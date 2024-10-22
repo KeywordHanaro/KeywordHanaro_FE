@@ -5,17 +5,20 @@ import {
   DefaultInputRef,
   SearchInpuRef,
   AccountRefProps,
+  MoneyInputRef,
 } from '@/components/atoms/Inputs';
 import { Chip } from '@/components/atoms/chips';
 import { useEffect, useRef } from 'react';
 
 export default function CompsTestPage() {
   const AccoutRef = useRef<AccountRefProps>(null);
+  const MoneyRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       console.log(AccoutRef.current?.bankId);
       console.log(AccoutRef.current?.inputRef.current?.value);
+      console.log(Number(MoneyRef.current?.value.replace(/[^0-9]/g, '')));
     }, 1000);
     return () => {
       clearInterval(intervalId);
@@ -28,7 +31,7 @@ export default function CompsTestPage() {
   };
   return (
     <>
-      <div>
+      <div className='mb-10'>
         <form>
           <DefaultInputRef
             name='hi'
@@ -69,6 +72,7 @@ export default function CompsTestPage() {
         </form>
         <SearchInpuRef name='hi' onSubmit={handleSubmit} />
         <AccountInputRef placeHolder='hi' ref={AccoutRef} />
+        <MoneyInputRef ref={MoneyRef} placeHolder='얼마를 보낼까요?'/>
       </div>
       <hr />
       <div className='flex'>
