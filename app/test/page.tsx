@@ -4,10 +4,11 @@ import { KeywordDetailList } from '@/data/keyword';
 function page() {
   const data = KeywordDetailList;
   return (
-    <div className='p-3 flex flex-col gap-2'>
-      {data.map((each) => (
+    <div className='flex flex-col gap-2 p-3 h-full'>
+      {/* {data.map((each) => (
         <EditKeyword key={each.id} data={each}></EditKeyword>
-      ))}
+      ))} */}
+      <EditKeyword key={data[1].id} data={data[1]}></EditKeyword>
     </div>
   );
 }

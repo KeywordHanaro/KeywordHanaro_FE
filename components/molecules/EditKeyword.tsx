@@ -80,11 +80,11 @@ const EditKeyword = ({ data }: EditKeywordProps) => {
 
   return (
     <Card
-      className='flex flex-row justify-between items-start rounded-[12px]'
+      className='flex-row flex-grow justify-between items-start rounded-[12px] h-full gap-4'
       onClick={() => alert(id)}
     >
-      <div className='flex flex-col h-full gap-4'>
-        <div className='flex  gap-2 items-center'>
+      <div className='flex flex-col flex-grow gap-4'>
+        <div className='flex gap-2 items-center'>
           <span className='text-fontBlack text-[16px] font-semibold'>
             {title}
           </span>
