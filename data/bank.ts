@@ -1,10 +1,10 @@
 type Bank = {
-	id: number,
-	bankname: string,
-	image: string,
-}
+  id: number;
+  bankname: string;
+  image: string;
+};
 
-export const bankList:Bank[] = [
+export const bankList: Bank[] = [
   {
     id: 2,
     bankname: '산업은행',
