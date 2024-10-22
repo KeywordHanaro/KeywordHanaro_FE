@@ -10,6 +10,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        pretendard: ['var(--font-pretendard)'],
+      },
       colors: {
         errorRed: '#D80000',
         hanaPrimary: '#069894',
@@ -18,6 +21,7 @@ const config: Config = {
         iconGray: '#8297AC',
         fontBlack: '#212529',
         ToggleBgWhite: '#EAECEF',
+        subGray: '#828282',
 
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
