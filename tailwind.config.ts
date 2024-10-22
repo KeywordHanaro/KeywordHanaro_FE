@@ -18,6 +18,7 @@ const config: Config = {
         iconGray: '#8297AC',
         fontBlack: '#212529',
         ToggleBgWhite: '#EAECEF',
+        subGray: '#828282',
 
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
