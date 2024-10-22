@@ -43,7 +43,7 @@ export default function Receipt() {
     >
       <div
         className={clsx(
-          more ? (print ? 'h-[310px]' : 'h-0') : 'h-[190px]',
+          more ? (print ? 'h-[297px]' : 'h-0') : 'h-[190px]',
           'transition-all duration-1000 ease-in-out relative transform-top overflow-hidden'
         )}
       >
