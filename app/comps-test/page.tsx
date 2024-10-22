@@ -6,6 +6,7 @@ import {
   SearchInpuRef,
   AccountRefProps,
 } from '@/components/atoms/Inputs';
+import UserCheckBox from '@/components/atoms/UserCheckBox';
 import CheckBox from '@/components/atoms/checkBox';
 import { Chip } from '@/components/atoms/chips';
 import ColorChip from '@/components/atoms/color_chips';
@@ -15,6 +16,7 @@ export default function CompsTestPage() {
   const AccoutRef = useRef<AccountRefProps>(null);
 
   const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [userChecked, setUserChecked] = useState<boolean>(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -94,6 +96,9 @@ export default function CompsTestPage() {
       </div>
       <div className='mt-4'>
         <CheckBox checked={isChecked} onChange={setIsChecked} />
+      </div>
+      <div className='mt-4 mb-4'>
+        <UserCheckBox checked={userChecked} onChange={setUserChecked} />
       </div>
     </>
   );
