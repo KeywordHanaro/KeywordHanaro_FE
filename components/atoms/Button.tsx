@@ -38,7 +38,7 @@ export const Button = ({
 export const EditButton = (props: ButtonProps) => {
   return (
     <button
-      className={clsx('px-[7px] py-[5px] rounded-[8px]', 'btn-edit')}
+      className={clsx('px-[11.5px] py-[7px] rounded-[8px]', 'btn-edit')}
       {...props}
     >
       수정
@@ -49,7 +49,7 @@ export const EditButton = (props: ButtonProps) => {
 export const DelButton = (props: ButtonProps) => {
   return (
     <button
-      className={clsx('px-[7px] py-[5px] rounded-[8px]', 'btn-del')}
+      className={clsx('px-[11.5px] py-[7px] rounded-[8px]', 'btn-del')}
       {...props}
     >
       삭제
