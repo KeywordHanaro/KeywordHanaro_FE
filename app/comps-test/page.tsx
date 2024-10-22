@@ -13,14 +13,15 @@ import { Button } from '@/components/atoms/button';
 import CheckBox from '@/components/atoms/checkBox';
 import { Chip } from '@/components/atoms/chips';
 import ColorChip from '@/components/atoms/color_chips';
-import { Modal } from '@/components/atoms/modal';
 import { MicRef } from '@/components/atoms/mic';
+import { Modal } from '@/components/atoms/modal';
 import { useEffect, useRef, useState } from 'react';
 
 export default function CompsTestPage() {
   const AccoutRef = useRef<AccountRefProps>(null);
   const MoneyRef = useRef<HTMLInputElement>(null);
-  const micRef = useRef<HTMLDivElement>(null);  const [isopen, setIsopen] = useState(true);
+  const micRef = useRef<HTMLDivElement>(null);
+  const [isopen, setIsopen] = useState(true);
   const closeModal = () => {
     setIsopen(!isopen);
   };
