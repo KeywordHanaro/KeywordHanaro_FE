@@ -4,7 +4,7 @@ import { Keyword as TKeyword } from '@/data/keyword';
 import { BsStarFill } from 'react-icons/bs';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Card } from '../atoms/card';
+import { Card } from '../atoms/Card';
 
 type KeywordProps = {
   data: TKeyword;
