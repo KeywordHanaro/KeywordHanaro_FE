@@ -9,16 +9,23 @@ import {
   KeywordInputRef,
 } from '@/components/atoms/Inputs';
 import UserCheckBox from '@/components/atoms/UserCheckBox';
+import { Button } from '@/components/atoms/button';
 import CheckBox from '@/components/atoms/checkBox';
 import { Chip } from '@/components/atoms/chips';
 import ColorChip from '@/components/atoms/color_chips';
 import { MicRef } from '@/components/atoms/mic';
+import { Modal } from '@/components/atoms/modal';
 import { useEffect, useRef, useState } from 'react';
 
 export default function CompsTestPage() {
   const AccoutRef = useRef<AccountRefProps>(null);
   const MoneyRef = useRef<HTMLInputElement>(null);
   const micRef = useRef<HTMLDivElement>(null);
+  const [isopen, setIsopen] = useState(true);
+  const closeModal = () => {
+    setIsopen(!isopen);
+  };
+
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [userChecked, setUserChecked] = useState<boolean>(false);
 
@@ -115,6 +122,21 @@ export default function CompsTestPage() {
       </div>
       <div className='mt-4 mb-4'>
         <UserCheckBox checked={userChecked} onChange={setUserChecked} />
+      </div>
+      <div className='flex'>
+        <Modal
+          open={isopen}
+          onChange={closeModal}
+          title='미리 서류를 작성해주세요'
+        >
+          <div></div>
+          <div className='grid gap-4 py-4'>
+            <Button>송금</Button>
+            <Button>입금</Button>
+            <Button>출금</Button>
+            <Button>다른업무</Button>
+          </div>
+        </Modal>
       </div>
     </>
   );

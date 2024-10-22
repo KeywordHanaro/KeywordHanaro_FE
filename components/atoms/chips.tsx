@@ -1,4 +1,3 @@
-// Assuming shadcn's badge component is imported from this path
 import { XIcon } from 'lucide-react';
 import { Badge } from '../ui/badge';
 
