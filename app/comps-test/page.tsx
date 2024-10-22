@@ -5,16 +5,20 @@ import {
   DefaultInputRef,
   SearchInpuRef,
   AccountRefProps,
+  MoneyInputRef,
+  KeywordInputRef,
 } from '@/components/atoms/Inputs';
 import UserCheckBox from '@/components/atoms/UserCheckBox';
 import CheckBox from '@/components/atoms/checkBox';
 import { Chip } from '@/components/atoms/chips';
 import ColorChip from '@/components/atoms/color_chips';
+import { MicRef } from '@/components/atoms/mic';
 import { useEffect, useRef, useState } from 'react';
 
 export default function CompsTestPage() {
   const AccoutRef = useRef<AccountRefProps>(null);
-
+  const MoneyRef = useRef<HTMLInputElement>(null);
+  const micRef = useRef<HTMLDivElement>(null);
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [userChecked, setUserChecked] = useState<boolean>(false);
 
@@ -22,6 +26,7 @@ export default function CompsTestPage() {
     const intervalId = setInterval(() => {
       console.log(AccoutRef.current?.bankId);
       console.log(AccoutRef.current?.inputRef.current?.value);
+      console.log(Number(MoneyRef.current?.value.replace(/[^0-9]/g, '')));
     }, 1000);
     return () => {
       clearInterval(intervalId);
@@ -32,6 +37,11 @@ export default function CompsTestPage() {
   const handleSubmit = () => {
     return;
   };
+
+  // const testHandle = () => {
+  //   micRef?.current?.click(); // 마이크 펼치기
+  // };
+
   return (
     <>
       <div>
@@ -75,6 +85,9 @@ export default function CompsTestPage() {
         </form>
         <SearchInpuRef name='hi' onSubmit={handleSubmit} />
         <AccountInputRef placeHolder='hi' ref={AccoutRef} />
+
+        <MoneyInputRef ref={MoneyRef} placeHolder='얼마를 보낼까요?' />
+        <KeywordInputRef placeHolder='키워드 이름을 작성해주세요' />
       </div>
       <hr />
       <div className='flex'>
@@ -86,6 +99,9 @@ export default function CompsTestPage() {
           canDelete={true}
           onRemove={() => alert('x')}
         />
+      </div>
+      <div className='relative'>
+        <MicRef ref={micRef} />
       </div>
       <div className='mt-4 flex flex-row gap-3'>
         <ColorChip color='grey'>Grey</ColorChip>
