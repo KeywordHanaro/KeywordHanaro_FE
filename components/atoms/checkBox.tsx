@@ -1,3 +1,5 @@
+import { FaCheck } from 'react-icons/fa6';
+
 type CheckboxAtomProps = {
   checked: boolean;
   onChange: (checked: boolean) => void;
@@ -14,9 +16,9 @@ export default function CheckBox({ checked, onChange }: CheckboxAtomProps) {
       />
       <div
         className={`h-6 w-6 flex items-center justify-center border-1 rounded-lg shadow-lg
-    ${checked ? 'bg-hanaPrimary border border-hanaPrimary text-white' : 'bg-white border border-gray-200 text-gray-400'}`}
+    ${checked ? 'bg-hanaPrimary border border-hanaPrimary text-white' : 'bg-white border border-gray-200 text-gray-300'}`}
       >
-        ✓
+        <FaCheck />
       </div>
     </label>
   );
