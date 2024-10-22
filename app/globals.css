@@ -65,6 +65,9 @@
   html {
     @apply flex justify-center w-full text-fontBlack;
   }
+  input {
+    @apply focus:outline-none;
+  }
 }
 
 @layer components {

@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/drawer';
 import { bankList } from '@/data/bank';
 import clsx from 'clsx';
+import { FaAngleDown } from 'react-icons/fa';
 import { IoSearch } from 'react-icons/io5';
 import { TiDelete } from 'react-icons/ti';
 import Image from 'next/image';
@@ -24,6 +25,7 @@ import {
   useState,
 } from 'react';
 
+/** ------------------------------------------ */
 type DefaultInputProps = {
   placeHolder?: string;
   name?: string;
@@ -33,14 +35,6 @@ type DefaultInputProps = {
   value?: string;
   required?: boolean;
   error?: string;
-};
-
-type SearchInputProps = {
-  placeHolder?: string;
-  name?: string;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  classNames?: string;
-  value?: string;
 };
 
 function DefaultInput(
@@ -114,6 +108,15 @@ function DefaultInput(
 }
 const DefaultInputRef = forwardRef(DefaultInput);
 
+/** ------------------------------------------ */
+type SearchInputProps = {
+  placeHolder?: string;
+  name?: string;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  classNames?: string;
+  value?: string;
+};
+
 /**onSubmit에 따라 검색을 진행합니다. */
 function SearchInput(
   { name, placeHolder, classNames, onSubmit }: SearchInputProps,
@@ -152,6 +155,7 @@ function SearchInput(
 }
 const SearchInpuRef = forwardRef(SearchInput);
 
+/** ------------------------------------------ */
 type AccountInputProps = {
   classNames?: string;
   placeHolder?: string;
@@ -188,7 +192,7 @@ function AccountInput(
       <div className='flex flex-col p-2'>
         <input
           className={clsx(
-            'border border-hanaPrimary px-4 rounded-xl h-11 text-hanaPrimary',
+            'border border-hanaPrimary px-6 rounded-xl h-11 text-hanaPrimary',
             classNames
           )}
           placeholder={placeHolder}
@@ -196,16 +200,18 @@ function AccountInput(
         />
         <Drawer>
           <DrawerTrigger className='m-2 rounded-lg after:border-b-placeholderGray after:w-full after:border flex flex-col'>
-            <p
-              className={clsx(
-                ' text-left p-2',
-                bankId ? 'text-fontBlack' : 'text-placeholderGray'
-              )}
-            >
-              {bankId
-                ? (bankList.find((bank) => bank.id === bankId)?.bankname ?? '')
-                : '은행선택'}
-            </p>
+            <div className='flex flex-row justify-between w-full h-full px-4 items-center'>
+              <p
+                className={clsx(
+                  ' text-left py-2',
+                  bankId ? 'text-fontBlack' : 'text-placeholderGray'
+                )}
+              >
+                {bankList.find((bank) => bank.id === bankId)?.bankname ??
+                  '은행선택'}
+              </p>
+              <FaAngleDown />
+            </div>
           </DrawerTrigger>
           <DrawerContent className='min-h-[300px] max-h-[500px] overflow-hidden transition-all duration-500 ease-out'>
             <DrawerHeader className='text-left'>
@@ -250,4 +256,68 @@ function AccountInput(
 }
 const AccountInputRef = forwardRef(AccountInput);
 
-export { DefaultInputRef, SearchInpuRef, AccountInputRef };
+/** ------------------------------------------ */
+type MoneyInputProps = {
+  classNames?: string;
+  placeHolder?: string;
+};
+/** 금액 입력, ref로 입력 값 가져오기 */
+function MoneyInput(
+  { classNames, placeHolder }: MoneyInputProps,
+  ref: ForwardedRef<HTMLInputElement>
+) {
+  const [value, setValue] = useState<string>('');
+
+  const formatNumberWithCommas = (inputValue: string): string => {
+    if (!inputValue) return '';
+    const numericValue = inputValue.replace(/[^0-9]/g, '');
+    return new Intl.NumberFormat('ko-KR').format(parseInt(numericValue, 10));
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const inputValue = e.target.value;
+    const formattedValue = formatNumberWithCommas(inputValue);
+    setValue(formattedValue);
+  };
+
+  return (
+    <div className='p-2 flex flex-row items-center text-hanaPrimary'>
+      <input
+        ref={ref}
+        value={value}
+        onChange={handleChange}
+        className={clsx(
+          classNames,
+          'max-w-full min-w-[100px] w-auto px-4 py-2 text-2xl font-extrabold '
+        )}
+        placeholder={placeHolder}
+        required
+      />
+      {value && <span className='ml-2 z-50 text-2xl font-extrabold'>원</span>}
+    </div>
+  );
+}
+const MoneyInputRef = forwardRef(MoneyInput);
+
+/** ------------------------------------------ */
+type KeywordInputProps = {
+  classNames?: string;
+  placeHolder?: string;
+};
+function KeywordInput({ classNames, placeHolder }: KeywordInputProps) {
+  return (
+    <div className='after:w-full after:border after:border-b-placeholderGray flex flex-col p-2'>
+      <input className={clsx('w-full p-2 text-center text-2xl font-bold',classNames)} placeholder={placeHolder} />
+    </div>
+  );
+}
+const KeywordInputRef = forwardRef(KeywordInput);
+
+export {
+  DefaultInputRef,
+  SearchInpuRef,
+  AccountInputRef,
+  MoneyInputRef,
+  KeywordInputRef,
+};
