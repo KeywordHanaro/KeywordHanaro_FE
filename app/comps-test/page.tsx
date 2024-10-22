@@ -6,11 +6,15 @@ import {
   SearchInpuRef,
   AccountRefProps,
 } from '@/components/atoms/Inputs';
+import CheckBox from '@/components/atoms/checkBox';
 import { Chip } from '@/components/atoms/chips';
-import { useEffect, useRef } from 'react';
+import ColorChip from '@/components/atoms/color_chips';
+import { useEffect, useRef, useState } from 'react';
 
 export default function CompsTestPage() {
   const AccoutRef = useRef<AccountRefProps>(null);
+
+  const [isChecked, setIsChecked] = useState<boolean>(false);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -80,6 +84,16 @@ export default function CompsTestPage() {
           canDelete={true}
           onRemove={() => alert('x')}
         />
+      </div>
+      <div className='mt-4 flex flex-row gap-3'>
+        <ColorChip color='grey'>Grey</ColorChip>
+        <ColorChip color='pink'>Pink</ColorChip>
+        <ColorChip color='green'>Green</ColorChip>
+        <ColorChip color='yellow'>Yellow</ColorChip>
+        <ColorChip color='blue'>Blue</ColorChip>
+      </div>
+      <div className='mt-4'>
+        <CheckBox checked={isChecked} onChange={setIsChecked} />
       </div>
     </>
   );
