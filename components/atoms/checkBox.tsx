@@ -3,7 +3,7 @@ type CheckboxAtomProps = {
   onChange: (checked: boolean) => void;
 };
 
-export default function CheckboxAtom({ checked, onChange }: CheckboxAtomProps) {
+export default function CheckBox({ checked, onChange }: CheckboxAtomProps) {
   return (
     <label className='flex items-center cursor-pointer'>
       <input
