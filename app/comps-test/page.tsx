@@ -52,7 +52,6 @@ export default function CompsTestPage() {
 
   return (
     <>
-      <Header text={'Test'} />
       <div>
         <form>
           <DefaultInputRef
@@ -109,37 +108,7 @@ export default function CompsTestPage() {
           onRemove={() => alert('x')}
         />
       </div>
-      <div className='relative'>
-        <MicRef ref={micRef} />
-      </div>
-      <div className='mt-4 flex flex-row gap-3'>
-        <ColorChip color='grey'>Grey</ColorChip>
-        <ColorChip color='pink'>Pink</ColorChip>
-        <ColorChip color='green'>Green</ColorChip>
-        <ColorChip color='yellow'>Yellow</ColorChip>
-        <ColorChip color='blue'>Blue</ColorChip>
-      </div>
-      <div className='mt-4'>
-        <CheckBox checked={isChecked} onChange={setIsChecked} />
-      </div>
-      <div className='mt-4 mb-4'>
-        <UserCheckBox checked={userChecked} onChange={setUserChecked} />
-      </div>
-      <div className='flex'>
-        <Modal
-          open={isopen}
-          onChange={closeModal}
-          title='미리 서류를 작성해주세요'
-        >
-          <div></div>
-          <div className='grid gap-4 py-4'>
-            <Button>송금</Button>
-            <Button>입금</Button>
-            <Button>출금</Button>
-            <Button>다른업무</Button>
-          </div>
-        </Modal>
-      </div>
+      <Header text={'Test'} />
     </>
   );
 }

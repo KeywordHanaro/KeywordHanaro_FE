@@ -1,7 +1,7 @@
 import { ArrowLeft } from 'lucide-react';
 
 type HeaderProps = {
-  text?: string;
+  text: string;
   showBackButton?: boolean;
   onBack?: () => void;
   showActionButton?: boolean;
@@ -18,10 +18,10 @@ export default function Header({
   onAction,
 }: HeaderProps) {
   return (
-    <div className='flex justify-center items-center w-full h-20 bg-white'>
+    <div className='flex justify-center items-center bg-white px-[20px] py-[11.5px] max-h-[44px]'>
       {/* 뒤로 가기 버튼 */}
       {showBackButton && (
-        <button className='pl-[20px] pr-[8px]' onClick={onBack}>
+        <button className='pr-[8px]' onClick={onBack}>
           <ArrowLeft size={20} />
         </button>
       )}
@@ -33,7 +33,7 @@ export default function Header({
       {showActionButton && (
         <button
           onClick={onAction}
-          className='text-[18px] text-black text-right px-[20px]'
+          className='text-[18px] text-black text-right'
         >
           {actionLabel}
         </button>
