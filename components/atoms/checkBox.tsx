@@ -12,12 +12,12 @@ export default function CheckBox({ checked, onChange }: CheckboxAtomProps) {
         onChange={() => onChange(!checked)}
         className='hidden' // 기본 체크박스 숨기기
       />
-      <span
+      <div
         className={`h-6 w-6 flex items-center justify-center border-1 rounded-lg shadow-lg
     ${checked ? 'bg-hanaPrimary border border-hanaPrimary text-white' : 'bg-white border border-gray-200 text-gray-400'}`}
       >
         ✓
-      </span>
+      </div>
     </label>
   );
 }
