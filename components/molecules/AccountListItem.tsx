@@ -1,11 +1,17 @@
+'use client';
+
 import { bankList } from '@/data/bank';
+import { BsStarFill } from 'react-icons/bs';
 import Image from 'next/image';
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 type AccountItemProps = {
   id: number;
   name: string;
   bank: string;
   accountNumber: string;
+  isFavorite: boolean;
 };
 
 type AccountListType = {
@@ -14,7 +20,12 @@ type AccountListType = {
 
 export default function AccountListItem({ account }: AccountListType) {
   const { name, bank, accountNumber } = account;
+  const [isFavorite, setIsFavorite] = useState(account.isFavorite);
 
+  // 즐겨찾기 상태 변경 함수
+  const toggleFavorite = () => {
+    setIsFavorite((prev) => !prev); // 클릭 시 상태를 반전시킴
+  };
   const bankImage = bankList.find((i) => i.bankname === bank)?.image;
 
   return (
@@ -32,12 +43,20 @@ export default function AccountListItem({ account }: AccountListType) {
         ) : (
           <span className='w-11 h-11 rounded-full bg-slate-200 '></span>
         )}
-        <div className='col-span-5 flex flex-col gap-1 ml-2'>
+        <div className='col-span-4 flex flex-col gap-1 ml-2'>
           <h1 className='text-hanaPrimary font-bold'>{name}</h1>
           <h1 className='text-gray-400 text-xs flex flex-row gap-2'>
             <div>{bank}</div>
             <div>{accountNumber}</div>
           </h1>
+        </div>
+        <div className='cursor-pointer' onClick={toggleFavorite}>
+          <BsStarFill
+            className={cn(
+              'w-[27px] h-[27px]',
+              isFavorite ? 'text-yellow-300' : 'text-[#D9D9D9]'
+            )}
+          />
         </div>
       </div>
     </div>

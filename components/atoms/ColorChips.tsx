@@ -20,12 +20,11 @@ export default function ColorChip({
   return (
     <>
       <div
-        className='rounded-3xl px-4 py-1 w-fit text-sm'
+        className='rounded-3xl px-4 py-1 w-fit text-sm p-8'
         style={{ backgroundColor: bgColor, color: textColor }}
       >
-        #{children}
+        {children}
       </div>
     </>
   );
 }
-
