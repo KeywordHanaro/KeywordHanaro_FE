@@ -189,17 +189,17 @@ function AccountInput(
 
   return (
     <>
-      <div className='flex flex-col p-2'>
+      <div className='flex flex-col p-2 text-[18px]'>
         <input
           className={clsx(
-            'border border-hanaPrimary px-6 rounded-xl h-11 text-hanaPrimary',
+            ' px-6 py-2 text-hanaPrimary border-b-placeholderGray border-b-2 ',
             classNames
           )}
           placeholder={placeHolder}
           ref={inputRef}
         />
         <Drawer>
-          <DrawerTrigger className='m-2 rounded-lg after:border-b-placeholderGray after:w-full after:border flex flex-col'>
+          <DrawerTrigger className='my-2 rounded-lg after:border-b-placeholderGray after:w-full after:border flex flex-col'>
             <div className='flex flex-row justify-between w-full h-full px-4 items-center'>
               <p
                 className={clsx(
@@ -308,7 +308,13 @@ type KeywordInputProps = {
 function KeywordInput({ classNames, placeHolder }: KeywordInputProps) {
   return (
     <div className='after:w-full after:border after:border-b-placeholderGray flex flex-col p-2'>
-      <input className={clsx('w-full p-2 text-center text-2xl font-bold',classNames)} placeholder={placeHolder} />
+      <input
+        className={clsx(
+          'w-full p-2 text-center text-2xl font-bold',
+          classNames
+        )}
+        placeholder={placeHolder}
+      />
     </div>
   );
 }
