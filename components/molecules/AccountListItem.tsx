@@ -50,14 +50,15 @@ export default function AccountListItem({ account }: AccountListType) {
             <div>{accountNumber}</div>
           </h1>
         </div>
-        <div className='cursor-pointer' onClick={toggleFavorite}>
-          <BsStarFill
-            className={cn(
-              'w-[27px] h-[27px]',
-              isFavorite ? 'text-yellow-300' : 'text-[#D9D9D9]'
-            )}
-          />
-        </div>
+
+        <BsStarFill
+          onClick={toggleFavorite}
+          className={cn(
+            'w-[27px] h-[27px]',
+            'cursor-pointer',
+            isFavorite ? 'text-yellow-300' : 'text-[#D9D9D9]'
+          )}
+        />
       </div>
     </div>
   );
