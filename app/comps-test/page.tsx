@@ -1,5 +1,6 @@
 'use client';
 
+import Header from '@/components/atoms/Header';
 import {
   AccountInputRef,
   DefaultInputRef,
@@ -51,6 +52,7 @@ export default function CompsTestPage() {
 
   return (
     <>
+      <Header text={'Test'} />
       <div>
         <form>
           <DefaultInputRef
