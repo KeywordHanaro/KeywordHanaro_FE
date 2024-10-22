@@ -35,10 +35,12 @@ export const Button = ({
   );
 };
 
-
 export const EditButton = (props: ButtonProps) => {
   return (
-    <button className={clsx('p-2 rounded-xl', 'btn-edit')} {...props}>
+    <button
+      className={clsx('px-[7px] py-[5px] rounded-[8px]', 'btn-edit')}
+      {...props}
+    >
       수정
     </button>
   );
@@ -46,7 +48,10 @@ export const EditButton = (props: ButtonProps) => {
 
 export const DelButton = (props: ButtonProps) => {
   return (
-    <button className={clsx('p-2 rounded-xl', 'btn-del')} {...props}>
+    <button
+      className={clsx('px-[7px] py-[5px] rounded-[8px]', 'btn-del')}
+      {...props}
+    >
       삭제
     </button>
   );
