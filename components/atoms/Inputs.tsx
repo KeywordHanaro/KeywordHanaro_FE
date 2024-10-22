@@ -141,7 +141,6 @@ function SearchInput(
         <div className='absolute h-11 w-fit right-0 flex z-100'>
           <button
             type='submit'
-
             className='absolute right-4 top-1/2 transform -translate-y-1/2 focus:outline-none cursor-pointer'
           >
             <IoSearch size={20} />
@@ -204,8 +203,7 @@ function AccountInput(
               )}
             >
               {bankId
-                ? (bankList.find((bank) => bank.id === bankId)?.bankname ??
-                  '')
+                ? (bankList.find((bank) => bank.id === bankId)?.bankname ?? '')
                 : '은행선택'}
             </p>
           </DrawerTrigger>

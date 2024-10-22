@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 'use client';
 
 import { Drawer as DrawerPrimitive } from 'vaul';
@@ -6,7 +5,6 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 /* eslint-disable react/prop-types */
-
 const Drawer = ({
   shouldScaleBackground = true,
   ...props
