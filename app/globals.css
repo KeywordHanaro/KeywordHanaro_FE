@@ -60,10 +60,10 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground sm:max-w-[640px] w-full;
+    @apply bg-background text-foreground sm:max-w-[640px] w-full font-pretendard;
   }
   html {
-    @apply flex justify-center w-full text-fontBlack;
+    @apply flex justify-center w-full text-fontBlack font-pretendard;
   }
   input {
     @apply focus:outline-none;

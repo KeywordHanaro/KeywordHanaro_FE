@@ -19,7 +19,7 @@ const EditKeyword = ({ data }: EditKeywordProps) => {
       case 'transfer':
         return (
           <>
-            <span className='text-fontBlack font-semibold text-[13px]'>
+            <span className='font-semibold text-[13px]'>
               {data.accountFrom.accountName ?? data.accountFrom.accountNumber}
               계좌에서&nbsp;
               <span className='text-hanaPrimary'>
@@ -29,21 +29,20 @@ const EditKeyword = ({ data }: EditKeywordProps) => {
               로
             </span>
             <span className='text-hanaPrimary font-semibold text-[13px]'>
-              {data.amount.toLocaleString()}원
-              <span className='text-fontBlack '>송금</span>
+              {data.amount.toLocaleString()}원<span>송금</span>
             </span>
           </>
         );
       case 'inquiry':
         return (
           <>
-            <span className='text-fontBlack font-semibold text-[13px]'>
+            <span className=' font-semibold text-[13px]'>
               {data.accountFrom.accountName ?? data.accountFrom.accountNumber}
               계좌에서
             </span>
             <span className='text-hanaPrimary font-semibold text-[13px]'>
               {data.searchKeyword}
-              <span className='text-fontBlack '>조회</span>
+              <span>조회</span>
             </span>
           </>
         );
@@ -53,19 +52,17 @@ const EditKeyword = ({ data }: EditKeywordProps) => {
             <span className='text-hanaPrimary font-semibold text-[13px]'>
               {data.bankName}
             </span>
-            <span className='text-fontBlack text-[13px] font-semibold'>
-              번호표 발급
-            </span>
+            <span className='text-[13px] font-semibold'>번호표 발급</span>
           </>
         );
       case 'settlement':
         return (
           <>
-            <span className='text-fontBlack text-[13px] font-semibold'>
+            <span className='text-[13px] font-semibold'>
               {data.accountFrom.accountName ?? data.accountFrom.accountNumber}{' '}
               계좌로
             </span>
-            <span className='text-fontBlack text-[11px] font-semibold'>
+            <span className='text-[11px] font-semibold'>
               {data.memberList.map((member) => member.name).join(', ')}
             </span>
             <span className='text-hanaPrimary text-[13px] font-semibold'>

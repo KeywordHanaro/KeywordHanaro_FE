@@ -18,13 +18,11 @@ export default function ColorChip({
 }: PropsWithChildren<ColorChipProps>) {
   const { bgColor, textColor } = colorMap[color];
   return (
-    <>
-      <div
-        className='rounded-3xl px-2 py-1 w-fit text-sm p-8'
-        style={{ backgroundColor: bgColor, color: textColor }}
-      >
-        {children}
-      </div>
-    </>
+    <div
+      className='rounded-3xl px-2 py-[2px] w-fit text-[11px] font-medium p-8'
+      style={{ backgroundColor: bgColor, color: textColor }}
+    >
+      {children}
+    </div>
   );
 }
