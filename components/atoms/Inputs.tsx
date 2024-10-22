@@ -268,16 +268,16 @@ function MoneyInput(
 ) {
   const [value, setValue] = useState<string>('');
 
-  const formatNumberWithCommas = (inputValue:string) : string => {
+  const formatNumberWithCommas = (inputValue: string): string => {
     if (!inputValue) return '';
     const numericValue = inputValue.replace(/[^0-9]/g, '');
     return new Intl.NumberFormat('ko-KR').format(parseInt(numericValue, 10));
   };
 
-  const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const inputValue = e.target.value;
-    const formattedValue = formatNumberWithCommas(inputValue)
+    const formattedValue = formatNumberWithCommas(inputValue);
     setValue(formattedValue);
   };
 
@@ -294,10 +294,30 @@ function MoneyInput(
         placeholder={placeHolder}
         required
       />
-      {value && <span className="ml-2 z-50 text-3xl font-extrabold">원</span>}
+      {value && <span className='ml-2 z-50 text-3xl font-extrabold'>원</span>}
     </div>
   );
 }
 const MoneyInputRef = forwardRef(MoneyInput);
 
-export { DefaultInputRef, SearchInpuRef, AccountInputRef, MoneyInputRef };
+/** ------------------------------------------ */
+type KeywordInputProps = {
+  classNames?: string;
+  placeHolder?: string;
+};
+function KeywordInput({ classNames, placeHolder }: KeywordInputProps) {
+  return (
+    <div className='after:w-full after:border after:border-b-placeholderGray flex flex-col p-2'>
+      <input className={clsx('w-full p-2 text-center text-3xl font-bold',classNames)} placeholder={placeHolder} />
+    </div>
+  );
+}
+const KeywordInputRef = forwardRef(KeywordInput);
+
+export {
+  DefaultInputRef,
+  SearchInpuRef,
+  AccountInputRef,
+  MoneyInputRef,
+  KeywordInputRef,
+};

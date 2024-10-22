@@ -6,6 +6,7 @@ import {
   SearchInpuRef,
   AccountRefProps,
   MoneyInputRef,
+  KeywordInputRef,
 } from '@/components/atoms/Inputs';
 import CheckBox from '@/components/atoms/checkBox';
 import { Chip } from '@/components/atoms/chips';
@@ -77,6 +78,7 @@ export default function CompsTestPage() {
         <SearchInpuRef name='hi' onSubmit={handleSubmit} />
         <AccountInputRef placeHolder='hi' ref={AccoutRef} />
         <MoneyInputRef ref={MoneyRef} placeHolder='얼마를 보낼까요?'/>
+        <KeywordInputRef placeHolder='키워드 이름을 작성해주세요'/>
       </div>
       <hr />
       <div className='flex'>
