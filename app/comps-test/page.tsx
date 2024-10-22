@@ -7,7 +7,6 @@ import {
   AccountRefProps,
 } from '@/components/atoms/Inputs';
 import { Chip } from '@/components/atoms/chips';
-import ColorChip from '@/components/atoms/color_chips';
 import { useEffect, useRef } from 'react';
 
 export default function CompsTestPage() {
@@ -81,13 +80,6 @@ export default function CompsTestPage() {
           canDelete={true}
           onRemove={() => alert('x')}
         />
-      </div>
-      <div className='flex flex-row gap-3'>
-        <ColorChip color='grey'>Grey</ColorChip>
-        <ColorChip color='pink'>Pink</ColorChip>
-        <ColorChip color='green'>Green</ColorChip>
-        <ColorChip color='yellow'>Yellow</ColorChip>
-        <ColorChip color='blue'>Blue</ColorChip>
       </div>
     </>
   );
