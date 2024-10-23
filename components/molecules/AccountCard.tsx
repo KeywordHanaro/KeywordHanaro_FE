@@ -79,7 +79,7 @@ export default function AccountCard({
           보내기
         </Button>
         <Button
-          className='rounded-lg bg-[#EFF0F4] text-[#666668] !h-[40px] !w-[40px] flex items-center justify-center'
+          className='rounded-lg bg-[#EFF0F4] text-[#666668] h-[40px] w-[40px] flex items-center justify-center'
           style={{ boxShadow: '0px 4px 8px 0px rgba(136, 137, 157, 0.30)' }}
         >
           ...
