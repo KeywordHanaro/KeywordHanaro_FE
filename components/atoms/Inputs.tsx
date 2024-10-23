@@ -333,23 +333,37 @@ function AIInput(
 ) {
   return (
     <>
-      <div className='relative flex items-center '>
+      <div className='relative flex items-center gradient-border overflow-hidden'>
         <input
           className={cn(
-            'border-2 rounded-xl w-30 px-4 py-3 text-[14px] placeholder-placeholderGray bg-gradient-to-tr from-hanaPrimary to-[#DB24B9] bg-clip-border border-transparent',
+            'w-full px-4 py-3 text-[14px] placeholder-placeholderGray',
             'peer ',
             classNames
           )}
           placeholder={placeHolder}
           ref={ref}
         />
-        <FaArrowCircleUp
-          size={20}
-          className={cn(
-            'absolute right-4 flex-shrink-0 transition-all duration-30',
-            'peer-focus:scale-125 peer-focus:stroke-none bg-transparent'
-          )}
-        />
+        <button className={cn('absolute right-4 flex-shrink-0 transition-all duration-300','peer-focus:scale-125 peer-focus:stroke-none')}>
+          <svg
+            viewBox='0 0 20 20'
+            width='20'
+            height='20'
+          >
+            <defs>
+              <linearGradient id='grad1' x1='0%' y1='0%' x2='0%' y2='100%'>
+                <stop
+                  offset='0%'
+                  style={{ stopColor: '#068298', stopOpacity: 1 }}
+                />
+                <stop
+                  offset='100%'
+                  style={{ stopColor: '#e523e2', stopOpacity: 0.96 }}
+                />
+              </linearGradient>
+            </defs>
+            <FaArrowCircleUp fill='url(#grad1)' size={20} />
+          </svg>
+        </button>
       </div>
     </>
   );
