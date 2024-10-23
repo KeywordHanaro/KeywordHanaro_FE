@@ -12,7 +12,7 @@ export default function KeywordCreatePage() {
       <Header text={headerText} showActionButton={false} />
 
       <div className='px-[20px] '>
-        <div className='font-semibold text-[24px] my-[24px] mr-[70px] leading-[31px]'>
+        <div className='font-semibold text-[24px] my-[24px] mr-[70px] leading-[31px] w-[300px]'>
           생성할 키워드 카테고리를 선택해주세요
         </div>
         <KeywordCategory />
