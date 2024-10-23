@@ -15,12 +15,11 @@ export default function UserCheckBox({ checked, onChange }: UserCheckBoxProps) {
         className='hidden'
       />
       <div
-        className={`h-8 w-8 flex items-center justify-center border-1 rounded-2xl bg-white text-hanaPrimary
-    ${checked ? ' border border-gray-100' : ' border border-hanaPrimary '}`}
+        className={`h-[40px] w-[40px] flex items-center justify-center border-1 rounded-full bg-white text-hanaPrimary text-xl
+    ${checked ? ' border border-hanaPrimary' : ' border border-gray-100 '}`}
       >
-        {checked ? <FaUser /> : <FaCheck />}
+        {checked ? <FaCheck /> : <FaUser />}
       </div>
     </label>
   );
 }
-
