@@ -26,13 +26,16 @@ import {
 } from 'react';
 import { cn } from '@/lib/utils';
 
-/** ------------------------------------------ */
-type DefaultInputProps = {
-  placeHolder?: string;
-  name?: string;
-  type?: string;
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+type baseInputTypeProps = {
+  placeHolder? : string;
   classNames?: string;
+  type?:string;
+}
+
+/** ------------------------------------------ */
+type DefaultInputProps = baseInputTypeProps & {
+  name?: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   value?: string;
   required?: boolean;
   error?: string;
@@ -110,11 +113,9 @@ function DefaultInput(
 const DefaultInputRef = forwardRef(DefaultInput);
 
 /** ------------------------------------------ */
-type SearchInputProps = {
-  placeHolder?: string;
+type SearchInputProps = baseInputTypeProps &{
   name?: string;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  classNames?: string;
   value?: string;
 };
 
@@ -157,10 +158,7 @@ function SearchInput(
 const SearchInpuRef = forwardRef(SearchInput);
 
 /** ------------------------------------------ */
-type AccountInputProps = {
-  classNames?: string;
-  placeHolder?: string;
-};
+type AccountInputProps = baseInputTypeProps;
 export type AccountRefProps = {
   bankId: number;
   inputRef: React.RefObject<HTMLInputElement>;
@@ -258,10 +256,7 @@ function AccountInput(
 const AccountInputRef = forwardRef(AccountInput);
 
 /** ------------------------------------------ */
-type MoneyInputProps = {
-  classNames?: string;
-  placeHolder?: string;
-};
+type MoneyInputProps = baseInputTypeProps
 /** 금액 입력, ref로 입력 값 가져오기 */
 function MoneyInput(
   { classNames, placeHolder }: MoneyInputProps,
@@ -323,9 +318,7 @@ function KeywordInput(
 const KeywordInputRef = forwardRef(KeywordInput);
 
 /** ------------------------------------------ */
-type AIInputProps = {
-  classNames?: string;
-  placeHolder?: string;
+type AIInputProps = baseInputTypeProps & {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   Loading : boolean;
 };
