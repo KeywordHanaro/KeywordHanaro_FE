@@ -212,7 +212,7 @@ function AccountInput(
               <FaAngleDown />
             </div>
           </DrawerTrigger>
-          <DrawerContent className='min-h-[300px] max-h-[500px] overflow-hidden transition-all duration-500 ease-out'>
+          <DrawerContent className='min-h-[300px] max-h-[calc(100vh-200px)] overflow-hidden transition-all duration-500 ease-out'>
             <DrawerHeader className='text-left'>
               <DrawerTitle>은행을 선택해주세요</DrawerTitle>
               <DrawerDescription />
@@ -221,7 +221,7 @@ function AccountInput(
               onScroll={handleScroll}
               className={cn(
                 ' overflow-y-scroll transition-all duration-500 ease-out',
-                hasScrolled ? 'h-[400px]' : 'h-[200px]'
+                hasScrolled ? 'h-screen' : 'h-[300px]'
               )}
             >
               <div className='grid grid-cols-3 gap-3'>
@@ -236,7 +236,8 @@ function AccountInput(
                         src={bank.image}
                         className='object-contain aspect-square p-2'
                         alt='test'
-                        layout='fill'
+                        fill
+                        sizes='min-width:40px height:40px'
                       />
                     </span>
                     <small>{bank.bankname}</small>
@@ -320,13 +321,12 @@ const KeywordInputRef = forwardRef(KeywordInput);
 /** ------------------------------------------ */
 type AIInputProps = baseInputTypeProps & {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  Loading : boolean;
+  isLoading : boolean;
 };
 function AIInput(
-  { classNames, placeHolder, onSubmit,Loading }: AIInputProps,
+  { classNames, placeHolder, onSubmit,isLoading }: AIInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
-  const [isLoading, setIsLoading] = useState<boolean>(Loading)
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -335,13 +335,12 @@ function AIInput(
       formRef.current.reset();
     }
     console.log('hi2')
-    setIsLoading(true)
   };
 
   return (
     <>
       <form
-        className='relative flex items-center gradient-border overflow-hidden'
+        className={cn('relative flex items-center gradient-border overflow-hidden',classNames)}
         onSubmit={handleSubmit}
         ref={formRef}
       >
@@ -349,7 +348,6 @@ function AIInput(
           className={cn(
             'w-[calc(100%-30px)] px-4 py-3 text-[14px] placeholder-placeholderGray',
             'peer ',
-            classNames
           )}
           placeholder={placeHolder}
           ref={ref}
