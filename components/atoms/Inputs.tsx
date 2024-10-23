@@ -11,8 +11,8 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import { bankList } from '@/data/bank';
-import clsx from 'clsx';
 import { FaAngleDown } from 'react-icons/fa';
+import { FaArrowCircleUp } from 'react-icons/fa';
 import { IoSearch } from 'react-icons/io5';
 import { TiDelete } from 'react-icons/ti';
 import Image from 'next/image';
@@ -24,6 +24,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { cn } from '@/lib/utils';
 
 /** ------------------------------------------ */
 type DefaultInputProps = {
@@ -75,7 +76,7 @@ function DefaultInput(
           value={inputValue}
           name={name}
           type={type}
-          className={clsx(
+          className={cn(
             { classNames },
             'peer border border-placeholderGray px-4 rounded-xl h-11',
             isTouched &&
@@ -132,7 +133,7 @@ function SearchInput(
     <>
       <form onSubmit={SearchHandler} className='input-box'>
         <input
-          className={clsx(
+          className={cn(
             'border border-hanaPrimary px-4 rounded-xl h-11 text-hanaPrimary',
 
             classNames
@@ -191,7 +192,7 @@ function AccountInput(
     <>
       <div className='flex flex-col p-2 text-[18px]'>
         <input
-          className={clsx(
+          className={cn(
             ' px-6 py-2 text-hanaPrimary border-b-placeholderGray border-b-2 ',
             classNames
           )}
@@ -202,7 +203,7 @@ function AccountInput(
           <DrawerTrigger className='my-2 rounded-lg after:border-b-placeholderGray after:w-full after:border flex flex-col'>
             <div className='flex flex-row justify-between w-full h-full px-4 items-center'>
               <p
-                className={clsx(
+                className={cn(
                   ' text-left py-2',
                   bankId ? 'text-fontBlack' : 'text-placeholderGray'
                 )}
@@ -220,7 +221,7 @@ function AccountInput(
             </DrawerHeader>
             <DrawerFooter
               onScroll={handleScroll}
-              className={clsx(
+              className={cn(
                 ' overflow-y-scroll transition-all duration-500 ease-out',
                 hasScrolled ? 'h-[400px]' : 'h-[200px]'
               )}
@@ -287,7 +288,7 @@ function MoneyInput(
         ref={ref}
         value={value}
         onChange={handleChange}
-        className={clsx(
+        className={cn(
           classNames,
           'max-w-full min-w-[100px] w-auto px-4 py-2 text-2xl font-extrabold '
         )}
@@ -305,14 +306,15 @@ type KeywordInputProps = {
   classNames?: string;
   placeHolder?: string;
 };
-function KeywordInput({ classNames, placeHolder }: KeywordInputProps) {
+function KeywordInput(
+  { classNames, placeHolder }: KeywordInputProps,
+  ref: ForwardedRef<HTMLInputElement>
+) {
   return (
     <div className='after:w-full after:border after:border-b-placeholderGray flex flex-col p-2'>
       <input
-        className={clsx(
-          'w-full p-2 text-center text-2xl font-bold',
-          classNames
-        )}
+        ref={ref}
+        className={cn('w-full p-2 text-center text-2xl font-bold', classNames)}
         placeholder={placeHolder}
       />
     </div>
@@ -320,11 +322,45 @@ function KeywordInput({ classNames, placeHolder }: KeywordInputProps) {
 }
 const KeywordInputRef = forwardRef(KeywordInput);
 
+/** ------------------------------------------ */
+type AIInputProps = {
+  classNames?: string;
+  placeHolder?: string;
+};
+function AIInput(
+  { classNames, placeHolder }: AIInputProps,
+  ref: ForwardedRef<HTMLInputElement>
+) {
+  return (
+    <>
+      <div className='relative flex items-center '>
+        <input
+          className={cn(
+            'border-2 rounded-xl w-30 px-4 py-3 text-[14px] placeholder-placeholderGray bg-gradient-to-tr from-hanaPrimary to-[#DB24B9] bg-clip-border border-transparent',
+            'peer ',
+            classNames
+          )}
+          placeholder={placeHolder}
+          ref={ref}
+        />
+        <FaArrowCircleUp
+          size={20}
+          className={cn(
+            'absolute right-4 flex-shrink-0 transition-all duration-30',
+            'peer-focus:scale-125 peer-focus:stroke-none bg-transparent'
+          )}
+        />
+      </div>
+    </>
+  );
+}
+const AIInputRef = forwardRef(AIInput);
+
 export {
   DefaultInputRef,
   SearchInpuRef,
   AccountInputRef,
   MoneyInputRef,
   KeywordInputRef,
+  AIInputRef,
 };
-
