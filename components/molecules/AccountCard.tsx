@@ -17,7 +17,7 @@ export default function AccountCard({
 }: AccountCardProps) {
   const [isHide, setIsHide] = useState(false);
   return (
-    <Card className='flex flex-col w-[331px] h-[201px] p-[20px] justify-between'>
+    <Card className='flex flex-col w-full h-[201px] p-[20px] justify-between'>
       {/* 제목 및 계좌 번호 및 잔액 */}
       <div className='flex flex-col justify-between'>
         {/* 제목 */}
@@ -72,10 +72,10 @@ export default function AccountCard({
 
       {/* 가져오기, 보내기, ... 버튼 */}
       <div className='flex'>
-        <Button className='rounded-lg bg-[#EFF0F4] text-fontBlack w-[116px] h-[40px] mr-[9px] flex items-center justify-center'>
+        <Button className='rounded-lg bg-[#EFF0F4] text-fontBlack flex-1 h-[40px] mr-[9px] flex items-center justify-center'>
           가져오기
         </Button>
-        <Button className='rounded-lg w-[116px] h-[40px] mr-[13px] flex items-center justify-center'>
+        <Button className='rounded-lg flex-1 h-[40px] mr-[13px] flex items-center justify-center'>
           보내기
         </Button>
         <Button
