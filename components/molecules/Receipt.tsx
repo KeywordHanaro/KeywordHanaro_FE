@@ -6,10 +6,14 @@ import { useEffect, useState } from 'react';
 import ColorChip from '../atoms/ColorChips';
 import { Toggle } from '../ui/toggle';
 
-export default function Receipt() {
-  const now = new Date();
-  const number = 117;
-  const people = 11;
+type ReceiptProps = {
+  now: Date;
+  waitingQueue: number;
+  people:number
+  todo: string;
+};
+
+export default function Receipt({ now, people, todo, waitingQueue }: ReceiptProps) {
 
   const [more, setMore] = useState<boolean>(true);
   const [position, setPosition] = useState<boolean>(false);
@@ -24,6 +28,17 @@ export default function Receipt() {
   const handlePosition = () => {
     setPosition(true);
   };
+  const formatTime = (dateTime: Date): string => {
+    return dateTime.toLocaleTimeString('ko-KR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+  }
 
   useEffect(() => {
     setTimeout(() => {
@@ -58,22 +73,14 @@ export default function Receipt() {
             )}
           >
             <div className='flex flex-row justify-between items-center h-[23px]'>
-              <ColorChip color='blue'>예금</ColorChip>
+              <ColorChip color='blue'>{todo}</ColorChip>
               <p className='text-[13px]'>
-                {now.toLocaleString('ko-KR', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour12: false,
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  second: '2-digit',
-                })}
+                {formatTime(now)}
               </p>
             </div>
             <div className='flex flex-row justify-between h-[77px] pb-2.5'>
               <small className='mt-4'>대기번호</small>
-              <h1 className='text-6xl'>{number}</h1>
+              <h1 className='text-6xl'>{waitingQueue}</h1>
             </div>
             <div>
               <div
