@@ -1,6 +1,5 @@
 import { bankList, Branch } from '@/data/bank';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
 
 type BranchInfoItemProps = {
   data: Branch;
@@ -14,27 +13,24 @@ export default function BankInfoItem({
 
   return (
     <div className='flex gap-3 p-1 w-full '>
-      <div
-        className={cn(
-          'relative w-11 h-11 rounded-full',
-          !logo && 'bg-gray-300'
-        )}
-      >
+      <div>
         {logo ? (
           <Image
             src={logo}
-            className='rounded-full border '
-            layout='fill'
-            alt='logo'
+            alt={branchName}
+            className='border rounded-full'
+            width={40}
+            height={40}
+            sizes='w-[40px] h-[40px]'
           />
         ) : (
           <div className='w-full h-full rounded-full' />
         )}
       </div>
-      <div className='flex flex-col gap-1 pt-2'>
-        <div className='flex gap-2'>
+      <div className='flex flex-col gap-1 pt-1'>
+        <div className='flex gap-2 items-center'>
           <span className='font-extrabold text-[16px]'>{branchName}</span>
-          <span className='font-semibold text-hanaPrimary text-[13px] pt-1'>
+          <span className='font-semibold text-hanaPrimary text-[13px]'>
             {distance}m
           </span>
         </div>
