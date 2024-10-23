@@ -6,8 +6,9 @@ type BranchInfoItemProps = {
   data: Branch;
 };
 
-export default function BankInfoItem({ data }: BranchInfoItemProps) {
-  const { branchName, distance, address, contact, businessHours } = data;
+export default function BankInfoItem({
+  data: { branchName, distance, address, contact, businessHours },
+}: BranchInfoItemProps) {
   const logo: string =
     bankList.find((bank) => bank.bankname == 'KEB하나은행')?.image || '';
 
