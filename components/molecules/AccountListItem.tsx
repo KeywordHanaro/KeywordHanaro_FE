@@ -29,7 +29,7 @@ export default function AccountListItem({ account }: AccountListType) {
 
   return (
     <div className='flex flex-row justify-between w-full h-fit py-[12px] bg-white border'>
-      <div className='flex gap-2'>
+      <div className='flex gap-[16px]'>
         {bankImage ? (
           <div className='relative w-11 h-11'>
             <Image
@@ -42,7 +42,7 @@ export default function AccountListItem({ account }: AccountListType) {
         ) : (
           <span className='w-11 h-11 rounded-full bg-slate-200 '></span>
         )}
-        <div className='flex flex-col gap-1 ml-2'>
+        <div className='flex flex-col gap-1'>
           <h1 className='text-hanaPrimary font-bold'>{name}</h1>
           <h1 className='text-gray-400 text-xs flex flex-row gap-2'>
             <div>{bank}</div>
