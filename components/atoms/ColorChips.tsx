@@ -19,7 +19,7 @@ export default function ColorChip({
   const { bgColor, textColor } = colorMap[color];
   return (
     <div
-      className='rounded-3xl px-2 py-[2px] w-fit text-[11px] font-medium p-8'
+      className='text-center rounded-3xl px-2 py-1 w-fit text-[11px] font-medium p-8'
       style={{ backgroundColor: bgColor, color: textColor }}
     >
       {children}

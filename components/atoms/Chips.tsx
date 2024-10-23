@@ -11,9 +11,9 @@ export function Chip({ item, canDelete, onRemove }: ChipProps) {
   return (
     <Badge
       variant='hana'
-      className='flex gap-1 justify-between items-center pl-1.5 pr-1 py-1 rounded-lg'
+      className='flex flex-shrink-0 gap-1 justify-between items-center pl-3 pr-2.5 py-[6px] rounded-xl'
     >
-      <span>{item.value}</span>
+      <span className='text-[14px]'>{item.value}</span>
       {canDelete && onRemove && (
         <div
           className='flex justify-center items-center bg-gray-300  w-3 h-3 rounded-full'
@@ -25,4 +25,3 @@ export function Chip({ item, canDelete, onRemove }: ChipProps) {
     </Badge>
   );
 }
-

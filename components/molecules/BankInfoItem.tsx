@@ -1,22 +1,14 @@
-import { bankList } from '@/data/bank';
+import { bankList, Branch } from '@/data/bank';
 import clsx from 'clsx';
 import Image from 'next/image';
 
-type BankInfoItemProps = {
-  branchName: string;
-  distance: number;
-  address: string;
-  contact: string;
-  businessHours: string;
+type BranchInfoItemProps = {
+  data: Branch;
 };
 
 export default function BankInfoItem({
-  branchName,
-  distance,
-  address,
-  contact,
-  businessHours,
-}: BankInfoItemProps) {
+  data: { branchName, distance, address, contact, businessHours },
+}: BranchInfoItemProps) {
   const logo: string =
     bankList.find((bank) => bank.bankname == 'KEB하나은행')?.image || '';
 
