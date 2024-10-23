@@ -17,7 +17,7 @@ type Member = {
   name: string;
 };
 
-type Account = {
+export type Account = {
   bankId: number;
   accountNumber: string;
   accountName?: string;
