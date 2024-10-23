@@ -11,8 +11,8 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import { bankList } from '@/data/bank';
-import clsx from 'clsx';
 import { FaAngleDown } from 'react-icons/fa';
+import { FaArrowCircleUp } from 'react-icons/fa';
 import { IoSearch } from 'react-icons/io5';
 import { TiDelete } from 'react-icons/ti';
 import Image from 'next/image';
@@ -24,14 +24,18 @@ import {
   useRef,
   useState,
 } from 'react';
+import { cn } from '@/lib/utils';
+
+type baseInputTypeProps = {
+  placeHolder? : string;
+  classNames?: string;
+  type?:string;
+}
 
 /** ------------------------------------------ */
-type DefaultInputProps = {
-  placeHolder?: string;
+type DefaultInputProps = baseInputTypeProps & {
   name?: string;
-  type?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-  classNames?: string;
   value?: string;
   required?: boolean;
   error?: string;
@@ -75,7 +79,7 @@ function DefaultInput(
           value={inputValue}
           name={name}
           type={type}
-          className={clsx(
+          className={cn(
             { classNames },
             'peer border border-placeholderGray px-4 rounded-xl h-11',
             isTouched &&
@@ -109,11 +113,9 @@ function DefaultInput(
 const DefaultInputRef = forwardRef(DefaultInput);
 
 /** ------------------------------------------ */
-type SearchInputProps = {
-  placeHolder?: string;
+type SearchInputProps = baseInputTypeProps &{
   name?: string;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  classNames?: string;
   value?: string;
 };
 
@@ -132,7 +134,7 @@ function SearchInput(
     <>
       <form onSubmit={SearchHandler} className='input-box'>
         <input
-          className={clsx(
+          className={cn(
             'border border-hanaPrimary px-4 rounded-xl h-11 text-hanaPrimary',
 
             classNames
@@ -156,10 +158,7 @@ function SearchInput(
 const SearchInpuRef = forwardRef(SearchInput);
 
 /** ------------------------------------------ */
-type AccountInputProps = {
-  classNames?: string;
-  placeHolder?: string;
-};
+type AccountInputProps = baseInputTypeProps;
 export type AccountRefProps = {
   bankId: number;
   inputRef: React.RefObject<HTMLInputElement>;
@@ -191,7 +190,7 @@ function AccountInput(
     <>
       <div className='flex flex-col p-2 text-[18px]'>
         <input
-          className={clsx(
+          className={cn(
             ' px-6 py-2 text-hanaPrimary border-b-placeholderGray border-b-2 ',
             classNames
           )}
@@ -202,7 +201,7 @@ function AccountInput(
           <DrawerTrigger className='my-2 rounded-lg after:border-b-placeholderGray after:w-full after:border flex flex-col'>
             <div className='flex flex-row justify-between w-full h-full px-4 items-center'>
               <p
-                className={clsx(
+                className={cn(
                   ' text-left py-2',
                   bankId ? 'text-fontBlack' : 'text-placeholderGray'
                 )}
@@ -220,7 +219,7 @@ function AccountInput(
             </DrawerHeader>
             <DrawerFooter
               onScroll={handleScroll}
-              className={clsx(
+              className={cn(
                 ' overflow-y-scroll transition-all duration-500 ease-out',
                 hasScrolled ? 'h-[400px]' : 'h-[200px]'
               )}
@@ -257,10 +256,7 @@ function AccountInput(
 const AccountInputRef = forwardRef(AccountInput);
 
 /** ------------------------------------------ */
-type MoneyInputProps = {
-  classNames?: string;
-  placeHolder?: string;
-};
+type MoneyInputProps = baseInputTypeProps
 /** 금액 입력, ref로 입력 값 가져오기 */
 function MoneyInput(
   { classNames, placeHolder }: MoneyInputProps,
@@ -287,7 +283,7 @@ function MoneyInput(
         ref={ref}
         value={value}
         onChange={handleChange}
-        className={clsx(
+        className={cn(
           classNames,
           'max-w-full min-w-[100px] w-auto px-4 py-2 text-2xl font-extrabold '
         )}
@@ -305,14 +301,15 @@ type KeywordInputProps = {
   classNames?: string;
   placeHolder?: string;
 };
-function KeywordInput({ classNames, placeHolder }: KeywordInputProps) {
+function KeywordInput(
+  { classNames, placeHolder }: KeywordInputProps,
+  ref: ForwardedRef<HTMLInputElement>
+) {
   return (
     <div className='after:w-full after:border after:border-b-placeholderGray flex flex-col p-2'>
       <input
-        className={clsx(
-          'w-full p-2 text-center text-2xl font-bold',
-          classNames
-        )}
+        ref={ref}
+        className={cn('w-full p-2 text-center text-2xl font-bold', classNames)}
         placeholder={placeHolder}
       />
     </div>
@@ -320,11 +317,79 @@ function KeywordInput({ classNames, placeHolder }: KeywordInputProps) {
 }
 const KeywordInputRef = forwardRef(KeywordInput);
 
+/** ------------------------------------------ */
+type AIInputProps = baseInputTypeProps & {
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  Loading : boolean;
+};
+function AIInput(
+  { classNames, placeHolder, onSubmit,Loading }: AIInputProps,
+  ref: ForwardedRef<HTMLInputElement>
+) {
+  const [isLoading, setIsLoading] = useState<boolean>(Loading)
+  const formRef = useRef<HTMLFormElement>(null);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmit(e);
+    if (formRef.current) {
+      formRef.current.reset();
+    }
+    console.log('hi2')
+    setIsLoading(true)
+  };
+
+  return (
+    <>
+      <form
+        className='relative flex items-center gradient-border overflow-hidden'
+        onSubmit={handleSubmit}
+        ref={formRef}
+      >
+        <input
+          className={cn(
+            'w-[calc(100%-30px)] px-4 py-3 text-[14px] placeholder-placeholderGray',
+            'peer ',
+            classNames
+          )}
+          placeholder={placeHolder}
+          ref={ref}
+          required
+        />
+        <button
+          className={cn(
+            'absolute right-4 flex-shrink-0 transition-all duration-300',
+            'peer-focus:scale-125 peer-focus:stroke-none'
+          )}
+          type='submit'
+          disabled={isLoading}
+        >
+          <svg viewBox='0 0 20 20' width='20' height='20'>
+            <defs>
+              <linearGradient id='grad1' x1='0%' y1='0%' x2='0%' y2='100%'>
+                <stop
+                  offset='0%'
+                  style={{ stopColor: '#068298', stopOpacity: 1 }}
+                />
+                <stop
+                  offset='100%'
+                  style={{ stopColor: '#e523e2', stopOpacity: 0.96 }}
+                />
+              </linearGradient>
+            </defs>
+            <FaArrowCircleUp fill='url(#grad1)' size={20} />
+          </svg>
+        </button>
+      </form>
+    </>
+  );
+}
+const AIInputRef = forwardRef(AIInput);
+
 export {
   DefaultInputRef,
   SearchInpuRef,
   AccountInputRef,
   MoneyInputRef,
   KeywordInputRef,
+  AIInputRef,
 };
-
