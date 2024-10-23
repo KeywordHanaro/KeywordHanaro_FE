@@ -33,6 +33,7 @@ export default function Receipt() {
       handlePosition();
     }, 2000);
   }, []);
+  
 
   return (
     <div
