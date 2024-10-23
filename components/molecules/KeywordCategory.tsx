@@ -16,12 +16,13 @@ const KeywordCategory = () => {
   const handleCategory = (path: string) => router.push(path);
 
   return (
-    <div className='flex flex-col gap-3'>
+    <div className='flex flex-col gap-3 '>
       {categories.map((category) => (
         <Card
           key={category.name}
           onClick={() => handleCategory(category.path)}
           padding='p-[25px]'
+          className='hover:bg-hanaPrimary hover:text-white'
         >
           <div className='flex flex-row gap-[8px] items-center'>
             <div className='w-5 h-5 rounded-lg bg-gray-300'></div>
