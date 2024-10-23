@@ -1,6 +1,6 @@
 import { bankList, Branch } from '@/data/bank';
-import clsx from 'clsx';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 type BranchInfoItemProps = {
   data: Branch;
@@ -15,7 +15,7 @@ export default function BankInfoItem({
   return (
     <div className='flex gap-3 p-1 w-full '>
       <div
-        className={clsx(
+        className={cn(
           'relative w-11 h-11 rounded-full',
           !logo && 'bg-gray-300'
         )}
