@@ -59,11 +59,11 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground sm:max-w-[640px] w-full font-pretendard;
-  }
   html {
-    @apply flex justify-center w-full text-fontBlack font-pretendard;
+    @apply flex justify-center w-full h-screen text-fontBlack font-pretendard;
+  }
+  body {
+    @apply bg-background text-foreground sm:max-w-[640px] w-full h-full font-pretendard;
   }
   input {
     @apply focus:outline-none;
