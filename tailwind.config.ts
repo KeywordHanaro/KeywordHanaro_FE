@@ -22,6 +22,7 @@ const config: Config = {
         fontBlack: '#212529',
         ToggleBgWhite: '#EAECEF',
         subGray: '#828282',
+        lightGray: '#AEB5BC',
 
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
