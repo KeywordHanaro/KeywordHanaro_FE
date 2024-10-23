@@ -326,29 +326,51 @@ const KeywordInputRef = forwardRef(KeywordInput);
 type AIInputProps = {
   classNames?: string;
   placeHolder?: string;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  Loading : boolean;
 };
 function AIInput(
-  { classNames, placeHolder }: AIInputProps,
+  { classNames, placeHolder, onSubmit,Loading }: AIInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
+  const [isLoading, setIsLoading] = useState<boolean>(Loading)
+  const formRef = useRef<HTMLFormElement>(null);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmit(e);
+    if (formRef.current) {
+      formRef.current.reset();
+    }
+    console.log('hi2')
+    setIsLoading(true)
+  };
+
   return (
     <>
-      <div className='relative flex items-center gradient-border overflow-hidden'>
+      <form
+        className='relative flex items-center gradient-border overflow-hidden'
+        onSubmit={handleSubmit}
+        ref={formRef}
+      >
         <input
           className={cn(
-            'w-full px-4 py-3 text-[14px] placeholder-placeholderGray',
+            'w-[calc(100%-30px)] px-4 py-3 text-[14px] placeholder-placeholderGray',
             'peer ',
             classNames
           )}
           placeholder={placeHolder}
           ref={ref}
+          required
         />
-        <button className={cn('absolute right-4 flex-shrink-0 transition-all duration-300','peer-focus:scale-125 peer-focus:stroke-none')}>
-          <svg
-            viewBox='0 0 20 20'
-            width='20'
-            height='20'
-          >
+        <button
+          className={cn(
+            'absolute right-4 flex-shrink-0 transition-all duration-300',
+            'peer-focus:scale-125 peer-focus:stroke-none'
+          )}
+          type='submit'
+          disabled={isLoading}
+        >
+          <svg viewBox='0 0 20 20' width='20' height='20'>
             <defs>
               <linearGradient id='grad1' x1='0%' y1='0%' x2='0%' y2='100%'>
                 <stop
@@ -364,7 +386,7 @@ function AIInput(
             <FaArrowCircleUp fill='url(#grad1)' size={20} />
           </svg>
         </button>
-      </div>
+      </form>
     </>
   );
 }
