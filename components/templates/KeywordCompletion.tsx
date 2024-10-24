@@ -7,7 +7,7 @@ export default function KeywordCompletion({ children }: PropsWithChildren) {
       <h1 className='text-[24px] font-bold mb-[46px]'>
         키워드 설정이 완료되었어요
       </h1>
-      <div className='border'>{children}</div>
+      <div>{children}</div>
       <Button className='w-full mt-[322px]'>완료</Button>
     </div>
   );
