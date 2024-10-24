@@ -1,36 +1,24 @@
 'use client';
 
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerDescription,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/ui/drawer';
-import { bankList } from '@/data/bank';
-import { FaAngleDown } from 'react-icons/fa';
 import { FaArrowCircleUp } from 'react-icons/fa';
 import { IoSearch } from 'react-icons/io5';
 import { TiDelete } from 'react-icons/ti';
-import Image from 'next/image';
 import {
   ChangeEvent,
   ForwardedRef,
   forwardRef,
-  useImperativeHandle,
+  InputHTMLAttributes,
   useRef,
   useState,
 } from 'react';
 import { cn } from '@/lib/utils';
 
 type baseInputTypeProps = {
-  placeHolder? : string;
-  classNames?: string;
-  type?:string;
-}
+  placeHolder?: string;
+  className?: string;
+  type?: string;
+  props?: InputHTMLAttributes<HTMLInputElement>;
+};
 
 /** ------------------------------------------ */
 type DefaultInputProps = baseInputTypeProps & {
@@ -46,11 +34,12 @@ function DefaultInput(
     name,
     type,
     onChange,
-    classNames,
+    className,
     value,
     placeHolder,
     required,
     error,
+    props,
   }: DefaultInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
@@ -80,7 +69,7 @@ function DefaultInput(
           name={name}
           type={type}
           className={cn(
-            { classNames },
+            { className },
             'peer border border-placeholderGray px-4 rounded-xl h-11',
             isTouched &&
               'invalid:border-errorRed invalid:text-errorRed valid:border-hanaPrimary valid:text-hanaPrimary'
@@ -90,6 +79,7 @@ function DefaultInput(
           onBlur={handleBlur}
           required={required}
           ref={ref}
+          {...props}
         />
         {inputValue && (
           <div className='absolute h-11 w-fit right-0 flex'>
@@ -113,7 +103,7 @@ function DefaultInput(
 const DefaultInputRef = forwardRef(DefaultInput);
 
 /** ------------------------------------------ */
-type SearchInputProps = baseInputTypeProps &{
+type SearchInputProps = baseInputTypeProps & {
   name?: string;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   value?: string;
@@ -121,7 +111,7 @@ type SearchInputProps = baseInputTypeProps &{
 
 /**onSubmit에 따라 검색을 진행합니다. */
 function SearchInput(
-  { name, placeHolder, classNames, onSubmit }: SearchInputProps,
+  { name, placeHolder, className, onSubmit, props }: SearchInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
   const SearchHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -137,11 +127,12 @@ function SearchInput(
           className={cn(
             'border border-hanaPrimary px-4 rounded-xl h-11 text-hanaPrimary',
 
-            classNames
+            className
           )}
           name={name}
           placeholder={placeHolder}
           ref={ref}
+          {...props}
         />
         <div className='absolute h-11 w-fit right-0 flex z-100'>
           <button
@@ -159,97 +150,28 @@ const SearchInpuRef = forwardRef(SearchInput);
 
 /** ------------------------------------------ */
 type AccountInputProps = baseInputTypeProps;
-export type AccountRefProps = {
-  bankId: number;
-  inputRef: React.RefObject<HTMLInputElement>;
-};
+// export type AccountRefProps = {
+//   bankId: number;
+//   inputRef: React.RefObject<HTMLInputElement>;
+// };
 
 /**Ref로 bankId와 계좌번호를 가져옵니다. */
 function AccountInput(
-  { classNames, placeHolder }: AccountInputProps,
-  ref: ForwardedRef<AccountRefProps>
+  { className, placeHolder, props }: AccountInputProps,
+  ref: ForwardedRef<HTMLInputElement>
 ) {
-  const [hasScrolled, setHasScrolled] = useState(false);
-  const [bankId, setBankId] = useState<number>(0);
-
-  const handleScroll = () => {
-    setHasScrolled(true);
-  };
-  const handleBankClick = (id: number) => {
-    setBankId(id);
-  };
-
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useImperativeHandle(ref, () => ({
-    bankId,
-    inputRef,
-  }));
-
   return (
     <>
       <div className='flex flex-col p-2 text-[18px]'>
         <input
           className={cn(
             ' px-6 py-2 text-hanaPrimary border-b-placeholderGray border-b-2 ',
-            classNames
+            className
           )}
           placeholder={placeHolder}
-          ref={inputRef}
+          ref={ref}
+          {...props}
         />
-        <Drawer>
-          <DrawerTrigger className='my-2 rounded-lg after:border-b-placeholderGray after:w-full after:border flex flex-col'>
-            <div className='flex flex-row justify-between w-full h-full px-4 items-center'>
-              <p
-                className={cn(
-                  ' text-left py-2',
-                  bankId ? 'text-fontBlack' : 'text-placeholderGray'
-                )}
-              >
-                {bankList.find((bank) => bank.id === bankId)?.bankname ??
-                  '은행선택'}
-              </p>
-              <FaAngleDown />
-            </div>
-          </DrawerTrigger>
-          <DrawerContent className='min-h-[300px] max-h-[calc(100vh-200px)] overflow-hidden transition-all duration-500 ease-out'>
-            <DrawerHeader className='text-left'>
-              <DrawerTitle>은행을 선택해주세요</DrawerTitle>
-              <DrawerDescription />
-            </DrawerHeader>
-            <DrawerFooter
-              onScroll={handleScroll}
-              className={cn(
-                ' overflow-y-scroll transition-all duration-500 ease-out',
-                hasScrolled ? 'h-screen' : 'h-[300px]'
-              )}
-            >
-              <div className='grid grid-cols-3 gap-3'>
-                {bankList.map((bank) => (
-                  <DrawerClose
-                    key={bank.id}
-                    onClick={() => handleBankClick(bank.id)}
-                    className='col-span-1 aspect-square flex justify-center rounded-lg flex-col border-iconGray border-2 items-center'
-                  >
-                    <span className='aspect-square relative w-2/3'>
-                      <Image
-                        src={bank.image}
-                        className='object-contain aspect-square p-2'
-                        alt='test'
-                        fill
-                        sizes='min-width:40px height:40px'
-                      />
-                    </span>
-                    <small>{bank.bankname}</small>
-                  </DrawerClose>
-                ))}
-              </div>
-              <DrawerClose className='bg-disableGray p-3 flex justify-center items-center rounded-lg'>
-                Cancel
-              </DrawerClose>
-            </DrawerFooter>
-          </DrawerContent>
-        </Drawer>
       </div>
     </>
   );
@@ -257,10 +179,10 @@ function AccountInput(
 const AccountInputRef = forwardRef(AccountInput);
 
 /** ------------------------------------------ */
-type MoneyInputProps = baseInputTypeProps
+type MoneyInputProps = baseInputTypeProps;
 /** 금액 입력, ref로 입력 값 가져오기 */
 function MoneyInput(
-  { classNames, placeHolder }: MoneyInputProps,
+  { className, placeHolder, props }: MoneyInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
   const [value, setValue] = useState<string>('');
@@ -285,11 +207,12 @@ function MoneyInput(
         value={value}
         onChange={handleChange}
         className={cn(
-          classNames,
+          className,
           'max-w-full min-w-[100px] w-auto px-4 py-2 text-2xl font-extrabold '
         )}
         placeholder={placeHolder}
         required
+        {...props}
       />
       {value && <span className='ml-2 z-50 text-2xl font-extrabold'>원</span>}
     </div>
@@ -298,20 +221,18 @@ function MoneyInput(
 const MoneyInputRef = forwardRef(MoneyInput);
 
 /** ------------------------------------------ */
-type KeywordInputProps = {
-  classNames?: string;
-  placeHolder?: string;
-};
+type KeywordInputProps = baseInputTypeProps;
 function KeywordInput(
-  { classNames, placeHolder }: KeywordInputProps,
+  { className, placeHolder, props }: KeywordInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
   return (
     <div className='after:w-full after:border after:border-b-placeholderGray flex flex-col p-2'>
       <input
         ref={ref}
-        className={cn('w-full p-2 text-center text-2xl font-bold', classNames)}
+        className={cn('w-full p-2 text-center text-2xl font-bold', className)}
         placeholder={placeHolder}
+        {...props}
       />
     </div>
   );
@@ -321,10 +242,11 @@ const KeywordInputRef = forwardRef(KeywordInput);
 /** ------------------------------------------ */
 type AIInputProps = baseInputTypeProps & {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  isLoading : boolean;
+  isLoading: boolean;
+  formClassName: string;
 };
 function AIInput(
-  { classNames, placeHolder, onSubmit,isLoading }: AIInputProps,
+  { className, formClassName, placeHolder, onSubmit, isLoading, props }: AIInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
   const formRef = useRef<HTMLFormElement>(null);
@@ -334,13 +256,16 @@ function AIInput(
     if (formRef.current) {
       formRef.current.reset();
     }
-    console.log('hi2')
+    console.log('hi2');
   };
 
   return (
     <>
       <form
-        className={cn('relative flex items-center gradient-border overflow-hidden',classNames)}
+        className={cn(
+          'relative flex items-center gradient-border overflow-hidden',
+          formClassName
+        )}
         onSubmit={handleSubmit}
         ref={formRef}
       >
@@ -348,10 +273,12 @@ function AIInput(
           className={cn(
             'w-[calc(100%-30px)] px-4 py-3 text-[14px] placeholder-placeholderGray',
             'peer ',
+            className
           )}
           placeholder={placeHolder}
           ref={ref}
           required
+          {...props}
         />
         <button
           className={cn(
