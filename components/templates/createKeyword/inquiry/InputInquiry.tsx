@@ -1,6 +1,6 @@
 'use client';
 
-import KeywordInputButton from '../../InputButton';
+import KeywordInputButton from '../../KeywordInputButton';
 
 export default function InputInquiry() {
   return (
