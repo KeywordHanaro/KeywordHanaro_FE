@@ -14,15 +14,19 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
-export default function SelectBank() {
+type SelectBankProps = {
+  onSelect: (index: number) => void;
+};
+const SelectBank: React.FC<SelectBankProps> = ({ onSelect }) => {
   const [hasScrolled, setHasScrolled] = useState(false);
   const [bankId, setBankId] = useState<number>(0);
 
   const handleScroll = () => {
     setHasScrolled(true);
   };
-  const handleBankClick = (id: number) => {
+  const handleSelect = (id: number) => {
     setBankId(id);
+    onSelect(id);
   };
   return (
     <>
@@ -58,7 +62,7 @@ export default function SelectBank() {
                 {bankList.map((bank) => (
                   <DrawerClose
                     key={bank.id}
-                    onClick={() => handleBankClick(bank.id)}
+                    onClick={() => handleSelect(bank.id)}
                     className='col-span-1 aspect-square flex justify-center rounded-lg flex-col border-iconGray border-2 items-center'
                   >
                     <span className='aspect-square relative w-2/3'>
@@ -83,4 +87,6 @@ export default function SelectBank() {
       </div>
     </>
   );
-}
+};
+
+export default SelectBank;
