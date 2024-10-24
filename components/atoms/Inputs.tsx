@@ -246,7 +246,14 @@ type AIInputProps = baseInputTypeProps & {
   formClassName: string;
 };
 function AIInput(
-  { className, formClassName, placeHolder, onSubmit, isLoading, props }: AIInputProps,
+  {
+    className,
+    formClassName,
+    placeHolder,
+    onSubmit,
+    isLoading,
+    props,
+  }: AIInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
   const formRef = useRef<HTMLFormElement>(null);
