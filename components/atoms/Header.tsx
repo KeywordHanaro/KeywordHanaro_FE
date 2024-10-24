@@ -1,12 +1,9 @@
-'use client';
-
 import { ArrowLeft } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 
 type HeaderProps = {
   text: string;
   showBackButton?: boolean;
-  // onBack?: () => void;
+  onBack?: () => void;
   showActionButton?: boolean;
   actionLabel?: string;
   onAction?: () => void;
@@ -15,17 +12,16 @@ type HeaderProps = {
 export default function Header({
   text = '',
   showBackButton = true,
-  // onBack,
+  onBack,
   showActionButton = true,
   actionLabel = '완료',
   onAction,
 }: HeaderProps) {
-  const router = useRouter();
   return (
     <div className='flex justify-center items-center bg-white px-[20px] py-[11.5px] max-h-[44px]'>
       {/* 뒤로 가기 버튼 */}
       {showBackButton && (
-        <button className='pr-[8px]' onClick={() => router.back()}>
+        <button className='pr-[8px]' onClick={onBack}>
           <ArrowLeft size={20} />
         </button>
       )}
