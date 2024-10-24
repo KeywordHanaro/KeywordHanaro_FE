@@ -62,7 +62,7 @@ export default function QnA() {
 
         <AIInputRef
           ref={inputRef}
-          classNames='absolute bottom-1 w-full'
+          formClassName='absolute bottom-1 w-full'
           placeHolder='궁금한 내용을 물어보세요!'
           onSubmit={handleSubmit}
           isLoading={loading}

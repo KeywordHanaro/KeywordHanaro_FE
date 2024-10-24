@@ -1,24 +1,47 @@
-import Header from '@/components/atoms/Header';
-import QnA from '@/components/molecules/QnA';
-import Ticket from '@/components/molecules/Ticket';
+'use client';
 
+import { Button } from '@/components/atoms/Button';
+import { Modal } from '@/components/atoms/Modal';
+import { useEffect, useState } from 'react';
+
+const categories = [
+  {
+    name: '송금',
+    path: '/',
+  },
+  { name: '입금', path: '/' },
+  { name: '출금', path: '/' },
+];
 
 /** Need Fetching to get waitingQueue, people, etc */
 
 export default function TicketDetailPage() {
-  const Bank = '성수역';
+  const [openModal, setOpenModal] = useState<boolean>(false);
+
+  const handleOpen = () => {
+    setOpenModal(!openModal);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      handleOpen();
+    }, 2000);
+  }, []);
+
   return (
-    <div className='flex flex-col h-screen'>
-      <Header text='키워드 번호표 발급' />
-      <div className='p-4 h-full flex flex-col'>
-        <h1 className='text-[24px] font-semibold leading-8'>{`${Bank}점`} </h1>
-        <div className='h-fit'>
-          <Ticket now={new Date()} waitingQueue={18} people={12} />
-        </div>
-        <div className='flex-grow'>
-          <QnA />
-        </div>
-      </div>
+    <div className='p-2'>
+      <Modal
+        open={openModal}
+        title='미리 서류를 작성해주세요'
+        onChange={handleOpen}
+      >
+        {categories.map((item,index)=>(
+          <>
+            <Button key={index} className='w-full'>{item.name}</Button>
+          </>
+        ))}
+        <Button className='w-full'>다른 업무</Button>
+      </Modal>
     </div>
   );
 }

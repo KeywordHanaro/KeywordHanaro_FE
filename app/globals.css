@@ -68,6 +68,9 @@
   input {
     @apply focus:outline-none;
   }
+  button {
+    @apply outline-none;
+  }
 }
 
 @layer components {
