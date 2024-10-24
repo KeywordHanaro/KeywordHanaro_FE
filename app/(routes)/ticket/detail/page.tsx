@@ -1,6 +1,6 @@
 import Header from '@/components/atoms/Header';
 import QnA from '@/components/molecules/QnA';
-import Receipt from '@/components/molecules/Receipt';
+import Receipt from '@/components/molecules/Ticket';
 
 /** Need Fetching to get waitingQueue, people, etc */
 
