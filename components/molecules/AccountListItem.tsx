@@ -6,23 +6,45 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
-type AccountItemProps = {
+type MyAccountItemProps = {
   accountNumber: string;
   accountName: string;
   bankId: number;
-  isFavorite?: boolean;
 };
 
+type OthersAccountItemProps = {
+  accountNumber: string;
+  name: string;
+  bankId: number;
+};
+
+type AccountItemFavoriteProps = (
+  | MyAccountItemProps
+  | OthersAccountItemProps
+) & { isFavorite: boolean };
+
 type AccountListType = {
-  account: AccountItemProps;
+  account:
+    | (MyAccountItemProps | OthersAccountItemProps)
+    | AccountItemFavoriteProps;
 };
 
 export default function AccountListItem({ account }: AccountListType) {
-  const { accountName: name, bankId, accountNumber } = account;
-  const [isFavorite, setIsFavorite] = useState(account?.isFavorite);
+  const { bankId, accountNumber } = account;
+
+  const name =
+    'accountName' in account
+      ? account.accountName
+      : 'name' in account
+        ? account.name
+        : undefined;
+
+  const isFavorite = 'isFavorite' in account ? account.isFavorite : undefined;
+
+  const [favoriteState, setFavoriteState] = useState(isFavorite);
 
   const toggleFavorite = () => {
-    setIsFavorite((prev) => !prev);
+    setFavoriteState((prev) => !prev);
   };
   const bank = bankList.find((i) => i.id === +bankId);
 
@@ -50,7 +72,7 @@ export default function AccountListItem({ account }: AccountListType) {
         </div>
       </div>
       <div className='flex items-center'>
-        {typeof isFavorite !== 'undefined' && (
+        {typeof favoriteState !== 'undefined' && (
           <BsStarFill
             onClick={toggleFavorite}
             className={cn(
