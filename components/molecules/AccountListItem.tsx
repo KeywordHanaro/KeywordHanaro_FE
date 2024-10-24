@@ -7,11 +7,10 @@ import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
 type AccountItemProps = {
-  id: number;
-  name: string;
-  bank: string;
   accountNumber: string;
-  isFavorite: boolean;
+  accountName: string;
+  bankId: number;
+  isFavorite?: boolean;
 };
 
 type AccountListType = {
@@ -19,22 +18,22 @@ type AccountListType = {
 };
 
 export default function AccountListItem({ account }: AccountListType) {
-  const { name, bank, accountNumber } = account;
-  const [isFavorite, setIsFavorite] = useState(account.isFavorite);
+  const { accountName: name, bankId, accountNumber } = account;
+  const [isFavorite, setIsFavorite] = useState(account?.isFavorite);
 
   const toggleFavorite = () => {
     setIsFavorite((prev) => !prev);
   };
-  const bankImage = bankList.find((i) => i.bankname === bank)?.image;
+  const bank = bankList.find((i) => i.id === +bankId);
 
   return (
-    <div className='flex flex-row justify-between w-full h-fit py-[12px] bg-white border'>
+    <div className='flex flex-row justify-between w-full h-fit py-[12px] bg-white'>
       <div className='flex gap-[16px]'>
-        {bankImage ? (
+        {bank ? (
           <div className='relative w-11 h-11'>
             <Image
-              src={bankImage}
-              alt={bank}
+              src={bank.image}
+              alt={bank.bankname}
               className='rounded-full'
               layout='fill'
             />
@@ -45,20 +44,22 @@ export default function AccountListItem({ account }: AccountListType) {
         <div className='flex flex-col gap-1'>
           <h1 className='text-hanaPrimary font-bold'>{name}</h1>
           <h1 className='text-gray-400 text-xs flex flex-row gap-2'>
-            <div>{bank}</div>
+            <div>{bank?.bankname}</div>
             <div>{accountNumber}</div>
           </h1>
         </div>
       </div>
       <div className='flex items-center'>
-        <BsStarFill
-          onClick={toggleFavorite}
-          className={cn(
-            'w-[27px] h-[27px]',
-            'cursor-pointer',
-            isFavorite ? 'text-yellow-300' : 'text-[#D9D9D9]'
-          )}
-        />
+        {typeof isFavorite !== 'undefined' && (
+          <BsStarFill
+            onClick={toggleFavorite}
+            className={cn(
+              'w-[27px] h-[27px]',
+              'cursor-pointer',
+              isFavorite ? 'text-yellow-300' : 'text-[#D9D9D9]'
+            )}
+          />
+        )}
       </div>
     </div>
   );
