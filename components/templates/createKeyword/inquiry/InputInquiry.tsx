@@ -15,8 +15,8 @@ export default function InputInquiry() {
           className='text-hanaPrimary'
         />
       </div>
-      <div className='mx-[10px]'>
-        <Button className='w-full' isDisabled={true}>
+      <div className='mx-[10px] flex items-center'>
+        <Button size='lg' isDisabled={true}>
           완료
         </Button>
       </div>

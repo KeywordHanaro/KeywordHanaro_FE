@@ -8,9 +8,7 @@ type InputButtonProps = {
   placeHolder: string;
 };
 
-export default function InputButton({
-  placeHolder,
-}: InputButtonProps) {
+export default function KeywordInputButton({ placeHolder }: InputButtonProps) {
   const [inputValue, setInputValue] = useState('');
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -20,16 +18,13 @@ export default function InputButton({
   const isInputFilled = inputValue.length > 0;
 
   return (
-    <div>
+    <div className='flex flex-col items-center gap-[33px] '>
       <KeywordInputRef
         className='text-hanaPrimary'
         placeHolder={placeHolder}
-        props={}
         onChange={handleInputChange}
       />
-      <Button
-        isDisabled={!isInputFilled}
-      >
+      <Button isDisabled={!isInputFilled} size='lg'>
         {isInputFilled ? '다음' : '완료'}
       </Button>
     </div>
