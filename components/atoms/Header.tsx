@@ -33,7 +33,7 @@ export default function Header({
       {showActionButton && (
         <button
           onClick={onAction}
-          className='text-[18px] font-medifum text-black text-right'
+          className='text-[18px] font-medium text-black text-right'
         >
           {actionLabel}
         </button>
