@@ -18,7 +18,6 @@ type baseInputTypeProps = {
   type?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-
 /** ------------------------------------------ */
 type DefaultInputProps = baseInputTypeProps & {
   name?: string;
@@ -52,7 +51,7 @@ function DefaultInput(
     }
     setInputValue(e.target.value);
   };
-  
+
   /** 입력 초기화 버튼 핸들러 */
   const handleClear = () => {
     setInputValue('');
@@ -228,7 +227,7 @@ function KeywordInput(
   ref: ForwardedRef<HTMLInputElement>
 ) {
   return (
-    <div className='after:w-full after:border after:border-b-placeholderGray flex flex-col p-2'>
+    <div className='after:w-full after:border after:border-b-placeholderGray flex flex-col p-2 w-full'>
       <input
         ref={ref}
         className={cn('w-full p-2 text-center text-2xl font-bold', className)}
