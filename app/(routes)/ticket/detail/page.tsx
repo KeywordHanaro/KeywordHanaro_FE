@@ -44,17 +44,15 @@ export default function TicketDetailPage() {
         onChange={handleOpen}
       >
         {categories.map((item, index) => (
-          <>
-            <Button
-              key={index}
-              className='w-full'
-              onClick={() => router.push(item.path)}
-            >
+          <div key={index}>
+            <Button className='w-full' onClick={() => router.push(item.path)}>
               {item.name}
             </Button>
-          </>
+          </div>
         ))}
-        <Button className='w-full' onClick={handleOpen}>다른 업무</Button>
+        <Button className='w-full' onClick={handleOpen}>
+          다른 업무
+        </Button>
       </Modal>
     </div>
   );

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Card } from '../atoms/Card';
 import { AIInputRef } from '../atoms/Inputs';
+import DocumentSelector from './DocumentSelector';
 
 type Query = {
   date: Date;
@@ -14,6 +15,10 @@ export default function QnA() {
   const [query, setQuery] = useState<Query[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const handleSelect = (index: number) => {
+    setSelectedIndex(index);
+  };
   const handleSubmit = () => {
     console.log(inputRef.current?.value);
     const newQuery = {
@@ -25,12 +30,13 @@ export default function QnA() {
     setTimeout(() => {
       const newAnswer = {
         date: new Date(),
-        query: 'Answer',
+        query: `${selectedIndex}번 항목에 대한 Answer`,
       };
       setQuery((prev) => [...prev, newAnswer]);
       setLoading(false);
     }, 2000);
   };
+
   useEffect(() => {
     window.scrollTo({
       top: document.documentElement.scrollHeight,
@@ -40,6 +46,9 @@ export default function QnA() {
   return (
     <>
       <div className='w-full h-full relative'>
+        <div>
+          <DocumentSelector onSelect={handleSelect} />
+        </div>
         <div className='flex flex-col gap-3 mb-[60px]'>
           {query.map((item, index) => (
             <>
