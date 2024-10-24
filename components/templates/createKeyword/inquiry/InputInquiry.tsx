@@ -16,7 +16,9 @@ export default function InputInquiry() {
         />
       </div>
       <div className='mx-[10px]'>
-        <Button className='w-full'>완료</Button>
+        <Button className='w-full' isDisabled={true}>
+          완료
+        </Button>
       </div>
       <div className='flex flex-col gap-5 text-center font-semibold text-[14px]'>
         <h1>거래 내역에 적히는 내용으로만 조회돼요</h1>
