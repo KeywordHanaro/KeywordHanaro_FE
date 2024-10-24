@@ -2,20 +2,27 @@
 
 import { Button } from '@/components/atoms/Button';
 import { Modal } from '@/components/atoms/Modal';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-const categories = [
+type Categories = {
+  name: string;
+  path: string;
+};
+
+const categories: Categories[] = [
   {
     name: '송금',
-    path: '/',
+    path: '/document',
   },
-  { name: '입금', path: '/' },
-  { name: '출금', path: '/' },
+  { name: '입금', path: '/document' },
+  { name: '출금', path: '/document' },
 ];
 
 /** Need Fetching to get waitingQueue, people, etc */
 
 export default function TicketDetailPage() {
+  const router = useRouter();
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const handleOpen = () => {
@@ -26,6 +33,7 @@ export default function TicketDetailPage() {
     setTimeout(() => {
       handleOpen();
     }, 2000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -35,12 +43,18 @@ export default function TicketDetailPage() {
         title='미리 서류를 작성해주세요'
         onChange={handleOpen}
       >
-        {categories.map((item,index)=>(
+        {categories.map((item, index) => (
           <>
-            <Button key={index} className='w-full'>{item.name}</Button>
+            <Button
+              key={index}
+              className='w-full'
+              onClick={() => router.push(item.path)}
+            >
+              {item.name}
+            </Button>
           </>
         ))}
-        <Button className='w-full'>다른 업무</Button>
+        <Button className='w-full' onClick={handleOpen}>다른 업무</Button>
       </Modal>
     </div>
   );
