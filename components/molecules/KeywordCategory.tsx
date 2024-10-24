@@ -16,7 +16,7 @@ const KeywordCategory = () => {
   const handleCategory = (path: string) => router.push(path);
 
   return (
-    <div className='flex flex-col gap-3 '>
+    <div className='flex flex-col gap-3 p-[8px]'>
       {categories.map((category) => (
         <Card
           key={category.name}
