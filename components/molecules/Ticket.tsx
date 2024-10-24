@@ -6,14 +6,14 @@ import { useEffect, useState } from 'react';
 import ColorChip from '../atoms/ColorChips';
 import { Toggle } from '../ui/toggle';
 
-type ReceiptProps = {
+type TicketProps = {
   now: Date;
   waitingQueue: number;
   people:number
   todo: string;
 };
 
-export default function Receipt({ now, people, todo, waitingQueue }: ReceiptProps) {
+export default function Ticket({ now, people, todo, waitingQueue }: TicketProps) {
 
   const [more, setMore] = useState<boolean>(true);
   const [position, setPosition] = useState<boolean>(false);
