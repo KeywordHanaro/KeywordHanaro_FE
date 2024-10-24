@@ -2,6 +2,7 @@
 
 import clsx from 'clsx';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ColorChip from '../atoms/ColorChips';
 import { Toggle } from '../ui/toggle';
@@ -9,15 +10,15 @@ import { Toggle } from '../ui/toggle';
 type TicketProps = {
   now: Date;
   waitingQueue: number;
-  people:number
-  todo: string;
+  people: number;
 };
 
-export default function Ticket({ now, people, todo, waitingQueue }: TicketProps) {
-
+export default function Ticket({ now, people, waitingQueue }: TicketProps) {
   const [more, setMore] = useState<boolean>(true);
   const [position, setPosition] = useState<boolean>(false);
   const [print, setPrint] = useState<boolean>(false);
+  const searchParams = useSearchParams();
+  const task = searchParams.get('task');
 
   const handleMore = () => {
     setMore(!more);
@@ -38,7 +39,7 @@ export default function Ticket({ now, people, todo, waitingQueue }: TicketProps)
       minute: '2-digit',
       second: '2-digit',
     });
-  }
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -73,10 +74,8 @@ export default function Ticket({ now, people, todo, waitingQueue }: TicketProps)
             )}
           >
             <div className='flex flex-row justify-between items-center h-[23px]'>
-              <ColorChip color='blue'>{todo}</ColorChip>
-              <p className='text-[13px]'>
-                {formatTime(now)}
-              </p>
+              <ColorChip color='blue'>{task}</ColorChip>
+              <p className='text-[13px]'>{formatTime(now)}</p>
             </div>
             <div className='flex flex-row justify-between h-[77px] pb-2.5'>
               <small className='mt-4'>대기번호</small>
