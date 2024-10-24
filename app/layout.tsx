@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html>
-      <body className={`${pretendard.variable} antialiased`}>
+      <body className={`font-pretendard ${pretendard.variable} antialiased`}>
         {children}
         <Toaster />
       </body>

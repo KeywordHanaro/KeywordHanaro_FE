@@ -126,6 +126,48 @@ export const keywordList: Keyword[] = [
     description: '송금 > 정성엽 > 5만원',
     isFavorite: true,
   },
+  {
+    id: 7,
+    type: 'transfer',
+    title: '성엽이 용돈',
+    description: '송금 > 정성엽 > 5만원',
+    isFavorite: false,
+  },
+  {
+    id: 8,
+    type: 'inquiry',
+    title: '월급 확인',
+    description: '조회 > 급여',
+    isFavorite: true,
+  },
+  {
+    id: 9,
+    type: 'transfer',
+    title: '성엽이 용돈',
+    description: '송금 > 정성엽 > 5만원',
+    isFavorite: false,
+  },
+  {
+    id: 10,
+    type: 'ticket',
+    title: '성수점 번호표',
+    description: '번호표 > 성수역점',
+    isFavorite: true,
+  },
+  {
+    id: 11,
+    type: 'transfer',
+    title: '성엽이 용돈',
+    description: '송금 > 정성엽 > 5만원',
+    isFavorite: false,
+  },
+  {
+    id: 12,
+    type: 'transfer',
+    title: '성엽이 용돈',
+    description: '송금 > 정성엽 > 5만원',
+    isFavorite: true,
+  },
 ];
 
 export const KeywordDetailList: KeywordDetail[] = [
