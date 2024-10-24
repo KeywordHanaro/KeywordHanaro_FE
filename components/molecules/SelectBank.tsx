@@ -14,26 +14,30 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
-export default function SelectBank() {
+type SelectBankProps = {
+  onSelect: (index: number) => void;
+};
+const SelectBank: React.FC<SelectBankProps> = ({ onSelect }) => {
   const [hasScrolled, setHasScrolled] = useState(false);
   const [bankId, setBankId] = useState<number>(0);
 
   const handleScroll = () => {
     setHasScrolled(true);
   };
-  const handleBankClick = (id: number) => {
+  const handleSelect = (id: number) => {
     setBankId(id);
+    onSelect(id);
   };
   return (
     <>
       <div className='w-full'>
         <Drawer>
           <DrawerTrigger className='my-2 w-full rounded-lg after:border-b-placeholderGray after:w-full after:border flex flex-col'>
-            <div className='flex flex-row justify-between w-full h-full px-4 items-center'>
+            <div className='flex flex-row justify-between w-full h-full font-semibold text-[18px] items-center'>
               <p
                 className={cn(
                   ' text-left py-2',
-                  bankId ? 'text-fontBlack' : 'text-placeholderGray'
+                  bankId ? 'text-hanaPrimary' : 'text-placeholderGray'
                 )}
               >
                 {bankList.find((bank) => bank.id === bankId)?.bankname ??
@@ -58,7 +62,7 @@ export default function SelectBank() {
                 {bankList.map((bank) => (
                   <DrawerClose
                     key={bank.id}
-                    onClick={() => handleBankClick(bank.id)}
+                    onClick={() => handleSelect(bank.id)}
                     className='col-span-1 aspect-square flex justify-center rounded-lg flex-col border-iconGray border-2 items-center'
                   >
                     <span className='aspect-square relative w-2/3'>
@@ -83,4 +87,6 @@ export default function SelectBank() {
       </div>
     </>
   );
-}
+};
+
+export default SelectBank;

@@ -23,6 +23,7 @@ const config: Config = {
         ToggleBgWhite: '#EAECEF',
         subGray: '#828282',
         lightGray: '#AEB5BC',
+        descriptionGray: '#6B6B6B',
 
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

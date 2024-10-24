@@ -162,10 +162,10 @@ function AccountInput(
 ) {
   return (
     <>
-      <div className='flex flex-col p-2 text-[18px]'>
+      <div className='flex flex-col text-[18px]'>
         <input
           className={cn(
-            ' px-6 py-2 text-hanaPrimary border-b-placeholderGray border-b-2 ',
+            'font-semibold text-[18px] py-2 text-hanaPrimary border-b-placeholderGray border-b-2 ',
             className
           )}
           placeholder={placeHolder}
