@@ -1,14 +1,17 @@
 'use client';
 
-import { ChangeEvent, useState } from 'react';
+import { ButtonHTMLAttributes, ChangeEvent, useState } from 'react';
 import { Button } from '../atoms/Button';
 import { KeywordInputRef } from '../atoms/Inputs';
 
-type InputButtonProps = {
+interface InputButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   placeHolder: string;
-};
+}
 
-export default function KeywordInputButton({ placeHolder }: InputButtonProps) {
+export default function KeywordInputButton({
+  placeHolder,
+  ...props
+}: InputButtonProps) {
   const [inputValue, setInputValue] = useState('');
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -24,7 +27,7 @@ export default function KeywordInputButton({ placeHolder }: InputButtonProps) {
         placeHolder={placeHolder}
         onChange={handleInputChange}
       />
-      <Button isDisabled={!isInputFilled} size='lg'>
+      <Button isDisabled={!isInputFilled} size='lg' {...props}>
         {isInputFilled ? '다음' : '완료'}
       </Button>
     </div>
