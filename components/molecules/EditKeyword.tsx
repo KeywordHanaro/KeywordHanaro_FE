@@ -7,9 +7,11 @@ import ColorChip from '../atoms/ColorChips';
 
 type EditKeywordProps = {
   data: KeywordDetail;
+  onEdit: (id: number) => void;
+  onDelete: (id: number) => void;
 };
 
-const EditKeyword = ({ data }: EditKeywordProps) => {
+const EditKeyword = ({ data, onEdit, onDelete }: EditKeywordProps) => {
   const { id, type, title } = data;
   const chipColor = getColorByType(type);
   const chipName = getNameByType(type);
@@ -76,10 +78,7 @@ const EditKeyword = ({ data }: EditKeywordProps) => {
   };
 
   return (
-    <Card
-      className='flex-row flex-grow justify-between items-start rounded-[12px] h-full gap-4'
-      onClick={() => alert(id)}
-    >
+    <Card className='flex-row flex-grow justify-between items-start rounded-[12px] h-full gap-4'>
       <div className='flex flex-col flex-grow gap-4'>
         <div className='flex gap-2 items-center'>
           <span className='text-fontBlack text-[16px] font-semibold'>
@@ -90,8 +89,8 @@ const EditKeyword = ({ data }: EditKeywordProps) => {
         <div className='flex flex-col gap-2'>{renderDetails()}</div>
       </div>
       <div className='flex flex-col justify-between h-full'>
-        <EditButton></EditButton>
-        <DelButton></DelButton>
+        <EditButton onClick={() => onEdit(id)}></EditButton>
+        <DelButton onClick={() => onDelete(id)}></DelButton>
       </div>
     </Card>
   );
