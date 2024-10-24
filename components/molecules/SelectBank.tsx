@@ -26,9 +26,9 @@ export default function SelectBank() {
   };
   return (
     <>
-      <div>
+      <div className='w-full'>
         <Drawer>
-          <DrawerTrigger className='my-2 rounded-lg after:border-b-placeholderGray after:w-full after:border flex flex-col'>
+          <DrawerTrigger className='my-2 w-full rounded-lg after:border-b-placeholderGray after:w-full after:border flex flex-col'>
             <div className='flex flex-row justify-between w-full h-full px-4 items-center'>
               <p
                 className={cn(
