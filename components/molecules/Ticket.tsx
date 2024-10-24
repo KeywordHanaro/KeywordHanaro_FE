@@ -2,18 +2,23 @@
 
 import clsx from 'clsx';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ColorChip from '../atoms/ColorChips';
 import { Toggle } from '../ui/toggle';
 
-export default function Receipt() {
-  const now = new Date();
-  const number = 117;
-  const people = 11;
+type TicketProps = {
+  now: Date;
+  waitingQueue: number;
+  people: number;
+};
 
+export default function Ticket({ now, people, waitingQueue }: TicketProps) {
   const [more, setMore] = useState<boolean>(true);
   const [position, setPosition] = useState<boolean>(false);
   const [print, setPrint] = useState<boolean>(false);
+  const searchParams = useSearchParams();
+  const task = searchParams.get('task');
 
   const handleMore = () => {
     setMore(!more);
@@ -23,6 +28,17 @@ export default function Receipt() {
   };
   const handlePosition = () => {
     setPosition(true);
+  };
+  const formatTime = (dateTime: Date): string => {
+    return dateTime.toLocaleTimeString('ko-KR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
   };
 
   useEffect(() => {
@@ -58,22 +74,12 @@ export default function Receipt() {
             )}
           >
             <div className='flex flex-row justify-between items-center h-[23px]'>
-              <ColorChip color='blue'>예금</ColorChip>
-              <p className='text-[13px]'>
-                {now.toLocaleString('ko-KR', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour12: false,
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  second: '2-digit',
-                })}
-              </p>
+              <ColorChip color='blue'>{task}</ColorChip>
+              <p className='text-[13px]'>{formatTime(now)}</p>
             </div>
             <div className='flex flex-row justify-between h-[77px] pb-2.5'>
               <small className='mt-4'>대기번호</small>
-              <h1 className='text-6xl'>{number}</h1>
+              <h1 className='text-6xl'>{waitingQueue}</h1>
             </div>
             <div>
               <div
