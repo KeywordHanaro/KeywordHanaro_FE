@@ -75,7 +75,7 @@
 
 @layer components {
   .input-box {
-    @apply flex flex-col text-right p-2 relative;
+    @apply flex flex-col text-right relative;
   }
   .btn-sm {
     @apply text-center text-sm font-bold w-[116px] h-[40px];
