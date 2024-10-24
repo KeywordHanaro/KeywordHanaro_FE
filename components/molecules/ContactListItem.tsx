@@ -1,23 +1,29 @@
 'use client';
 
-import { useState } from 'react';
+import { Member } from '@/data/member';
 import UserCheckBox from '../atoms/UserCheckBox';
 
 type ContactItemProps = {
-  name: string;
-  phoneNumber: string;
+  member: Member;
+  isSelected: boolean;
+  onChange: (id: number) => void;
 };
 
-export default function ContactItem({ name, phoneNumber }: ContactItemProps) {
-  const [isChecked, setIsChecked] = useState(false);
-
+export default function ContactItem({
+  member: { id, name, phoneNumber },
+  isSelected,
+  onChange,
+}: ContactItemProps) {
   return (
-    <div className='flex w-full border py-[12px] gap-[16px]'>
+    <div
+      className='flex w-full py-[12px] gap-[16px]'
+      onClick={() => onChange(id)}
+    >
       <div className='flex items-center'>
-        <UserCheckBox checked={isChecked} onChange={setIsChecked} />
+        <UserCheckBox checked={isSelected} onChange={() => onChange(id)} />
       </div>
       <div className='flex flex-col gap-1'>
-        <h1 className='text-hanaPrimary font-bold'>{name}</h1>
+        <h1 className='font-medium'>{name}</h1>
         <h1 className='text-gray-400 text-xs'>{phoneNumber}</h1>
       </div>
     </div>

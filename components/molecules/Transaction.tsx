@@ -9,20 +9,20 @@ type TransactionHistoryProps = {
   data: Transaction;
 };
 
-const TransactionHistory = ({
+export const TransactionHistory = ({
   data: { accountInfo, dateTime, amount, balance },
 }: TransactionHistoryProps) => {
   const bankImage = bankList.find((i) => i.id === accountInfo.bankId)?.image;
 
   return (
-    <div className='bg-White  text-hanaPrimary py-[15px]'>
+    <div className='bg-White  text-hanaPrimary'>
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-3'>
           {bankImage ? (
             <Image
               src={bankImage}
               alt={accountInfo.accountNumber}
-              className=' aspect-square object-contain  p-1'
+              className='rounded-full aspect-square object-contain '
               width={40}
               height={40}
               sizes='w-[40px] h-[40px]'
@@ -31,7 +31,9 @@ const TransactionHistory = ({
             <span className='w-11 h-11 rounded-full bg-slate-200 '></span>
           )}
           <div>
-            <div className='text-xl'>{accountInfo.accountName}</div>
+            <div className='text-[15px] font-medium'>
+              {accountInfo.accountName}
+            </div>
             <p className='text-[14px] text-iconGray'>
               {formatTime(new Date(dateTime))}
             </p>
@@ -39,7 +41,7 @@ const TransactionHistory = ({
         </div>
         <div className=' text-iconGray text-right '>
           <p
-            className={`font-bold text-xl ${
+            className={`font-bold text-[15px] ${
               amount < 0 ? 'text-fontBlack' : 'text-hanaPrimary'
             }`}
           >

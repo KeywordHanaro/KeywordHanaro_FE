@@ -201,20 +201,20 @@ function MoneyInput(
   };
 
   return (
-    <div className='p-2 flex flex-row items-center text-hanaPrimary'>
+    <div className='flex flex-row items-center text-hanaPrimary'>
       <input
         ref={ref}
         value={value}
         onChange={handleChange}
         className={cn(
           className,
-          'max-w-full min-w-[100px] w-auto px-4 py-2 text-2xl font-extrabold '
+          'max-w-full min-w-[100px] w-auto text-2xl font-semibold '
         )}
         placeholder={placeHolder}
         required
         {...props}
       />
-      {value && <span className='ml-2 z-50 text-2xl font-extrabold'>원</span>}
+      {value && <span className='ml-2 z-50 text-2xl font-semibold'>원</span>}
     </div>
   );
 }
@@ -230,7 +230,7 @@ function KeywordInput(
     <div className='after:w-full after:border after:border-b-placeholderGray flex flex-col p-2 w-full'>
       <input
         ref={ref}
-        className={cn('w-full p-2 text-center text-2xl font-bold', className)}
+        className={cn('w-full text-center text-2xl font-bold', className)}
         placeholder={placeHolder}
         {...props}
       />
