@@ -3,11 +3,10 @@
 import { FaArrowCircleUp } from 'react-icons/fa';
 import { IoSearch } from 'react-icons/io5';
 import { TiDelete } from 'react-icons/ti';
-import {
+import React, {
   ChangeEvent,
   ForwardedRef,
   forwardRef,
-  InputHTMLAttributes,
   useRef,
   useState,
 } from 'react';
@@ -17,8 +16,7 @@ type baseInputTypeProps = {
   placeHolder?: string;
   className?: string;
   type?: string;
-  props?: InputHTMLAttributes<HTMLInputElement>;
-};
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
 /** ------------------------------------------ */
 type DefaultInputProps = baseInputTypeProps & {
@@ -39,7 +37,7 @@ function DefaultInput(
     placeHolder,
     required,
     error,
-    props,
+    ...props
   }: DefaultInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
@@ -53,10 +51,12 @@ function DefaultInput(
     }
     setInputValue(e.target.value);
   };
+  
   /** 입력 초기화 버튼 핸들러 */
   const handleClear = () => {
     setInputValue('');
   };
+
   /** 사용자 입력 감지 핸들러 */
   const handleBlur = () => {
     setIsTouched(true);
@@ -111,7 +111,7 @@ type SearchInputProps = baseInputTypeProps & {
 
 /**onSubmit에 따라 검색을 진행합니다. */
 function SearchInput(
-  { name, placeHolder, className, onSubmit, props }: SearchInputProps,
+  { name, placeHolder, className, onSubmit, ...props }: SearchInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
   const SearchHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -157,7 +157,7 @@ type AccountInputProps = baseInputTypeProps;
 
 /**Ref로 bankId와 계좌번호를 가져옵니다. */
 function AccountInput(
-  { className, placeHolder, props }: AccountInputProps,
+  { className, placeHolder, ...props }: AccountInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
   return (
@@ -182,7 +182,7 @@ const AccountInputRef = forwardRef(AccountInput);
 type MoneyInputProps = baseInputTypeProps;
 /** 금액 입력, ref로 입력 값 가져오기 */
 function MoneyInput(
-  { className, placeHolder, props }: MoneyInputProps,
+  { className, placeHolder, ...props }: MoneyInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
   const [value, setValue] = useState<string>('');
@@ -223,7 +223,7 @@ const MoneyInputRef = forwardRef(MoneyInput);
 /** ------------------------------------------ */
 type KeywordInputProps = baseInputTypeProps;
 function KeywordInput(
-  { className, placeHolder, props }: KeywordInputProps,
+  { className, placeHolder, ...props }: KeywordInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
   return (
@@ -246,7 +246,14 @@ type AIInputProps = baseInputTypeProps & {
   formClassName: string;
 };
 function AIInput(
-  { className, formClassName, placeHolder, onSubmit, isLoading, props }: AIInputProps,
+  {
+    className,
+    formClassName,
+    placeHolder,
+    onSubmit,
+    isLoading,
+    ...props
+  }: AIInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
   const formRef = useRef<HTMLFormElement>(null);
