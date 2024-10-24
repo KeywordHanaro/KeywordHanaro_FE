@@ -29,11 +29,11 @@ export default function SelectBank() {
       <div className='w-full'>
         <Drawer>
           <DrawerTrigger className='my-2 w-full rounded-lg after:border-b-placeholderGray after:w-full after:border flex flex-col'>
-            <div className='flex flex-row justify-between w-full h-full px-4 items-center'>
+            <div className='flex flex-row justify-between w-full h-full font-semibold text-[18px] items-center'>
               <p
                 className={cn(
                   ' text-left py-2',
-                  bankId ? 'text-fontBlack' : 'text-placeholderGray'
+                  bankId ? 'text-hanaPrimary' : 'text-placeholderGray'
                 )}
               >
                 {bankList.find((bank) => bank.id === bankId)?.bankname ??
