@@ -13,7 +13,7 @@ export type settlement = {
 };
 
 export const settlementData = {
-  myAccunt: {
+  MyAccount: {
     accountName: '내 나라사랑 계좌',
     bankId: 111,
     accountNumber: '123-4567-2221',

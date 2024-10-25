@@ -3,12 +3,24 @@
 import { MoneyInputRef } from '@/components/atoms/Inputs';
 import { ChipsList } from '@/components/molecules/ChipList';
 import { Member } from '@/data/member';
-import { settlementData } from '@/data/settlement';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
-export default function SettlementRequest() {
-  const [members, setMembers] = useState<Member[]>(settlementData.Members);
+export default function SettlementRequest({
+  setMoneyResult,
+  handleStep,
+  accountName,
+  setMembersResult,
+  initMember,
+}: {
+  setMoneyResult: React.Dispatch<React.SetStateAction<string | null>>;
+  setMembersResult: React.Dispatch<React.SetStateAction<Member[]>>;
+  handleStep: () => void;
+  accountName: string;
+  initMember: Member[];
+}) {
+  const [members, setMembers] = useState<Member[]>(initMember);
   const [deleteMember, setDeleteMember] = useState<Member[]>([]);
+  const moneyRef = useRef<HTMLInputElement>(null);
 
   const handleDeleteMember = (id: number) => {
     setMembers(members.filter((member) => id !== member.id));
@@ -18,11 +30,22 @@ export default function SettlementRequest() {
     ]);
   };
 
+  const handleSubmit = ({
+    money,
+    members,
+  }: {
+    money: string;
+    members: Member[];
+  }) => {
+    setMoneyResult(money);
+    setMembersResult(members);
+    handleStep();
+    console.log('제출시 데이터', money, members);
+  };
+
   return (
     <div className='flex flex-col gap-[30px] pt-[30px]'>
-      <p className='text-[24px] font-semibold'>
-        {settlementData.myAccunt.accountName}로
-      </p>
+      <p className='text-[24px] font-semibold'>{accountName}로</p>
       <div className='text-[#069894] text-[24px] font-semibold'>
         {members.map((member, idx) =>
           idx !== members.length - 1 ? (
@@ -35,7 +58,7 @@ export default function SettlementRequest() {
         )}
         <span className='text-black ml-[3px]'>님에게 정산요청 할게요</span>
       </div>
-      <MoneyInputRef placeHolder='얼마를 요청할까요?' />
+      <MoneyInputRef placeHolder='얼마를 요청할까요?' ref={moneyRef} />
 
       {/* 선택된 멤버 */}
       {members.length !== 0 && (
@@ -63,6 +86,15 @@ export default function SettlementRequest() {
           </div>
         </div>
       )}
+
+      <button
+        onClick={() => {
+          if (moneyRef?.current?.value)
+            handleSubmit({ money: moneyRef?.current?.value, members });
+        }}
+      >
+        임시 제출 버튼
+      </button>
     </div>
   );
 }
