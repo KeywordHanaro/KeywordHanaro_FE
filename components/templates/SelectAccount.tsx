@@ -1,10 +1,11 @@
-import { MyAccount } from '@/app/(routes)/keyword/create/inquiry/page';
-import AccountListItem from '@/components/molecules/AccountListItem';
+import AccountListItem, {
+  MyAccountItemProps,
+} from '@/components/molecules/AccountListItem';
 import { MyAccounts } from '@/data/account';
 
 type SelectAccountProps = {
   // account: string;
-  onUpdate: (account: MyAccount) => void;
+  onUpdate: (account: MyAccountItemProps) => void;
   onNext: () => void;
 };
 
@@ -14,7 +15,7 @@ export default function SelectAccount({
   onNext,
 }: SelectAccountProps) {
   // 선택된 계좌 handle
-  const handleAccountClick = (account: MyAccount) => {
+  const handleAccountClick = (account: MyAccountItemProps) => {
     onUpdate(account);
     onNext();
   };

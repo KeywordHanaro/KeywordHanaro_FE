@@ -2,19 +2,20 @@
 
 import Header from '@/components/atoms/Header';
 import { MicRef } from '@/components/atoms/Mic';
+import { MyAccountItemProps } from '@/components/molecules/AccountListItem';
 import KeywordCompletion from '@/components/templates/KeywordCompletion';
 import KeywordInputButton from '@/components/templates/KeywordInputButton';
 import SelectAccount from '@/components/templates/SelectAccount';
 import { useEffect, useState } from 'react';
 
-export type MyAccount = {
-  accountName: string;
-  bankId: number;
-  accountNumber: string;
-};
+// export type MyAccount = {
+//   accountName: string;
+//   bankId: number;
+//   accountNumber: string;
+// };
 
 export type DataProps = {
-  account: MyAccount;
+  account: MyAccountItemProps;
   inquiry: string;
   keywordName: string;
 };
@@ -61,7 +62,9 @@ export default function KeywordCreateInquiryPage() {
         {step === 1 && (
           <SelectAccount
             // account={formData.account}
-            onUpdate={(account: MyAccount) => updateFormData({ account })}
+            onUpdate={(account: MyAccountItemProps) =>
+              updateFormData({ account })
+            }
             onNext={nextStep}
           />
         )}

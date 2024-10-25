@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
-type MyAccountItemProps = {
+export type MyAccountItemProps = {
   accountNumber: string;
   accountName: string;
   bankId: number;
@@ -23,7 +23,7 @@ type AccountItemFavoriteProps = (
   | OthersAccountItemProps
 ) & { isFavorite: boolean };
 
-type AccountListType = {
+export type AccountListType = {
   account:
     | (MyAccountItemProps | OthersAccountItemProps)
     | AccountItemFavoriteProps;
