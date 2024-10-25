@@ -1,35 +1,64 @@
 'use client';
 
-import { ButtonHTMLAttributes, ChangeEvent, useState } from 'react';
+import {
+  ButtonHTMLAttributes,
+  ChangeEvent,
+  ForwardedRef,
+  forwardRef,
+  useState,
+} from 'react';
 import { Button } from '../atoms/Button';
 import { KeywordInputRef } from '../atoms/Inputs';
 
 interface InputButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   placeHolder: string;
+  title: string;
+  onUpdate: (inputValue: string) => void;
+  onNext: () => void;
 }
 
-export default function KeywordInputButton({
-  placeHolder,
-  ...props
-}: InputButtonProps) {
-  const [inputValue, setInputValue] = useState('');
+const KeywordInputButton = forwardRef(
+  (
+    { title, placeHolder, onUpdate, onNext, ...props }: InputButtonProps,
+    ref: ForwardedRef<HTMLInputElement>
+  ) => {
+    const [inputValue, setInputValue] = useState('');
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+      setInputValue(e.target.value);
+    };
 
-  const isInputFilled = inputValue.length > 0;
+    const handleSubmit = () => {
+      onUpdate(inputValue);
+      onNext();
+    };
 
-  return (
-    <div className='flex flex-col items-center gap-[33px] '>
-      <KeywordInputRef
-        className='text-hanaPrimary'
-        placeHolder={placeHolder}
-        onChange={handleInputChange}
-      />
-      <Button isDisabled={!isInputFilled} size='lg' {...props}>
-        {isInputFilled ? '다음' : '완료'}
-      </Button>
-    </div>
-  );
-}
+    const isInputFilled = inputValue.length > 0;
+
+    return (
+      <div className='flex flex-col items-center gap-[33px] '>
+        {/*title*/}
+        <div className='font-extrabold text-2xl mb-[50px]'>{title}</div>
+
+        {/*keyword input*/}
+        <KeywordInputRef
+          className='text-hanaPrimary w-full'
+          placeHolder={placeHolder}
+          onChange={handleInputChange}
+          ref={ref}
+        />
+        <Button
+          isDisabled={!isInputFilled}
+          className='w-full'
+          onClick={handleSubmit}
+          {...props}
+        >
+          {isInputFilled ? '다음' : '완료'}
+        </Button>
+      </div>
+    );
+  }
+);
+
+KeywordInputButton.displayName = 'KeywordInputButton';
+export default KeywordInputButton;

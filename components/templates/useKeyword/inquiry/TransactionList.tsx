@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { formatDate } from '@/lib/utils';
 
 export default function TransactionList() {
-  const keyword = '터틀';
+  const keyword = '터틀'; //input keyword
   // accountName에 keyword가 포함된 거래 내역만 필터링
   const filteredTransactions = transactionList
     .filter((transaction) =>
@@ -15,7 +15,7 @@ export default function TransactionList() {
       (a, b) => new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime()
     );
 
-  //한글검색 시, 받침 유무에 따른 을/를 출력
+  // 한글키워드 검색 시, 받침 유무에 따른 을/를 출력
   const hasBatchim = (word: string) => {
     const lastChar = word[word.length - 1];
     const code = lastChar.charCodeAt(0);
@@ -59,8 +59,8 @@ export default function TransactionList() {
               <Image
                 src={'/images/alarts/noData.gif'}
                 alt='귀여운 GIF'
-                width={300} // 원하는 너비
-                height={300} // 원하는 높이
+                width={300}
+                height={300}
                 className='mx-auto'
               />
               <p className='text-center font-bold text-[20px]'>

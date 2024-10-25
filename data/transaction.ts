@@ -14,7 +14,7 @@ export const transactionList: Transaction[] = [
     accountInfo: {
       bankId: 2,
       accountNumber: '123551231235',
-      accountName: 'TEST',
+      accountName: '정성엽',
     },
     dateTime: '2024-10-23T09:58:22Z',
     amount: 50000,
@@ -25,7 +25,7 @@ export const transactionList: Transaction[] = [
     accountInfo: {
       bankId: 3,
       accountNumber: '123551231235',
-      accountName: 'TEST1',
+      accountName: '문서아',
     },
     dateTime: '2024-10-23T09:58:22Z',
     amount: -24000,
@@ -36,7 +36,7 @@ export const transactionList: Transaction[] = [
     accountInfo: {
       bankId: 4,
       accountNumber: '123551231235',
-      accountName: 'TEST3',
+      accountName: '김도희',
     },
     dateTime: '2024-10-23T09:58:22Z',
     amount: 5000000,
@@ -47,7 +47,7 @@ export const transactionList: Transaction[] = [
     accountInfo: {
       bankId: 7,
       accountNumber: '123551231235',
-      accountName: 'TEST4',
+      accountName: '코레일 유통',
     },
     dateTime: '2024-10-23T09:58:22Z',
     amount: 14200,
@@ -58,7 +58,7 @@ export const transactionList: Transaction[] = [
     accountInfo: {
       bankId: 11,
       accountNumber: '123551231235',
-      accountName: 'TEST5',
+      accountName: '조민석',
     },
     dateTime: '2024-10-23T09:58:22Z',
     amount: 14200,
@@ -69,7 +69,7 @@ export const transactionList: Transaction[] = [
     accountInfo: {
       bankId: 20,
       accountNumber: '123551231235',
-      accountName: 'TEST8',
+      accountName: '남인우',
     },
     dateTime: '2024-10-23T09:58:22Z',
     amount: 14200,
@@ -80,7 +80,7 @@ export const transactionList: Transaction[] = [
     accountInfo: {
       bankId: 23,
       accountNumber: '123551231235',
-      accountName: 'TEST45',
+      accountName: '김인선',
     },
     dateTime: '2024-10-23T09:58:22Z',
     amount: -50000,
@@ -91,19 +91,19 @@ export const transactionList: Transaction[] = [
     accountInfo: {
       bankId: 27,
       accountNumber: '123551231235',
-      accountName: 'TEST12',
+      accountName: 'CU 성수터틀넥점',
     },
-    dateTime: '2024-10-22T09:58:22Z',
+    dateTime: '2024-10-23T23:58:22Z',
     amount: 14200,
     balance: 20000000000,
   },
   {
     id: 13,
-    dateTime: '2024-10-27T09:58:22Z',
+    dateTime: '2024-11-27T09:58:22Z',
     accountInfo: {
       bankId: 31,
       accountNumber: '123551231235',
-      accountName: 'TEST13',
+      accountName: '박준용',
     },
     amount: 14200,
     balance: 20000000000,
@@ -114,29 +114,29 @@ export const transactionList: Transaction[] = [
     accountInfo: {
       bankId: 32,
       accountNumber: '123551231235',
-      accountName: 'TEST15',
+      accountName: '터틀넥즈 공통계좌',
     },
     amount: -1200,
     balance: 20000000000,
   },
   {
-    id: 16,
-    dateTime: '2024-10-24T09:58:22Z',
+    id: 51,
+    dateTime: '2023-10-24T09:58:22Z',
     accountInfo: {
       bankId: 35,
       accountNumber: '123551231235',
-      accountName: 'TEST16',
+      accountName: '터틀넥즈 곗돈',
     },
     amount: 14200,
     balance: 20000000000,
   },
   {
     id: 16,
-    dateTime: '2024-10-24T09:58:22Z',
+    dateTime: '2024-09-24T09:58:22Z',
     accountInfo: {
       bankId: 37,
       accountNumber: '123551231235',
-      accountName: 'TEST16',
+      accountName: '터틀넥즈 꼬북꼬북계좌',
     },
     amount: 14200,
     balance: 20000000000,
