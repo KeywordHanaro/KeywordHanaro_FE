@@ -56,7 +56,10 @@ export default function SettlementRequest() {
         <div className='flex flex-col gap-[16px]'>
           <h3 className='font-semibold text-[18px]'>제외된 멤버</h3>
           <div className='flex gap-[8px]'>
-            <ChipsList items={deleteMember} />
+            <ChipsList
+              items={deleteMember}
+              className={'text-[#B9B9B9] border-[#B9B9B9]'}
+            />
           </div>
         </div>
       )}
