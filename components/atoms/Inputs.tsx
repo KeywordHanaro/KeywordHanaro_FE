@@ -7,6 +7,7 @@ import React, {
   ChangeEvent,
   ForwardedRef,
   forwardRef,
+  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -186,12 +187,25 @@ function MoneyInput(
   ref: ForwardedRef<HTMLInputElement>
 ) {
   const [value, setValue] = useState<string>('');
+  const spanRef = useRef<HTMLSpanElement>(null);
 
   const formatNumberWithCommas = (inputValue: string): string => {
     if (!inputValue) return '';
     const numericValue = inputValue.replace(/[^0-9]/g, '');
-    return new Intl.NumberFormat('ko-KR').format(parseInt(numericValue, 10));
+    const parsedValue = numericValue ? parseInt(numericValue, 10) : 0;
+    return new Intl.NumberFormat('ko-KR').format(parsedValue);
   };
+
+  useEffect(() => {
+    if (spanRef.current && ref && typeof ref !== 'function') {
+      // Calculate the width of the text
+      const textWidth = spanRef.current.offsetWidth;
+      if (ref.current?.value) {
+        // Set the input width based on text width
+        ref.current.style.width = `${textWidth + 10}px`; // Add some padding
+      }
+    }
+  }, [value, ref]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -206,15 +220,19 @@ function MoneyInput(
         ref={ref}
         value={value}
         onChange={handleChange}
-        className={cn(
-          className,
-          'max-w-full min-w-[100px] w-auto text-2xl font-semibold '
-        )}
+        className={cn(className, 'max-w-full text-2xl font-semibold ')}
         placeholder={placeHolder}
         required
         {...props}
       />
-      {value && <span className='ml-2 z-50 text-2xl font-semibold'>원</span>}
+      <span
+        ref={spanRef}
+        className='invisible absolute whitespace-pre max-w-full text-2xl font-semibold'
+        aria-hidden='true'
+      >
+        {value}
+      </span>
+      {value && <span className='z-50 text-2xl font-semibold'>원</span>}
     </div>
   );
 }
