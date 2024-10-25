@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
-type MyAccountItemProps = {
+export type MyAccountItemProps = {
   accountNumber: string;
   accountName: string;
   bankId: number;
@@ -23,13 +23,14 @@ type AccountItemFavoriteProps = (
   | OthersAccountItemProps
 ) & { isFavorite: boolean };
 
-type AccountListType = {
+export type AccountListType = {
   account:
     | (MyAccountItemProps | OthersAccountItemProps)
     | AccountItemFavoriteProps;
+  onclick: () => void;
 };
 
-export default function AccountListItem({ account }: AccountListType) {
+export default function AccountListItem({ account, onclick }: AccountListType) {
   const { bankId, accountNumber } = account;
 
   const name =
@@ -50,7 +51,7 @@ export default function AccountListItem({ account }: AccountListType) {
 
   return (
     <div className='flex flex-row justify-between w-full h-fit py-[12px] bg-white'>
-      <div className='flex gap-[16px]'>
+      <div className='flex gap-[16px]' onClick={onclick}>
         {bank ? (
           <div className='relative w-11 h-11'>
             <Image
