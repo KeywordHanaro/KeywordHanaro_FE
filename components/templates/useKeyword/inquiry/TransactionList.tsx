@@ -58,7 +58,7 @@ export default function TransactionList() {
             <div>
               <Image
                 src={'/images/alarts/noData.gif'}
-                alt='귀여운 GIF'
+                alt=''
                 width={300}
                 height={300}
                 className='mx-auto'
