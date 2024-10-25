@@ -8,6 +8,8 @@ import { Member } from '@/data/member';
 export type settlement = {
   MyAccount: MyAccount;
   Members: Member[];
+  // 정산이냐 회비냐 이거 판단하는 플래그 추가해야할듯
+  isAdjustment: boolean;
 };
 
 export const settlementData = {
@@ -25,4 +27,5 @@ export const settlementData = {
     { id: 6, name: '정성엽', phoneNumber: '010-4046-7672' },
     { id: 7, name: '문서아', phoneNumber: '010-4046-7672' },
   ],
+  isAdjustment: true,
 };
