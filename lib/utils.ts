@@ -4,12 +4,13 @@ import { twMerge } from 'tailwind-merge';
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
 /**
  *
- * @param dateTime
- * @returns
+ * @param {Date} dateTime
+ * @returns 거래시간 출력 형식 hh:mm
  *
- * @description 거래시간 타입 hh:mm
+ * @description
  */
 export function formatTime(dateTime: Date): string {
   return dateTime.toLocaleTimeString('ko-KR', {
@@ -18,18 +19,22 @@ export function formatTime(dateTime: Date): string {
     hour12: false,
   });
 }
-// 날짜 형식을 "YYYY-MM-DD"로 변환하는 함수
-//   export const foramtDate = (dateTime: string) => {
-//     return new Date(dateTime).toISOString().split('T')[0];
-// };
+
+/**
+ *
+ * @param {string | Date} dateTime
+ * @returns 거래날짜 출력 형식00월 00일
+ *
+ * @description
+ */
 export function formatDate(dateTime: string | Date): string {
   const date = new Date(dateTime);
-  const now = new Date(); // 현재 날짜
-  const year = date.getFullYear(); // 거래의 연도
-  const month = date.getMonth() + 1; // 월 (0부터 시작하므로 +1)
-  const day = date.getDate(); // 일
+  const now = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
 
-  const currentYear = now.getFullYear(); // 현재 연도
+  const currentYear = now.getFullYear();
 
   // 현재 연도와 같으면 월, 일만 출력하고 다르면 년, 월, 일을 모두 출력
   if (year === currentYear) {
