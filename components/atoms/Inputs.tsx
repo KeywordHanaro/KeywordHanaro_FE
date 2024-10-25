@@ -7,6 +7,7 @@ import React, {
   ChangeEvent,
   ForwardedRef,
   forwardRef,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -180,21 +181,23 @@ function AccountInput(
 const AccountInputRef = forwardRef(AccountInput);
 
 /** ------------------------------------------ */
-type MoneyInputProps = baseInputTypeProps;
+type MoneyInputProps = baseInputTypeProps & {
+  onChangeValidity?: (valid: boolean) => void;
+};
 /** 금액 입력, ref로 입력 값 가져오기 */
 function MoneyInput(
-  { className, placeHolder, ...props }: MoneyInputProps,
+  { className, placeHolder, onChangeValidity, ...props }: MoneyInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
   const [value, setValue] = useState<string>('');
   const spanRef = useRef<HTMLSpanElement>(null);
 
-  const formatNumberWithCommas = (inputValue: string): string => {
+  const formatNumberWithCommas = useCallback((inputValue: string): string => {
     if (!inputValue) return '';
     const numericValue = inputValue.replace(/[^0-9]/g, '');
     const parsedValue = numericValue ? parseInt(numericValue, 10) : 0;
     return new Intl.NumberFormat('ko-KR').format(parsedValue);
-  };
+  },[]);
 
   useEffect(() => {
     if (spanRef.current && ref && typeof ref !== 'function') {
@@ -205,12 +208,18 @@ function MoneyInput(
     }
   }, [value, ref]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const inputValue = e.target.value;
-    const formattedValue = formatNumberWithCommas(inputValue);
-    setValue(formattedValue);
-  };
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      const inputValue = e.target.value;
+      const number = parseInt(inputValue.replace(/[^0-9]/g, ''), 10);
+      const valid = !isNaN(number) && number > 0;
+      onChangeValidity?.(valid);
+      const formattedValue = formatNumberWithCommas(inputValue);
+      setValue(formattedValue);
+    },
+    [setValue, formatNumberWithCommas, onChangeValidity]
+  );
 
   return (
     <div className='flex flex-row items-center text-hanaPrimary'>
@@ -243,7 +252,7 @@ function KeywordInput(
   ref: ForwardedRef<HTMLInputElement>
 ) {
   return (
-    <div className='after:w-full after:border after:border-b-placeholderGray flex flex-col p-2 w-full'>
+    <div className='after:w-full after:border after:border-b-placeholderGray flex flex-col w-full'>
       <input
         ref={ref}
         className={cn('w-full text-center text-2xl font-bold', className)}

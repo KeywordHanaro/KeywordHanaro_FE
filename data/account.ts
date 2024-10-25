@@ -1,10 +1,16 @@
-type myAccount = {
+export type MyAccount = {
   accountName: string;
   bankId: number;
   accountNumber: string;
 };
 
-export const MyAccounts: myAccount[] = [
+export type OthersAccount = {
+  name: string;
+  bankId: number;
+  accountNumber: string;
+};
+
+export const MyAccounts: MyAccount[] = [
   {
     accountName: '문서아 취미 계쫘',
     bankId: 81,
@@ -31,3 +37,69 @@ export const MyAccounts: myAccount[] = [
     accountNumber: '222-2222-2225',
   },
 ];
+
+export const OthersAccounts: OthersAccount[] = [
+  {
+    name: '도희',
+    bankId: 3,
+    accountNumber: '222-2222-2221',
+  },
+  {
+    name: '인선',
+    bankId: 11,
+    accountNumber: '222-2222-2222',
+  },
+  {
+    name: '준용',
+    bankId: 20,
+    accountNumber: '222-2222-2223',
+  },
+  {
+    name: '성엽',
+    bankId: 32,
+    accountNumber: '222-2222-2224',
+  },
+  {
+    name: '인우',
+    bankId: 48,
+    accountNumber: '222-2222-2225',
+  },
+  {
+    name: '민석',
+    bankId: 88,
+    accountNumber: '222-2222-2226',
+  },
+];
+
+/** account list item type test
+export const MyAccounts = [
+  {
+    accountName: '문서아 취미 계쫘',
+    bankId: 81,
+    accountNumber: '222-2222-2221',
+  },
+  {
+    accountName: '문서아 적금',
+    bankId: 81,
+    isFavorite: true,
+    accountNumber: '222-2222-2222',
+  },
+  {
+    accountName: '문서아 여행계좌',
+    bankId: 81,
+    isFavorite: false,
+    accountNumber: '222-2222-2223',
+  },
+  {
+    name: '문서아 파이팅',
+    bankId: 81,
+    accountNumber: '222-2222-2224',
+  },
+  {
+    name: '문서아 즐거워',
+    bankId: 81,
+    isFavorite: true,
+    accountNumber: '222-2222-2225',
+  },
+];
+*/
