@@ -27,9 +27,10 @@ type AccountListType = {
   account:
     | (MyAccountItemProps | OthersAccountItemProps)
     | AccountItemFavoriteProps;
+  onclick: () => void;
 };
 
-export default function AccountListItem({ account }: AccountListType) {
+export default function AccountListItem({ account, onclick }: AccountListType) {
   const { bankId, accountNumber } = account;
 
   const name =
@@ -49,7 +50,10 @@ export default function AccountListItem({ account }: AccountListType) {
   const bank = bankList.find((i) => i.id === +bankId);
 
   return (
-    <div className='flex flex-row justify-between w-full h-fit py-[12px] bg-white'>
+    <div
+      className='flex flex-row justify-between w-full h-fit py-[12px] bg-white'
+      onClick={onclick}
+    >
       <div className='flex gap-[16px]'>
         {bank ? (
           <div className='relative w-11 h-11'>

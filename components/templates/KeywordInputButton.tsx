@@ -5,6 +5,7 @@ import {
   ChangeEvent,
   ForwardedRef,
   forwardRef,
+  ReactNode,
   useState,
 } from 'react';
 import { Button } from '../atoms/Button';
@@ -15,11 +16,19 @@ interface InputButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   title: string;
   onUpdate: (inputValue: string) => void;
   onNext: () => void;
+  children?: ReactNode;
 }
 
 const KeywordInputButton = forwardRef(
   (
-    { title, placeHolder, onUpdate, onNext, ...props }: InputButtonProps,
+    {
+      title,
+      placeHolder,
+      onUpdate,
+      onNext,
+      children,
+      ...props
+    }: InputButtonProps,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     const [inputValue, setInputValue] = useState('');
@@ -36,7 +45,7 @@ const KeywordInputButton = forwardRef(
     const isInputFilled = inputValue.length > 0;
 
     return (
-      <div className='flex flex-col items-center gap-[33px] '>
+      <div className='flex flex-col gap-[33px] '>
         {/*title*/}
         <div className='font-extrabold text-2xl mb-[50px]'>{title}</div>
 
@@ -55,6 +64,9 @@ const KeywordInputButton = forwardRef(
         >
           {isInputFilled ? '다음' : '완료'}
         </Button>
+        <div className='flex flex-col gap-5 text-center font-semibold text-[14px]'>
+          {children}
+        </div>
       </div>
     );
   }
