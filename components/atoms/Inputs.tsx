@@ -7,6 +7,7 @@ import React, {
   ChangeEvent,
   ForwardedRef,
   forwardRef,
+  useCallback,
   useRef,
   useState,
 } from 'react';
@@ -179,26 +180,33 @@ function AccountInput(
 const AccountInputRef = forwardRef(AccountInput);
 
 /** ------------------------------------------ */
-type MoneyInputProps = baseInputTypeProps;
+type MoneyInputProps = baseInputTypeProps & {
+  onChangeValidity?: (valid: boolean) => void;
+};
 /** 금액 입력, ref로 입력 값 가져오기 */
 function MoneyInput(
-  { className, placeHolder, ...props }: MoneyInputProps,
+  { className, placeHolder, onChangeValidity, ...props }: MoneyInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
   const [value, setValue] = useState<string>('');
 
-  const formatNumberWithCommas = (inputValue: string): string => {
+  const formatNumberWithCommas = useCallback((inputValue: number): string => {
     if (!inputValue) return '';
-    const numericValue = inputValue.replace(/[^0-9]/g, '');
-    return new Intl.NumberFormat('ko-KR').format(parseInt(numericValue, 10));
-  };
+    return new Intl.NumberFormat('ko-KR').format(inputValue);
+  }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const inputValue = e.target.value;
-    const formattedValue = formatNumberWithCommas(inputValue);
-    setValue(formattedValue);
-  };
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      const inputValue = e.target.value;
+      const number = parseInt(inputValue.replace(/[^0-9]/g, ''), 10);
+      const valid = !isNaN(number) && number > 0;
+      onChangeValidity?.(valid);
+      const formattedValue = formatNumberWithCommas(number);
+      setValue(formattedValue);
+    },
+    [setValue, formatNumberWithCommas, onChangeValidity]
+  );
 
   return (
     <div className='flex flex-row items-center text-hanaPrimary'>
