@@ -202,11 +202,16 @@ function MoneyInput(
   useEffect(() => {
     if (spanRef.current && ref && typeof ref !== 'function') {
       const textWidth = spanRef.current.offsetWidth;
-      if (ref.current?.value) {
+      console.log("🚀 ~ useEffect ~ textWidth:", !!textWidth)
+      if(!textWidth && ref.current){
+        ref.current.style.width = '100%'
+      }
+      else if (ref.current?.value) {
         ref.current.style.width = `${textWidth + 1}px`;
       }
     }
   }, [value, ref]);
+      
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
