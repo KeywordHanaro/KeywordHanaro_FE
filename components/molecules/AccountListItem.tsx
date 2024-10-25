@@ -50,11 +50,8 @@ export default function AccountListItem({ account, onclick }: AccountListType) {
   const bank = bankList.find((i) => i.id === +bankId);
 
   return (
-    <div
-      className='flex flex-row justify-between w-full h-fit py-[12px] bg-white'
-      onClick={onclick}
-    >
-      <div className='flex gap-[16px]'>
+    <div className='flex flex-row justify-between w-full h-fit py-[12px] bg-white'>
+      <div className='flex gap-[16px]' onClick={onclick}>
         {bank ? (
           <div className='relative w-11 h-11'>
             <Image

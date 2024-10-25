@@ -6,7 +6,8 @@ import { MyAccountItemProps } from '@/components/molecules/AccountListItem';
 import KeywordCompletion from '@/components/templates/KeywordCompletion';
 import KeywordInputButton from '@/components/templates/KeywordInputButton';
 import SelectAccount from '@/components/templates/SelectAccount';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 // export type MyAccount = {
 //   accountName: string;
@@ -21,6 +22,7 @@ export type DataProps = {
 };
 
 export default function KeywordCreateInquiryPage() {
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<DataProps>({
     account: { accountName: '', bankId: 0, accountNumber: '' },
@@ -38,12 +40,17 @@ export default function KeywordCreateInquiryPage() {
     }));
   };
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+  // useEffect(() => {
+  //   console.log(formData);
+  // }, [formData]);
 
-  const handle = () => {
-    console.log('xxx');
+  const handleOnBack = () => {
+    if (step === 1) router.back();
+    else prevStep();
+  };
+
+  const handleComplete = () => {
+    router.push('/');
   };
 
   /* 
@@ -55,7 +62,11 @@ export default function KeywordCreateInquiryPage() {
 
   return (
     <div className='h-screen relative'>
-      <Header text='키워드 생성하기' showActionButton={false} />
+      <Header
+        text='키워드 생성하기'
+        onBack={handleOnBack}
+        showActionButton={false}
+      />
 
       <div className='px-[20px] mt-[24px]'>
         {/* 1. 계좌 선택 */}
@@ -97,7 +108,7 @@ export default function KeywordCreateInquiryPage() {
 
         {/* 4. 설정 완료 */}
         {step === 4 && (
-          <KeywordCompletion onClick={handle}>
+          <KeywordCompletion onClick={handleComplete}>
             <div className='flex flex-col items-center justify-center gap-2'>
               <p className='text-[18px]'>
                 <span className='text-hanaPrimary'>{formData.keywordName}</span>{' '}
@@ -114,7 +125,9 @@ export default function KeywordCreateInquiryPage() {
           </KeywordCompletion>
         )}
       </div>
-      <MicRef />
+
+      {/* 설정 완료 페이지 마이크 x */}
+      {step !== 4 && <MicRef />}
     </div>
   );
 }
