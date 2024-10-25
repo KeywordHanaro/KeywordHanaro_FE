@@ -202,7 +202,7 @@ function MoneyInput(
   useEffect(() => {
     if (spanRef.current && ref && typeof ref !== 'function') {
       const textWidth = spanRef.current.offsetWidth;
-      console.log("🚀 ~ useEffect ~ textWidth:", !!textWidth)
+      // console.log("🚀 ~ useEffect ~ textWidth:", !!textWidth)
       if(!textWidth && ref.current){
         ref.current.style.width = '100%'
       }
