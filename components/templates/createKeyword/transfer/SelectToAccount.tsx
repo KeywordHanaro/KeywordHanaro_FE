@@ -1,3 +1,5 @@
+'use client';
+
 import { AccountInputRef } from '@/components/atoms/Inputs';
 import AccountList from '@/components/organisms/AccountList';
 import { MyAccounts, OthersAccounts } from '@/data/account';
