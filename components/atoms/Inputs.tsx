@@ -198,11 +198,9 @@ function MoneyInput(
 
   useEffect(() => {
     if (spanRef.current && ref && typeof ref !== 'function') {
-      // Calculate the width of the text
       const textWidth = spanRef.current.offsetWidth;
       if (ref.current?.value) {
-        // Set the input width based on text width
-        ref.current.style.width = `${textWidth + 10}px`; // Add some padding
+        ref.current.style.width = `${textWidth + 1}px`;
       }
     }
   }, [value, ref]);
