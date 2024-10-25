@@ -227,7 +227,7 @@ function KeywordInput(
   ref: ForwardedRef<HTMLInputElement>
 ) {
   return (
-    <div className='after:w-full after:border after:border-b-placeholderGray flex flex-col p-2 w-full'>
+    <div className='after:w-full after:border after:border-b-placeholderGray flex flex-col w-full'>
       <input
         ref={ref}
         className={cn('w-full text-center text-2xl font-bold', className)}
