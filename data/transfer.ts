@@ -1,3 +1,5 @@
+import { DataProps } from '@/app/(routes)/keyword/create/transfer/page';
+
 export type KeywordInputToOther = {
   fromAccountName: string;
   balance: number;
@@ -15,6 +17,7 @@ export type KeywordInputToMe = {
 
 export type KeywordSearchInputProps = KeywordInputToOther & {
   searchKeyword: string;
+  amount?: number;
 };
 
 export const KeywordInputToOtherData: KeywordInputToOther = {
@@ -41,5 +44,44 @@ export const KeywordSearchInputToOtherData: KeywordSearchInputProps[] = [
     bankName: '기업',
     toAccountNumber: '999-00-000',
     searchKeyword: '성엽이 용돈',
+    amount: 50000,
+  },
+];
+// useKeyword for transfer
+export const UseKeywordTransfer: DataProps[] = [
+  {
+    type: 'WithoutAmount',
+    fromAccount: {
+      type: 'MyAccount',
+      accountName: '문서아 취미 계쫘',
+      bankId: 81,
+      accountNumber: '222-2222-2221',
+    },
+    toAccount: {
+      type: 'OthersAccount',
+      name: '도희',
+      bankId: 3,
+      accountNumber: '223-2222-2221',
+    },
+    checkEverytime: true, //금액은 매번 정한다.
+    keyword: '서아 저금통',
+  },
+  {
+    type: 'WithAmount',
+    fromAccount: {
+      type: 'MyAccount',
+      accountName: '문서아 즐거워',
+      bankId: 81,
+      accountNumber: '222-2222-2225',
+    },
+    toAccount: {
+      type: 'OthersAccount',
+      name: '김인선',
+      bankId: 3,
+      accountNumber: '223-2222-2221',
+    },
+    checkEverytime: false, //고정금액 송금.
+    amount: 50000,
+    keyword: '터틀넥즈 회식통장',
   },
 ];
