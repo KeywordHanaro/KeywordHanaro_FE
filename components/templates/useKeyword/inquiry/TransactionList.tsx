@@ -32,11 +32,12 @@ export default function TransactionList() {
         <br />
         검색한 결과예요
       </h1>
-      <div className='flex flex-col gap-4'>
-        <h1 className='text-[16px] font-semibold'>
-          최근 거래내역 ({filteredTransactions.length}건)
+      <div className=''>
+        <h1 className='text-[18px] font-semibold mb-[16px]'>
+          최근 거래내역{' '}
+          <span className='text-[12px]'>({filteredTransactions.length}건)</span>
         </h1>
-        <div>
+        <div className=''>
           {filteredTransactions.length > 0 ? (
             filteredTransactions.map((data) => {
               const currentDate = formatDate(data.dateTime); // 현재 거래의 날짜
@@ -44,11 +45,9 @@ export default function TransactionList() {
               lastDate = currentDate; // 마지막 표시된 날짜 업데이트
 
               return (
-                <div key={data.id}>
+                <div key={data.id} className=''>
                   {showDate && (
-                    <h2 className='text-[12px] mb-2 text-subGray'>
-                      {currentDate}
-                    </h2>
+                    <h2 className='text-[12px] text-subGray'>{currentDate}</h2>
                   )}
                   <TransactionHistory data={data} />
                 </div>

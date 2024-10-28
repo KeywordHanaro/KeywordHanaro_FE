@@ -15,7 +15,7 @@ export const TransactionHistory = ({
   const bankImage = bankList.find((i) => i.id === accountInfo.bankId)?.image;
 
   return (
-    <div className='bg-White  text-hanaPrimary'>
+    <div className='bg-White  text-hanaPrimary py-[24px]'>
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-3'>
           {bankImage ? (
