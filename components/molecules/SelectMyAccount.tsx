@@ -65,7 +65,7 @@ const SelectMyAccount: React.FC<SelectBankProps> = ({ onSelect }) => {
                     onClick={() => handleSelect(account)}
                   >
                     <span>
-                      <AccountListItem account={account} onclick={()=>console.log('hi')} />
+                      <AccountListItem account={account} onclick={()=>{}} />
                     </span>
                   </DrawerClose>
                 ))}
