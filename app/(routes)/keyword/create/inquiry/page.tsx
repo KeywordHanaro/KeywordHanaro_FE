@@ -25,7 +25,12 @@ export default function KeywordCreateInquiryPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<DataProps>({
-    account: { accountName: '', bankId: 0, accountNumber: '' },
+    account: {
+      type: 'MyAccount',
+      accountName: '',
+      bankId: 0,
+      accountNumber: '',
+    },
     inquiry: '',
     keywordName: '',
   });

@@ -1,35 +1,25 @@
-import AccountListItem, {
-  MyAccountItemProps,
-} from '@/components/molecules/AccountListItem';
+import { type MyAccountItemProps } from '@/components/molecules/AccountListItem';
 import { MyAccounts } from '@/data/account';
+import MyAccountList from '../organisms/MyAccountList';
 
 type SelectAccountProps = {
-  // account: string;
   onUpdate: (account: MyAccountItemProps) => void;
   onNext: () => void;
 };
 
 export default function SelectAccount({
-  // account,
   onUpdate,
   onNext,
 }: SelectAccountProps) {
-  // 선택된 계좌 handle
-  const handleAccountClick = (account: MyAccountItemProps) => {
-    onUpdate(account);
-    onNext();
-  };
   return (
     <div className='flex flex-col gap-[24px]'>
       <h1 className='font-extrabold text-2xl'>내 계좌를 선택해주세요</h1>
       <div>
-        {MyAccounts.map((account) => (
-          <AccountListItem
-            key={account.accountNumber}
-            account={account}
-            onclick={() => handleAccountClick(account)}
-          />
-        ))}
+        <MyAccountList
+          accounts={MyAccounts}
+          onUpdate={onUpdate}
+          onNext={onNext}
+        />
       </div>
     </div>
   );
