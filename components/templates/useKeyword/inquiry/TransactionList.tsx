@@ -1,5 +1,5 @@
 import TransactionHistory from '@/components/molecules/Transaction';
-import { keywordList } from '@/data/keyword';
+import { InquiryList } from '@/data/inquiry';
 import { transactionList } from '@/data/transaction';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
@@ -9,12 +9,12 @@ export default function TransactionList() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
 
-  const keywordDetail = keywordList.find(
+  const keywordDetail = InquiryList.find(
     (keyword) => keyword.id === Number(id)
   );
   console.log('.>>', keywordDetail);
 
-  if (!keywordDetail || keywordDetail?.type !== 'inquiry') {
+  if (!keywordDetail) {
     return (
       <div>
         <Image
@@ -33,8 +33,8 @@ export default function TransactionList() {
   }
 
   // description에서 키워드 추출
-  const originKeyword = keywordDetail?.description;
-  const keyword = originKeyword?.split('>').pop()?.trim() || '';
+  const keyword = keywordDetail.searchKeyword;
+  // const keyword = originKeyword?.split('>').pop()?.trim() || '';
 
   // const keyword = '성수'; //input keyword
 
