@@ -26,9 +26,9 @@ export default function SettlementCompletion({
         {isAdjustment ? '정산' : '회비'} 요청이 완료되었어요
       </p>
 
-      <div className='flex flex-col items-center justify-center gap-[11px] flex-grow '>
+      <div className='flex flex-col items-center justify-center gap-[11px] flex-grow break-keep'>
         <p className='text-[18px] font-normal'>{accountName}로</p>
-        <div className='text-[#069894] text-[24px] font-semibold flex-grow  px-[20px]'>
+        <div className='text-[#069894] text-[24px] font-semibold px-[20px] text-center'>
           {members.map((member, idx) =>
             idx !== members.length - 1 ? (
               <span key={member.id} className='mr-[3px]'>

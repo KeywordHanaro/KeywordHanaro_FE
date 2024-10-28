@@ -2,7 +2,6 @@ import { MicRef } from '@/components/atoms/Mic';
 import AccountCard from '@/components/molecules/AccountCard';
 import Keyword from '@/components/molecules/Keyword';
 import { Toggle } from '@/components/ui/toggle';
-import { BsPerson } from 'react-icons/bs';
 import { SlArrowRight } from 'react-icons/sl';
 
 export default function Home() {
@@ -49,7 +48,7 @@ export default function Home() {
       {/* 헤더 시작 */}
       <div className='w-full h-[60px] flex px-[30px] items-center justify-between bg-white'>
         <a href='#'>
-          <BsPerson className='w-[30px] h-[30px] cursor-pointer' />
+          <p>디지털 하나로</p>
         </a>
         <div className='flex items-center'>
           <Toggle className='mr-[15px]' />
