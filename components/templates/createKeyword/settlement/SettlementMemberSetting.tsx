@@ -1,18 +1,25 @@
 'use client';
 
+import { FormData } from '@/app/(routes)/keyword/create/settlement/page';
 import { DefaultInputRef } from '@/components/atoms/Inputs';
 import { ChipsList } from '@/components/molecules/ChipList';
 import ContactItem from '@/components/molecules/ContactListItem';
 import { Member, MemberList } from '@/data/member';
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo } from 'react';
 
-export default function SettlementMemberSetting() {
+type SettlementMemberSettingProps = {
+  onUpdate: (members: Member[]) => void;
+};
+
+export default function SettlementMemberSetting({
+  onUpdate,
+}: SettlementMemberSettingProps) {
   const [selectedMember, setSelectedMember] = useState<Member[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const queryRef = useRef<HTMLInputElement>(null);
 
   const handleDeleteMember = (id: number) => {
     setSelectedMember(selectedMember.filter((member) => id !== member.id));
+    onUpdate(selectedMember);
     console.log(selectedMember);
   };
 
@@ -26,8 +33,9 @@ export default function SettlementMemberSetting() {
         return newMember ? [...prev, newMember] : prev;
       }
     });
+    onUpdate(selectedMember);
+
     setSearchQuery('');
-    if (queryRef.current) queryRef.current.value = '';
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +59,6 @@ export default function SettlementMemberSetting() {
       <DefaultInputRef
         placeHolder='이름 / 전화번호를 입력해주세요'
         value={searchQuery}
-        ref={queryRef}
         onChange={handleSearchChange}
       />
 
@@ -64,7 +71,7 @@ export default function SettlementMemberSetting() {
               items={selectedMember}
               canDelete={true}
               onRemove={handleDeleteMember}
-            ></ChipsList>
+            />
           </div>
         </div>
       )}
