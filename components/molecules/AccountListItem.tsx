@@ -2,10 +2,10 @@
 
 import { MyAccount, OthersAccount } from '@/data/account';
 import { bankList } from '@/data/bank';
-import { BsStarFill } from 'react-icons/bs';
+// import { BsStarFill } from 'react-icons/bs';
 import Image from 'next/image';
-import { useState } from 'react';
-import { cn } from '@/lib/utils';
+// import { useState } from 'react';
+// import { cn } from '@/lib/utils';
 
 export type MyAccountItemProps = MyAccount;
 
@@ -58,6 +58,7 @@ export default function AccountListItem({ account, onclick }: AccountListType) {
               alt={bank.bankname}
               className='rounded-full'
               layout='fill'
+              sizes='min-width:40px height:40px'
             />
           </div>
         ) : (
