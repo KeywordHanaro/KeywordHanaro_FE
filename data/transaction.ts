@@ -176,13 +176,24 @@ export const transactionList: Transaction[] = [
   },
   {
     id: 21,
+    dateTime: '2023-09-24T12:58:22Z',
+    accountInfo: {
+      bankId: 35,
+      accountNumber: '123551231235',
+      accountName: '하나로 급여',
+    },
+    amount: 4200,
+    balance: 20000000000,
+  },
+  {
+    id: 23,
     dateTime: '2023-10-24T12:58:22Z',
     accountInfo: {
       bankId: 35,
       accountNumber: '123551231235',
-      accountName: '터틀넥즈 곗돈',
+      accountName: '하나로 급여',
     },
-    amount: 4200,
+    amount: 420000,
     balance: 20000000000,
   },
 ];

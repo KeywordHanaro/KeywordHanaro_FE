@@ -11,14 +11,14 @@ type KeywordProps = {
 };
 
 const Keyword = ({
-  data: { type, title, description, isFavorite },
+  data: { id, type, title, description, isFavorite },
 }: KeywordProps) => {
   const router = useRouter();
   return (
     <Card
       className='flex flex-row justify-between items-center rounded-[12px]'
       onClick={() => {
-        router.push(`/${type}`);
+        router.push(`/${type}?id=${id}`);
       }}
     >
       <div className='flex flex-col gap-[8px]'>

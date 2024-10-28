@@ -1,10 +1,43 @@
 import TransactionHistory from '@/components/molecules/Transaction';
+import { keywordList } from '@/data/keyword';
 import { transactionList } from '@/data/transaction';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 import { formatDate } from '@/lib/utils';
 
 export default function TransactionList() {
-  const keyword = '터틀'; //input keyword
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
+
+  const keywordDetail = keywordList.find(
+    (keyword) => keyword.id === Number(id)
+  );
+  console.log('.>>', keywordDetail);
+
+  if (!keywordDetail || keywordDetail?.type !== 'inquiry') {
+    return (
+      <div>
+        <Image
+          src={'/images/alarts/noData.gif'}
+          alt=''
+          width={300}
+          height={300}
+          className='mx-auto'
+        />
+        <p className='text-center font-bold text-[20px]'>
+          해당 키워드의 거래내역이 없어요!
+        </p>
+        <p className='text-center'>(예)홍길동, 000곗돈 등으로 검색해보세요!</p>
+      </div>
+    );
+  }
+
+  // description에서 키워드 추출
+  const originKeyword = keywordDetail?.description;
+  const keyword = originKeyword.split('>').pop()?.trim() || '';
+
+  // const keyword = '성수'; //input keyword
+
   // accountName에 keyword가 포함된 거래 내역만 필터링
   const filteredTransactions = transactionList
     .filter((transaction) =>
@@ -26,7 +59,7 @@ export default function TransactionList() {
 
   return (
     <div className='flex flex-col gap-[24px]'>
-      <h1 className='font-extrabold text-2xl'>
+      <h1 className='font-bold text-2xl'>
         {keyword}
         {hasBatchim(keyword) ? '을' : '를'} 기반으로
         <br />
