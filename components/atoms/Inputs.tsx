@@ -197,21 +197,19 @@ function MoneyInput(
     const numericValue = inputValue.replace(/[^0-9]/g, '');
     const parsedValue = numericValue ? parseInt(numericValue, 10) : 0;
     return new Intl.NumberFormat('ko-KR').format(parsedValue);
-  },[]);
+  }, []);
 
   useEffect(() => {
     if (spanRef.current && ref && typeof ref !== 'function') {
       const textWidth = spanRef.current.offsetWidth;
       // console.log("🚀 ~ useEffect ~ textWidth:", !!textWidth)
-      if(!textWidth && ref.current){
-        ref.current.style.width = '100%'
-      }
-      else if (ref.current?.value) {
+      if (!textWidth && ref.current) {
+        ref.current.style.width = '100%';
+      } else if (ref.current?.value) {
         ref.current.style.width = `${textWidth + 1}px`;
       }
     }
   }, [value, ref]);
-      
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -239,7 +237,9 @@ function MoneyInput(
       />
       <span
         ref={spanRef}
-        className='invisible absolute whitespace-pre max-w-full text-2xl font-semibold'
+        className={cn(
+          'invisible absolute whitespace-pre max-w-full text-2xl font-semibold'
+        )}
         aria-hidden='true'
       >
         {value}
