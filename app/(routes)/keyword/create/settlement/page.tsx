@@ -9,7 +9,7 @@ import SelectAccount from '@/components/templates/SelectAccount';
 import SetActionCategory from '@/components/templates/createKeyword/settlement/SetActionCategory';
 import SetKeywordComplete from '@/components/templates/createKeyword/settlement/SetKeywordComplete';
 import SettlementMemberSetting from '@/components/templates/createKeyword/settlement/SettlementMemberSetting';
-import { Member, MemberList } from '@/data/member';
+import { Member } from '@/data/member';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -25,14 +25,18 @@ export type FormData = {
 export default function KeywordCreateSettlementPage() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
-    account: { accountName: '', accountNumber: '', bankId: 0 },
+    account: {
+      type: 'MyAccount',
+      accountName: '',
+      accountNumber: '',
+      bankId: 0,
+    },
     members: [],
     category: 'Settlement',
     checkEveryTime: false,
     amount: '',
     keywordName: '',
   });
-  const [selectedMember, setSelectedMember] = useState<Member[]>([]);
   const router = useRouter();
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
