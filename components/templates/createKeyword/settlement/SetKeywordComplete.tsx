@@ -34,7 +34,7 @@ export default function SetKeywordComplete({
       ) : (
         <>
           <h3 className='font-semibold text-hanaPrimary text-[18px]'>
-            각각 {formData.amount}이 요청돼요
+            각각 {formData.amount}원씩 요청돼요
           </h3>
         </>
       )}

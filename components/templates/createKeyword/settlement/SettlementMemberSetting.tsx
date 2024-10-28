@@ -5,7 +5,7 @@ import { DefaultInputRef } from '@/components/atoms/Inputs';
 import { ChipsList } from '@/components/molecules/ChipList';
 import ContactItem from '@/components/molecules/ContactListItem';
 import { Member, MemberList } from '@/data/member';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 
 type SettlementMemberSettingProps = {
   formData: FormData;
@@ -20,41 +20,47 @@ export default function SettlementMemberSetting({
     formData.members ?? []
   );
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const searchRef = useRef<HTMLInputElement>(null);
 
-  const handleDeleteMember = (id: number) => {
-    setSelectedMember(selectedMember.filter((member) => id !== member.id));
+  useEffect(() => {
     onUpdate(selectedMember);
-    console.log(selectedMember);
-  };
+  }, [selectedMember]); // onUpdate를 의존성 배열에서 제거
 
-  const handleToggleSelect = (id: number) => {
+  const handleDeleteMember = useCallback((id: number) => {
+    setSelectedMember((prevMembers) =>
+      prevMembers.filter((member) => id !== member.id)
+    );
+  }, []);
+
+  const handleToggleSelect = useCallback((id: number) => {
     setSelectedMember((prev) => {
       const isAlreadySelected = prev.some((member) => member.id === id);
-      let updatedMembers;
-
       if (isAlreadySelected) {
-        updatedMembers = prev.filter((member) => member.id !== id);
+        return prev.filter((member) => member.id !== id);
       } else {
         const newMember = MemberList.find((member) => member.id === id);
-        updatedMembers = newMember ? [...prev, newMember] : prev;
+        return newMember ? [...prev, newMember] : prev;
       }
-
-      onUpdate(updatedMembers);
-      return updatedMembers;
     });
-
+    if (searchRef.current) {
+      searchRef.current.value = '';
+    }
     setSearchQuery('');
-  };
+  }, []);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+    console.log('e.target.value', e.target.value);
   };
 
   const filteredMembers = useMemo(() => {
     const lowercasedQuery = searchQuery.toLowerCase();
-    const results = MemberList.filter((member) =>
-      member.name.toLowerCase().includes(lowercasedQuery)
+    const results = MemberList.filter(
+      (member) =>
+        member.name.toLowerCase().includes(lowercasedQuery) ||
+        member.phoneNumber.replaceAll('-', '').includes(lowercasedQuery)
     );
+
     return results.length > 0 ? results : selectedMember;
   }, [searchQuery, selectedMember]);
 
@@ -67,6 +73,7 @@ export default function SettlementMemberSetting({
       <DefaultInputRef
         placeHolder='이름 / 전화번호를 입력해주세요'
         value={searchQuery}
+        ref={searchRef}
         onChange={handleSearchChange}
       />
 

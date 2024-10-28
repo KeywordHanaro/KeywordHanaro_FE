@@ -9,6 +9,7 @@ import React, {
   forwardRef,
   useCallback,
   useEffect,
+  useImperativeHandle,
   useRef,
   useState,
 } from 'react';
@@ -35,55 +36,57 @@ function DefaultInput(
     type,
     onChange,
     className,
-    value,
+    // value,
     placeHolder,
     required,
     error,
     ...props
   }: DefaultInputProps,
-  ref: ForwardedRef<HTMLInputElement>
+  forwardedRef: ForwardedRef<HTMLInputElement>
 ) {
   const [isTouched, setIsTouched] = useState(false);
-  const [inputValue, setInputValue] = useState(value);
-
-  /** input onchange 핸들러 */
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (onChange) {
-      onChange(e);
-    }
-    setInputValue(e.target.value);
-  };
+  const ref = useRef<HTMLInputElement>(null);
+  useImperativeHandle(forwardedRef, () => ref.current as HTMLInputElement);
 
   /** 입력 초기화 버튼 핸들러 */
   const handleClear = () => {
-    setInputValue('');
+    if (ref.current) {
+      ref.current.value = '';
+    }
+    // 부모 컴포넌트에 변경 사항 알리기
+    if (onChange) {
+      const event = {
+        target: { value: '', name: name },
+      } as React.ChangeEvent<HTMLInputElement>;
+      onChange(event);
+    }
   };
 
   /** 사용자 입력 감지 핸들러 */
   const handleBlur = () => {
     setIsTouched(true);
   };
+
   return (
     <>
       <div className='input-box'>
         <input
-          value={inputValue}
+          // value={inputValue}
           name={name}
           type={type}
           className={cn(
             { className },
-            'peer border border-placeholderGray px-4 rounded-xl h-11',
-            isTouched &&
-              'invalid:border-errorRed invalid:text-errorRed valid:border-hanaPrimary valid:text-hanaPrimary'
+            'peer border border-placeholderGray px-4 rounded-xl h-11 focus:border-hanaPrimary focus:text-hanaPrimary',
+            isTouched && 'invalid:border-errorRed invalid:text-errorRed '
           )}
           placeholder={placeHolder}
-          onChange={handleChange}
+          onChange={onChange}
           onBlur={handleBlur}
           required={required}
           ref={ref}
           {...props}
         />
-        {inputValue && (
+        {ref?.current?.value && (
           <div className='absolute h-11 w-fit right-0 flex'>
             <a
               onClick={handleClear}
@@ -183,10 +186,11 @@ const AccountInputRef = forwardRef(AccountInput);
 /** ------------------------------------------ */
 type MoneyInputProps = baseInputTypeProps & {
   onChangeValidity?: (valid: boolean) => void;
+  onChange?:(e:React.ChangeEvent<HTMLInputElement>)=>void
 };
 /** 금액 입력, ref로 입력 값 가져오기 */
 function MoneyInput(
-  { className, placeHolder, onChangeValidity, ...props }: MoneyInputProps,
+  { className, placeHolder, onChangeValidity, onChange=()=>{}, ...props }: MoneyInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
   const [value, setValue] = useState<string>('');
@@ -220,6 +224,7 @@ function MoneyInput(
       onChangeValidity?.(valid);
       const formattedValue = formatNumberWithCommas(inputValue);
       setValue(formattedValue);
+      onChange(e)
     },
     [setValue, formatNumberWithCommas, onChangeValidity]
   );
@@ -230,7 +235,7 @@ function MoneyInput(
         ref={ref}
         value={value}
         onChange={handleChange}
-        className={cn(className, 'max-w-full text-2xl font-semibold ')}
+        className={cn(className, 'max-w-full text-2xl font-semibold transition-all duration-500')}
         placeholder={placeHolder}
         required
         {...props}
@@ -244,7 +249,7 @@ function MoneyInput(
       >
         {value}
       </span>
-      {value && <span className='z-50 text-2xl font-semibold'>원</span>}
+      { <span className='z-50 text-2xl font-semibold'>원</span>}
     </div>
   );
 }
@@ -257,10 +262,10 @@ function KeywordInput(
   ref: ForwardedRef<HTMLInputElement>
 ) {
   return (
-    <div className='after:w-full after:border after:border-b-placeholderGray flex flex-col w-full'>
+    <div className='after:w-full after:border after:border-b-placeholderGray flex flex-col gap-2 w-full'>
       <input
         ref={ref}
-        className={cn('w-full text-center text-2xl font-bold', className)}
+        className={cn('w-full text-center text-2xl font-semibold', className)}
         placeholder={placeHolder}
         {...props}
       />

@@ -8,14 +8,18 @@ type SetAmountProps = {
   checkEverytime: boolean;
   toggleCheckEverytime: () => void;
   onChangeValidity: (valid: boolean) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value:string;
 };
 
 const SetAmount = forwardRef<HTMLInputElement, SetAmountProps>(
-  ({ checkEverytime, toggleCheckEverytime, onChangeValidity }, ref) => {
+  ({ checkEverytime, toggleCheckEverytime, onChangeValidity, onChange, value}, ref) => {
     return (
       <div className='flex flex-col gap-6 w-full'>
         {!checkEverytime ? (
           <MoneyInputRef
+            onChange={onChange}
+            value={value}
             ref={ref}
             placeHolder='얼마를 요청할까요?'
             type=''
