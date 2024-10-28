@@ -8,13 +8,17 @@ import { Member, MemberList } from '@/data/member';
 import { useState, useMemo } from 'react';
 
 type SettlementMemberSettingProps = {
+  formData: FormData;
   onUpdate: (members: Member[]) => void;
 };
 
 export default function SettlementMemberSetting({
+  formData,
   onUpdate,
 }: SettlementMemberSettingProps) {
-  const [selectedMember, setSelectedMember] = useState<Member[]>([]);
+  const [selectedMember, setSelectedMember] = useState<Member[]>(
+    formData.members ?? []
+  );
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const handleDeleteMember = (id: number) => {
@@ -26,14 +30,18 @@ export default function SettlementMemberSetting({
   const handleToggleSelect = (id: number) => {
     setSelectedMember((prev) => {
       const isAlreadySelected = prev.some((member) => member.id === id);
+      let updatedMembers;
+
       if (isAlreadySelected) {
-        return prev.filter((member) => member.id !== id);
+        updatedMembers = prev.filter((member) => member.id !== id);
       } else {
         const newMember = MemberList.find((member) => member.id === id);
-        return newMember ? [...prev, newMember] : prev;
+        updatedMembers = newMember ? [...prev, newMember] : prev;
       }
+
+      onUpdate(updatedMembers);
+      return updatedMembers;
     });
-    onUpdate(selectedMember);
 
     setSearchQuery('');
   };
@@ -51,7 +59,7 @@ export default function SettlementMemberSetting({
   }, [searchQuery, selectedMember]);
 
   return (
-    <div className='flex flex-col w-full gap-[24px]'>
+    <div className='flex flex-col w-full h-full gap-[24px]'>
       {/* 메인 문구 */}
       <h1 className='font-semibold text-[24px]'>정산 멤버를 설정해주세요</h1>
 
@@ -77,7 +85,7 @@ export default function SettlementMemberSetting({
       )}
 
       {/* 연락처 */}
-      <div className='flex flex-col'>
+      <div className='flex flex-col h-full overflow-y-scroll'>
         {filteredMembers.map((member) => (
           <ContactItem
             key={member.id}

@@ -55,7 +55,7 @@ export default function KeywordCreateSettlementPage() {
   };
 
   return (
-    <div className='w-full h-full relative'>
+    <div className='flex flex-col h-full '>
       {/* Header 2번째 페이지만 selectedMember가 있으면 다음 버튼 출현 */}
       {step === 2 && formData.members.length !== 0 ? (
         <Header
@@ -72,7 +72,7 @@ export default function KeywordCreateSettlementPage() {
         />
       )}
 
-      <div className='p-[20px]'>
+      <div className='flex flex-col flex-grow p-[20px] pb-24 h-full overflow-hidden'>
         {/* 1. 계좌 선택 */}
         {step === 1 && (
           <SelectAccount
@@ -84,6 +84,7 @@ export default function KeywordCreateSettlementPage() {
         {/* 2. 연락처에서 멤버 선택 */}
         {step === 2 && (
           <SettlementMemberSetting
+            formData={formData}
             onUpdate={(members) => updateFormData({ members })}
           />
         )}
