@@ -1,4 +1,4 @@
-type Bank = {
+export type Bank = {
   id: number;
   bankname: string;
   image: string;

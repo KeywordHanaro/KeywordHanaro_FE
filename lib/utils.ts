@@ -1,3 +1,4 @@
+import { Bank, bankList } from '@/data/bank';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -45,4 +46,35 @@ export function formatDate(dateTime: string | Date): string {
 }
 export function goBack() {
   return window.history.back();
+}
+
+export function formatAccountNumber(
+  bankId: number,
+  accountNumber: string
+): string {
+  const cleanNumber = accountNumber.replace(/-/g, '');
+  const bank = bankList.find((b) => b.id === bankId);
+
+  if (!bank) return accountNumber;
+
+  switch (bank.id) {
+    case 4: // 국민은행
+      return cleanNumber.replace(/(\d{6})(\d{2})(\d{6})/, '$1-$2-$3');
+    case 88: // 신한은행
+      return cleanNumber.replace(/(\d{3})(\d{3})(\d{6})/, '$1-$2-$3');
+    case 20: // 우리은행
+      return cleanNumber.replace(/(\d{4})(\d{3})(\d{6})/, '$1-$2-$3');
+    case 81: // 하나은행
+      return cleanNumber.replace(/(\d{3})(\d{6})(\d{5})/, '$1-$2-$3');
+    case 11: // NH농협
+      return cleanNumber.replace(/(\d{3})(\d{4})(\d{4})(\d{2})/, '$1-$2-$3-$4');
+    case 3: // IBK기업
+      return cleanNumber.replace(/(\d{3})(\d{2})(\d{7})/, '$1-$2-$3');
+    case 90: // 카카오뱅크
+      return cleanNumber.replace(/(\d{4})(\d{2})(\d{7})/, '$1-$2-$3');
+    case 92: // 토스뱅크
+      return cleanNumber.replace(/(\d{3})(\d{4})(\d{4})(\d)/, '$1-$2-$3-$4');
+    default:
+      return accountNumber;
+  }
 }

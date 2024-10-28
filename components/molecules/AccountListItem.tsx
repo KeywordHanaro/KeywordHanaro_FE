@@ -1,52 +1,51 @@
 'use client';
 
+import { MyAccount, OthersAccount } from '@/data/account';
 import { bankList } from '@/data/bank';
 import { BsStarFill } from 'react-icons/bs';
 import Image from 'next/image';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
-export type MyAccountItemProps = {
-  accountNumber: string;
-  accountName: string;
-  bankId: number;
-};
+export type MyAccountItemProps = MyAccount;
 
-type OthersAccountItemProps = {
-  accountNumber: string;
-  name: string;
-  bankId: number;
-};
+type OthersAccountItemProps = OthersAccount;
 
-type AccountItemFavoriteProps = (
+export type MyOrOthersAccountItemProps =
   | MyAccountItemProps
-  | OthersAccountItemProps
-) & { isFavorite: boolean };
+  | OthersAccountItemProps;
+
+// type AccountItemFavoriteProps = (
+//   | MyAccountItemProps
+//   | OthersAccountItemProps
+// ) & { isFavorite: boolean };
 
 export type AccountListType = {
-  account:
-    | (MyAccountItemProps | OthersAccountItemProps)
-    | AccountItemFavoriteProps;
+  account: MyAccountItemProps | MyOrOthersAccountItemProps;
+  // | AccountItemFavoriteProps;
   onclick: () => void;
 };
 
 export default function AccountListItem({ account, onclick }: AccountListType) {
   const { bankId, accountNumber } = account;
 
+  // const name =
+  //   'accountName' in account
+  //     ? account.accountName
+  //     : 'name' in account
+  //       ? account.name
+  //       : undefined;
+
   const name =
-    'accountName' in account
-      ? account.accountName
-      : 'name' in account
-        ? account.name
-        : undefined;
+    account.type === 'MyAccount' ? account.accountName : account.name;
 
-  const isFavorite = 'isFavorite' in account ? account.isFavorite : undefined;
+  // const isFavorite = 'isFavorite' in account ? account.isFavorite : undefined;
 
-  const [favoriteState, setFavoriteState] = useState(isFavorite);
+  // const [favoriteState, setFavoriteState] = useState(isFavorite);
 
-  const toggleFavorite = () => {
-    setFavoriteState((prev) => !prev);
-  };
+  // const toggleFavorite = () => {
+  //   setFavoriteState((prev) => !prev);
+  // };
   const bank = bankList.find((i) => i.id === +bankId);
 
   return (
@@ -72,7 +71,7 @@ export default function AccountListItem({ account, onclick }: AccountListType) {
           </h1>
         </div>
       </div>
-      <div className='flex items-center'>
+      {/* <div className='flex items-center'>
         {typeof favoriteState !== 'undefined' && (
           <BsStarFill
             onClick={toggleFavorite}
@@ -83,7 +82,7 @@ export default function AccountListItem({ account, onclick }: AccountListType) {
             )}
           />
         )}
-      </div>
+      </div> */}
     </div>
   );
 }
