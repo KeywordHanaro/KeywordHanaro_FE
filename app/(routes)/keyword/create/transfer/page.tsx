@@ -82,11 +82,6 @@ export default function KeywordCreateTransferPage() {
     }
   };
 
-  // 송금은 중간에 뒤로 가기 못하게?
-  // const handleOnBack2 = () => {
-  //   router.back();
-  // };
-
   const updateFormData = (newData: Partial<DataProps>) => {
     setFormData((prevData) => {
       const updatedData = { ...prevData, ...newData };
