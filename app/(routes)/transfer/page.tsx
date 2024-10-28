@@ -1,92 +1,107 @@
 'use client';
 
 import Header from '@/components/atoms/Header';
-import { MoneyInputRef } from '@/components/atoms/Inputs';
-import { HowMuchProps } from '@/components/templates/createKeyword/transfer/HowMuch';
-import { KeywordInputToOtherData, UseKeywordTransfer } from '@/data/transfer';
-import Image from 'next/image';
-import { useRef } from 'react';
+import SetTransferAmount from '@/components/templates/useKeyword/transfer/SetTransferAmount';
+import TransferComplete from '@/components/templates/useKeyword/transfer/TransferComplete';
+import { TransferProps, UseKeywordTransfer } from '@/data/transfer';
+// import Image from 'next/image';
+import { useRef, useState } from 'react';
 
-export default function TransferPage({ fromAccount, toAccount }: HowMuchProps) {
-  const headerText = '키워드 송금';
-  const inputKeyword = '서아 저금통'; //[STT Input]
-  const { balance } = KeywordInputToOtherData;
+type TransferData = {
+  transferAmount: string;
+} & TransferProps;
 
-  const transferData = UseKeywordTransfer.find(
-    (transfer) => transfer.keyword === inputKeyword
-  );
+export default function TransferPage() {
+  // api call 한번 돌아야한다. 그런데 지금은 데이터가 없다
+  // 그러면 지금은 일단 더미로 놔두고, 나중에 백엔드가 만들어지면
+
+  // useEffect(() => {
+  //   api call을 한다
+  // }, []);
+  const initialData = UseKeywordTransfer[0];
+  const [formData, setFormData] = useState<TransferData>({
+    ...initialData,
+    transferAmount: '',
+  });
+
+  const [step, setStep] = useState(1);
 
   const amountRef = useRef<HTMLInputElement>(null);
 
-  const handleBack = () => {};
-  const onChangeValidity = (isValid: boolean) => {
-    // 입력값 유효성 처리 함수
-    console.log('Input validity:', isValid);
-  };
-  // 검색한 키워드가 없을 경우
-  if (!transferData) {
-    return (
-      <div>
-        <Header
-          text={headerText}
-          showBackButton={true}
-          onBack={handleBack}
-          showActionButton={false}
-        />
-        <div className='flex-col flex justify-center'>
-          <Image
-            src={'/images/alarts/noData.gif'}
-            alt=''
-            width={300}
-            height={300}
-            className='mx-auto'
-          />
-          <p className='text-center font-bold text-[20px]'>
-            해당 키워드로 조회된 내역이 없어요!
-          </p>
-        </div>
-      </div>
+  const onNext = () => {
+    setFormData((prev) =>
+      prev.type === 'WithoutAmount'
+        ? {
+            ...prev,
+            transferAmount: amountRef.current?.value || '',
+          }
+        : {
+            ...prev,
+            transferAmount: prev.amount?.toString() || '',
+          }
     );
-  }
+    setStep((prev) => prev + 1);
+    // 실제 송금
+    // amountRef.current.value를 formData의 amount에 저장시켜줘
+  };
+
+  // const inputKeyword = '서아 저금통'; //[STT Input]
+
+  const handleBack = () => {};
+  const validAmount = (() => {
+    if (amountRef.current) {
+      console.log(amountRef.current.value);
+      return amountRef.current.value.length > 0;
+    }
+    console.log('no');
+  })();
+
+  // console.log('amountRef.current.value', amountRef?.current?.value);
+
+  // 검색한 키워드가 없을 경우
+  // if (!transferData) {
+  //   return (
+  //     <div>
+  //       <Header
+  //         text={headerText}
+  //         showBackButton={true}
+  //         onBack={handleBack}
+  //         showActionButton={false}
+  //       />
+  //       <div className='flex-col flex justify-center'>
+  //         <Image
+  //           src={'/images/alarts/noData.gif'}
+  //           alt=''
+  //           width={300}
+  //           height={300}
+  //           className='mx-auto'
+  //         />
+  //         <p className='text-center font-bold text-[20px]'>
+  //           해당 키워드로 조회된 내역이 없어요!
+  //         </p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+  // const isValid = validAmount();
   return (
     <div className='w-full h-full relative'>
       <Header
-        text={headerText}
+        text='키워드 송금'
         showBackButton={true}
         onBack={handleBack}
-        showActionButton={false}
+        showActionButton={initialData.type === 'WithoutAmount'}
+        actionLabel='다음'
+        onAction={() => (validAmount ? () => onNext() : undefined)}
+        //onAction={validAmount ? () => alert('true') : () => alert('false')}
       />
-      <div className='w-full flex flex-col px-[20px]'>
-        <div className='text-[24px] font-semibold'>
-          내 {fromAccount.accountName} 계좌에서
-        </div>
-        <div className='text-[12px] font-semibold'>
-          잔액 {balance.toLocaleString()}원
-        </div>
-      </div>
-      <div>
-        <div className='text-[24px] font-semibold'>
-          {toAccount.type === 'MyAccount'
-            ? toAccount.accountName + ' '
-            : toAccount.name + '님 '}
-          계좌로
-        </div>
-        <div className='text-[12px] font-semibold'>
-          {toAccount.accountNumber}
-        </div>
-      </div>
-      {transferData.type === 'WithoutAmount' ? ( //amount가 존재하는 데이터는 amount를 가져온다
-        <MoneyInputRef
-          ref={amountRef}
-          placeHolder='얼마를 요청할까요?'
-          type=''
-          onChangeValidity={onChangeValidity}
+      {step === 1 && <SetTransferAmount data={initialData} ref={amountRef} />}
+      {step === 2 && (
+        <TransferComplete
+          amount={formData?.transferAmount}
+          fromAccount={formData?.fromAccount}
+          toAccount={formData?.toAccount}
         />
-      ) : (
-        //withoutAmount는 input활성화
-        <div className='text-subGray font-semibold h-[32px] text-[18px] flex items-center'>
-          <div>금액은 키워드 호출 시 결정돼요</div>
-        </div>
       )}
     </div>
   );

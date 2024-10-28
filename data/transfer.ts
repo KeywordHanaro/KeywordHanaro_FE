@@ -1,4 +1,5 @@
-import { DataProps } from '@/app/(routes)/keyword/create/transfer/page';
+// import { DataProps } from '@/app/(routes)/keyword/create/transfer/page';
+import { MyAccount, OthersAccount } from './account';
 
 export type KeywordInputToOther = {
   fromAccountName: string;
@@ -48,7 +49,28 @@ export const KeywordSearchInputToOtherData: KeywordSearchInputProps[] = [
   },
 ];
 // useKeyword for transfer
-export const UseKeywordTransfer: DataProps[] = [
+type MyAccountWithBalance = {
+  balance: string;
+} & MyAccount;
+
+export type TransferProps =
+  | {
+      type: 'WithoutAmount';
+      fromAccount: MyAccountWithBalance;
+      toAccount: OthersAccount | MyAccount;
+      checkEverytime: true;
+      keyword: string;
+    }
+  | {
+      type: 'WithAmount';
+      fromAccount: MyAccountWithBalance;
+      toAccount: OthersAccount | MyAccount;
+      checkEverytime: false;
+      amount: number;
+      keyword: string;
+    };
+
+export const UseKeywordTransfer: TransferProps[] = [
   {
     type: 'WithoutAmount',
     fromAccount: {
@@ -56,6 +78,7 @@ export const UseKeywordTransfer: DataProps[] = [
       accountName: '문서아 취미 계쫘',
       bankId: 81,
       accountNumber: '222-2222-2221',
+      balance: '2000000',
     },
     toAccount: {
       type: 'OthersAccount',
@@ -73,6 +96,7 @@ export const UseKeywordTransfer: DataProps[] = [
       accountName: '문서아 즐거워',
       bankId: 81,
       accountNumber: '222-2222-2225',
+      balance: '2000000',
     },
     toAccount: {
       type: 'OthersAccount',

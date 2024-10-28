@@ -78,3 +78,10 @@ export function formatAccountNumber(
       return accountNumber;
   }
 }
+
+export const formatNumberWithCommas = (inputValue: string): string => {
+  if (!inputValue) return '';
+  const numericValue = inputValue.replace(/[^0-9]/g, '');
+  const parsedValue = numericValue ? parseInt(numericValue, 10) : 0;
+  return new Intl.NumberFormat('ko-KR').format(parsedValue);
+};
