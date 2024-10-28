@@ -8,7 +8,6 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
 } from '@/components/ui/drawer';
 import { FiDelete } from 'react-icons/fi';
 import { useEffect, useState, useRef } from 'react';
