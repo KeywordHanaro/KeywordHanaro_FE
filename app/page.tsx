@@ -71,7 +71,7 @@ export default function Home() {
         {/* 카드 끝 */}
 
         {/* 나의 키워드 */}
-        <div className='w-full h-[451px] flex flex-col gap-[8px] mb-[8px] mt-[20px]'>
+        <div className='w-full h-[451px] flex flex-col gap-[8px] mb-[8px] mt-[20px] overflow-y-scroll'>
           {/* 나의 키워드 헤더 */}
           <div className='flex w-full justify-between'>
             <p className='text-[18px] font-semibold'>나의 키워드</p>
