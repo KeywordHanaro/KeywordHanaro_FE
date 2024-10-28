@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/atoms/Button';
 import Header from '@/components/atoms/Header';
+import { MicRef } from '@/components/atoms/Mic';
 import KeywordCompletion from '@/components/templates/KeywordCompletion';
 import KeywordInputButton from '@/components/templates/KeywordInputButton';
 import LocationAgreement from '@/components/templates/createKeyword/ticket/LocationAgreement';
@@ -127,6 +128,8 @@ export default function KeywordCreateTicketPage() {
             {isTerms ? <>동의</> : <>다음</>}
           </Button>
         )}
+
+        {step === 3 && <MicRef />}
       </div>
     </div>
   );
