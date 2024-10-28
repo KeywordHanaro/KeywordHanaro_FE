@@ -21,7 +21,7 @@ function Mic(
     <div
       className={`w-full bg-hanaPrimary flex justify-center rounded-tl-[16px] rounded-tr-[16px] rounded-bl-[0px] rounded-br-[0px] ${
         isExpanded ? 'h-[240px]' : 'h-[72px]'
-      } transition-all duration-500 ease-in-out absolute bottom-0 left-0`}
+      } transition-all duration-500 ease-in-out fixed bottom-0 left-0`}
     >
       {isExpanded && (
         <div className='w-full text-center text-white mt-[70px] text-lg font-bold overflow-hidden'>
