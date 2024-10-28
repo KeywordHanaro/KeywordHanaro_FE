@@ -13,6 +13,10 @@ export type KeywordInputToMe = {
   toAccountNumber: string;
 };
 
+export type KeywordSearchInputProps = KeywordInputToOther & {
+  searchKeyword: string;
+};
+
 export const KeywordInputToOtherData: KeywordInputToOther = {
   fromAccountName: '여행적금 계좌',
   balance: 123000,
@@ -28,3 +32,14 @@ export const KeywordInputToMeData = {
   bankId: 3,
   toAccountNumber: '999-000000-000',
 };
+
+export const KeywordSearchInputToOtherData: KeywordSearchInputProps[] = [
+  {
+    fromAccountName: '여행적금 계좌',
+    balance: 5000000,
+    toName: '정성엽',
+    bankName: '기업',
+    toAccountNumber: '999-00-000',
+    searchKeyword: '성엽이 용돈',
+  },
+];
