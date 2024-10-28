@@ -47,7 +47,7 @@ const KeywordInputButton = forwardRef(
     return (
       <div className='flex flex-col gap-[33px] '>
         {/*title*/}
-        <div className='font-extrabold text-2xl mb-[50px]'>{title}</div>
+        <div className='font-semibold text-2xl mb-[50px]'>{title}</div>
 
         {/*keyword input*/}
         <KeywordInputRef

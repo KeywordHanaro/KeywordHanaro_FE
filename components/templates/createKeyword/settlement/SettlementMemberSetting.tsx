@@ -1,22 +1,38 @@
 'use client';
 
+import { FormData } from '@/app/(routes)/keyword/create/settlement/page';
 import { DefaultInputRef } from '@/components/atoms/Inputs';
 import { ChipsList } from '@/components/molecules/ChipList';
 import ContactItem from '@/components/molecules/ContactListItem';
 import { Member, MemberList } from '@/data/member';
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 
-export default function SettlementMemberSetting() {
-  const [selectedMember, setSelectedMember] = useState<Member[]>([]);
+type SettlementMemberSettingProps = {
+  formData: FormData;
+  onUpdate: (members: Member[]) => void;
+};
+
+export default function SettlementMemberSetting({
+  formData,
+  onUpdate,
+}: SettlementMemberSettingProps) {
+  const [selectedMember, setSelectedMember] = useState<Member[]>(
+    formData.members ?? []
+  );
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const queryRef = useRef<HTMLInputElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
 
-  const handleDeleteMember = (id: number) => {
-    setSelectedMember(selectedMember.filter((member) => id !== member.id));
-    console.log(selectedMember);
-  };
+  useEffect(() => {
+    onUpdate(selectedMember);
+  }, [selectedMember]); // onUpdate를 의존성 배열에서 제거
 
-  const handleToggleSelect = (id: number) => {
+  const handleDeleteMember = useCallback((id: number) => {
+    setSelectedMember((prevMembers) =>
+      prevMembers.filter((member) => id !== member.id)
+    );
+  }, []);
+
+  const handleToggleSelect = useCallback((id: number) => {
     setSelectedMember((prev) => {
       const isAlreadySelected = prev.some((member) => member.id === id);
       if (isAlreadySelected) {
@@ -26,24 +42,30 @@ export default function SettlementMemberSetting() {
         return newMember ? [...prev, newMember] : prev;
       }
     });
+    if (searchRef.current) {
+      searchRef.current.value = '';
+    }
     setSearchQuery('');
-    if (queryRef.current) queryRef.current.value = '';
-  };
+  }, []);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+    console.log('e.target.value', e.target.value);
   };
 
   const filteredMembers = useMemo(() => {
     const lowercasedQuery = searchQuery.toLowerCase();
-    const results = MemberList.filter((member) =>
-      member.name.toLowerCase().includes(lowercasedQuery)
+    const results = MemberList.filter(
+      (member) =>
+        member.name.toLowerCase().includes(lowercasedQuery) ||
+        member.phoneNumber.replaceAll('-', '').includes(lowercasedQuery)
     );
+
     return results.length > 0 ? results : selectedMember;
   }, [searchQuery, selectedMember]);
 
   return (
-    <div className='flex flex-col w-full gap-[24px]'>
+    <div className='flex flex-col w-full h-full gap-[24px]'>
       {/* 메인 문구 */}
       <h1 className='font-semibold text-[24px]'>정산 멤버를 설정해주세요</h1>
 
@@ -51,7 +73,7 @@ export default function SettlementMemberSetting() {
       <DefaultInputRef
         placeHolder='이름 / 전화번호를 입력해주세요'
         value={searchQuery}
-        ref={queryRef}
+        ref={searchRef}
         onChange={handleSearchChange}
       />
 
@@ -64,13 +86,13 @@ export default function SettlementMemberSetting() {
               items={selectedMember}
               canDelete={true}
               onRemove={handleDeleteMember}
-            ></ChipsList>
+            />
           </div>
         </div>
       )}
 
       {/* 연락처 */}
-      <div className='flex flex-col'>
+      <div className='flex flex-col h-full overflow-y-scroll'>
         {filteredMembers.map((member) => (
           <ContactItem
             key={member.id}

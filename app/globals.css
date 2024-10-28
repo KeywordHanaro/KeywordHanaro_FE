@@ -78,13 +78,13 @@
     @apply flex flex-col text-right relative;
   }
   .btn-sm {
-    @apply text-center text-sm font-bold w-[116px] h-[40px];
+    @apply text-center text-sm font-bold w-[116px];
   }
   .btn-md {
-    @apply text-center text-sm font-bold w-[150px] h-[50px];
+    @apply text-center text-sm font-bold w-[150px];
   }
   .btn-lg {
-    @apply text-center text-sm font-bold w-[300px] h-[50px];
+    @apply text-center text-sm font-bold w-[300px];
   }
   .btn-edit {
     @apply text-[11px] text-subGray border-subGray bg-white  border-[0.5px];

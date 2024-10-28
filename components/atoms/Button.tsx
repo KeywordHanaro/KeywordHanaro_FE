@@ -18,11 +18,11 @@ export const Button = ({
   return (
     <button
       className={cn(
-        'p-2 rounded-xl',
+        'p-4 rounded-xl text-[15px]',
         isDisabled
           ? 'bg-ToggleBgWhite text-black cursor-not-allowed' // unclickable
           : 'bg-hanaPrimary text-white', // clickable
-        size === 'sm' && 'btn-sm',
+        size === 'sm' && 'btn-sm p-3',
         size === 'md' && 'btn-md',
         size === 'lg' && 'btn-lg',
         className
