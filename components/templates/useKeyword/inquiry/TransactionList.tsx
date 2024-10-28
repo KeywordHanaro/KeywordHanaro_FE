@@ -34,7 +34,7 @@ export default function TransactionList() {
 
   // description에서 키워드 추출
   const originKeyword = keywordDetail?.description;
-  const keyword = originKeyword.split('>').pop()?.trim() || '';
+  const keyword = originKeyword?.split('>').pop()?.trim() || '';
 
   // const keyword = '성수'; //input keyword
 
