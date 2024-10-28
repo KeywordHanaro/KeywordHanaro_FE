@@ -89,7 +89,7 @@ export const transactionList: Transaction[] = [
   {
     id: 12,
     accountInfo: {
-      bankId: 27,
+      bankId: 7,
       accountNumber: '123551231235',
       accountName: 'CU 성수터틀넥점',
     },
@@ -139,6 +139,61 @@ export const transactionList: Transaction[] = [
       accountName: '터틀넥즈 꼬북꼬북계좌',
     },
     amount: 14200,
+    balance: 20000000000,
+  },
+  {
+    id: 12,
+    accountInfo: {
+      bankId: 27,
+      accountNumber: '123551231235',
+      accountName: 'CU 성수터틀넥점',
+    },
+    dateTime: '2024-09-24T23:58:22Z',
+    amount: 200,
+    balance: 20000000000,
+  },
+  {
+    id: 19,
+    dateTime: '2024-09-24T10:58:22Z',
+    accountInfo: {
+      bankId: 37,
+      accountNumber: '123551231235',
+      accountName: '터틀넥즈 꼬북꼬북계좌',
+    },
+    amount: 15000,
+    balance: 20000000000,
+  },
+  {
+    id: 20,
+    dateTime: '2024-09-20T10:58:22Z',
+    accountInfo: {
+      bankId: 37,
+      accountNumber: '123551231235',
+      accountName: '터틀넥즈 꼬북꼬북계좌',
+    },
+    amount: -12000,
+    balance: 20000000000,
+  },
+  {
+    id: 21,
+    dateTime: '2023-09-24T12:58:22Z',
+    accountInfo: {
+      bankId: 35,
+      accountNumber: '123551231235',
+      accountName: '하나로 급여',
+    },
+    amount: 4200,
+    balance: 20000000000,
+  },
+  {
+    id: 23,
+    dateTime: '2023-10-24T12:58:22Z',
+    accountInfo: {
+      bankId: 35,
+      accountNumber: '123551231235',
+      accountName: '하나로 급여',
+    },
+    amount: 420000,
     balance: 20000000000,
   },
 ];

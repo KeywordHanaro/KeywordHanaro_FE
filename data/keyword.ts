@@ -137,7 +137,7 @@ export const keywordList: Keyword[] = [
     id: 8,
     type: 'inquiry',
     title: '월급 확인',
-    description: '조회 > 급여',
+    description: '조회 > 성수',
     isFavorite: true,
   },
   {

@@ -1,10 +1,43 @@
 import TransactionHistory from '@/components/molecules/Transaction';
+import { InquiryList } from '@/data/inquiry';
 import { transactionList } from '@/data/transaction';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 import { formatDate } from '@/lib/utils';
 
 export default function TransactionList() {
-  const keyword = '터틀'; //input keyword
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
+
+  const keywordDetail = InquiryList.find(
+    (keyword) => keyword.id === Number(id)
+  );
+  console.log('.>>', keywordDetail);
+
+  if (!keywordDetail) {
+    return (
+      <div>
+        <Image
+          src={'/images/alarts/noData.gif'}
+          alt=''
+          width={300}
+          height={300}
+          className='mx-auto'
+        />
+        <p className='text-center font-bold text-[20px]'>
+          해당 키워드의 거래내역이 없어요!
+        </p>
+        <p className='text-center'>(예)홍길동, 000곗돈 등으로 검색해보세요!</p>
+      </div>
+    );
+  }
+
+  // description에서 키워드 추출
+  const keyword = keywordDetail.searchKeyword;
+  // const keyword = originKeyword?.split('>').pop()?.trim() || '';
+
+  // const keyword = '성수'; //input keyword
+
   // accountName에 keyword가 포함된 거래 내역만 필터링
   const filteredTransactions = transactionList
     .filter((transaction) =>
@@ -26,17 +59,18 @@ export default function TransactionList() {
 
   return (
     <div className='flex flex-col gap-[24px]'>
-      <h1 className='font-extrabold text-2xl'>
+      <h1 className='font-bold text-2xl'>
         {keyword}
         {hasBatchim(keyword) ? '을' : '를'} 기반으로
         <br />
         검색한 결과예요
       </h1>
-      <div className='flex flex-col gap-4'>
-        <h1 className='text-[16px] font-semibold'>
-          최근 거래내역 ({filteredTransactions.length}건)
+      <div className=''>
+        <h1 className='text-[18px] font-semibold mb-[16px]'>
+          최근 거래내역{' '}
+          <span className='text-[12px]'>({filteredTransactions.length}건)</span>
         </h1>
-        <div>
+        <div className=''>
           {filteredTransactions.length > 0 ? (
             filteredTransactions.map((data) => {
               const currentDate = formatDate(data.dateTime); // 현재 거래의 날짜
@@ -44,11 +78,9 @@ export default function TransactionList() {
               lastDate = currentDate; // 마지막 표시된 날짜 업데이트
 
               return (
-                <div key={data.id}>
+                <div key={data.id} className=''>
                   {showDate && (
-                    <h2 className='text-[12px] mb-2 text-subGray'>
-                      {currentDate}
-                    </h2>
+                    <h2 className='text-[12px] text-subGray'>{currentDate}</h2>
                   )}
                   <TransactionHistory data={data} />
                 </div>
