@@ -9,11 +9,14 @@ type SetAmountProps = {
   toggleCheckEverytime: () => void;
   onChangeValidity: (valid: boolean) => void;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  value?:string;
+  value?: string;
 };
 
 const SetAmount = forwardRef<HTMLInputElement, SetAmountProps>(
-  ({ checkEverytime, toggleCheckEverytime, onChangeValidity, onChange, value}, ref) => {
+  (
+    { checkEverytime, toggleCheckEverytime, onChangeValidity, onChange, value },
+    ref
+  ) => {
     return (
       <div className='flex flex-col gap-6 w-full'>
         {!checkEverytime ? (
