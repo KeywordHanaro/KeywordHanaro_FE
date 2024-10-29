@@ -14,147 +14,138 @@ import {
   TransferKeyword,
 } from '@/data/keyword';
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useCallback, useMemo, useRef, useState } from 'react';
 import { formatNumberWithCommas } from '@/lib/utils';
 
 export default function EditTransferKeyword() {
   const router = useRouter();
-
   const keyword = KeywordDetailList[2] as
     | TransferKeyword
     | TransferAmountKeyword;
 
-  const [formData, setFormData] = useState<
-    TransferKeyword | TransferAmountKeyword
-  >(keyword);
-
-  // keyword명 설정
   const [keywordTitle, setKeywordTitle] = useState(keyword.title);
-  const keywordNameRef = useRef<HTMLInputElement>(null);
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newTitle = e.target.value;
-    setKeywordTitle(newTitle);
-  };
-
-  // 보내는 계좌(FROM) 설정
   const [myAccount, setMyAccount] = useState<MyAccount | undefined>(
     keyword.accountFrom as MyAccount
   );
-
-  // 보낼 계좌(TO) 설정
   const [otherAccount, setOtherAccount] = useState<
     MyAccount | OthersAccount | undefined
   >(keyword.accountTo);
-  const otherAccountRef = useRef<HTMLInputElement>(null);
   const [transferToMe, setTransferToMe] = useState(
     keyword.accountTo.type === 'MyAccount'
   );
-  const toggleTransfer = () => {
-    setTransferToMe((prev) => !prev);
-    setOtherAccount(undefined);
-  };
-  const handleAccountInput = () => {
-    if (otherAccountRef.current) {
-      const newOtherAccount: OthersAccount = {
-        type: 'OthersAccount',
-        name: '',
-        bankId: 0,
-        accountNumber: otherAccountRef.current.value,
-      };
-      setOtherAccount(newOtherAccount);
-    }
-  };
-  const handleSelectBank = (id: number) => {
-    if (otherAccount?.type === 'OthersAccount') {
-      const newOtherAccount: OthersAccount = {
-        ...otherAccount,
-        bankId: id,
-      };
-      setOtherAccount(newOtherAccount);
-    } else {
-      const newOtherAccount: OthersAccount = {
-        type: 'OthersAccount',
-        name: '',
-        bankId: id,
-        accountNumber: '',
-      };
-      setOtherAccount(newOtherAccount);
-    }
-  };
-
-  // 금액 설정
   const [amount, setAmount] = useState<string>(
     keyword.type === 'transferAmount'
       ? formatNumberWithCommas(keyword.amount)
       : ''
   );
-  const amountRef = useRef<HTMLInputElement>(null);
   const [checkEverytime, setCheckEverytime] = useState(
     keyword.type !== 'transferAmount'
   );
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const money = e.target.value;
-    const formatData = formatNumberWithCommas(money);
-    setAmount(formatData);
-  };
-
   const [isValid, setIsValid] = useState<boolean>(
     keyword.type === 'transferAmount'
   );
 
-  const toggleCheckEverytime = () => {
-    if (!amount) {
-      setIsValid(!checkEverytime);
-    }
-    setAmount('');
-    setCheckEverytime((prev) => !prev);
-  };
+  const keywordNameRef = useRef<HTMLInputElement>(null);
+  const otherAccountRef = useRef<HTMLInputElement>(null);
+  const amountRef = useRef<HTMLInputElement>(null);
 
-  const onComplete = () => {
+  const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setKeywordTitle(e.target.value);
+  }, []);
+
+  const toggleTransfer = useCallback(() => {
+    setTransferToMe((prev) => !prev);
+    setOtherAccount(undefined);
+  }, []);
+
+  const handleAccountInput = useCallback(() => {
+    if (otherAccountRef.current) {
+      setOtherAccount({
+        type: 'OthersAccount',
+        name: '',
+        bankId: 0,
+        accountNumber: otherAccountRef.current.value,
+      });
+    }
+  }, []);
+
+  const handleSelectBank = useCallback((id: number) => {
+    setOtherAccount((prev) =>
+      prev?.type === 'OthersAccount'
+        ? { ...prev, bankId: id }
+        : { type: 'OthersAccount', name: '', bankId: id, accountNumber: '' }
+    );
+  }, []);
+
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(formatNumberWithCommas(e.target.value));
+  }, []);
+
+  const toggleCheckEverytime = useCallback(() => {
+    setCheckEverytime((prev) => !prev);
+    setAmount('');
+    setIsValid((prev) => !prev);
+  }, []);
+
+  const onComplete = useCallback(() => {
     if (myAccount && otherAccount) {
-      const baseData = {
-        id: formData.id,
+      const updatedFormData = {
+        id: keyword.id,
         title: keywordTitle,
         accountFrom: myAccount,
         accountTo: otherAccount,
+        ...(checkEverytime
+          ? { type: 'transfer' as const }
+          : { type: 'transferAmount' as const, amount }),
       };
 
-      let updatedFormData: TransferKeyword | TransferAmountKeyword;
-
-      if (checkEverytime) {
-        updatedFormData = {
-          ...baseData,
-          type: 'transfer',
-        } as TransferKeyword;
-      } else {
-        updatedFormData = {
-          ...baseData,
-          type: 'transferAmount',
-          amount: amount,
-        } as TransferAmountKeyword;
-      }
-
-      setFormData(updatedFormData);
       console.log('Sending data to server:', updatedFormData);
-      confirm('수정되었습니다');
       router.back();
-    } else {
-      console.error('myAccount or otherAccount is undefined');
     }
-  };
+  }, [
+    keywordTitle,
+    myAccount,
+    otherAccount,
+    checkEverytime,
+    amount,
+    keyword.id,
+    router,
+  ]);
 
-  function isTransferAmountKeyword(
-    keyword: TransferKeyword | TransferAmountKeyword
-  ): keyword is TransferAmountKeyword {
-    return (keyword as TransferAmountKeyword).amount !== undefined;
-  }
-  console.log('formData', formData);
-  console.log('myAccount', myAccount);
-  console.log('otherAccount', otherAccount);
+  const isButtonDisabled = useMemo(() => {
+    const isDataChanged =
+      keywordTitle !== keyword.title ||
+      myAccount !== keyword.accountFrom ||
+      otherAccount !== keyword.accountTo ||
+      checkEverytime !== (keyword.type === 'transfer') ||
+      (!checkEverytime &&
+        keyword.type === 'transferAmount' &&
+        amount !== formatNumberWithCommas(keyword.amount));
 
-  // useEffect(() => {
-  //   setOtherAccount(undefined);
-  // }, [transferToMe]);
+    const isAccountValid =
+      myAccount?.type === 'MyAccount' &&
+      'bankId' in myAccount &&
+      'accountNumber' in myAccount &&
+      ((otherAccount?.type === 'MyAccount' &&
+        'bankId' in otherAccount &&
+        'accountNumber' in otherAccount) ||
+        (otherAccount?.type === 'OthersAccount' &&
+          otherAccount.bankId !== 0 &&
+          otherAccount.accountNumber !== ''));
+
+    const isAmountValid =
+      checkEverytime || (!checkEverytime && amount !== '' && isValid);
+
+    return !(isDataChanged && isAccountValid && isAmountValid);
+  }, [
+    keywordTitle,
+    myAccount,
+    otherAccount,
+    checkEverytime,
+    amount,
+    keyword,
+    isValid,
+  ]);
 
   return (
     <div className='flex flex-col h-full'>
@@ -174,11 +165,7 @@ export default function EditTransferKeyword() {
           <div className='flex flex-col'>
             <strong>보낼 계좌</strong>
             <SelectMyAccount
-              selected={
-                myAccount && myAccount.type === 'MyAccount'
-                  ? myAccount
-                  : undefined
-              }
+              selected={myAccount?.type === 'MyAccount' ? myAccount : undefined}
               onSelect={setMyAccount}
             />
           </div>
@@ -219,41 +206,14 @@ export default function EditTransferKeyword() {
               value={amount}
               checkEverytime={checkEverytime}
               toggleCheckEverytime={toggleCheckEverytime}
-              onChangeValidity={(isValid) => {
-                setIsValid(isValid);
-              }}
+              onChangeValidity={setIsValid}
             />
           </div>
 
           <Button
             onClick={onComplete}
             className='w-full'
-            isDisabled={
-              !(
-                (keywordTitle !== formData.title ||
-                  myAccount !== formData.accountFrom ||
-                  otherAccount !== formData.accountTo ||
-                  (keyword.type === 'transfer'
-                    ? !checkEverytime
-                    : checkEverytime) ||
-                  (isTransferAmountKeyword(formData) &&
-                    !checkEverytime &&
-                    amount !== formatNumberWithCommas(formData.amount))) &&
-                myAccount !== undefined &&
-                otherAccount !== undefined &&
-                myAccount.type === 'MyAccount' &&
-                'bankId' in myAccount &&
-                'accountNumber' in myAccount &&
-                ((otherAccount.type === 'MyAccount' &&
-                  'bankId' in otherAccount &&
-                  'accountNumber' in otherAccount) ||
-                  (otherAccount.type === 'OthersAccount' &&
-                    otherAccount.bankId !== 0 &&
-                    otherAccount.accountNumber !== '')) &&
-                (checkEverytime || (!checkEverytime && amount !== '')) &&
-                isValid
-              )
-            }
+            isDisabled={isButtonDisabled}
           >
             완료
           </Button>
