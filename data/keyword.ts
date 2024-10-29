@@ -1,3 +1,5 @@
+import { MyAccount, OthersAccount } from './account';
+
 export type Keyword = {
   id: number;
   type: 'transfer' | 'inquiry' | 'ticket' | 'settlement';
@@ -30,14 +32,14 @@ type BaseKeyword = {
 
 export type TransferKeyword = BaseKeyword & {
   type: 'transfer';
-  accountFrom: Account;
-  accountTo: Account;
+  accountFrom: MyAccount;
+  accountTo: OthersAccount | MyAccount;
   amount: number;
 };
 
 export type InquiryKeyword = BaseKeyword & {
   type: 'inquiry';
-  accountFrom: Account;
+  accountFrom: MyAccount;
   searchKeyword: string;
 };
 
@@ -48,7 +50,7 @@ export type TicketKeyword = BaseKeyword & {
 
 export type SettlementKeyword = BaseKeyword & {
   type: 'settlement';
-  accountFrom: Account;
+  accountFrom: MyAccount;
   memberList: Member[];
   amount: number;
 };
@@ -177,14 +179,16 @@ export const KeywordDetailList: KeywordDetail[] = [
     type: 'transfer',
     title: '아빠 용돈',
     accountFrom: {
+      type: 'MyAccount',
       bankId: 1,
       accountNumber: '123-456-789',
       accountName: '하나임금',
     },
     accountTo: {
+      type: 'OthersAccount',
       bankId: 2,
       accountNumber: '987-654-321',
-      accountName: '정성엽',
+      name: '정성엽',
     },
     amount: 50000,
   },
@@ -193,14 +197,34 @@ export const KeywordDetailList: KeywordDetail[] = [
     type: 'transfer',
     title: '세뱃돈 송금',
     accountFrom: {
+      type: 'MyAccount',
       bankId: 1,
       accountNumber: '111-222-333',
       accountName: '하나은행',
     },
     accountTo: {
       bankId: 3,
+      type: 'OthersAccount',
       accountNumber: '444-555-666',
-      accountName: '김유진',
+      name: '김유진',
+    },
+    amount: 30000,
+  },
+  {
+    id: 9,
+    type: 'transfer',
+    title: '세뱃돈 송금',
+    accountFrom: {
+      type: 'MyAccount',
+      bankId: 1,
+      accountNumber: '111-222-333',
+      accountName: '하나은행',
+    },
+    accountTo: {
+      bankId: 3,
+      type: 'MyAccount',
+      accountNumber: '444-555-666',
+      accountName: '내일배움계좌',
     },
     amount: 30000,
   },
@@ -211,6 +235,7 @@ export const KeywordDetailList: KeywordDetail[] = [
     type: 'inquiry',
     title: '월급 확인',
     accountFrom: {
+      type: 'MyAccount',
       bankId: 1,
       accountNumber: '123-456-789',
       accountName: '하나임금',
@@ -222,6 +247,7 @@ export const KeywordDetailList: KeywordDetail[] = [
     type: 'inquiry',
     title: '신용카드 사용내역 조회',
     accountFrom: {
+      type: 'MyAccount',
       bankId: 4,
       accountNumber: '777-888-999',
       accountName: '신한은행',
@@ -249,6 +275,7 @@ export const KeywordDetailList: KeywordDetail[] = [
     type: 'settlement',
     title: '러닝크루 정산',
     accountFrom: {
+      type: 'MyAccount',
       bankId: 1,
       accountNumber: '123-456-789',
       accountName: '하나임금',
@@ -266,6 +293,7 @@ export const KeywordDetailList: KeywordDetail[] = [
     type: 'settlement',
     title: '팀 회식 비용 정산',
     accountFrom: {
+      type: 'MyAccount',
       bankId: 5,
       accountNumber: '222-333-444',
       accountName: '카카오뱅크',

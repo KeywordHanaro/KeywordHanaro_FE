@@ -25,10 +25,11 @@ const EditKeyword = ({ data, onEdit, onDelete }: EditKeywordProps) => {
               {data.accountFrom.accountName ?? data.accountFrom.accountNumber}
               계좌에서&nbsp;
               <span className='text-hanaPrimary'>
-                {data.accountFrom.accountName ?? data.accountFrom.accountNumber}
-                계좌
+                {data.accountTo.type === 'MyAccount'
+                  ? data.accountTo.accountName
+                  : `${data.accountTo.name}님`}
               </span>
-              로
+              계좌로
             </span>
             <span className='text-hanaPrimary font-semibold text-[13px]'>
               {data.amount.toLocaleString()}원<span>송금</span>
