@@ -30,7 +30,7 @@ export default function SelectToAccount({
   };
 
   const handleListClick = () => {
-    onNext(2);
+    onNext(4);
   };
 
   const myAccountWithoutSelected = MyAccounts.filter((account) => {
@@ -69,7 +69,9 @@ export default function SelectToAccount({
         </div>
         <div
           className={`flex transition-all duration-500 ease-in-out ${
-            isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+            isOpen
+              ? 'max-h-[500px] opacity-100'
+              : 'max-h-0 opacity-0 overflow-y-scroll'
           }`}
         >
           <div className='transition-opacity duration-500 ease-in-out'>

@@ -16,10 +16,11 @@ import { cn } from '@/lib/utils';
 
 type SelectBankProps = {
   onSelect: (index: number) => void;
+  value?: number;
 };
-const SelectBank: React.FC<SelectBankProps> = ({ onSelect }) => {
+const SelectBank: React.FC<SelectBankProps> = ({ onSelect, value }) => {
   const [hasScrolled, setHasScrolled] = useState(false);
-  const [bankId, setBankId] = useState<number>(0);
+  const [bankId, setBankId] = useState<number>(value ?? 0);
 
   const handleScroll = () => {
     setHasScrolled(true);

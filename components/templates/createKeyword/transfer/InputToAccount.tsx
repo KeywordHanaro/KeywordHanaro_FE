@@ -4,20 +4,27 @@ import { Button } from '@/components/atoms/Button';
 import { AccountInputRef } from '@/components/atoms/Inputs';
 import { type MyOrOthersAccountItemProps } from '@/components/molecules/AccountListItem';
 import SelectBank from '@/components/molecules/SelectBank';
+import { TransferForm } from '@/contexts/TransferContext';
 import { ChangeEvent, useState } from 'react';
 import { formatAccountNumber } from '@/lib/utils';
 
 type InputToAccountProps = {
+  formData: TransferForm;
   onUpdate: (account: MyOrOthersAccountItemProps) => void;
   onNext: () => void;
 };
 
 export default function InputToAccount({
+  formData,
   onUpdate,
   onNext,
 }: InputToAccountProps) {
-  const [inputValue, setInputValue] = useState('');
-  const [selectedID, setSelectedID] = useState<number>(0);
+  const [inputValue, setInputValue] = useState(
+    formData.toAccount.accountNumber
+  );
+  const [selectedID, setSelectedID] = useState<number>(
+    formData.toAccount.bankId
+  );
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -49,8 +56,9 @@ export default function InputToAccount({
         <AccountInputRef
           onChange={handleInputChange}
           placeHolder='계좌번호 입력'
+          value={inputValue}
         />
-        <SelectBank onSelect={handleSelect} />
+        <SelectBank onSelect={handleSelect} value={formData.toAccount.bankId} />
       </div>
       <Button
         onClick={handleAccountClick}

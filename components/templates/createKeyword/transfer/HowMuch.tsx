@@ -1,12 +1,12 @@
 'use client';
 
-import { TransferForm } from '@/app/(routes)/keyword/create/transfer/page';
 import { Button } from '@/components/atoms/Button';
 import {
   type MyAccountItemProps,
   type MyOrOthersAccountItemProps,
 } from '@/components/molecules/AccountListItem';
 import SetAmount from '@/components/molecules/SetAmount';
+import { TransferForm } from '@/contexts/TransferContext';
 import { bankList } from '@/data/bank';
 import { KeywordInputToOtherData } from '@/data/transfer';
 import { useCallback, useRef, useState } from 'react';
@@ -87,7 +87,7 @@ export default function HowMuch({
         const amount = parseInt(amountValue.replace(/,/g, ''), 10);
         onUpdate({
           checkEverytime,
-          amount: amount.toString(),
+          amount: amount.toLocaleString(),
           type: 'WithAmount',
         });
         onNext();
