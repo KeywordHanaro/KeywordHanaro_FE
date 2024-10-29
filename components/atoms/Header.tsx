@@ -1,4 +1,5 @@
 import { ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 type HeaderProps = {
   text: string;
@@ -17,6 +18,12 @@ export default function Header({
   actionLabel = '완료',
   onAction,
 }: HeaderProps) {
+  // Back 버튼 default값
+  if (showBackButton) {
+    const router = useRouter();
+    onBack = () => router.back();
+  }
+
   return (
     <div className='flex justify-center items-center bg-white px-[20px] py-[11.5px] max-h-[44px]'>
       {/* 뒤로 가기 버튼 */}
