@@ -11,7 +11,7 @@ export default function DepositDocumentPage() {
   const router = useRouter();
   const [myAccount, setMyAccount] = useState<string | null>(null);
   const [isValid, setIsValid] = useState<boolean>(false);
-  const ammountRef = useRef<HTMLInputElement>(null)
+  const ammountRef = <HTMLInputElement>(null)
 
   const handleAccountSelect = (accountNumber: string) => {
     console.log(accountNumber);
