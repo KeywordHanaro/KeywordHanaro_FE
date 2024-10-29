@@ -4,10 +4,15 @@ import { MyAccountItemProps } from '@/components/molecules/AccountListItem';
 import SelectAccount from '@/components/templates/SelectAccount';
 import { useInquiry } from '@/contexts/InquiryContext';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Step1() {
   const router = useRouter();
-  const { updateFormData } = useInquiry();
+  const { updateFormData, resetFormData } = useInquiry();
+
+  useEffect(() => {
+    resetFormData();
+  }, []);
 
   const nextStep = () => {
     router.push('/keyword/create/inquiry/step2');
