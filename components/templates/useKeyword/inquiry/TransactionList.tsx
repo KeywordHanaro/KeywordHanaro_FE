@@ -87,7 +87,7 @@ export default function TransactionList() {
               );
             })
           ) : (
-            <div>
+            <div className='flex-col flex justify-center'>
               <Image
                 src={'/images/alarts/noData.gif'}
                 alt=''
