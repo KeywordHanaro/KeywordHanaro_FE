@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 
 export default function Step2() {
   const router = useRouter();
-  const { updateFormData } = useInquiry();
+  const { formData, updateFormData } = useInquiry();
 
   const nextStep = () => {
     router.push('/keyword/create/inquiry/step3');
@@ -16,6 +16,7 @@ export default function Step2() {
     <KeywordInputButton
       title='어떤 내용을 조회할까요?'
       placeHolder='조회할 내용을 작성해주세요'
+      initialValue={formData.inquiry}
       onUpdate={(inquiry) => updateFormData({ inquiry })}
       onNext={nextStep}
     >
