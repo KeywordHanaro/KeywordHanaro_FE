@@ -5,23 +5,20 @@ import SetTransferAmount from '@/components/templates/useKeyword/transfer/SetTra
 import { useTransferUseSession } from '@/contexts/TransferUseContext';
 import { UseKeywordTransfer } from '@/data/transfer';
 import { useRouter } from 'next/navigation';
-// import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 
-// type TransferData = {
-//   transferAmount: string;
-// } & TransferProps;
+const formatNumberWithCommas = (inputValue: string): string => {
+  if (!inputValue) return '';
+  const numericValue = inputValue.replace(/[^0-9]/g, '');
+  const parsedValue = numericValue ? parseInt(numericValue, 10) : 0;
+  return new Intl.NumberFormat('ko-KR').format(parsedValue);
+};
 
 export default function TransferPage() {
   const { formData, saveFormData } = useTransferUseSession();
 
   /**fetching 가정 */
-  const initialData = UseKeywordTransfer[0];
-
-  // const [formData, setFormData] = useState<TransferData>({
-  //   ...initialData,
-  //   transferAmount: '',
-  // });
+  const initialData = UseKeywordTransfer[1];
 
   useEffect(() => {
     saveFormData({ ...initialData, transferAmount: '' });
@@ -29,30 +26,15 @@ export default function TransferPage() {
   }, []);
 
   const router = useRouter();
-  // const [step, setStep] = useState(1);
 
   const amountRef = useRef<HTMLInputElement>(null);
 
   const onNext = () => {
-    // amountRef.current.value를 formData의 amount에 저장시켜줘
     saveFormData(
       formData.type === 'WithoutAmount' ?
-      {...formData, transferAmount: amountRef.current?.value || ''} : {...formData, transferAmount: formData.amount.toString()}
+      {...formData, transferAmount: amountRef.current?.value || ''} : {...formData, transferAmount: formatNumberWithCommas(formData.amount.toString())}
     );
     router.push('/transfer/step2');
-
-    // setFormData((prev) =>
-    //   prev.type === 'WithoutAmount'
-    //     ? {
-    //         ...prev,
-    //         transferAmount: amountRef.current?.value || '',
-    //       }
-    //     : {
-    //         ...prev,
-    //         transferAmount: prev.amount?.toString() || '',
-    //       }
-    // );
-    // setStep((prev) => prev + 1);
   };
 
   const handleBack = () => {
