@@ -19,7 +19,7 @@ import { bankList } from '@/data/bank';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export type DataProps =
+export type TransferForm =
   | {
       type: 'WithoutAmount';
       fromAccount: MyAccountItemProps;
@@ -32,7 +32,7 @@ export type DataProps =
       fromAccount: MyAccountItemProps;
       toAccount: MyOrOthersAccountItemProps;
       checkEverytime: false;
-      amount: number;
+      amount: string;
       keyword: string;
     };
 
@@ -45,8 +45,8 @@ export default function KeywordCreateTransferPage() {
   // 6. 키워드 설정이 완료되었어요
 
   const router = useRouter();
-  const [formData, setFormData] = useState<DataProps>({
-    type: 'WithoutAmount',
+  const [formData, setFormData] = useState<TransferForm>({
+    type: 'WithAmount',
     fromAccount: {
       type: 'MyAccount',
       accountName: '',
@@ -59,7 +59,8 @@ export default function KeywordCreateTransferPage() {
       accountNumber: '',
       bankId: 0,
     },
-    checkEverytime: true,
+    checkEverytime: false,
+    amount: '',
     keyword: '',
   });
 
@@ -82,10 +83,23 @@ export default function KeywordCreateTransferPage() {
     }
   };
 
-  const updateFormData = (newData: Partial<DataProps>) => {
+  const updateFormData = (newData: Partial<TransferForm>) => {
     setFormData((prevData) => {
-      const updatedData = { ...prevData, ...newData };
-      return updatedData as DataProps;
+      let updatedData: TransferForm;
+
+      if (
+        newData.type === 'WithoutAmount' &&
+        newData.checkEverytime &&
+        prevData.type === 'WithAmount'
+      ) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { amount, ...rest } = prevData;
+        updatedData = { ...rest, ...newData } as TransferForm;
+      } else {
+        updatedData = { ...prevData, ...newData } as TransferForm;
+      }
+
+      return updatedData;
     });
   };
 
@@ -138,6 +152,7 @@ export default function KeywordCreateTransferPage() {
           <HowMuch
             fromAccount={formData.fromAccount}
             toAccount={formData.toAccount}
+            formData={formData}
             onNext={nextStep}
             onUpdate={(data: WithAmountProps | WithoutAmountProps) =>
               updateFormData(data)

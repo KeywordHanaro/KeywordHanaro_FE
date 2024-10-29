@@ -1,5 +1,6 @@
 'use client';
 
+import { TransferForm } from '@/app/(routes)/keyword/create/transfer/page';
 import { Button } from '@/components/atoms/Button';
 import {
   type MyAccountItemProps,
@@ -8,12 +9,12 @@ import {
 import SetAmount from '@/components/molecules/SetAmount';
 import { bankList } from '@/data/bank';
 import { KeywordInputToOtherData } from '@/data/transfer';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 export type WithAmountProps = {
   checkEverytime: false;
-  amount: number;
+  amount: string;
   type: 'WithAmount';
 };
 
@@ -23,6 +24,7 @@ export type WithoutAmountProps = {
 };
 
 export type HowMuchProps = {
+  formData: TransferForm;
   fromAccount: MyAccountItemProps;
   toAccount: MyOrOthersAccountItemProps;
   onNext: () => void;
@@ -30,6 +32,7 @@ export type HowMuchProps = {
 };
 
 export default function HowMuch({
+  formData,
   fromAccount,
   toAccount,
   onNext,
@@ -40,8 +43,13 @@ export default function HowMuch({
 
   const amountRef = useRef<HTMLInputElement>(null);
 
-  const [checkEverytime, setCheckEverytime] = useState(false);
-  const [valid, setValid] = useState(false);
+  const [checkEverytime, setCheckEverytime] = useState(formData.checkEverytime);
+  const [amount, setAmount] = useState(
+    formData.type === 'WithAmount' ? formData.amount.toString() : ''
+  );
+  const [valid, setValid] = useState(
+    formData.checkEverytime || formData.amount.length > 0
+  );
 
   const toggleCheckEverytime = () => {
     setValid(!checkEverytime);
@@ -51,6 +59,19 @@ export default function HowMuch({
   const bankName = bankList.find(
     (bank) => bank.id === toAccount.bankId
   )?.bankname;
+
+  const formatNumberWithCommas = useCallback((inputValue: string): string => {
+    if (!inputValue) return '';
+    const numericValue = inputValue.replace(/[^0-9]/g, '');
+    const parsedValue = numericValue ? parseInt(numericValue, 10) : 0;
+    return new Intl.NumberFormat('ko-KR').format(parsedValue);
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const money = e.target.value;
+    const formatData = formatNumberWithCommas(money);
+    setAmount(formatData);
+  };
 
   const handleSubmit = () => {
     if (checkEverytime) {
@@ -64,7 +85,11 @@ export default function HowMuch({
       if (amountValue) {
         // amountValue가 유효한 경우
         const amount = parseInt(amountValue.replace(/,/g, ''), 10);
-        onUpdate({ checkEverytime, amount, type: 'WithAmount' });
+        onUpdate({
+          checkEverytime,
+          amount: amount.toString(),
+          type: 'WithAmount',
+        });
         onNext();
       } else {
         // amountRef가 유효하지 않을 경우 추가 처리
@@ -96,6 +121,8 @@ export default function HowMuch({
       </div>
       <div>
         <SetAmount
+          onChange={handleChange}
+          value={amount}
           ref={amountRef}
           checkEverytime={checkEverytime}
           toggleCheckEverytime={toggleCheckEverytime}
