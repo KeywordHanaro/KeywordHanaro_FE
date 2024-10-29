@@ -24,26 +24,9 @@ export type DataProps = {
 export default function KeywordCreateInquiryPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState<DataProps>({
-    account: {
-      type: 'MyAccount',
-      accountName: '',
-      bankId: 0,
-      accountNumber: '',
-    },
-    inquiry: '',
-    keywordName: '',
-  });
 
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
-
-  const updateFormData = (newData: Partial<DataProps>) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      ...newData,
-    }));
-  };
 
   // useEffect(() => {
   //   console.log(formData);
@@ -66,12 +49,7 @@ export default function KeywordCreateInquiryPage() {
   */
 
   return (
-    <div className='h-screen relative'>
-      <Header
-        text='키워드 생성하기'
-        onBack={handleOnBack}
-        showActionButton={false}
-      />
+    
 
       <div className='px-[20px] mt-[24px]'>
         {/* 1. 계좌 선택 */}
