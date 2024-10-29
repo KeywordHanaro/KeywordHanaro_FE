@@ -8,8 +8,8 @@ type SetAmountProps = {
   checkEverytime: boolean;
   toggleCheckEverytime: () => void;
   onChangeValidity: (valid: boolean) => void;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  value:string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?:string;
 };
 
 const SetAmount = forwardRef<HTMLInputElement, SetAmountProps>(
