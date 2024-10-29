@@ -5,9 +5,8 @@ import TransferComplete from '@/components/templates/useKeyword/transfer/Transfe
 import { useTransferUseSession } from '@/contexts/TransferUseContext';
 import { useRouter } from 'next/navigation';
 
-
-export default function TransferPage2() {
-  const {formData} = useTransferUseSession()
+export default function TransferCompletePage() {
+  const { formData } = useTransferUseSession();
 
   const router = useRouter();
 
