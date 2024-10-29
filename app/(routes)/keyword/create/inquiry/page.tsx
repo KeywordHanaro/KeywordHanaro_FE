@@ -22,24 +22,24 @@ export type DataProps = {
 };
 
 export default function KeywordCreateInquiryPage() {
-  const router = useRouter();
-  const [step, setStep] = useState(1);
+  // const router = useRouter();
+  // const [step, setStep] = useState(1);
 
-  const nextStep = () => setStep((prev) => prev + 1);
-  const prevStep = () => setStep((prev) => prev - 1);
+  // const nextStep = () => setStep((prev) => prev + 1);
+  // const prevStep = () => setStep((prev) => prev - 1);
 
   // useEffect(() => {
   //   console.log(formData);
   // }, [formData]);
 
-  const handleOnBack = () => {
-    if (step === 1) router.back();
-    else prevStep();
-  };
+  // const handleOnBack = () => {
+  //   if (step === 1) router.back();
+  //   else prevStep();
+  // };
 
-  const handleComplete = () => {
-    router.push('/');
-  };
+  // const handleComplete = () => {
+  //   router.push('/');
+  // };
 
   /* 
   1. 계좌 선택
