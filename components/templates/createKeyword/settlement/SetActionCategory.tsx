@@ -1,12 +1,7 @@
 import { FormData } from '@/app/(routes)/keyword/create/settlement/page';
 import { Button } from '@/components/atoms/Button';
 import SetAmount from '@/components/molecules/SetAmount';
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-} from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 
 interface SetActionCategoryProps {
@@ -39,7 +34,7 @@ const SetActionCategory = ({
       amountRef.current.value = formData.amount;
       amountRef.current.focus();
     }
-  }, []);
+  }, [amount, formData.amount]);
 
   const onClickCategory = (category: 'Settlement' | 'Dues') => {
     setCategory(category);
@@ -67,7 +62,15 @@ const SetActionCategory = ({
 
   const handleOnNext = () => {
     if (amountRef.current) {
-      onUpdate({ ...formData, amount: amountRef.current.value, category });
+      if (checkEveryTime) amountRef.current.value = '';
+      onUpdate({
+        ...formData,
+        amount: amountRef.current.value,
+        category,
+        checkEveryTime,
+      });
+    } else {
+      onUpdate({ ...formData, amount: '', category, checkEveryTime });
     }
     onNext();
   };
