@@ -19,16 +19,16 @@ export default function Header({
   onAction,
 }: HeaderProps) {
   // Back 버튼 default값
-  if (showBackButton) {
-    const router = useRouter();
-    onBack = () => router.back();
-  }
+  const router = useRouter();
+  const handleOnBack = () => {
+    onBack ? onBack() : router.back();
+  };
 
   return (
     <div className='flex justify-center items-center bg-white px-[20px] py-[11.5px] max-h-[44px]'>
       {/* 뒤로 가기 버튼 */}
       {showBackButton && (
-        <button className='pr-[8px]' onClick={onBack}>
+        <button className='pr-[8px]' onClick={handleOnBack}>
           <ArrowLeft size={20} />
         </button>
       )}
