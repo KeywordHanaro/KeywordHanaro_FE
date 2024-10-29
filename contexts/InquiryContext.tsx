@@ -10,6 +10,7 @@ export type DataProps = {
 type InquiryContextProps = {
   formData: DataProps;
   updateFormData: (newData: Partial<DataProps>) => void;
+  resetFormData: () => void;
 };
 
 const initialFormData: DataProps = {
@@ -26,12 +27,17 @@ const initialFormData: DataProps = {
 const initialContextValue: InquiryContextProps = {
   formData: initialFormData,
   updateFormData: () => {},
+  resetFormData: () => {},
 };
 
 const InquiryContext = createContext<InquiryContextProps>(initialContextValue);
 
 export const InquiryProvider = ({ children }: { children: ReactNode }) => {
   const [formData, setFormData] = useState<DataProps>(initialFormData);
+
+  const resetFormData = () => {
+    setFormData({ ...initialFormData });
+  };
 
   const updateFormData = (newData: Partial<DataProps>) => {
     setFormData((prevData) => ({
@@ -40,7 +46,9 @@ export const InquiryProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
   return (
-    <InquiryContext.Provider value={{ formData, updateFormData }}>
+    <InquiryContext.Provider
+      value={{ formData, updateFormData, resetFormData }}
+    >
       {children}
     </InquiryContext.Provider>
   );
