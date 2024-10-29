@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import ColorChip from '../atoms/ColorChips';
 
 type DocumentSelectorProps = {
@@ -26,16 +27,26 @@ const DocumentSelector: React.FC<DocumentSelectorProps> = ({ onSelect }) => {
   const handleSelect = (index: number) => {
     onSelect(index);
   };
+  const [show, setShow] = useState<boolean>(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setShow(!show);
+    }, 2000);
+  }, []);
   return (
-    <div>
-      {Documents.map((item, index) => (
-        <span key={index}>
-          <button onClick={() => handleSelect(item.id)}>
-            <ColorChip color='blue'>{item.name}</ColorChip>
-          </button>
-        </span>
-      ))}
-    </div>
+    <>
+      {show && (
+        <div>
+          {Documents.map((item, index) => (
+            <span key={index}>
+              <button onClick={() => handleSelect(item.id)}>
+                <ColorChip color='blue'>{item.name}</ColorChip>
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
+    </>
   );
 };
 
