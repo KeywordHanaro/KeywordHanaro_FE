@@ -1,5 +1,5 @@
 import { MyAccountItemProps } from '@/components/molecules/AccountListItem';
-import { createContext, ReactNode, useState } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
 
 export type DataProps = {
   account: MyAccountItemProps;
@@ -12,21 +12,26 @@ type InquiryContextProps = {
   updateFormData: (newData: Partial<DataProps>) => void;
 };
 
-const InquiryContext = createContext<InquiryContextProps | undefined>(
-  undefined
-);
+const initialFormData: DataProps = {
+  account: {
+    type: 'MyAccount',
+    accountName: '',
+    bankId: 0,
+    accountNumber: '',
+  },
+  inquiry: '',
+  keywordName: '',
+};
+
+const initialContextValue: InquiryContextProps = {
+  formData: initialFormData,
+  updateFormData: () => {},
+};
+
+const InquiryContext = createContext<InquiryContextProps>(initialContextValue);
 
 export const InquiryProvider = ({ children }: { children: ReactNode }) => {
-  const [formData, setFormData] = useState<DataProps>({
-    account: {
-      type: 'MyAccount',
-      accountName: '',
-      bankId: 0,
-      accountNumber: '',
-    },
-    inquiry: '',
-    keywordName: '',
-  });
+  const [formData, setFormData] = useState<DataProps>(initialFormData);
 
   const updateFormData = (newData: Partial<DataProps>) => {
     setFormData((prevData) => ({
@@ -40,3 +45,5 @@ export const InquiryProvider = ({ children }: { children: ReactNode }) => {
     </InquiryContext.Provider>
   );
 };
+
+export const useInquiry = () => useContext(InquiryContext);
