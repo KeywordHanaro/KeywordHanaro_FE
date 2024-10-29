@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -23,7 +23,8 @@ export default function Header({
   // Back 버튼 default값
   const router = useRouter();
   const handleOnBack = () => {
-    onBack ? onBack() : router.back();
+    if (onBack) onBack();
+    else router.back();
   };
 
   return (
