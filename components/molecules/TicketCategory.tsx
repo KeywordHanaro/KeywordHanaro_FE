@@ -5,9 +5,9 @@ import { Card } from '../atoms/Card';
 
 const categories = [
   {
-    name: '송금',
+    name: '예금',
     description: '(송금, 입금, 출금, 예적금 등)',
-    path: '/ticket/detail?task=송금',
+    path: '/ticket/detail?task=예금',
   },
   { name: '개인 대출', description: '', path: '/ticket/detail?task=개인 대출' },
   { name: '기업 대출', description: '', path: '/ticket/detail?task=기업 대출' },

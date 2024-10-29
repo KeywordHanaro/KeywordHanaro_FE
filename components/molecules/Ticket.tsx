@@ -61,7 +61,7 @@ export default function Ticket({ now, people, waitingQueue }: TicketProps) {
       >
         <div
           className={clsx(
-            more ? (print ? 'h-[297px]' : 'h-0') : 'h-[190px]',
+            more ? (print ? 'h-[312px]' : 'h-0') : 'h-[190px]',
             'transition-all duration-1000 ease-in-out relative transform-top overflow-hidden'
           )}
         >
@@ -109,7 +109,7 @@ export default function Ticket({ now, people, waitingQueue }: TicketProps) {
                 </span>
               </div>
               <button
-                className='flex justify-center w-full focus:outline-none'
+                className='flex justify-center w-full py-2 focus:outline-none'
                 onClick={handleMore}
               >
                 {more ? <FaAngleUp size={20} /> : <FaAngleDown size={20} />}

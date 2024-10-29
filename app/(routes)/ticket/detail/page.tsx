@@ -26,6 +26,7 @@ export default function TicketDetailPage() {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const document = searchParams.get('document') !== 'false';
+  const task = searchParams.get('task') === '예금'
 
   const handleOpen = () => {
     setOpenModal(!openModal);
@@ -40,7 +41,7 @@ export default function TicketDetailPage() {
 
   return (
     <div className='p-2'>
-      {document && (
+      {document && task && (
         <Modal
           open={openModal}
           title='미리 서류를 작성해주세요'
