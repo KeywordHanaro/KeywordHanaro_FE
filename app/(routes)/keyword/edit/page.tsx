@@ -12,8 +12,8 @@ export default function EditKeywordPage() {
   const onComplete = () => {
     router.push('/keyword');
   };
-  const onEditKeyword = (id: number) => {
-    alert(`edit ${id}`);
+  const onEditKeyword = (id: number, type: string) => {
+    router.push(`/keyword/edit/${type}?id=${id}`);
   };
   const onDeleteKeyword = (id: number) => {
     alert(`delete ${id}`);
@@ -31,7 +31,7 @@ export default function EditKeywordPage() {
           <EditKeyword
             key={each.id}
             data={each}
-            onEdit={onEditKeyword}
+            onEdit={() => onEditKeyword(each.id, each.type)}
             onDelete={onDeleteKeyword}
           ></EditKeyword>
         ))}

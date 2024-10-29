@@ -32,7 +32,7 @@ const SelectBank: React.FC<SelectBankProps> = ({ onSelect }) => {
     <>
       <div className='w-full'>
         <Drawer>
-          <DrawerTrigger className='my-2 w-full rounded-lg after:border-b-placeholderGray after:w-full after:border flex flex-col'>
+          <DrawerTrigger className='my-2 w-full rounded-lg after:w-full after:border flex flex-col'>
             <div className='flex flex-row justify-between w-full h-full font-semibold text-[18px] items-center'>
               <p
                 className={cn(

@@ -166,19 +166,17 @@ function AccountInput(
   ref: ForwardedRef<HTMLInputElement>
 ) {
   return (
-    <>
-      <div className='flex flex-col text-[18px]'>
-        <input
-          className={cn(
-            'font-semibold text-[18px] py-2 text-hanaPrimary border-b-placeholderGray border-b-2 ',
-            className
-          )}
-          placeholder={placeHolder}
-          ref={ref}
-          {...props}
-        />
-      </div>
-    </>
+    <div className='flex flex-col text-[18px] after:w-full border-b'>
+      <input
+        className={cn(
+          'py-2 font-semibold text-[18px]  text-hanaPrimary border-b placeholder:text-placeholderGray',
+          className
+        )}
+        placeholder={placeHolder}
+        ref={ref}
+        {...props}
+      />
+    </div>
   );
 }
 const AccountInputRef = forwardRef(AccountInput);
@@ -186,11 +184,17 @@ const AccountInputRef = forwardRef(AccountInput);
 /** ------------------------------------------ */
 type MoneyInputProps = baseInputTypeProps & {
   onChangeValidity?: (valid: boolean) => void;
-  onChange?:(e:React.ChangeEvent<HTMLInputElement>)=>void
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 /** 금액 입력, ref로 입력 값 가져오기 */
 function MoneyInput(
-  { className, placeHolder, onChangeValidity, onChange=()=>{}, ...props }: MoneyInputProps,
+  {
+    className,
+    placeHolder,
+    onChangeValidity,
+    onChange = () => {},
+    ...props
+  }: MoneyInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
   const [value, setValue] = useState<string>('');
@@ -224,7 +228,7 @@ function MoneyInput(
       onChangeValidity?.(valid);
       const formattedValue = formatNumberWithCommas(inputValue);
       setValue(formattedValue);
-      onChange(e)
+      onChange(e);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [setValue, formatNumberWithCommas, onChangeValidity]
@@ -236,7 +240,10 @@ function MoneyInput(
         ref={ref}
         value={value}
         onChange={handleChange}
-        className={cn(className, 'max-w-full text-2xl font-semibold transition-all duration-500')}
+        className={cn(
+          className,
+          'max-w-full text-2xl font-semibold placeholder:text-placeholderGray transition-all duration-500 '
+        )}
         placeholder={placeHolder}
         required
         {...props}
@@ -250,7 +257,7 @@ function MoneyInput(
       >
         {value}
       </span>
-      { <span className='z-50 text-2xl font-semibold'>원</span>}
+      {<span className='z-50 text-2xl font-semibold'>원</span>}
     </div>
   );
 }
@@ -263,10 +270,13 @@ function KeywordInput(
   ref: ForwardedRef<HTMLInputElement>
 ) {
   return (
-    <div className='after:w-full after:border after:border-b-placeholderGray flex flex-col gap-2 w-full'>
+    <div className='after:w-full after:border  flex flex-col gap-2 w-full'>
       <input
         ref={ref}
-        className={cn('w-full text-center text-2xl font-semibold', className)}
+        className={cn(
+          'w-full text-center text-2xl font-semibold placeholder:text-placeholderGray',
+          className
+        )}
         placeholder={placeHolder}
         {...props}
       />

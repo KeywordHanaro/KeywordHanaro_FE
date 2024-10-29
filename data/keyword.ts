@@ -1,6 +1,15 @@
+import { MyAccount, OthersAccount } from './account';
+import { Member } from './member';
+
+export type Account = {
+  bankId: number;
+  accountNumber: string;
+  accountName?: string;
+};
+
 export type Keyword = {
   id: number;
-  type: 'transfer' | 'inquiry' | 'ticket' | 'settlement';
+  type: 'transfer' | 'transferAmount' | 'inquiry' | 'ticket' | 'settlement';
   // 송금, 조회, 번호표, 정산
   title: string;
   description: string;
@@ -9,19 +18,10 @@ export type Keyword = {
 
 export type KeywordDetail =
   | TransferKeyword
+  | TransferAmountKeyword
   | InquiryKeyword
   | TicketKeyword
   | SettlementKeyword;
-
-type Member = {
-  name: string;
-};
-
-export type Account = {
-  bankId: number;
-  accountNumber: string;
-  accountName?: string;
-};
 
 type BaseKeyword = {
   id: number;
@@ -30,14 +30,20 @@ type BaseKeyword = {
 
 export type TransferKeyword = BaseKeyword & {
   type: 'transfer';
-  accountFrom: Account;
-  accountTo: Account;
-  amount: number;
+  accountFrom: MyAccount;
+  accountTo: OthersAccount | MyAccount;
+};
+
+export type TransferAmountKeyword = BaseKeyword & {
+  type: 'transferAmount';
+  accountFrom: MyAccount;
+  accountTo: OthersAccount | MyAccount;
+  amount: string;
 };
 
 export type InquiryKeyword = BaseKeyword & {
   type: 'inquiry';
-  accountFrom: Account;
+  accountFrom: MyAccount;
   searchKeyword: string;
 };
 
@@ -48,7 +54,7 @@ export type TicketKeyword = BaseKeyword & {
 
 export type SettlementKeyword = BaseKeyword & {
   type: 'settlement';
-  accountFrom: Account;
+  accountFrom: MyAccount;
   memberList: Member[];
   amount: number;
 };
@@ -56,6 +62,7 @@ export type SettlementKeyword = BaseKeyword & {
 export const getColorByType = (type: Keyword['type']) => {
   switch (type) {
     case 'transfer':
+    case 'transferAmount':
       return 'pink';
     case 'inquiry':
       return 'green';
@@ -177,32 +184,52 @@ export const KeywordDetailList: KeywordDetail[] = [
     type: 'transfer',
     title: '아빠 용돈',
     accountFrom: {
+      type: 'MyAccount',
       bankId: 1,
       accountNumber: '123-456-789',
       accountName: '하나임금',
     },
     accountTo: {
+      type: 'OthersAccount',
       bankId: 2,
       accountNumber: '987-654-321',
-      accountName: '정성엽',
+      name: '정성엽',
     },
-    amount: 50000,
   },
   {
     id: 2,
     type: 'transfer',
     title: '세뱃돈 송금',
     accountFrom: {
+      type: 'MyAccount',
       bankId: 1,
       accountNumber: '111-222-333',
       accountName: '하나은행',
     },
     accountTo: {
       bankId: 3,
+      type: 'OthersAccount',
       accountNumber: '444-555-666',
-      accountName: '김유진',
+      name: '김유진',
     },
-    amount: 30000,
+  },
+  {
+    id: 9,
+    type: 'transferAmount',
+    title: '세뱃돈 송금',
+    accountFrom: {
+      type: 'MyAccount',
+      bankId: 1,
+      accountNumber: '111-222-333',
+      accountName: '하나은행',
+    },
+    accountTo: {
+      bankId: 3,
+      type: 'MyAccount',
+      accountNumber: '444-555-666',
+      accountName: '내일배움계좌',
+    },
+    amount: '30000',
   },
 
   // InquiryKeyword
@@ -211,6 +238,7 @@ export const KeywordDetailList: KeywordDetail[] = [
     type: 'inquiry',
     title: '월급 확인',
     accountFrom: {
+      type: 'MyAccount',
       bankId: 1,
       accountNumber: '123-456-789',
       accountName: '하나임금',
@@ -222,6 +250,7 @@ export const KeywordDetailList: KeywordDetail[] = [
     type: 'inquiry',
     title: '신용카드 사용내역 조회',
     accountFrom: {
+      type: 'MyAccount',
       bankId: 4,
       accountNumber: '777-888-999',
       accountName: '신한은행',
@@ -249,15 +278,18 @@ export const KeywordDetailList: KeywordDetail[] = [
     type: 'settlement',
     title: '러닝크루 정산',
     accountFrom: {
+      type: 'MyAccount',
       bankId: 1,
       accountNumber: '123-456-789',
       accountName: '하나임금',
     },
     memberList: [
-      { name: '김인애' },
-      { name: '박준호' },
-      { name: '하이진' },
-      { name: '정서연' },
+      { id: 1, name: '이름1', phoneNumber: '010-4824-1469' },
+      { id: 2, name: '이름2', phoneNumber: '010-9110-5864' },
+      { id: 3, name: '이름3', phoneNumber: '010-1541-2537' },
+      { id: 4, name: '이름4', phoneNumber: '010-5392-3797' },
+      { id: 5, name: '이름5', phoneNumber: '010-4046-7672' },
+      { id: 6, name: '이름6', phoneNumber: '010-4824-1469' },
     ],
     amount: 50000,
   },
@@ -266,11 +298,19 @@ export const KeywordDetailList: KeywordDetail[] = [
     type: 'settlement',
     title: '팀 회식 비용 정산',
     accountFrom: {
+      type: 'MyAccount',
       bankId: 5,
       accountNumber: '222-333-444',
       accountName: '카카오뱅크',
     },
-    memberList: [{ name: '지민' }, { name: '민수' }, { name: '영희' }],
+    memberList: [
+      { id: 1, name: '이름1', phoneNumber: '010-4824-1469' },
+      { id: 2, name: '이름2', phoneNumber: '010-9110-5864' },
+      { id: 3, name: '이름3', phoneNumber: '010-1541-2537' },
+      { id: 4, name: '이름4', phoneNumber: '010-5392-3797' },
+      { id: 5, name: '이름5', phoneNumber: '010-4046-7672' },
+      { id: 6, name: '이름6', phoneNumber: '010-4824-1469' },
+    ],
     amount: 100000,
   },
 ];
