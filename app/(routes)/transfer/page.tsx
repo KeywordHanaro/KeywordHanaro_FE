@@ -13,20 +13,13 @@ type TransferData = {
 } & TransferProps;
 
 export default function TransferPage() {
-  // api call 한번 돌아야한다. 그런데 지금은 데이터가 없다
-  // 그러면 지금은 일단 더미로 놔두고, 나중에 백엔드가 만들어지면
-
-  // useEffect(() => {
-  //   api call을 한다
-  // }, []);
-  const initialData = UseKeywordTransfer[1];
+  const initialData = UseKeywordTransfer[0];
   const [formData, setFormData] = useState<TransferData>({
     ...initialData,
     transferAmount: '',
   });
 
   const router = useRouter();
-
   const [step, setStep] = useState(1);
 
   const amountRef = useRef<HTMLInputElement>(null);
@@ -45,7 +38,6 @@ export default function TransferPage() {
           }
     );
     setStep((prev) => prev + 1);
-    // 실제 송금
   };
 
   const handleBack = () => {
@@ -57,21 +49,15 @@ export default function TransferPage() {
       <Header
         text='키워드 송금'
         showBackButton={step === 1}
+        showActionButton={false}
         onBack={handleBack}
-        showActionButton={initialData.type === 'WithoutAmount' && step === 1}
-        actionLabel={'다음'}
-        onAction={() => {
-          if (amountRef.current && amountRef.current.value) {
-            onNext();
-          }
-        }}
       />
       {step === 1 && (
         <>
           <SetTransferAmount
             data={initialData}
-            ref={amountRef}
             onNext={onNext}
+            ref={amountRef}
           />
         </>
       )}
