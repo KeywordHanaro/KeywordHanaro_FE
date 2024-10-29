@@ -22,7 +22,7 @@ export type WithoutAmountProps = {
   type: 'WithoutAmount';
 };
 
-type HowMuchProps = {
+export type HowMuchProps = {
   fromAccount: MyAccountItemProps;
   toAccount: MyOrOthersAccountItemProps;
   onNext: () => void;

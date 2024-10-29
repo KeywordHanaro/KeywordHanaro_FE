@@ -22,14 +22,14 @@ function shuffleArray(array: number[]) {
 }
 
 type InputPasswordProps = {
-	// open : boolean
+  // open : boolean
   onSubmit: () => void;
 };
 
 export default function InputPassword({
-	onSubmit,
+  onSubmit,
   ...props
-}: React.ComponentProps<typeof Drawer>&InputPasswordProps) {
+}: React.ComponentProps<typeof Drawer> & InputPasswordProps) {
   const numbers = Array.from({ length: 10 }, (_, i) => i);
   const [shuffledNumbers, setShuffleNumbers] = useState<number[]>(
     shuffleArray(numbers)
@@ -106,7 +106,6 @@ export default function InputPassword({
     </>
   );
 }
-
 
 /** example */
 /*
