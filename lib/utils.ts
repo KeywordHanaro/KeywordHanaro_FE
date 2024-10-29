@@ -1,4 +1,4 @@
-import { Bank, bankList } from '@/data/bank';
+import { bankList } from '@/data/bank';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
