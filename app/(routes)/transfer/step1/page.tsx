@@ -14,7 +14,7 @@ const formatNumberWithCommas = (inputValue: string): string => {
   return new Intl.NumberFormat('ko-KR').format(parsedValue);
 };
 
-export default function TransferPage() {
+export default function SetTransferAmountPage() {
   const { formData, saveFormData } = useTransferUseSession();
 
   /**fetching 가정 */
@@ -22,7 +22,7 @@ export default function TransferPage() {
 
   useEffect(() => {
     saveFormData({ ...initialData, transferAmount: '' });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const router = useRouter();
@@ -31,8 +31,12 @@ export default function TransferPage() {
 
   const onNext = () => {
     saveFormData(
-      formData.type === 'WithoutAmount' ?
-      {...formData, transferAmount: amountRef.current?.value || ''} : {...formData, transferAmount: formatNumberWithCommas(formData.amount.toString())}
+      formData.type === 'WithoutAmount'
+        ? { ...formData, transferAmount: amountRef.current?.value || '' }
+        : {
+            ...formData,
+            transferAmount: formatNumberWithCommas(formData.amount.toString()),
+          }
     );
     router.push('/transfer/step2');
   };
