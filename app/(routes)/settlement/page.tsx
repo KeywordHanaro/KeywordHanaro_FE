@@ -22,14 +22,14 @@ export default function SettlementPage() {
   };
 
   return (
-    <div className='w-full h-full relative'>
+    <div className='w-full h-full relative flex flex-col'>
       <Header
         text='키워드 정산'
         showActionButton={step === 1 ? true : false}
         actionLabel={step === 1 ? '다음' : ''}
         onAction={step === 1 ? handleSubmit : undefined}
       />
-      <div className='w-full flex flex-col px-[20px]'>
+      <div className='w-full flex-1 flex flex-col px-[20px]'>
         {step === 1 && (
           <SettlementRequest
             setMoneyResult={setMoneyResult}
