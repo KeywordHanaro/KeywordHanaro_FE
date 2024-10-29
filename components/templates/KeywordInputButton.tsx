@@ -6,6 +6,7 @@ import {
   ForwardedRef,
   forwardRef,
   ReactNode,
+  useEffect,
   useState,
 } from 'react';
 import { Button } from '../atoms/Button';
@@ -17,6 +18,7 @@ interface InputButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   onUpdate: (inputValue: string) => void;
   onNext: () => void;
   children?: ReactNode;
+  initialValue?: string;
 }
 
 const KeywordInputButton = forwardRef(
@@ -26,12 +28,17 @@ const KeywordInputButton = forwardRef(
       placeHolder,
       onUpdate,
       onNext,
+      initialValue = '',
       children,
       ...props
     }: InputButtonProps,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     const [inputValue, setInputValue] = useState('');
+
+    useEffect(() => {
+      setInputValue(initialValue);
+    }, [initialValue]);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
       setInputValue(e.target.value);
@@ -55,6 +62,7 @@ const KeywordInputButton = forwardRef(
           placeHolder={placeHolder}
           onChange={handleInputChange}
           ref={ref}
+          value={inputValue}
         />
         <Button
           isDisabled={!isInputFilled}
