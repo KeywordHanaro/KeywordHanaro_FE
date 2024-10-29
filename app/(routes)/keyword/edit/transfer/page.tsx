@@ -14,7 +14,7 @@ import {
   TransferKeyword,
 } from '@/data/keyword';
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { formatNumberWithCommas } from '@/lib/utils';
 
 export default function EditTransferKeyword() {
@@ -106,6 +106,7 @@ export default function EditTransferKeyword() {
     if (!amount) {
       setIsValid(!checkEverytime);
     }
+    setAmount('');
     setCheckEverytime((prev) => !prev);
   };
 
@@ -135,7 +136,8 @@ export default function EditTransferKeyword() {
 
       setFormData(updatedFormData);
       console.log('Sending data to server:', updatedFormData);
-      // router.back();
+      confirm('수정되었습니다');
+      router.back();
     } else {
       console.error('myAccount or otherAccount is undefined');
     }
@@ -227,20 +229,30 @@ export default function EditTransferKeyword() {
             onClick={onComplete}
             className='w-full'
             isDisabled={
-              keywordTitle === formData.title &&
-              myAccount === formData.accountFrom &&
-              (otherAccount === undefined ||
-                otherAccount === formData.accountTo ||
-                (transferToMe
-                  ? otherAccount?.type !== 'MyAccount'
-                  : otherAccount?.type !== 'OthersAccount' ||
-                    otherAccount.accountNumber === '' ||
-                    otherAccount.bankId === 0)) &&
-              (keyword.type === 'transfer'
-                ? checkEverytime
-                : isTransferAmountKeyword(formData) &&
-                  !checkEverytime &&
-                  amount === formatNumberWithCommas(formData.amount))
+              !(
+                (keywordTitle !== formData.title ||
+                  myAccount !== formData.accountFrom ||
+                  otherAccount !== formData.accountTo ||
+                  (keyword.type === 'transfer'
+                    ? !checkEverytime
+                    : checkEverytime) ||
+                  (isTransferAmountKeyword(formData) &&
+                    !checkEverytime &&
+                    amount !== formatNumberWithCommas(formData.amount))) &&
+                myAccount !== undefined &&
+                otherAccount !== undefined &&
+                myAccount.type === 'MyAccount' &&
+                'bankId' in myAccount &&
+                'accountNumber' in myAccount &&
+                ((otherAccount.type === 'MyAccount' &&
+                  'bankId' in otherAccount &&
+                  'accountNumber' in otherAccount) ||
+                  (otherAccount.type === 'OthersAccount' &&
+                    otherAccount.bankId !== 0 &&
+                    otherAccount.accountNumber !== '')) &&
+                (checkEverytime || (!checkEverytime && amount !== '')) &&
+                isValid
+              )
             }
           >
             완료
