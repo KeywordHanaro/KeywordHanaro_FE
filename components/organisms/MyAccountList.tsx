@@ -1,13 +1,11 @@
 'use client';
 
-import { type MyAccount } from '@/data/account';
-import AccountListItem, {
-  type MyAccountItemProps,
-} from '../molecules/AccountListItem';
+import { MyAccountWithBalance } from '@/data/transfer';
+import AccountListItem from '../molecules/AccountListItem';
 
 type AccountListProp = {
-  accounts: MyAccount[];
-  onUpdate: (account: MyAccountItemProps) => void;
+  accounts: MyAccountWithBalance[];
+  onUpdate: (account: MyAccountWithBalance) => void;
   onNext: () => void;
   onSkip?: (step: number) => void;
 };
@@ -17,7 +15,7 @@ export default function MyAccountList({
   onUpdate,
   onNext,
 }: AccountListProp) {
-  const handleAccountClick = (account: MyAccountItemProps) => {
+  const handleAccountClick = (account: MyAccountWithBalance) => {
     onUpdate(account);
     onNext();
   };

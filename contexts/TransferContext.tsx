@@ -1,32 +1,15 @@
 'use client';
 
-import type {
-  MyAccountItemProps,
-  MyOrOthersAccountItemProps,
-} from '@/components/molecules/AccountListItem';
+import { TransferProps } from '@/data/transfer';
 import { createContext, useState, PropsWithChildren, useContext } from 'react';
 
-export type TransferForm =
-  | {
-      type: 'WithoutAmount';
-      fromAccount: MyAccountItemProps;
-      toAccount: MyOrOthersAccountItemProps;
-      checkEverytime: true;
-      keyword: string;
-    }
-  | {
-      type: 'WithAmount';
-      fromAccount: MyAccountItemProps;
-      toAccount: MyOrOthersAccountItemProps;
-      checkEverytime: false;
-      amount: string;
-      keyword: string;
-    };
+export type TransferForm = TransferProps;
 
 type TransferContextType = {
   formData: TransferForm;
   updateFormData: (newData: Partial<TransferForm>) => void;
   resetAmountData: () => void;
+  resetToAccountData: () => void;
 };
 
 const contextInitValue: TransferForm = {
@@ -36,6 +19,7 @@ const contextInitValue: TransferForm = {
     accountName: '',
     accountNumber: '',
     bankId: 0,
+    balance: '',
   },
   toAccount: {
     type: 'OthersAccount',
@@ -44,7 +28,7 @@ const contextInitValue: TransferForm = {
     bankId: 0,
   },
   checkEverytime: false,
-  amount: '',
+  amount: 0,
   keyword: '',
 };
 
@@ -52,6 +36,7 @@ const TransferContext = createContext<TransferContextType>({
   formData: contextInitValue,
   updateFormData: () => {},
   resetAmountData: () => {},
+  resetToAccountData: () => {},
 });
 
 export const TransferProvider = ({ children }: PropsWithChildren) => {
@@ -79,8 +64,20 @@ export const TransferProvider = ({ children }: PropsWithChildren) => {
 
   const resetAmountData = () => {
     if (formData.type === 'WithAmount') {
-      setFormData({ ...formData, amount: '' });
+      setFormData({ ...formData, amount: 0 });
     }
+  };
+
+  const resetToAccountData = () => {
+    setFormData({
+      ...formData,
+      toAccount: {
+        type: 'OthersAccount',
+        name: '',
+        accountNumber: '',
+        bankId: 0,
+      },
+    });
   };
 
   return (
@@ -89,6 +86,7 @@ export const TransferProvider = ({ children }: PropsWithChildren) => {
         formData,
         updateFormData,
         resetAmountData,
+        resetToAccountData,
       }}
     >
       {children}

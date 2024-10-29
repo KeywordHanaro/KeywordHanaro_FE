@@ -1,8 +1,8 @@
 'use client';
 
-import type { MyAccountItemProps } from '@/components/molecules/AccountListItem';
 import SelectAccount from '@/components/templates/SelectAccount';
 import { useTransferForm } from '@/contexts/TransferContext';
+import type { MyAccountWithBalance } from '@/data/transfer';
 import { useRouter } from 'next/navigation';
 
 export default function Step1() {
@@ -15,7 +15,7 @@ export default function Step1() {
 
   return (
     <SelectAccount
-      onUpdate={(fromAccount: MyAccountItemProps) =>
+      onUpdate={(fromAccount: MyAccountWithBalance) =>
         updateFormData({ fromAccount })
       }
       onNext={handleNext}

@@ -1,15 +1,19 @@
 'use client';
 
 import { AccountInputRef } from '@/components/atoms/Inputs';
-import { type MyOrOthersAccountItemProps } from '@/components/molecules/AccountListItem';
 import MyAccountList from '@/components/organisms/MyAccountList';
 import RecentAccountList from '@/components/organisms/RecentAccountList';
-import { MyAccounts, RecentAccount } from '@/data/account';
+import {
+  MyAccount,
+  MyAccounts,
+  OthersAccount,
+  RecentAccount,
+} from '@/data/account';
 import { ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 
 export type SelectToAccountType = {
-  onUpdate: (account: MyOrOthersAccountItemProps) => void;
+  onUpdate: (account: MyAccount | OthersAccount) => void;
   onNext: (step?: number) => void;
   selectedAccountNumber: string;
 };

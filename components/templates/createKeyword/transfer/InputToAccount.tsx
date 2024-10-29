@@ -2,15 +2,15 @@
 
 import { Button } from '@/components/atoms/Button';
 import { AccountInputRef } from '@/components/atoms/Inputs';
-import { type MyOrOthersAccountItemProps } from '@/components/molecules/AccountListItem';
 import SelectBank from '@/components/molecules/SelectBank';
 import { TransferForm } from '@/contexts/TransferContext';
+import { MyAccount, OthersAccount } from '@/data/account';
 import { ChangeEvent, useState } from 'react';
 import { formatAccountNumber } from '@/lib/utils';
 
 type InputToAccountProps = {
   formData: TransferForm;
-  onUpdate: (account: MyOrOthersAccountItemProps) => void;
+  onUpdate: (account: MyAccount | OthersAccount) => void;
   onNext: () => void;
 };
 

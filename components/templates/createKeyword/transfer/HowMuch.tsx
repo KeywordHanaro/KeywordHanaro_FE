@@ -1,20 +1,17 @@
 'use client';
 
 import { Button } from '@/components/atoms/Button';
-import {
-  type MyAccountItemProps,
-  type MyOrOthersAccountItemProps,
-} from '@/components/molecules/AccountListItem';
 import SetAmount from '@/components/molecules/SetAmount';
 import { TransferForm } from '@/contexts/TransferContext';
+import { MyAccount, OthersAccount } from '@/data/account';
 import { bankList } from '@/data/bank';
-import { KeywordInputToOtherData } from '@/data/transfer';
+import { MyAccountWithBalance } from '@/data/transfer';
 import { useCallback, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 export type WithAmountProps = {
   checkEverytime: false;
-  amount: string;
+  amount: number;
   type: 'WithAmount';
 };
 
@@ -25,8 +22,8 @@ export type WithoutAmountProps = {
 
 export type HowMuchProps = {
   formData: TransferForm;
-  fromAccount: MyAccountItemProps;
-  toAccount: MyOrOthersAccountItemProps;
+  fromAccount: MyAccountWithBalance;
+  toAccount: MyAccount | OthersAccount;
   onNext: () => void;
   onUpdate: (data: WithAmountProps | WithoutAmountProps) => void;
 };
@@ -39,16 +36,15 @@ export default function HowMuch({
   onUpdate,
 }: HowMuchProps) {
   // TODO: 잔액 DB에서 조회
-  const { balance } = KeywordInputToOtherData;
 
   const amountRef = useRef<HTMLInputElement>(null);
 
   const [checkEverytime, setCheckEverytime] = useState(formData.checkEverytime);
   const [amount, setAmount] = useState(
-    formData.type === 'WithAmount' ? formData.amount.toString() : ''
+    formData.type === 'WithAmount' ? formData.amount.toLocaleString() : ''
   );
   const [valid, setValid] = useState(
-    formData.checkEverytime || formData.amount.length > 0
+    formData.checkEverytime || formData.amount > 0
   );
 
   const toggleCheckEverytime = () => {
@@ -87,7 +83,7 @@ export default function HowMuch({
         const amount = parseInt(amountValue.replace(/,/g, ''), 10);
         onUpdate({
           checkEverytime,
-          amount: amount.toLocaleString(),
+          amount: amount,
           type: 'WithAmount',
         });
         onNext();
@@ -105,7 +101,7 @@ export default function HowMuch({
           내 {fromAccount.accountName} 계좌에서
         </div>
         <div className='text-[12px] font-semibold'>
-          잔액 {balance.toLocaleString()}원
+          잔액 {fromAccount.balance.toLocaleString()}원
         </div>
       </div>
       <div>
@@ -122,7 +118,7 @@ export default function HowMuch({
       <div>
         <SetAmount
           onChange={handleChange}
-          value={amount}
+          value={amount == '0' ? '' : amount}
           ref={amountRef}
           checkEverytime={checkEverytime}
           toggleCheckEverytime={toggleCheckEverytime}
