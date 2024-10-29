@@ -1,6 +1,7 @@
 'use client';
 
 import { getColorByType, getNameByType, KeywordDetail } from '@/data/keyword';
+import { formatNumberWithCommas } from '@/lib/utils';
 import { DelButton, EditButton } from '../atoms/Button';
 import { Card } from '../atoms/Card';
 import ColorChip from '../atoms/ColorChips';
@@ -32,7 +33,25 @@ const EditKeyword = ({ data, onEdit, onDelete }: EditKeywordProps) => {
               계좌로
             </span>
             <span className='text-hanaPrimary font-semibold text-[13px]'>
-              {data.amount.toLocaleString()}원<span>송금</span>
+              매번 다르게<span> 송금</span>
+            </span>
+          </>
+        );
+      case 'transferAmount':
+        return (
+          <>
+            <span className='font-semibold text-[13px]'>
+              {data.accountFrom.accountName ?? data.accountFrom.accountNumber}
+              계좌에서&nbsp;
+              <span className='text-hanaPrimary'>
+                {data.accountTo.type === 'MyAccount'
+                  ? data.accountTo.accountName
+                  : `${data.accountTo.name}님`}
+              </span>
+              계좌로
+            </span>
+            <span className='text-hanaPrimary font-semibold text-[13px]'>
+              {formatNumberWithCommas(data.amount)}원<span> 송금</span>
             </span>
           </>
         );

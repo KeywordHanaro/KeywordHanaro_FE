@@ -15,25 +15,28 @@ import { cn } from '@/lib/utils';
 import AccountListItem from './AccountListItem';
 
 type SelectBankProps = {
-  onSelect: (accountNumber: string) => void;
+  selected?: MyAccount;
+  onSelect: (account: MyAccount) => void;
 };
 
-const SelectMyAccount: React.FC<SelectBankProps> = ({ onSelect }) => {
+const SelectMyAccount: React.FC<SelectBankProps> = ({ selected, onSelect }) => {
   const [hasScrolled, setHasScrolled] = useState(false);
-  const [myAccount, SetMyAccount] = useState<MyAccount | null>(null);
+  const [myAccount, SetMyAccount] = useState<MyAccount | null>(
+    selected ?? null
+  );
 
   const handleScroll = () => {
     setHasScrolled(true);
   };
   const handleSelect = (account: MyAccount) => {
     SetMyAccount(account);
-    onSelect(account.accountNumber);
+    onSelect(account);
   };
   return (
     <>
       <div className='w-full'>
         <Drawer>
-          <DrawerTrigger className='my-2 w-full rounded-lg after:border-b-placeholderGray after:w-full after:border flex flex-col'>
+          <DrawerTrigger className='w-full rounded-lg after:w-full after:border flex flex-col'>
             <div className='flex flex-row justify-between w-full h-full font-semibold text-[18px] items-center'>
               <p
                 className={cn(
@@ -65,7 +68,7 @@ const SelectMyAccount: React.FC<SelectBankProps> = ({ onSelect }) => {
                     onClick={() => handleSelect(account)}
                   >
                     <span>
-                      <AccountListItem account={account} onclick={()=>{}} />
+                      <AccountListItem account={account} onclick={() => {}} />
                     </span>
                   </DrawerClose>
                 ))}

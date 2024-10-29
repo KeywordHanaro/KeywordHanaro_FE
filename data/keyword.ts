@@ -1,8 +1,15 @@
 import { MyAccount, OthersAccount } from './account';
+import { Member } from './member';
+
+export type Account = {
+  bankId: number;
+  accountNumber: string;
+  accountName?: string;
+};
 
 export type Keyword = {
   id: number;
-  type: 'transfer' | 'inquiry' | 'ticket' | 'settlement';
+  type: 'transfer' | 'transferAmount' | 'inquiry' | 'ticket' | 'settlement';
   // 송금, 조회, 번호표, 정산
   title: string;
   description: string;
@@ -11,19 +18,10 @@ export type Keyword = {
 
 export type KeywordDetail =
   | TransferKeyword
+  | TransferAmountKeyword
   | InquiryKeyword
   | TicketKeyword
   | SettlementKeyword;
-
-type Member = {
-  name: string;
-};
-
-export type Account = {
-  bankId: number;
-  accountNumber: string;
-  accountName?: string;
-};
 
 type BaseKeyword = {
   id: number;
@@ -34,7 +32,13 @@ export type TransferKeyword = BaseKeyword & {
   type: 'transfer';
   accountFrom: MyAccount;
   accountTo: OthersAccount | MyAccount;
-  amount: number;
+};
+
+export type TransferAmountKeyword = BaseKeyword & {
+  type: 'transferAmount';
+  accountFrom: MyAccount;
+  accountTo: OthersAccount | MyAccount;
+  amount: string;
 };
 
 export type InquiryKeyword = BaseKeyword & {
@@ -58,6 +62,7 @@ export type SettlementKeyword = BaseKeyword & {
 export const getColorByType = (type: Keyword['type']) => {
   switch (type) {
     case 'transfer':
+    case 'transferAmount':
       return 'pink';
     case 'inquiry':
       return 'green';
@@ -190,7 +195,6 @@ export const KeywordDetailList: KeywordDetail[] = [
       accountNumber: '987-654-321',
       name: '정성엽',
     },
-    amount: 50000,
   },
   {
     id: 2,
@@ -208,11 +212,10 @@ export const KeywordDetailList: KeywordDetail[] = [
       accountNumber: '444-555-666',
       name: '김유진',
     },
-    amount: 30000,
   },
   {
     id: 9,
-    type: 'transfer',
+    type: 'transferAmount',
     title: '세뱃돈 송금',
     accountFrom: {
       type: 'MyAccount',
@@ -226,7 +229,7 @@ export const KeywordDetailList: KeywordDetail[] = [
       accountNumber: '444-555-666',
       accountName: '내일배움계좌',
     },
-    amount: 30000,
+    amount: '30000',
   },
 
   // InquiryKeyword
@@ -281,10 +284,12 @@ export const KeywordDetailList: KeywordDetail[] = [
       accountName: '하나임금',
     },
     memberList: [
-      { name: '김인애' },
-      { name: '박준호' },
-      { name: '하이진' },
-      { name: '정서연' },
+      { id: 1, name: '이름1', phoneNumber: '010-4824-1469' },
+      { id: 2, name: '이름2', phoneNumber: '010-9110-5864' },
+      { id: 3, name: '이름3', phoneNumber: '010-1541-2537' },
+      { id: 4, name: '이름4', phoneNumber: '010-5392-3797' },
+      { id: 5, name: '이름5', phoneNumber: '010-4046-7672' },
+      { id: 6, name: '이름6', phoneNumber: '010-4824-1469' },
     ],
     amount: 50000,
   },
@@ -298,7 +303,14 @@ export const KeywordDetailList: KeywordDetail[] = [
       accountNumber: '222-333-444',
       accountName: '카카오뱅크',
     },
-    memberList: [{ name: '지민' }, { name: '민수' }, { name: '영희' }],
+    memberList: [
+      { id: 1, name: '이름1', phoneNumber: '010-4824-1469' },
+      { id: 2, name: '이름2', phoneNumber: '010-9110-5864' },
+      { id: 3, name: '이름3', phoneNumber: '010-1541-2537' },
+      { id: 4, name: '이름4', phoneNumber: '010-5392-3797' },
+      { id: 5, name: '이름5', phoneNumber: '010-4046-7672' },
+      { id: 6, name: '이름6', phoneNumber: '010-4824-1469' },
+    ],
     amount: 100000,
   },
 ];
