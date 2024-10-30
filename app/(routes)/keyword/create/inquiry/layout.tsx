@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { ReactNode } from 'react';
 
+
 export default function InquiryLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();

@@ -8,6 +8,7 @@ import { MyAccount } from '@/data/account';
 import { InquiryKeyword, KeywordDetailList } from '@/data/keyword';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ChangeEvent, useCallback, useMemo, useRef, useState } from 'react';
+import { Suspense } from 'react';
 
 export default function EditInquiryPage() {
   const router = useRouter();
@@ -62,49 +63,53 @@ export default function EditInquiryPage() {
   }, [keywordTitle, myAccount, searchKeyword]);
 
   return (
-    <div className='flex flex-col h-full'>
-      <Header text='키워드 수정하기' showActionButton={false} />
-      <div className='flex flex-col justify-between gap-6 p-[20px] h-full'>
-        <div className='flex flex-col gap-6'>
-          <div className='flex flex-col'>
-            <strong>키워드명</strong>
-            <KeywordInputRef
-              className='text-hanaPrimary w-full'
-              placeHolder={keyword.title}
-              onChange={handleInputChange}
-              defaultValue={keyword.title}
-              ref={keywordTitleRef}
-            />
-          </div>
+    <Suspense>
+      <div className='flex flex-col h-full'>
+        <Header text='키워드 수정하기' showActionButton={false} />
+        <div className='flex flex-col justify-between gap-6 p-[20px] h-full'>
+          <div className='flex flex-col gap-6'>
+            <div className='flex flex-col'>
+              <strong>키워드명</strong>
+              <KeywordInputRef
+                className='text-hanaPrimary w-full'
+                placeHolder={keyword.title}
+                onChange={handleInputChange}
+                defaultValue={keyword.title}
+                ref={keywordTitleRef}
+              />
+            </div>
 
-          <div className='flex flex-col'>
-            <strong>내 계좌</strong>
-            <SelectMyAccount
-              selected={myAccount?.type === 'MyAccount' ? myAccount : undefined}
-              onSelect={setMyAccount}
-            />
-          </div>
+            <div className='flex flex-col'>
+              <strong>내 계좌</strong>
+              <SelectMyAccount
+                selected={
+                  myAccount?.type === 'MyAccount' ? myAccount : undefined
+                }
+                onSelect={setMyAccount}
+              />
+            </div>
 
-          <div className='flex flex-col'>
-            <strong>조회 내용</strong>
-            <KeywordInputRef
-              className='text-hanaPrimary w-full'
-              placeHolder={keyword.searchKeyword}
-              onChange={handleSearchKeyword}
-              defaultValue={keyword.searchKeyword}
-              ref={searchKeywordRef}
-            />
-          </div>
+            <div className='flex flex-col'>
+              <strong>조회 내용</strong>
+              <KeywordInputRef
+                className='text-hanaPrimary w-full'
+                placeHolder={keyword.searchKeyword}
+                onChange={handleSearchKeyword}
+                defaultValue={keyword.searchKeyword}
+                ref={searchKeywordRef}
+              />
+            </div>
 
-          <Button
-            onClick={onComplete}
-            className='w-full'
-            isDisabled={isButtonDisabled}
-          >
-            완료
-          </Button>
+            <Button
+              onClick={onComplete}
+              className='w-full'
+              isDisabled={isButtonDisabled}
+            >
+              완료
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </Suspense>
   );
 }

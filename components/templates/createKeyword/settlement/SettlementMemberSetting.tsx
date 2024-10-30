@@ -1,10 +1,10 @@
 'use client';
 
-import { FormData } from '@/app/(routes)/keyword/create/settlement/page';
 import { DefaultInputRef } from '@/components/atoms/Inputs';
 import { ChipsList } from '@/components/molecules/ChipList';
 import ContactItem from '@/components/molecules/ContactListItem';
 import { Member, MemberList } from '@/data/member';
+import { FormData } from '@/data/settlement';
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 
 type SettlementMemberSettingProps = {
