@@ -27,7 +27,7 @@ const Keyword = ({
       className='flex flex-row justify-between items-center rounded-[12px]'
       onClick={() => {
         router.push(
-          type === 'transfer' || type === 'settlement'
+          type.includes('transfer') || type.includes('settlement')
             ? `/${type.toLowerCase().replace('amount', '')}/step1?id=${id}`
             : `/${type.toLowerCase().replace('amount', '')}?id=${id}`
         );
