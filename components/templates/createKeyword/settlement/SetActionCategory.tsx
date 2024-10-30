@@ -41,9 +41,8 @@ const SetActionCategory = ({
   };
 
   const toggleCheckEverytime = () => {
-    if (!amount) {
-      setValid(!checkEveryTime);
-    }
+    setValid(!checkEveryTime);
+    setAmount('');
     setCheckEverytime((prev) => !prev);
   };
 

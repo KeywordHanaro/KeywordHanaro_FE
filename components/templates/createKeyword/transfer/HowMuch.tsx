@@ -35,8 +35,6 @@ export default function HowMuch({
   onNext,
   onUpdate,
 }: HowMuchProps) {
-  // TODO: 잔액 DB에서 조회
-
   const amountRef = useRef<HTMLInputElement>(null);
 
   const [checkEverytime, setCheckEverytime] = useState(formData.checkEverytime);
@@ -49,6 +47,7 @@ export default function HowMuch({
 
   const toggleCheckEverytime = () => {
     setValid(!checkEverytime);
+    setAmount('');
     setCheckEverytime((prev) => !prev);
   };
 
@@ -71,15 +70,13 @@ export default function HowMuch({
 
   const handleSubmit = () => {
     if (checkEverytime) {
-      // 금액 매번
       onUpdate({ checkEverytime, type: 'WithoutAmount' });
       onNext();
     } else {
-      const amountValue = amountRef.current?.value; // 현재 입력값 가져오기
+      const amountValue = amountRef.current?.value;
 
       console.log('!!!!', amountValue);
       if (amountValue) {
-        // amountValue가 유효한 경우
         const amount = parseInt(amountValue.replace(/,/g, ''), 10);
         onUpdate({
           checkEverytime,
@@ -88,7 +85,6 @@ export default function HowMuch({
         });
         onNext();
       } else {
-        // amountRef가 유효하지 않을 경우 추가 처리
         console.error('금액을 입력해주세요.');
       }
     }

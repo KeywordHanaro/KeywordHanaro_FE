@@ -16,6 +16,10 @@ export default function Step6() {
     router.push('/keyword');
   };
 
+  // useEffect(() => {
+  //   console.log(formData);
+  // }, []);
+
   return (
     <KeywordCompletion onClick={handleComplete}>
       <div className=''>
