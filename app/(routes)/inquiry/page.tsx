@@ -10,7 +10,7 @@ export default function InquiryPage() {
   const router = useRouter();
 
   const handleOnBack = () => {
-    router.push('/');
+    router.push('/keyword');
   };
 
   return (

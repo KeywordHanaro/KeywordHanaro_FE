@@ -7,15 +7,19 @@ import {
   SettlementKeyword,
   SettlementAmountKeyword,
 } from '@/data/keyword';
+import { useSearchParams } from 'next/navigation';
 
 export default function SettlementPageLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const keyword = KeywordDetailList[7] as
+  const params = useSearchParams();
+  const id = params.get('id');
+  const keyword = KeywordDetailList.find((item) => item.id === Number(id)) as
     | SettlementKeyword
     | SettlementAmountKeyword;
+
   return (
     <SettlementProvider isEdit={true} originalData={keyword}>
       <SettlementEditLayout>{children}</SettlementEditLayout>

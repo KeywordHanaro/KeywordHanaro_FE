@@ -6,13 +6,16 @@ import { KeywordInputRef } from '@/components/atoms/Inputs';
 import SelectMyAccount from '@/components/molecules/SelectMyAccount';
 import { MyAccount } from '@/data/account';
 import { InquiryKeyword, KeywordDetailList } from '@/data/keyword';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ChangeEvent, useCallback, useMemo, useRef, useState } from 'react';
 
 export default function EditInquiryPage() {
   const router = useRouter();
-
-  const keyword = KeywordDetailList[3] as InquiryKeyword;
+  const params = useSearchParams();
+  const id = params.get('id');
+  const keyword = KeywordDetailList.find(
+    (item) => item.id === Number(id)
+  ) as InquiryKeyword;
 
   const [keywordTitle, setKeywordTitle] = useState(keyword.title);
   const [searchKeyword, setSearchKeyword] = useState(keyword.searchKeyword);
@@ -54,7 +57,7 @@ export default function EditInquiryPage() {
       myAccount !== keyword.accountFrom ||
       searchKeyword !== keyword.searchKeyword;
 
-    return !isDataChanged;
+    return !keywordTitle || !searchKeyword || !isDataChanged;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keywordTitle, myAccount, searchKeyword]);
 
