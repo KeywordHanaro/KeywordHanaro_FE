@@ -3,6 +3,7 @@
 import { Button } from '@/components/atoms/Button';
 import Header from '@/components/atoms/Header';
 import { KeywordInputRef } from '@/components/atoms/Inputs';
+import BankInfoItem from '@/components/molecules/BankInfoItem';
 import SelectBranch from '@/components/templates/createKeyword/ticket/SelectBranch';
 import { useTicket } from '@/contexts/TicketContext';
 import { Branch } from '@/data/bank';
@@ -64,7 +65,7 @@ export default function EditTicketKeywordPage() {
     const isValid =
       !!selectedBranch?.branchId && (keywordName?.length ?? 0 > 0);
 
-		return !(isDataChanged && isValid)
+    return !(isDataChanged && isValid);
   }, [selectedBranch, keywordName, branch, keyword]);
 
   return (
@@ -84,10 +85,11 @@ export default function EditTicketKeywordPage() {
           </div>
         </div>
         <div>
-          <div className='text-2xl font-semibold flex'>
-            <p>현재 영업점: </p>
-            <p className='font-bold'>&nbsp;{selectedBranch?.branchName}</p>{' '}
+          <strong>현재 영업점</strong>
+          <div className='pb-6'>
+            {!!selectedBranch && <BankInfoItem data={selectedBranch} />}
           </div>
+
           <SelectBranch handleSetBranch={handleSetBranch} />
         </div>
         <Button
