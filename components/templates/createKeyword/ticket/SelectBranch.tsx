@@ -16,6 +16,12 @@ export default function SelectBranch({
   const inputRef = useRef<HTMLInputElement>(null);
   const [searchResult, setSearchResult] = useState('');
 
+  const handleClick = (data: Branch) => {
+    // if (inputRef.current) inputRef.current.value = '';
+    handleSetBranch(data);
+    setSearchResult('');
+  };
+
   return (
     <div className='w-full flex flex-col gap-[24px]'>
       <div className='flex flex-col'>
@@ -24,7 +30,7 @@ export default function SelectBranch({
       </div>
 
       <SearchInpuRef
-        placeHolder='엽업점명/주소/지하철명 입력'
+        placeHolder='영업점명/주소/지하철명 입력'
         className='w-full'
         onSubmit={() => {
           if (inputRef?.current?.value)
@@ -40,7 +46,7 @@ export default function SelectBranch({
               <div
                 key={branch.branchId}
                 className='border-b border-[#DFE2E6] pt-[10px] pb-[16px]'
-                onClick={() => handleSetBranch(branch)}
+                onClick={() => handleClick(branch)}
               >
                 <BankInfoItem data={branch} />
               </div>
