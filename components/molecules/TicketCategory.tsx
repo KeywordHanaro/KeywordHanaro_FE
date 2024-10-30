@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Card } from '../atoms/Card';
 
@@ -8,9 +9,20 @@ const categories = [
     name: '예금',
     description: '(송금, 입금, 출금, 예적금 등)',
     path: '/ticket/detail?task=예금',
+    src: '/images/icons/deposit.png',
   },
-  { name: '개인 대출', description: '', path: '/ticket/detail?task=개인 대출' },
-  { name: '기업 대출', description: '', path: '/ticket/detail?task=기업 대출' },
+  {
+    name: '개인 대출',
+    description: '',
+    path: '/ticket/detail?task=개인 대출',
+    src: '/images/icons/personalLoan.png',
+  },
+  {
+    name: '기업 대출',
+    description: '',
+    path: '/ticket/detail?task=기업 대출',
+    src: '/images/icons/corporateLoan.png',
+  },
 ];
 
 export default function TicketCategory() {
@@ -27,8 +39,14 @@ export default function TicketCategory() {
           padding='p-[25px]'
           className='hover:bg-hanaPrimary hover:text-white'
         >
-          <div className='flex flex-row gap-[8px] items-center'>
-            <div className='w-5 h-5 rounded-lg bg-gray-300'></div>
+          <div className='flex flex-row gap-5 items-center'>
+            <Image
+              src={category.src}
+              alt=''
+              width={30}
+              height={30}
+              className='rounded-lg'
+            ></Image>
             <h1 className='font-bold text-[17px]'>{category.name}</h1>
             <small className='text-[12px] font-bold text-descriptionGray'>
               {category.description}
