@@ -3,27 +3,24 @@
 import { MoneyInputRef } from '@/components/atoms/Inputs';
 import { ChipsList } from '@/components/molecules/ChipList';
 import { Member } from '@/data/member';
-import { useState, useRef, forwardRef, useImperativeHandle } from 'react';
+import { FormData } from '@/data/settlement';
+import { useState, useRef, useEffect } from 'react';
+import { formatNumberWithCommas } from '@/lib/utils';
 
-const SettlementRequest = forwardRef(function SettlementRequest(
-  {
-    setMoneyResult,
-    handleStep,
-    accountName,
-    setMembersResult,
-    initMember,
-  }: {
-    setMoneyResult: React.Dispatch<React.SetStateAction<string | null>>;
-    setMembersResult: React.Dispatch<React.SetStateAction<Member[]>>;
-    handleStep: () => void;
-    accountName: string;
-    initMember: Member[];
-  },
-  ref
-) {
-  const [members, setMembers] = useState<Member[]>(initMember);
+const SettlementRequest = ({
+  formData,
+  onUpdate,
+}: {
+  formData: FormData;
+  onUpdate: (newData: Partial<FormData>) => void;
+}) => {
+  const [members, setMembers] = useState<Member[]>(formData.members);
   const [deleteMember, setDeleteMember] = useState<Member[]>([]);
-  const moneyRef = useRef<HTMLInputElement>(null);
+  const amountRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    onUpdate({ members });
+  }, [members]); // onUpdate를 의존성 배열에서 제거
 
   const handleDeleteMember = (id: number) => {
     setMembers(members.filter((member) => id !== member.id));
@@ -33,41 +30,20 @@ const SettlementRequest = forwardRef(function SettlementRequest(
     ]);
   };
 
-  const handleSubmit = ({
-    money,
-    members,
-  }: {
-    money: string;
-    members: Member[];
-  }) => {
-    // if (!money || mo) {
-    //   alert('금액을 입력해주세요');
-    //   return;
-    // }
-    console.log(money);
-    setMoneyResult(money);
-    setMembersResult(members);
-    handleStep();
-    console.log('데이터 입력 완료', money, members);
+  const handleAddMember = (id: number) => {
+    setDeleteMember(deleteMember.filter((member) => id !== member.id));
+    setMembers((prev) => [
+      ...prev,
+      ...deleteMember.filter((member) => id === member.id),
+    ]);
   };
 
-  useImperativeHandle(ref, () => ({
-    submit: () => {
-      if (moneyRef.current?.value) {
-        if (moneyRef.current.value === '0') {
-          alert('유효한 금액을 입력해주세요');
-          return;
-        }
-        handleSubmit({ money: moneyRef.current.value, members });
-      } else {
-        alert('금액을 입력해주세요');
-      }
-    },
-  }));
-
   return (
-    <div className='flex flex-col gap-[30px] pt-[30px]'>
-      <p className='text-[24px] font-semibold'>{accountName}로</p>
+    <div className='flex flex-col gap-[30px] pt-[30px] px-[20px]'>
+      {/* 계좌번호 및 선택된 멤버 글자 출력 */}
+      <p className='text-[24px] font-semibold'>
+        {formData.account.accountName}로
+      </p>
       <div className='text-[#069894] text-[24px] font-semibold break-keep'>
         {members.map((member, idx) =>
           idx !== members.length - 1 ? (
@@ -81,7 +57,21 @@ const SettlementRequest = forwardRef(function SettlementRequest(
         <span className='text-black ml-[3px]'>님에게 정산요청 할게요</span>
       </div>
 
-      <MoneyInputRef placeHolder='얼마를 요청할까요?' ref={moneyRef} />
+      {formData.checkEveryTime ? (
+        <MoneyInputRef
+          placeHolder='얼마를 요청할까요?'
+          ref={amountRef}
+          onChange={() =>
+            onUpdate({
+              amount: formatNumberWithCommas(amountRef.current?.value ?? ''),
+            })
+          }
+        />
+      ) : (
+        <p className='text-[24px] text-hanaPrimary font-semibold'>
+          {formData.amount} 원
+        </p>
+      )}
 
       {/* 선택된 멤버 */}
       {members.length !== 0 && (
@@ -105,12 +95,14 @@ const SettlementRequest = forwardRef(function SettlementRequest(
             <ChipsList
               items={deleteMember}
               className={'text-[#B9B9B9] border-[#B9B9B9]'}
+              canAdd={true}
+              onRemove={handleAddMember}
             />
           </div>
         </div>
       )}
     </div>
   );
-});
+};
 
 export default SettlementRequest;

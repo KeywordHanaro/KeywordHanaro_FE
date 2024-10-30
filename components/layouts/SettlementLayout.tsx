@@ -35,6 +35,11 @@ export default function SettlementLayout({ children }: PropsWithChildren) {
       ) : (
         <Header
           text='키워드 생성하기'
+          showBackButton={
+            pathname.startsWith('/keyword/create/settlement/step5')
+              ? false
+              : true
+          }
           onBack={() => {
             if (prevStep) router.push(prevStep);
           }}

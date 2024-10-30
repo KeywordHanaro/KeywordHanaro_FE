@@ -5,6 +5,7 @@ import { Chip } from '../atoms/Chips';
 type ChipsListProps = {
   items: Member[];
   canDelete?: boolean;
+  canAdd?: boolean;
   onRemove?: (id: number) => void;
   className?: ClassValue;
 };
@@ -12,6 +13,7 @@ type ChipsListProps = {
 export function ChipsList({
   items,
   canDelete,
+  canAdd,
   onRemove,
   className,
 }: ChipsListProps) {
@@ -21,6 +23,7 @@ export function ChipsList({
         <Chip
           key={item.id}
           item={item}
+          canAdd={canAdd}
           canDelete={canDelete}
           onRemove={onRemove ? () => onRemove(item.id) : undefined}
           className={className}

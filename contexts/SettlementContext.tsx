@@ -1,7 +1,7 @@
 'use client';
 
-import { FormData } from '@/app/(routes)/keyword/create/settlement/page';
 import { KeywordDetail } from '@/data/keyword';
+import { FormData, settlementData } from '@/data/settlement';
 import { useRouter } from 'next/navigation';
 import {
   createContext,
@@ -49,19 +49,7 @@ export const SettlementProvider = ({
   isEdit?: boolean;
   originalData?: KeywordDetail | null;
 }>) => {
-  const [formData, setFormData] = useState<FormData>({
-    account: {
-      type: 'MyAccount',
-      accountName: '',
-      accountNumber: '',
-      bankId: 0,
-    },
-    members: [],
-    category: 'Settlement',
-    checkEveryTime: false,
-    amount: '',
-    keywordName: '',
-  });
+  const [formData, setFormData] = useState<FormData>(settlementData);
   const router = useRouter();
   const nextStep = () => router.push('/keyword/create/settlement/step3');
   const prevStep = () => router.push('/');
