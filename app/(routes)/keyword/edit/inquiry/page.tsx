@@ -11,8 +11,7 @@ import { ChangeEvent, useCallback, useMemo, useRef, useState } from 'react';
 
 export default function EditInquiryPage() {
   const router = useRouter();
-  //   const searchParams = useSearchParams();
-  //   const id = searchParams.get('id');
+
   const keyword = KeywordDetailList[3] as InquiryKeyword;
 
   const [keywordTitle, setKeywordTitle] = useState(keyword.title);
@@ -36,7 +35,7 @@ export default function EditInquiryPage() {
   );
 
   const onComplete = useCallback(() => {
-    if (myAccount && keyword) {
+    if (keyword) {
       const updatedFormData = {
         id: keyword.id,
         title: keywordTitle,
@@ -46,6 +45,7 @@ export default function EditInquiryPage() {
       console.log('🚀 ~ onComplete ~ updatedFormData:', updatedFormData);
       router.back();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keywordTitle, myAccount, searchKeyword, keyword]);
 
   const isButtonDisabled = useMemo(() => {
@@ -55,6 +55,7 @@ export default function EditInquiryPage() {
       searchKeyword !== keyword.searchKeyword;
 
     return !isDataChanged;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keywordTitle, myAccount, searchKeyword]);
 
   return (
@@ -74,7 +75,7 @@ export default function EditInquiryPage() {
           </div>
 
           <div className='flex flex-col'>
-            <strong>조회할 계좌</strong>
+            <strong>내 계좌</strong>
             <SelectMyAccount
               selected={myAccount?.type === 'MyAccount' ? myAccount : undefined}
               onSelect={setMyAccount}
