@@ -13,7 +13,10 @@ export default function EditKeywordPage() {
     router.push('/keyword');
   };
   const onEditKeyword = (id: number, type: string) => {
-    router.push(`/keyword/edit/${type}?id=${id}`);
+    const route = type.toLowerCase().replace('amount', '');
+    if (route.includes('settlement'))
+      router.push(`/keyword/edit/${route}/step1?id=${id}`);
+    else router.push(`/keyword/edit/${route}?id=${id}`);
   };
   const onDeleteKeyword = (id: number) => {
     alert(`delete ${id}`);
