@@ -78,6 +78,7 @@ export const getColorByType = (type: Keyword['type']) => {
 export const getNameByType = (type: Keyword['type']) => {
   switch (type) {
     case 'transfer':
+    case 'transferAmount':
       return '송금';
     case 'inquiry':
       return '조회';

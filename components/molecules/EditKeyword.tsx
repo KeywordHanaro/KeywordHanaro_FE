@@ -30,7 +30,7 @@ const EditKeyword = ({ data, onEdit, onDelete }: EditKeywordProps) => {
                   ? data.accountTo.accountName
                   : `${data.accountTo.name}님`}
               </span>
-              계좌로
+              &nbsp;계좌로
             </span>
             <span className='text-hanaPrimary font-semibold text-[13px]'>
               매번 다르게<span> 송금</span>
@@ -48,7 +48,7 @@ const EditKeyword = ({ data, onEdit, onDelete }: EditKeywordProps) => {
                   ? data.accountTo.accountName
                   : `${data.accountTo.name}님`}
               </span>
-              계좌로
+              &nbsp;계좌로
             </span>
             <span className='text-hanaPrimary font-semibold text-[13px]'>
               {formatNumberWithCommas(data.amount)}원<span> 송금</span>
