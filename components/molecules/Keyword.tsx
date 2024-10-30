@@ -21,12 +21,15 @@ const Keyword = ({
   const router = useRouter();
   const chipColor = getColorByType(type);
   const chipName = getNameByType(type);
+
   return (
     <Card
       className='flex flex-row justify-between items-center rounded-[12px]'
       onClick={() => {
         router.push(
-          type === 'transfer' ? `/${type}/step1?id=${id}` : `/${type}?id=${id}`
+          type === 'transfer' || type === 'settlement'
+            ? `/${type.toLowerCase().replace('amount', '')}/step1?id=${id}`
+            : `/${type.toLowerCase().replace('amount', '')}?id=${id}`
         );
       }}
     >
