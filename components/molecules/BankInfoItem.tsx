@@ -1,5 +1,5 @@
-import { bankList, Branch } from '@/data/bank';
-import Image from 'next/image';
+import { Branch } from '@/data/bank';
+import { BankLogoImg } from '../atoms/BankLogoImg';
 
 type BranchInfoItemProps = {
   data: Branch;
@@ -8,24 +8,10 @@ type BranchInfoItemProps = {
 export default function BankInfoItem({
   data: { branchName, distance, address, contact, businessHours },
 }: BranchInfoItemProps) {
-  const logo: string =
-    bankList.find((bank) => bank.bankname == 'KEB하나은행')?.image || '';
-
   return (
     <div className='flex gap-3 p-1 w-full '>
-      <div>
-        {logo ? (
-          <Image
-            src={logo}
-            alt={branchName}
-            className='border rounded-full'
-            width={40}
-            height={40}
-            sizes='w-[40px] h-[40px]'
-          />
-        ) : (
-          <div className='w-full h-full rounded-full' />
-        )}
+      <div className='relative w-11 h-11'>
+        <BankLogoImg bankId={81} />
       </div>
       <div className='flex flex-col gap-1 pt-1'>
         <div className='flex gap-2 items-center'>
