@@ -4,18 +4,18 @@ import { Button } from '@/components/atoms/Button';
 import Header from '@/components/atoms/Header';
 import { MoneyInputRef } from '@/components/atoms/Inputs';
 import SelectMyAccount from '@/components/molecules/SelectMyAccount';
+import { MyAccount } from '@/data/account';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
 export default function DepositDocumentPage() {
   const router = useRouter();
-  const [myAccount, setMyAccount] = useState<string | null>(null);
+  const [myAccount, setMyAccount] = useState<MyAccount | undefined>(undefined);
   const [isValid, setIsValid] = useState<boolean>(false);
-  const ammountRef = <HTMLInputElement>(null)
+  const ammountRef = useRef<HTMLInputElement>(null);
 
-  const handleAccountSelect = (accountNumber: string) => {
-    console.log(accountNumber);
-    setMyAccount(accountNumber);
+  const handleAccountSelect = (account: MyAccount) => {
+    setMyAccount(account);
   };
 
   return (
@@ -41,7 +41,9 @@ export default function DepositDocumentPage() {
             </span>
           </div>
           <Button
-            onClick={() => router.push('/document?task=입금&bank=하나은행 성수점')}
+            onClick={() =>
+              router.push('/document?task=입금&bank=하나은행 성수점')
+            }
             className='w-full'
             isDisabled={!(isValid && myAccount)}
           >

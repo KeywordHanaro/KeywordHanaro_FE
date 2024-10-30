@@ -5,14 +5,16 @@ import Header from '@/components/atoms/Header';
 import { AccountInputRef, MoneyInputRef } from '@/components/atoms/Inputs';
 import SelectBank from '@/components/molecules/SelectBank';
 import SelectMyAccount from '@/components/molecules/SelectMyAccount';
+import { MyAccount, OthersAccount } from '@/data/account';
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 export default function TransferDocumentPage() {
-  const [myAccount, setMyAccount] = useState<string | null>(null);
+  const [myAccount, setMyAccount] = useState<MyAccount | undefined>(undefined);
 
-  const [otherAccount, setOtherAccount] = useState<string | null>(null);
-  const [bankId, setBankID] = useState<number>(0);
+  const [otherAccount, setOtherAccount] = useState<
+    MyAccount | OthersAccount | undefined
+  >(undefined);
   const otherAccountRef = useRef<HTMLInputElement>(null);
 
   const [isValid, setIsValid] = useState<boolean>(false);
@@ -20,10 +22,49 @@ export default function TransferDocumentPage() {
 
   const router = useRouter();
 
-  const handleSelectBank = (id: number) => {
-    (() => id && setBankID(id))();
-    setOtherAccount(otherAccountRef.current?.value ?? null);
+  // const handleSelectBank = (id: number) => {
+  //   (() => id && setBankID(id))();
+  //   setOtherAccount(otherAccountRef.current?.value ?? null);
+  // };
+
+  console.log('myAccount', myAccount);
+  console.log('otherAccount', otherAccount);
+  console.log('isValid', isValid);
+
+  const handleAccountSelect = (account: MyAccount) => {
+    setMyAccount(account);
   };
+
+  const handleAccountInput = useCallback(() => {
+    if (otherAccountRef.current) {
+      setOtherAccount((prev) =>
+        prev?.type === 'OthersAccount'
+          ? { ...prev, accountNumber: otherAccountRef.current!.value }
+          : {
+              type: 'OthersAccount',
+              name: '',
+              bankId: 0,
+              accountNumber: otherAccountRef.current!.value,
+            }
+      );
+    }
+  }, []);
+
+  const handleSelectBank = useCallback((id: number) => {
+    setOtherAccount((prev) =>
+      prev?.type === 'OthersAccount'
+        ? { ...prev, bankId: id }
+        : { type: 'OthersAccount', name: '', bankId: id, accountNumber: '' }
+    );
+  }, []);
+
+  const isAccountValid =
+    myAccount?.type === 'MyAccount' &&
+    'bankId' in myAccount &&
+    'accountNumber' in myAccount &&
+    otherAccount?.type === 'OthersAccount' &&
+    otherAccount.bankId !== 0 &&
+    otherAccount.accountNumber !== '';
   return (
     <>
       <div>
@@ -33,12 +74,12 @@ export default function TransferDocumentPage() {
 
           <div className='flex flex-col'>
             <strong>보낼 계좌</strong>
-            <SelectMyAccount onSelect={setMyAccount} />
+            <SelectMyAccount onSelect={handleAccountSelect} />
           </div>
           <div>
             <strong>받는 계좌</strong>
             <AccountInputRef
-              onChange={() => handleSelectBank(0)}
+              onChange={handleAccountInput}
               placeHolder='계좌번호 입력'
               ref={otherAccountRef}
             />
@@ -56,12 +97,12 @@ export default function TransferDocumentPage() {
             </span>
           </div>
           <Button
-            onClick={() =>
-              router.push('/document?task=송금&bank=하나은행 성수점')
+            onClick={
+              () => router.push('/document?task=송금&bank=하나은행 성수점')
               // console.log(isValid, myAccount, otherAccount, bankId)
             }
             className='w-full'
-            isDisabled={!(isValid && myAccount && otherAccount && bankId)}
+            isDisabled={!(isValid && myAccount && isAccountValid)}
           >
             완료
           </Button>
