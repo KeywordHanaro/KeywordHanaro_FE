@@ -99,7 +99,7 @@ export const UseKeywordTransfer: TransferProps[] = [
     },
     toAccount: {
       type: 'OthersAccount',
-      name: '김인선',
+      name: '정성엽',
       bankId: 3,
       accountNumber: '223-2222-2221',
     },

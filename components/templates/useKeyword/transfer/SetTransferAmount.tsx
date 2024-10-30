@@ -26,6 +26,8 @@ export const SetTransferAmount = forwardRef<
   useEffect(() => {
     if (data.type === 'WithoutAmount') {
       setOpen(false);
+    } else {
+      setOpen(true);
     }
   }, [data.type]);
 
