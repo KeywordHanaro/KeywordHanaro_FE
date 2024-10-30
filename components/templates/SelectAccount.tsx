@@ -1,9 +1,9 @@
-import { type MyAccountItemProps } from '@/components/molecules/AccountListItem';
 import { MyAccounts } from '@/data/account';
+import { MyAccountWithBalance } from '@/data/transfer';
 import MyAccountList from '../organisms/MyAccountList';
 
 type SelectAccountProps = {
-  onUpdate: (account: MyAccountItemProps) => void;
+  onUpdate: (account: MyAccountWithBalance) => void;
   onNext: () => void;
 };
 

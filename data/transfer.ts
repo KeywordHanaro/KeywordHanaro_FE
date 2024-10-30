@@ -1,4 +1,3 @@
-// import { DataProps } from '@/app/(routes)/keyword/create/transfer/page';
 import { MyAccount, OthersAccount } from './account';
 
 export type KeywordInputToOther = {
@@ -49,7 +48,7 @@ export const KeywordSearchInputToOtherData: KeywordSearchInputProps[] = [
   },
 ];
 // useKeyword for transfer
-type MyAccountWithBalance = {
+export type MyAccountWithBalance = {
   balance: string;
 } & MyAccount;
 

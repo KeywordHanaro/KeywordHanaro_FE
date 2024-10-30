@@ -1,6 +1,6 @@
 'use client';
 
-import { MyAccount, OthersAccount } from '@/data/account';
+import type { MyAccount, OthersAccount } from '@/data/account';
 import { bankList } from '@/data/bank';
 // import { BsStarFill } from 'react-icons/bs';
 import Image from 'next/image';
@@ -8,21 +8,13 @@ import Image from 'next/image';
 // import { useState } from 'react';
 // import { cn } from '@/lib/utils';
 
-export type MyAccountItemProps = MyAccount;
-
-type OthersAccountItemProps = OthersAccount;
-
-export type MyOrOthersAccountItemProps =
-  | MyAccountItemProps
-  | OthersAccountItemProps;
-
 // type AccountItemFavoriteProps = (
 //   | MyAccountItemProps
 //   | OthersAccountItemProps
 // ) & { isFavorite: boolean };
 
 export type AccountListType = {
-  account: MyAccountItemProps | MyOrOthersAccountItemProps;
+  account: MyAccount | OthersAccount;
   // | AccountItemFavoriteProps;
   onclick: () => void;
 };

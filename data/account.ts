@@ -1,3 +1,5 @@
+import { MyAccountWithBalance } from './transfer';
+
 export type MyAccount = {
   type: 'MyAccount';
   accountName: string;
@@ -14,35 +16,40 @@ export type OthersAccount = {
 
 export type RecentAccount = MyAccount | OthersAccount;
 
-export const MyAccounts: MyAccount[] = [
+export const MyAccounts: MyAccountWithBalance[] = [
   {
     type: 'MyAccount',
     accountName: '문서아 취미 계쫘',
     bankId: 81,
+    balance: '2,000',
     accountNumber: '222-2222-2221',
   },
   {
     type: 'MyAccount',
     accountName: '문서아 적금',
     bankId: 81,
+    balance: '2,000',
     accountNumber: '222-2222-2222',
   },
   {
     type: 'MyAccount',
     accountName: '문서아 여행계좌',
     bankId: 81,
+    balance: '2,000',
     accountNumber: '222-2222-2223',
   },
   {
     type: 'MyAccount',
     accountName: '문서아 파이팅',
     bankId: 81,
+    balance: '2,000',
     accountNumber: '222-2222-2224',
   },
   {
     type: 'MyAccount',
     accountName: '문서아 즐거워',
     bankId: 81,
+    balance: '2,000',
     accountNumber: '222-2222-2225',
   },
 ];

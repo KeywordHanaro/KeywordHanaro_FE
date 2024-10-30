@@ -1,15 +1,19 @@
 'use client';
 
 import { AccountInputRef } from '@/components/atoms/Inputs';
-import { type MyOrOthersAccountItemProps } from '@/components/molecules/AccountListItem';
 import MyAccountList from '@/components/organisms/MyAccountList';
 import RecentAccountList from '@/components/organisms/RecentAccountList';
-import { MyAccounts, RecentAccount } from '@/data/account';
+import {
+  MyAccount,
+  MyAccounts,
+  OthersAccount,
+  RecentAccount,
+} from '@/data/account';
 import { ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 
 export type SelectToAccountType = {
-  onUpdate: (account: MyOrOthersAccountItemProps) => void;
+  onUpdate: (account: MyAccount | OthersAccount) => void;
   onNext: (step?: number) => void;
   selectedAccountNumber: string;
 };
@@ -30,7 +34,7 @@ export default function SelectToAccount({
   };
 
   const handleListClick = () => {
-    onNext(2);
+    onNext(4);
   };
 
   const myAccountWithoutSelected = MyAccounts.filter((account) => {
@@ -69,7 +73,9 @@ export default function SelectToAccount({
         </div>
         <div
           className={`flex transition-all duration-500 ease-in-out ${
-            isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+            isOpen
+              ? 'max-h-[500px] opacity-100'
+              : 'max-h-0 opacity-0 overflow-y-scroll'
           }`}
         >
           <div className='transition-opacity duration-500 ease-in-out'>
