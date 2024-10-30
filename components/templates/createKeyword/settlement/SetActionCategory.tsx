@@ -1,6 +1,6 @@
-import { FormData } from '@/app/(routes)/keyword/create/settlement/page';
 import { Button } from '@/components/atoms/Button';
 import SetAmount from '@/components/molecules/SetAmount';
+import { FormData } from '@/data/settlement';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 
