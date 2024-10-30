@@ -1,8 +1,8 @@
-import { MyAccountItemProps } from '@/components/molecules/AccountListItem';
+import { MyAccount } from '@/data/account';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
 export type DataProps = {
-  account: MyAccountItemProps;
+  account: MyAccount;
   inquiry: string;
   keywordName: string;
 };

@@ -22,11 +22,21 @@ export default function InquiryLayout({ children }: { children: ReactNode }) {
   return (
     <InquiryProvider>
       <div className='h-screen relative'>
-        <Header
-          text='키워드 생성하기'
-          showActionButton={false}
-          onBack={handleOnBack}
-        />
+        {pathname.startsWith('/keyword/create/inquiry/step4') ? (
+          <Header
+            text='키워드 생성하기'
+            showActionButton={false}
+            showBackButton={false}
+            // onBack={handleOnBack}
+          />
+        ) : (
+          <Header
+            text='키워드 생성하기'
+            showActionButton={false}
+            onBack={handleOnBack}
+          />
+        )}
+
         <div className='px-[20px] mt-[24px]'>{children}</div>
         {!pathname.includes('step4') && <MicRef />}
       </div>

@@ -1,8 +1,8 @@
 'use client';
 
-import { MyAccountItemProps } from '@/components/molecules/AccountListItem';
 import SelectAccount from '@/components/templates/SelectAccount';
 import { useInquiry } from '@/contexts/InquiryContext';
+import { MyAccount } from '@/data/account';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -21,7 +21,7 @@ export default function Step1() {
   return (
     <SelectAccount
       // account={formData.account}
-      onUpdate={(account: MyAccountItemProps) => updateFormData({ account })}
+      onUpdate={(account: MyAccount) => updateFormData({ account })}
       onNext={nextStep}
     />
   );
