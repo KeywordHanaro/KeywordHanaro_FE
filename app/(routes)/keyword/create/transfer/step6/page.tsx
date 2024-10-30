@@ -13,7 +13,7 @@ export default function Step6() {
   )?.bankname;
 
   const handleComplete = () => {
-    router.push('/keyword/create/transfer/step2');
+    router.push('/keyword');
   };
 
   return (
