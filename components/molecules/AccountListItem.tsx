@@ -2,10 +2,10 @@
 
 import type { MyAccount, OthersAccount } from '@/data/account';
 import { bankList } from '@/data/bank';
-// import { BsStarFill } from 'react-icons/bs';
-import Image from 'next/image';
-import { cn } from '@/lib/utils';
 import { FaCheck } from 'react-icons/fa';
+import { cn } from '@/lib/utils';
+// import { BsStarFill } from 'react-icons/bs';
+import { BankLogoImg } from '../atoms/BankLogoImg';
 
 // import { useState } from 'react';
 // import { cn } from '@/lib/utils';
@@ -62,17 +62,7 @@ export default function AccountListItem({
               className={`h-[40px] w-[40px] flex items-center justify-center border-1 rounded-full bg-white text-hanaPrimary text-xl
     ${isSelected ? ' border border-hanaPrimary' : ' border border-gray-100 '}`}
             >
-              {isSelected ? (
-                <FaCheck />
-              ) : (
-                <Image
-                  src={bank.image}
-                  alt={bank.bankname}
-                  className='rounded-full'
-                  layout='fill'
-                  sizes='min-width:40px height:40px'
-                />
-              )}
+              {isSelected ? <FaCheck /> : <BankLogoImg bankId={+bankId} />}
             </div>
           </div>
         ) : (

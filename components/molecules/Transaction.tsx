@@ -1,9 +1,8 @@
 'use client';
 
-import { bankList } from '@/data/bank';
 import { Transaction } from '@/data/transaction';
-import Image from 'next/image';
 import { formatTime } from '@/lib/utils';
+import { BankLogoImg } from '../atoms/BankLogoImg';
 
 type TransactionHistoryProps = {
   data: Transaction;
@@ -12,24 +11,11 @@ type TransactionHistoryProps = {
 export const TransactionHistory = ({
   data: { accountInfo, dateTime, amount, balance },
 }: TransactionHistoryProps) => {
-  const bankImage = bankList.find((i) => i.id === accountInfo.bankId)?.image;
-
   return (
     <div className='bg-White  text-hanaPrimary py-[24px]'>
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-3'>
-          {bankImage ? (
-            <Image
-              src={bankImage}
-              alt={accountInfo.accountNumber}
-              className='rounded-full aspect-square object-contain '
-              width={40}
-              height={40}
-              sizes='w-[40px] h-[40px]'
-            />
-          ) : (
-            <span className='w-11 h-11 rounded-full bg-slate-200 '></span>
-          )}
+          <BankLogoImg bankId={+accountInfo.bankId} />
           <div>
             <div className='text-[15px] font-medium'>
               {accountInfo.accountName}
