@@ -25,7 +25,9 @@ const Keyword = ({
     <Card
       className='flex flex-row justify-between items-center rounded-[12px]'
       onClick={() => {
-        router.push(`/${type}/step1?id=${id}`);
+        router.push(
+          type === 'transfer' ? `/${type}/step1?id=${id}` : `/${type}?id=${id}`
+        );
       }}
     >
       <div className='flex flex-col gap-[10px]'>
