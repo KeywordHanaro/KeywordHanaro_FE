@@ -4,10 +4,10 @@ import { useRouter } from 'next/navigation';
 import { Card } from '../atoms/Card';
 
 const categories = [
-  { name: '송금', path: '/keyword/create/transfer' },
-  { name: '조회', path: '/keyword/create/inquiry' },
-  { name: '모바일 번호표', path: '/keyword/create/ticket' },
-  { name: '정산하기/회비걷기', path: '/keyword/create/settlement' },
+  { name: '송금', path: '/keyword/create/transfer/step1' },
+  { name: '조회', path: '/keyword/create/inquiry/step1' },
+  { name: '모바일 번호표', path: '/keyword/create/ticket/step1' },
+  { name: '정산하기/회비걷기', path: '/keyword/create/settlement/step1' },
 ];
 
 const KeywordCategory = () => {
