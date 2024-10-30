@@ -4,6 +4,8 @@ import type { MyAccount, OthersAccount } from '@/data/account';
 import { bankList } from '@/data/bank';
 // import { BsStarFill } from 'react-icons/bs';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
+import { FaCheck } from 'react-icons/fa';
 
 // import { useState } from 'react';
 // import { cn } from '@/lib/utils';
@@ -15,11 +17,16 @@ import Image from 'next/image';
 
 export type AccountListType = {
   account: MyAccount | OthersAccount;
+  isSelected?: boolean;
   // | AccountItemFavoriteProps;
   onclick: () => void;
 };
 
-export default function AccountListItem({ account, onclick }: AccountListType) {
+export default function AccountListItem({
+  account,
+  isSelected,
+  onclick,
+}: AccountListType) {
   const { bankId, accountNumber } = account;
 
   // const name =
@@ -42,17 +49,31 @@ export default function AccountListItem({ account, onclick }: AccountListType) {
   const bank = bankList.find((i) => i.id === +bankId);
 
   return (
-    <div className='flex flex-row justify-between w-full h-fit py-[12px] bg-white'>
+    <div
+      className={cn(
+        'flex flex-row justify-between w-full h-fit py-[12px]',
+        isSelected ? 'border-y border-y-hanaPrimary text-white' : 'bg-white'
+      )}
+    >
       <div className='flex gap-[16px]' onClick={onclick}>
         {bank ? (
           <div className='relative w-11 h-11'>
-            <Image
-              src={bank.image}
-              alt={bank.bankname}
-              className='rounded-full'
-              layout='fill'
-              sizes='min-width:40px height:40px'
-            />
+            <div
+              className={`h-[40px] w-[40px] flex items-center justify-center border-1 rounded-full bg-white text-hanaPrimary text-xl
+    ${isSelected ? ' border border-hanaPrimary' : ' border border-gray-100 '}`}
+            >
+              {isSelected ? (
+                <FaCheck />
+              ) : (
+                <Image
+                  src={bank.image}
+                  alt={bank.bankname}
+                  className='rounded-full'
+                  layout='fill'
+                  sizes='min-width:40px height:40px'
+                />
+              )}
+            </div>
           </div>
         ) : (
           <span className='w-11 h-11 rounded-full bg-slate-200 '></span>

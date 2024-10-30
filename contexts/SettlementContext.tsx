@@ -1,14 +1,23 @@
 'use client';
 
 import { FormData } from '@/app/(routes)/keyword/create/settlement/page';
+import { KeywordDetail } from '@/data/keyword';
 import { useRouter } from 'next/navigation';
-import { createContext, PropsWithChildren, useContext, useState } from 'react';
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 type SettlementProps = {
   formData: FormData;
   updateFormData: (newData: Partial<FormData>) => void;
   handleOnBack: () => void;
   handleOnNext: () => void;
+  isEdit?: boolean;
+  originalData?: KeywordDetail | null;
 };
 
 const SettlementContext = createContext<SettlementProps>({
@@ -28,9 +37,18 @@ const SettlementContext = createContext<SettlementProps>({
   updateFormData: () => {},
   handleOnBack: () => {},
   handleOnNext: () => {},
+  isEdit: false,
+  originalData: null,
 });
 
-export const SettlementProvider = ({ children }: PropsWithChildren) => {
+export const SettlementProvider = ({
+  children,
+  isEdit = false,
+  originalData = null,
+}: PropsWithChildren<{
+  isEdit?: boolean;
+  originalData?: KeywordDetail | null;
+}>) => {
   const [formData, setFormData] = useState<FormData>({
     account: {
       type: 'MyAccount',
@@ -66,6 +84,28 @@ export const SettlementProvider = ({ children }: PropsWithChildren) => {
       ...newData,
     }));
   };
+
+  useEffect(() => {
+    if (
+      isEdit &&
+      originalData &&
+      (originalData.type === 'settlement' ||
+        originalData.type === 'settlementAmount')
+    ) {
+      setFormData({
+        account: originalData.accountFrom,
+        members: originalData.memberList,
+        category: 'Settlement',
+        checkEveryTime: originalData.type === 'settlement',
+        amount:
+          originalData.type === 'settlementAmount'
+            ? originalData.amount.toString()
+            : '',
+        keywordName: originalData.title,
+      });
+    }
+  }, [isEdit, originalData]);
+
   return (
     <SettlementContext.Provider
       value={{ formData, updateFormData, handleOnBack, handleOnNext }}

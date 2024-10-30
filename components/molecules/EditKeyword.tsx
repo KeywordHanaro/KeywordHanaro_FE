@@ -88,6 +88,21 @@ const EditKeyword = ({ data, onEdit, onDelete }: EditKeywordProps) => {
               {data.memberList.map((member) => member.name).join(', ')}
             </span>
             <span className='text-hanaPrimary text-[13px] font-semibold'>
+              매번 다르게 정산 요청
+            </span>
+          </>
+        );
+      case 'settlementAmount':
+        return (
+          <>
+            <span className='text-[13px] font-semibold'>
+              {data.accountFrom.accountName ?? data.accountFrom.accountNumber}{' '}
+              계좌로
+            </span>
+            <span className='text-[11px] font-semibold'>
+              {data.memberList.map((member) => member.name).join(', ')}
+            </span>
+            <span className='text-hanaPrimary text-[13px] font-semibold'>
               {data.amount.toLocaleString()}원 정산 요청
             </span>
           </>

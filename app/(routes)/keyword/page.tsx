@@ -17,7 +17,7 @@ export default function KeywordPage() {
       <Header
         text='나의 키워드'
         actionLabel='편집'
-        onBack={() => router.back()}
+        onBack={() => router.push('/')}
         onAction={onEdit}
       ></Header>
       <div className='flex flex-col flex-grow  overflow-y-scroll pt-[10px] px-5 pb-24 gap-2.5'>
