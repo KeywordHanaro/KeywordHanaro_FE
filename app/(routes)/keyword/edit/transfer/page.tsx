@@ -13,13 +13,22 @@ import {
   TransferAmountKeyword,
   TransferKeyword,
 } from '@/data/keyword';
-import { useRouter } from 'next/navigation';
-import { ChangeEvent, useCallback, useMemo, useRef, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { formatNumberWithCommas } from '@/lib/utils';
 
 export default function EditTransferKeyword() {
   const router = useRouter();
-  const keyword = KeywordDetailList[2] as
+  const params = useSearchParams();
+  const id = params.get('id');
+  const keyword = KeywordDetailList.find((item) => item.id === Number(id)) as
     | TransferKeyword
     | TransferAmountKeyword;
 
@@ -30,6 +39,8 @@ export default function EditTransferKeyword() {
   const [otherAccount, setOtherAccount] = useState<
     MyAccount | OthersAccount | undefined
   >(keyword.accountTo);
+  // console.log('accountTo', keyword.accountTo);
+  // console.log('otherAccount', otherAccount);
   const [transferToMe, setTransferToMe] = useState(
     keyword.accountTo.type === 'MyAccount'
   );
@@ -121,6 +132,7 @@ export default function EditTransferKeyword() {
       (!checkEverytime &&
         keyword.type === 'transferAmount' &&
         amount !== formatNumberWithCommas(keyword.amount));
+    console.log('isDataChanged', isDataChanged);
 
     const isAccountValid =
       myAccount?.type === 'MyAccount' &&
@@ -132,10 +144,11 @@ export default function EditTransferKeyword() {
         (otherAccount?.type === 'OthersAccount' &&
           otherAccount.bankId !== 0 &&
           otherAccount.accountNumber !== ''));
+    console.log('isAccountValid', isAccountValid);
 
     const isAmountValid =
       checkEverytime || (!checkEverytime && amount !== '' && isValid);
-
+    console.log('isAmountValid', isAmountValid);
     return !(isDataChanged && isAccountValid && isAmountValid);
   }, [
     keywordTitle,
@@ -146,6 +159,12 @@ export default function EditTransferKeyword() {
     keyword,
     isValid,
   ]);
+
+  useEffect(() => {
+    if (otherAccountRef.current) {
+      otherAccountRef.current.value = keyword.accountTo.accountNumber;
+    }
+  }, []);
 
   return (
     <div className='flex flex-col h-full'>
@@ -194,7 +213,10 @@ export default function EditTransferKeyword() {
                   placeHolder='계좌번호 입력'
                   ref={otherAccountRef}
                 />
-                <SelectBank onSelect={handleSelectBank} />
+                <SelectBank
+                  onSelect={handleSelectBank}
+                  value={otherAccount?.bankId}
+                />
               </>
             )}
           </div>
