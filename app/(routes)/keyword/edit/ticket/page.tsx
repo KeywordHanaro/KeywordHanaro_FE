@@ -20,7 +20,7 @@ import {
 
 export default function EditTicketKeywordPage() {
   const router = useRouter();
-  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
+  // const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
   const { setSelectedBranch, setKeywordName, keywordName, selectedBranch } =
     useTicket();
   const [branch, setBranch] = useState<Branch | null>(null);
@@ -41,11 +41,6 @@ export default function EditTicketKeywordPage() {
   const handleInputChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       setKeywordName(e.target.value);
-      if (e.target.value === keyword) {
-        setIsButtonDisabled(true);
-      } else {
-        setIsButtonDisabled(false);
-      }
     },
     [setKeywordName, keyword]
   );

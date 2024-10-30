@@ -5,7 +5,7 @@ import { AccountInputRef } from '@/components/atoms/Inputs';
 import SelectBank from '@/components/molecules/SelectBank';
 import { TransferForm } from '@/contexts/TransferContext';
 import { MyAccount, OthersAccount } from '@/data/account';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { formatAccountNumber } from '@/lib/utils';
 
 type InputToAccountProps = {
@@ -47,6 +47,12 @@ export default function InputToAccount({
     onNext();
   };
 
+  const accountRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    accountRef.current?.focus();
+  }, []);
+
   return (
     <div className='flex flex-col gap-[17px]'>
       <div>
@@ -54,6 +60,7 @@ export default function InputToAccount({
       </div>
       <div>
         <AccountInputRef
+          ref={accountRef}
           onChange={handleInputChange}
           placeHolder='계좌번호 입력'
           value={inputValue}

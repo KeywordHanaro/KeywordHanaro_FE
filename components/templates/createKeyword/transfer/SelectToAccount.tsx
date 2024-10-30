@@ -42,13 +42,10 @@ export default function SelectToAccount({
   });
 
   return (
-    <div className='flex flex-col gap-[15px] h-full'>
+    <div className='flex flex-col gap-[17px] h-full'>
       <h1 className='font-extrabold text-2xl'>어디로 돈을 보낼까요?</h1>
       <div className=''>
-        <AccountInputRef
-          placeHolder='계좌번호 입력'
-          onClick={handleInputClick}
-        />
+        <button className='text-placeholderGray text-[18px] font-semibold border-b-2 py-2 w-full text-left' onClick={handleInputClick}>계좌번호 입력</button>
       </div>
       <div className='flex flex-col h-full overflow-y-scroll pb-24'>
         <div className='flex justify-between'>
