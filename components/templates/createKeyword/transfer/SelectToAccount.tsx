@@ -1,6 +1,5 @@
 'use client';
 
-import { AccountInputRef } from '@/components/atoms/Inputs';
 import MyAccountList from '@/components/organisms/MyAccountList';
 import RecentAccountList from '@/components/organisms/RecentAccountList';
 import {

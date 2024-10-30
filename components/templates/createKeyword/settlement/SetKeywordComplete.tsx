@@ -1,4 +1,4 @@
-import { FormData } from '@/app/(routes)/keyword/create/settlement/page';
+import { FormData } from "@/data/settlement";
 
 export default function SetKeywordComplete({
   formData,
