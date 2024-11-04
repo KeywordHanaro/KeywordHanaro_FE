@@ -2,8 +2,10 @@
 
 import { MoneyInputRef } from '@/components/atoms/Inputs';
 import { ChipsList } from '@/components/molecules/ChipList';
+import { KeywordDetailList } from '@/data/keyword';
 import { Member } from '@/data/member';
 import { FormData } from '@/data/settlement';
+import { useSearchParams } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
 import { formatNumberWithCommas } from '@/lib/utils';
 
@@ -14,13 +16,13 @@ const SettlementRequest = ({
   formData: FormData;
   onUpdate: (newData: Partial<FormData>) => void;
 }) => {
-  const [members, setMembers] = useState<Member[]>(formData.members);
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
+  const keyword = KeywordDetailList.find((item) => item.id === Number(id));
+
+  const [members, setMembers] = useState<Member[]>([]);
   const [deleteMember, setDeleteMember] = useState<Member[]>([]);
   const amountRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    onUpdate({ members });
-  }, [members]); // onUpdate를 의존성 배열에서 제거
 
   const handleDeleteMember = (id: number) => {
     setMembers(members.filter((member) => id !== member.id));
@@ -37,6 +39,45 @@ const SettlementRequest = ({
       ...deleteMember.filter((member) => id === member.id),
     ]);
   };
+
+  useEffect(() => {
+    onUpdate({ members });
+  }, [members, onUpdate]);
+
+  useEffect(() => {
+    if (keyword?.type === 'settlement') {
+      onUpdate({
+        account: {
+          accountName: keyword.accountFrom.accountName,
+          bankId: keyword.accountFrom.bankId,
+          accountNumber: keyword.accountFrom.accountNumber,
+          type: 'MyAccount',
+        },
+        members: keyword.memberList,
+        category: 'Settlement',
+        checkEveryTime: true,
+        amount: '0',
+        keywordName: keyword.title,
+      });
+      setMembers(keyword.memberList);
+    }
+    if (keyword?.type === 'settlementAmount') {
+      onUpdate({
+        account: {
+          accountName: keyword.accountFrom.accountName,
+          bankId: keyword.accountFrom.bankId,
+          accountNumber: keyword.accountFrom.accountNumber,
+          type: 'MyAccount',
+        },
+        members: keyword.memberList,
+        category: 'Settlement',
+        checkEveryTime: false,
+        amount: keyword.amount.toString(),
+        keywordName: keyword.title,
+      });
+      setMembers(keyword.memberList);
+    }
+  }, []);
 
   return (
     <div className='flex flex-col gap-[30px] pt-[30px] px-[20px]'>
