@@ -164,6 +164,7 @@ export default function EditTransferKeyword() {
     if (otherAccountRef.current) {
       otherAccountRef.current.value = keyword.accountTo.accountNumber;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

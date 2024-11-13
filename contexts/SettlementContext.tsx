@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import {
   createContext,
   PropsWithChildren,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -78,12 +79,12 @@ export const SettlementProvider = ({
     nextStep();
   };
 
-  const updateFormData = (newData: Partial<FormData>) => {
+  const updateFormData = useCallback((newData: Partial<FormData>) => {
     setFormData((prevData) => ({
       ...prevData,
       ...newData,
     }));
-  };
+  }, []);
 
   useEffect(() => {
     if (

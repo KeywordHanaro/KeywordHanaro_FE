@@ -42,6 +42,7 @@ export default function EditTicketKeywordPage() {
     (e: ChangeEvent<HTMLInputElement>) => {
       setKeywordName(e.target.value);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [setKeywordName, keyword]
   );
 

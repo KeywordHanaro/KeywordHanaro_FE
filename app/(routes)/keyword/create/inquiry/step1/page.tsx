@@ -12,6 +12,7 @@ export default function Step1() {
 
   useEffect(() => {
     resetFormData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const nextStep = () => {
