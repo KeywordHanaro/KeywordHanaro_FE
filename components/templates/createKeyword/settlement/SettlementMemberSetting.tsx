@@ -24,6 +24,7 @@ export default function SettlementMemberSetting({
 
   useEffect(() => {
     onUpdate(selectedMember);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMember]); // onUpdate를 의존성 배열에서 제거
 
   const handleDeleteMember = useCallback((id: number) => {

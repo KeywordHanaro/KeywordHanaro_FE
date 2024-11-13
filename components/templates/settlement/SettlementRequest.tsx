@@ -77,6 +77,7 @@ const SettlementRequest = ({
       });
       setMembers(keyword.memberList);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

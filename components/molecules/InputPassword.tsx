@@ -59,6 +59,7 @@ export default function InputPassword({
         fetching();
       }, 1000);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [password]);
 
   return (
