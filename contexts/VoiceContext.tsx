@@ -31,6 +31,7 @@ const VoiceInputContext = createContext<VoiceInputProps>({
 export const VoiceInputProvider = ({ children }: PropsWithChildren) => {
   const [result, setResult] = useState<string>('');
   const [type, setType] = useState<string>('');
+  //원하는 검색 결과 리스트로 지정
   const [lists, setLists] = useState<List[]>([]);
   const router = useRouter();
 

@@ -2,6 +2,7 @@ import { MicRef } from '@/components/atoms/Mic';
 import AccountCard from '@/components/molecules/AccountCard';
 import Keyword from '@/components/molecules/Keyword';
 import { Toggle } from '@/components/ui/toggle';
+import { VoiceInputProvider } from '@/contexts/VoiceContext';
 import { keywordList } from '@/data/keyword';
 import { SlArrowRight } from 'react-icons/sl';
 
@@ -52,7 +53,10 @@ export default function Home() {
         {/* 나의 키워드 끝 */}
       </div>
 
-      <MicRef />
+      {/* stt context 사용 예시*/}
+      <VoiceInputProvider>
+        <MicRef lists={[]} />
+      </VoiceInputProvider>
     </div>
   );
 }

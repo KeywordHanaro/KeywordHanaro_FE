@@ -9,14 +9,18 @@ import { useState, ForwardedRef, forwardRef, useEffect } from 'react';
 // 누르면 하단 화면 올라오게 --> 부모에 relative 걸어야함
 
 function Mic(
-  { text = '음성인식되는 내용이 나타납니다',lists }: { text?: string,lists:List[] },
+  {
+    text = '음성인식되는 내용이 나타납니다',
+    lists,
+  }: { text?: string; lists: List[] },
   ref: ForwardedRef<HTMLDivElement>
 ) {
   const { result, setResult, setType, setLists } = useVoiceInputSession();
 
-  useEffect(()=>{
+  useEffect(() => {
+    console.log(text);
     setResult(text);
-  },[])
+  }, []);
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [onRecord, setOnRecord] = useState<boolean>(false);
@@ -42,7 +46,7 @@ function Mic(
     if (onRecord) {
       getValue();
       setType('text');
-      setLists(lists)
+      setLists(lists);
     }
   }, [onRecord]);
 
