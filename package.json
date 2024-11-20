@@ -9,7 +9,9 @@
     "lint": "next lint",
     "prettier": "prettier --write .",
     "format": "prettier --check --ignore-path .gitignore .",
-    "format:fix": "prettier --write --ignore-path .gitignore ."
+    "format:fix": "prettier --write --ignore-path .gitignore .",
+    "type-check": "tsc --noEmit",
+    "check": "npm run lint && npm run type-check"
   },
   "dependencies": {
     "@heroicons/react": "^2.1.5",
