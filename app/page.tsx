@@ -55,7 +55,7 @@ export default function Home() {
 
       {/* stt context 사용 예시*/}
       <VoiceInputProvider>
-        <MicRef lists={[]} />
+        <MicRef />
       </VoiceInputProvider>
     </div>
   );
