@@ -1,6 +1,6 @@
 'use client';
 
-import { List, useVoiceInputSession } from '@/contexts/VoiceContext';
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { FaMicrophone } from 'react-icons/fa';
 import { useState, ForwardedRef, forwardRef, useEffect } from 'react';
 
@@ -11,11 +11,10 @@ import { useState, ForwardedRef, forwardRef, useEffect } from 'react';
 function Mic(
   {
     text = '음성인식되는 내용이 나타납니다',
-    lists,
-  }: { text?: string; lists: List[] },
+  }: { text?: string;},
   ref: ForwardedRef<HTMLDivElement>
 ) {
-  const { result, setResult, setType, setLists } = useVoiceInputSession();
+  const { result, setResult, setType} = useVoiceInputSession();
 
   useEffect(() => {
     console.log(text);
@@ -46,7 +45,6 @@ function Mic(
     if (onRecord) {
       getValue();
       setType('text');
-      setLists(lists);
     }
   }, [onRecord]);
 
