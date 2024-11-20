@@ -3,6 +3,7 @@
 import { TransferProps } from '@/data/transfer';
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 
+
 type TransferData = {
   transferAmount: string;
 } & TransferProps;
