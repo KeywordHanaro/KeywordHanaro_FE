@@ -12,7 +12,6 @@ export default function TransactionList() {
   const keywordDetail = InquiryList.find(
     (keyword) => keyword.id === Number(id)
   );
-  console.log('.>>', keywordDetail);
 
   if (!keywordDetail) {
     return (
