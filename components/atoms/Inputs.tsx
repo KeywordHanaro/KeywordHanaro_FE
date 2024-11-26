@@ -214,7 +214,7 @@ function MoneyInput(
       if (!textWidth && ref.current) {
         ref.current.style.width = '100%';
       } else if (ref.current?.value) {
-        ref.current.style.width = `${textWidth}px`;
+        ref.current.style.width = `${textWidth + 1}px`;
       }
     }
   }, [value, ref]);
@@ -251,7 +251,8 @@ function MoneyInput(
       <span
         ref={spanRef}
         className={cn(
-          'invisible absolute whitespace-pre max-w-full text-2xl font-semibold'
+          'invisible absolute whitespace-pre max-w-full text-2xl font-semibold',
+          className
         )}
         aria-hidden='true'
       >
