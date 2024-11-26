@@ -1,19 +1,23 @@
 import Keyword from '@/components/molecules/Keyword';
 import { MultiKeywordForm } from '@/contexts/MultiKeywordContext';
 import { keywordList } from '@/data/keyword';
+import { Reorder } from 'motion/react';
+import { useState } from 'react';
 
-type ConfirmOrderProps = {
+interface ConfirmOrderProps {
   formData: MultiKeywordForm;
-  onUpdate: () => void;
-};
+  onUpdate: (newKeywordIdArr: number[]) => void;
+}
 
 export default function ConfirmOrder({
   formData,
   onUpdate,
 }: ConfirmOrderProps) {
-  // TODO: 키워드 순서 변경
-  const handleNext = () => {
-    onUpdate();
+  const [items, setItems] = useState<number[]>(formData.keywordIdArr);
+
+  const handleReorder = (newOrder: number[]) => {
+    setItems(newOrder);
+    onUpdate(newOrder);
   };
 
   return (
@@ -24,13 +28,23 @@ export default function ConfirmOrder({
       <div className='font-medium text-lightGray pl-5 pt-[11px]'>
         카드를 길게 누른 후 카드를 이동해주세요
       </div>
-      {/* 키워드 리스트 */}
       <div className='flex flex-col flex-grow overflow-y-scroll pt-[27px] px-5 gap-2.5'>
-        {formData.keywordIdArr.map((id) => {
-          const data = keywordList.find((el) => el.id === id);
-          if (!data) return null;
-          return <Keyword key={id} data={data} />;
-        })}
+        <Reorder.Group
+          axis='y'
+          values={items}
+          onReorder={handleReorder}
+          className='flex flex-col gap-2.5'
+        >
+          {items.map((id) => {
+            const data = keywordList.find((el) => el.id === id);
+            if (!data) return null;
+            return (
+              <Reorder.Item key={id} value={id} drag='y'>
+                <Keyword data={data} />
+              </Reorder.Item>
+            );
+          })}
+        </Reorder.Group>
         <div className='font-medium text-lightGray pt-[12px] text-center'>
           조회 키워드는 순서와 상관 없이 가장 먼저 실행돼요
         </div>
