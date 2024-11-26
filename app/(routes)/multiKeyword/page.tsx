@@ -185,7 +185,8 @@ const MultiKeyword = () => {
           </div>
         </div>
         {/* 키워드 리스트 */}
-        <TransactionList />
+        <TransactionList keyword='급여' />
+
         <div className='flex flex-col gap-3 pb-10'>
           {KeywordDetailList.map((keyword) => (
             <KeywordWithInputs

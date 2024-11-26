@@ -1,38 +1,40 @@
 import TransactionHistory from '@/components/molecules/Transaction';
-import { InquiryList } from '@/data/inquiry';
+// import { InquiryList } from '@/data/inquiry';
 import { transactionList } from '@/data/transaction';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
+// import { useSearchParams } from 'next/navigation';
 import { formatDate } from '@/lib/utils';
 
-export default function TransactionList() {
-  const searchParams = useSearchParams();
-  const id = searchParams.get('id');
+type TransactionListProps = {
+  keyword: string;
+};
 
-  const keywordDetail = InquiryList.find(
-    (keyword) => keyword.id === Number(id)
-  );
+export default function TransactionList({ keyword }: TransactionListProps) {
+  // const searchParams = useSearchParams();
+  // const id = searchParams.get('id');
 
-  if (!keywordDetail) {
-    return (
-      <div>
-        <Image
-          src={'/images/alarts/noData.gif'}
-          alt=''
-          width={300}
-          height={300}
-          className='mx-auto'
-        />
-        <p className='text-center font-bold text-[20px]'>
-          해당 키워드의 거래내역이 없어요!
-        </p>
-        <p className='text-center'>(예)홍길동, 000곗돈 등으로 검색해보세요!</p>
-      </div>
-    );
-  }
+  // const keywordDetail = InquiryList.find((each) => each.id === Number(id));
+
+  // if (!keywordDetail) {
+  //   return (
+  //     <div>
+  //       <Image
+  //         src={'/images/alarts/noData.gif'}
+  //         alt=''
+  //         width={100}
+  //         height={100}
+  //         className='mx-auto'
+  //       />
+  //       <p className='text-center font-bold text-[20px]'>
+  //         해당 키워드의 거래내역이 없어요!
+  //       </p>
+  //       {/* <p className='text-center'>(예)홍길동, 000곗돈 등으로 검색해보세요!</p> */}
+  //     </div>
+  //   );
+  // }
 
   // description에서 키워드 추출
-  const keyword = keywordDetail.searchKeyword;
+  // const keyword = keywordDetail.searchKeyword;
   // const keyword = originKeyword?.split('>').pop()?.trim() || '';
 
   // const keyword = '성수'; //input keyword
@@ -48,22 +50,22 @@ export default function TransactionList() {
     );
 
   // 한글키워드 검색 시, 받침 유무에 따른 을/를 출력
-  const hasBatchim = (word: string) => {
-    const lastChar = word[word.length - 1];
-    const code = lastChar.charCodeAt(0);
-    if (code < 44032 || code > 55203) return false;
-    return (code - 44032) % 28 !== 0;
-  };
+  // const hasBatchim = (word: string) => {
+  //   const lastChar = word[word.length - 1];
+  //   const code = lastChar.charCodeAt(0);
+  //   if (code < 44032 || code > 55203) return false;
+  //   return (code - 44032) % 28 !== 0;
+  // };
   let lastDate = '';
 
   return (
     <div className='flex flex-col gap-[24px]'>
-      <h1 className='font-bold text-2xl'>
+      {/* <h1 className='font-bold text-2xl'>
         {keyword}
         {hasBatchim(keyword) ? '을' : '를'} 기반으로
         <br />
         검색한 결과예요
-      </h1>
+      </h1> */}
       <div className=''>
         <h1 className='text-[18px] font-semibold mb-[16px]'>
           최근 거래내역{' '}
@@ -90,8 +92,8 @@ export default function TransactionList() {
               <Image
                 src={'/images/alarts/noData.gif'}
                 alt=''
-                width={300}
-                height={300}
+                width={150}
+                height={150}
                 className='mx-auto'
               />
               <p className='text-center font-bold text-[20px]'>
