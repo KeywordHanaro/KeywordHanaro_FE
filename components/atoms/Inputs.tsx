@@ -214,7 +214,7 @@ function MoneyInput(
       if (!textWidth && ref.current) {
         ref.current.style.width = '100%';
       } else if (ref.current?.value) {
-        ref.current.style.width = `${textWidth + 1}px`;
+        ref.current.style.width = `${textWidth}px`;
       }
     }
   }, [value, ref]);
@@ -235,14 +235,14 @@ function MoneyInput(
   );
 
   return (
-    <div className='flex flex-row items-center text-hanaPrimary'>
+    <div className='flex flex-row items-center jusc text-hanaPrimary'>
       <input
         ref={ref}
         value={value}
         onChange={handleChange}
         className={cn(
-          className,
-          'max-w-full text-2xl font-semibold placeholder:text-placeholderGray transition-all duration-500 '
+          'max-w-full text-2xl font-semibold placeholder:text-placeholderGray transition-all duration-500 ',
+          className
         )}
         placeholder={placeHolder}
         required
@@ -257,7 +257,9 @@ function MoneyInput(
       >
         {value}
       </span>
-      {<span className='z-50 text-2xl font-semibold'>원</span>}
+      {value && (
+        <span className={cn('z-50 text-2xl font-semibold', className)}>원</span>
+      )}
     </div>
   );
 }

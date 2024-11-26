@@ -23,6 +23,21 @@ export const SetTransferAmount = forwardRef<
     onNext();
   };
 
+  const validatePassword = async (password: number[]): Promise<boolean> => {
+    try {
+      const response = await fetch('/api/validate-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      const data = await response.json();
+      return data.isValid; // Assume API returns { isValid: boolean }
+    } catch (error) {
+      console.error('Error validating password:', error);
+      return false; // Default to invalid on error
+    }
+  };
+
   useEffect(() => {
     if (data.type === 'WithoutAmount') {
       setOpen(false);
@@ -77,6 +92,7 @@ export const SetTransferAmount = forwardRef<
         {!verified && open && (
           <InputPassword
             onSubmit={checkPassword}
+            validatePassword={validatePassword}
             open={open}
             onClose={() => setOpen(false)}
           />

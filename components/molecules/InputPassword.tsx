@@ -10,6 +10,7 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer';
 import { FiDelete } from 'react-icons/fi';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -24,10 +25,12 @@ function shuffleArray(array: number[]) {
 type InputPasswordProps = {
   // open : boolean
   onSubmit: () => void;
+  validatePassword: (password: number[]) => Promise<boolean>;
 };
 
 export default function InputPassword({
   onSubmit,
+  validatePassword,
   ...props
 }: React.ComponentProps<typeof Drawer> & InputPasswordProps) {
   const numbers = Array.from({ length: 10 }, (_, i) => i);
@@ -35,17 +38,24 @@ export default function InputPassword({
     shuffleArray(numbers)
   );
   const [password, setPassword] = useState<number[]>([]);
+  const pathName = usePathname();
+
   const closeRef = useRef<HTMLButtonElement>(null);
   const handleOpen = () => {
     setShuffleNumbers(shuffleArray(numbers));
   };
 
-  const fetching = () => {
+  const fetching = async () => {
     setPassword([]);
-    closeRef.current?.click();
-    setTimeout(() => {
+
+    const isValid = await validatePassword(password);
+    if (isValid) {
+      closeRef.current?.click();
       onSubmit();
-    }, 1000);
+    } else {
+      alert('비밀번호가 일치하지 않습니다. 다시 시도해주세요.');
+      setPassword([]);
+    }
   };
 
   const handleClick = (num: number) => {
@@ -55,9 +65,7 @@ export default function InputPassword({
   useEffect(() => {
     if (password.length === 4) {
       // console.log(password);
-      setTimeout(() => {
-        fetching();
-      }, 1000);
+      fetching();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [password]);
@@ -70,7 +78,11 @@ export default function InputPassword({
           className='h-[410px] bg-hanaPrimary border-none'
         >
           <DrawerHeader className='text-white flex flex-col justify-center items-center  font-semibold'>
-            <DrawerTitle className='text-[18px]'>계좌 비밀번호</DrawerTitle>
+            <DrawerTitle className='text-[18px]'>
+              {pathName.includes('multiKeyword')
+                ? '간편 비밀번호'
+                : '계좌 비밀번호'}
+            </DrawerTitle>
             <DrawerDescription className='text-[25px] grid grid-cols-4 w-[100px] text-white'>
               {[...Array(4)].map((_, i) => (
                 <span key={i}>{i < password.length ? '*' : 'O'}</span>

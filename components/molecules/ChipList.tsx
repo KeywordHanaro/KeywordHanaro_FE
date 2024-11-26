@@ -18,7 +18,7 @@ export function ChipsList({
   className,
 }: ChipsListProps) {
   return (
-    <div className='flex overflow-x-auto space-x-2'>
+    <div className='flex flex-wrap overflow-x-auto gap-x-2 gap-y-2 w-full '>
       {items.map((item) => (
         <Chip
           key={item.id}
