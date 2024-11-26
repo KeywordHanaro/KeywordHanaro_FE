@@ -12,6 +12,7 @@ type MultiKeyword = {
   type: string;
   amount?: number;
   memberList?: Member[];
+  serviceId?: number;
 };
 
 type State = {
@@ -23,6 +24,7 @@ type Action =
   | { type: 'SET_KEYWORDS'; keywords: KeywordDetail[] }
   | { type: 'UPDATE_AMOUNT'; id: number; amount: number }
   | { type: 'UPDATE_MEMBER_LIST'; id: number; memberList: Member[] }
+  | { type: 'UPDATE_TICKET'; id: number; serviceId: number; service: string }
   | { type: 'VALIDATE_KEYWORDS' };
 
 const initialState: State = {
@@ -50,6 +52,9 @@ function reducer(state: State, action: Action): State {
           if (keyword.type === 'settlementAmount') {
             return { ...base, memberList: [...keyword.memberList] };
           }
+          if (keyword.type === 'ticket') {
+            return { ...base, serviceId: undefined };
+          }
           return base;
         }),
       };
@@ -74,6 +79,20 @@ function reducer(state: State, action: Action): State {
         ),
       };
 
+    case 'UPDATE_TICKET':
+      return {
+        ...state,
+        keywords: state.keywords.map((keyword) =>
+          keyword.id === action.id
+            ? {
+                ...keyword,
+                serviceId: action.serviceId,
+                service: action.service,
+              }
+            : keyword
+        ),
+      };
+
     case 'VALIDATE_KEYWORDS': {
       const allValid = state.keywords.every((keyword) => {
         if (
@@ -92,7 +111,9 @@ function reducer(state: State, action: Action): State {
           )
             return false;
         }
-        console.log(state);
+        if (keyword.type === 'ticket') {
+          if (!keyword.serviceId) return false;
+        }
         return true;
       });
 
@@ -135,6 +156,15 @@ const MultiKeyword = () => {
     dispatch({ type: 'UPDATE_MEMBER_LIST', id, memberList: members });
     dispatch({ type: 'VALIDATE_KEYWORDS' });
   };
+  // 번호표 업무 변경 핸들러
+  const handleTicketServiceChange = (
+    id: number,
+    serviceId: number,
+    service: string
+  ) => {
+    dispatch({ type: 'UPDATE_TICKET', id, serviceId, service });
+  };
+
   return (
     <div className='flex flex-col h-full'>
       <Header
@@ -163,6 +193,7 @@ const MultiKeyword = () => {
               key={keyword.id}
               onInputChange={handleAmountChange}
               onMemberListChange={handleMemberListChange}
+              onTicketServiceChange={handleTicketServiceChange}
             ></KeywordWithInputs>
           ))}
         </div>

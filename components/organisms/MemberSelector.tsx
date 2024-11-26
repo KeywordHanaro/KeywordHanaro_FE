@@ -63,7 +63,8 @@ const MemberSelector: React.FC<MemberSelectorProps> = ({
           <div className='flex flex-wrap gap-2'>
             <ChipsList
               items={excludedMembers}
-              canDelete={true}
+              className={'text-[#B9B9B9] border-[#B9B9B9]'}
+              canAdd={true}
               onRemove={handleAddMember}
             />
           </div>
