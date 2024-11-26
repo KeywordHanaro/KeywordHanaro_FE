@@ -9,6 +9,7 @@ import { useReducer, useEffect } from 'react';
 
 type MultiKeyword = {
   id: number;
+  type: string;
   amount?: number;
   memberList?: Member[];
 };
@@ -35,7 +36,7 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         keywords: action.keywords.map((keyword) => {
-          const base = { id: keyword.id };
+          const base = { id: keyword.id, type: keyword.type };
           if (keyword.type === 'transfer') {
             return { ...base, amount: undefined };
           }
@@ -76,19 +77,25 @@ function reducer(state: State, action: Action): State {
     case 'VALIDATE_KEYWORDS': {
       const allValid = state.keywords.every((keyword) => {
         if (
-          keyword.amount === undefined ||
-          keyword.amount <= 0 ||
-          keyword.memberList === undefined ||
-          keyword.memberList.length <= 0
+          keyword.type !== 'inquiry' &&
+          keyword.type !== 'ticket' &&
+          !keyword.type.includes('Amount')
         ) {
-          console.log('keyword', keyword.id);
-          return false;
+          if (keyword.amount === undefined || keyword.amount <= 0) {
+            return false;
+          }
         }
-
+        if (keyword.type.includes('settlement')) {
+          if (
+            keyword.memberList === undefined ||
+            keyword.memberList.length <= 0
+          )
+            return false;
+        }
+        console.log(state);
         return true;
       });
 
-      console.log('allValid', allValid);
       return { ...state, isNextButtonEnabled: allValid };
     }
 
