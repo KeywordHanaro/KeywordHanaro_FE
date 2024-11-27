@@ -4,7 +4,8 @@
 import {
   createContext,
   PropsWithChildren,
-  useContext, // useEffect,
+  useContext,
+  useEffect,
   useState,
 } from 'react';
 
@@ -32,6 +33,9 @@ const VoiceInputContext = createContext<VoiceInputProps>({
 export const VoiceInputProvider = ({ children }: PropsWithChildren) => {
   const [result, setResult] = useState<string>('');
   const [type, setType] = useState<string>('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [socket, setSocket] = useState<WebSocket | null>(null);
+
   //원하는 검색 결과 리스트로 지정
   // const [lists, setLists] = useState<List[]>([]);
   // const router = useRouter();
@@ -45,6 +49,18 @@ export const VoiceInputProvider = ({ children }: PropsWithChildren) => {
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [result]);
+  useEffect(() => {
+    const ws = new WebSocket('ws://localhost:8080/audio');
+    setSocket(ws);
+
+    ws.onmessage = (event) => {
+      setResult(event.data);
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, []);
 
   return (
     <VoiceInputContext.Provider value={{ result, type, setResult, setType }}>
