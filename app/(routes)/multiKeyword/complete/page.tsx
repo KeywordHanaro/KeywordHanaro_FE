@@ -1,5 +1,36 @@
-const page = () => {
-  return <div>page</div>;
-};
+'use client';
 
-export default page;
+import { Button } from '@/components/atoms/Button';
+import Header from '@/components/atoms/Header';
+import MultiKeywordComponent from '@/components/templates/multiKeyword/MultiKeywordComponent';
+import { multiKeywordData } from '@/data/multiKeyword';
+import { useRouter } from 'next/navigation';
+
+export default function MultiKeywordCompletePage() {
+  const router = useRouter();
+
+  return (
+    <div className='flex flex-col h-full p-[20px] gap-[24px]'>
+      <Header
+        text={'멀티 키워드 실행하기'}
+        showActionButton={false}
+        showBackButton={false}
+      />
+      <div className='flex flex-col gap-[24px] px-[20px]'>
+        <div className='text-[24px] font-semibold'>
+          키워드 실행이 완료되었어요
+        </div>
+
+        {multiKeywordData.map((data, idx) => (
+          <div key={idx}>
+            <MultiKeywordComponent data={data} />
+          </div>
+        ))}
+      </div>
+
+      <Button className='w-full' onClick={() => router.push('/')}>
+        완료
+      </Button>
+    </div>
+  );
+}
