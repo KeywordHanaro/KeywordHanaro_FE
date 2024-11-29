@@ -1,3 +1,4 @@
+import SpeechToText from '@/components/SpeechToText';
 import { MicRef } from '@/components/atoms/Mic';
 import AccountCard from '@/components/molecules/AccountCard';
 import Keyword from '@/components/molecules/Keyword';
@@ -51,12 +52,13 @@ export default function Home() {
           }
         </div>
         {/* 나의 키워드 끝 */}
+        <SpeechToText />
       </div>
 
       {/* stt context 사용 예시*/}
-      <VoiceInputProvider>
+      {/* <VoiceInputProvider>
         <MicRef />
-      </VoiceInputProvider>
+      </VoiceInputProvider> */}
     </div>
   );
 }
