@@ -26,15 +26,15 @@ const SpeechToText = () => {
         .join('');
       setTranscript(currentTranscript);
 
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => {
-        if (recognitionRef.current) {
-          recognitionRef.current.stop();
-          setIsListening(false);
-          setIsExpanded(false);
-          setResultCallback(currentTranscript);
-        }
-      }, 4000);
+      if (
+        recognitionRef.current &&
+        event.results[event.results.length - 1].isFinal
+      ) {
+        recognitionRef.current.stop();
+        setResultCallback(currentTranscript);
+        setIsExpanded(false);
+        setIsListening(false);
+      }
     },
     [setResultCallback]
   );
