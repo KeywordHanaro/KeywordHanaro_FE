@@ -20,24 +20,9 @@ export default function Step1() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // const nextStep = useCallback(() => {
-  //   setResult('');
-  //   router.push('/keyword/create/inquiry/step2');
-  // }, [router, setResult]);
   const nextStep = useCallback(() => {
-    setResult('');
-    let isCancelled = false;
-
-    setTimeout(() => {
-      if (!isCancelled) {
-        router.push('/keyword/create/inquiry/step2');
-      }
-    }, 0);
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [router, setResult]);
+    router.push('/keyword/create/inquiry/step2');
+  }, [router]);
 
   const handleAccountClick = useCallback(
     (account: MyAccountWithBalance) => {
@@ -48,17 +33,6 @@ export default function Step1() {
     [updateFormData, nextStep]
   );
 
-  // useEffect(() => {
-  //   if (result) {
-  //     const matchedAccount = MyAccounts.find(
-  //       (account) => account.accountName.toLowerCase() === result.toLowerCase()
-  //     );
-  //     if (matchedAccount) {
-  //       handleAccountClick(matchedAccount);
-  //     }
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [result]);
   useEffect(() => {
     if (result) {
       const threshold = 1; // 허용할 최대 편집 거리
