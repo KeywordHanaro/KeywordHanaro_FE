@@ -36,7 +36,7 @@ const KeywordInputButton = forwardRef(
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     const [inputValue, setInputValue] = useState('');
-    const { result } = useVoiceInputSession();
+    const { result, setResult } = useVoiceInputSession();
 
     useEffect(() => {
       setInputValue(initialValue);
@@ -52,10 +52,11 @@ const KeywordInputButton = forwardRef(
     };
 
     useEffect(() => {
-      if (result) {
+      if (result.length > 0) {
         setInputValue(result);
         onUpdate(result);
-        onNext();
+        setResult('');
+        // onNext();
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [result]);

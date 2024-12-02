@@ -9,7 +9,6 @@ import { useEffect, useCallback } from 'react';
 export default function Step2() {
   const router = useRouter();
   const { formData, updateFormData } = useInquiry();
-  console.log(formData);
   const { result, setResult } = useVoiceInputSession();
 
   const nextStep = useCallback(() => {
@@ -18,7 +17,6 @@ export default function Step2() {
   }, [router, setResult]);
 
   useEffect(() => {
-    alert(result);
     if (result.length > 0) {
       updateFormData({ inquiry: result });
     }
