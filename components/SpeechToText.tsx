@@ -1,18 +1,47 @@
 'use client';
 
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { FaMicrophone } from 'react-icons/fa';
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
-const SpeechToText: React.FC = () => {
+const SpeechToText = () => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-
   const [transcript, setTranscript] = useState<string>('');
   const [isListening, setIsListening] = useState<boolean>(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  const { setResult } = useVoiceInputSession();
+
+  const setResultCallback = useCallback(
+    (text: string) => {
+      setResult(text);
+    },
+    [setResult]
+  );
+
+  const handleRecognitionResult = useCallback(
+    (event: SpeechRecognitionEvent) => {
+      const currentTranscript = Array.from(event.results)
+        .map((result) => result[0].transcript)
+        .join('');
+      setTranscript(currentTranscript);
+
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        if (recognitionRef.current) {
+          recognitionRef.current.stop();
+          setIsListening(false);
+          setIsExpanded(false);
+          setResultCallback(currentTranscript);
+        }
+      }, 500);
+    },
+    [setResultCallback]
+  );
+
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && !recognitionRef.current) {
       const SpeechRecognitionAPI =
         window.SpeechRecognition || window.webkitSpeechRecognition;
       if (SpeechRecognitionAPI) {
@@ -21,26 +50,10 @@ const SpeechToText: React.FC = () => {
         recognitionRef.current.interimResults = true;
         recognitionRef.current.lang = 'ko-KR';
 
-        recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
-          const currentTranscript = Array.from(event.results)
-            .map((result) => result[0].transcript)
-            .join('');
-          setTranscript(currentTranscript);
-
-          // 사용자가 말을 멈추면 1초 후에 인식을 중지
-          if (timeoutRef.current) clearTimeout(timeoutRef.current);
-          timeoutRef.current = setTimeout(() => {
-            if (recognitionRef.current) {
-              recognitionRef.current.stop();
-              setIsListening(false);
-              setIsExpanded(false);
-              alert(`음성 인식 결과: ${currentTranscript}`);
-            }
-          }, 500);
-        };
+        recognitionRef.current.onresult = handleRecognitionResult;
 
         recognitionRef.current.onerror = (event: SpeechRecognitionError) => {
-          console.error('Speech recogntion error', event.error);
+          console.error('Speech recognition error', event.error);
         };
 
         recognitionRef.current.onend = () => {
@@ -52,9 +65,9 @@ const SpeechToText: React.FC = () => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, []);
+  }, [handleRecognitionResult]);
 
-  const toggleListening = () => {
+  const toggleListening = useCallback(() => {
     if (isListening) {
       setIsExpanded(false);
       if (recognitionRef.current) {
@@ -67,8 +80,8 @@ const SpeechToText: React.FC = () => {
         recognitionRef.current.start();
       }
     }
-    setIsListening(!isListening);
-  };
+    setIsListening((prev) => !prev);
+  }, [isListening]);
 
   return (
     <div
@@ -83,7 +96,6 @@ const SpeechToText: React.FC = () => {
       )}
       <div
         className='flex items-center justify-center w-[77px] h-[77px] border border-hanaPrimary rounded-full bg-white cursor-pointer absolute bottom-[38px] left-1/2 transform -translate-x-1/2'
-        // ref={recognitionRef}
         onClick={toggleListening}
       >
         <FaMicrophone className='text-hanaPrimary w-[41.3px] h-[41.3px]' />

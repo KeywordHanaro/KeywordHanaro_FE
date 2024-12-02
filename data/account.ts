@@ -19,7 +19,7 @@ export type RecentAccount = MyAccount | OthersAccount;
 export const MyAccounts: MyAccountWithBalance[] = [
   {
     type: 'MyAccount',
-    accountName: '하나패스 자유입출금',
+    accountName: '안녕',
     bankId: 81,
     balance: '220,400',
     accountNumber: '156-5483-111-6854',
