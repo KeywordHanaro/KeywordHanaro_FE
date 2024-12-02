@@ -27,7 +27,6 @@ const VoiceInputContext = createContext<VoiceInputProps>({
 
 export const VoiceInputProvider = ({ children }: PropsWithChildren) => {
   const [result, setResult] = useState<string>('');
-  const [type, setType] = useState<string>('');
 
   return (
     <VoiceInputContext.Provider value={{ result, setResult }}>
