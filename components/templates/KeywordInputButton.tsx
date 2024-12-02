@@ -1,5 +1,6 @@
 'use client';
 
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import {
   ButtonHTMLAttributes,
   ChangeEvent,
@@ -35,6 +36,7 @@ const KeywordInputButton = forwardRef(
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     const [inputValue, setInputValue] = useState('');
+    const { result } = useVoiceInputSession();
 
     useEffect(() => {
       setInputValue(initialValue);
@@ -48,6 +50,15 @@ const KeywordInputButton = forwardRef(
       onUpdate(inputValue);
       onNext();
     };
+
+    useEffect(() => {
+      if (result) {
+        setInputValue(result);
+        onUpdate(result);
+        onNext();
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [result]);
 
     const isInputFilled = inputValue.length > 0;
 

@@ -1,9 +1,9 @@
 import SpeechToText from '@/components/SpeechToText';
-import { MicRef } from '@/components/atoms/Mic';
+// import { MicRef } from '@/components/atoms/Mic';
 import AccountCard from '@/components/molecules/AccountCard';
 import Keyword from '@/components/molecules/Keyword';
 import { Toggle } from '@/components/ui/toggle';
-import { VoiceInputProvider } from '@/contexts/VoiceContext';
+// import { VoiceInputProvider } from '@/contexts/VoiceContext';
 import { keywordList } from '@/data/keyword';
 import { SlArrowRight } from 'react-icons/sl';
 
