@@ -1,7 +1,7 @@
 'use client';
 
+import SpeechToText from '@/components/SpeechToText';
 import Header from '@/components/atoms/Header';
-import { MicRef } from '@/components/atoms/Mic';
 import { TransferProvider } from '@/contexts/TransferContext';
 import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode } from 'react';
@@ -38,7 +38,7 @@ function TransferContent({ children }: { children: ReactNode }) {
         {children}
       </div>
       {/* 마지막 페이지에서 Mic 안나오게 */}
-      {!pathname.includes('/step6') && <MicRef />}
+      {!pathname.includes('/step6') && <SpeechToText />}
     </div>
   );
 }
