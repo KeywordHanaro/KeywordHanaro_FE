@@ -5,7 +5,7 @@ import {
   createContext,
   PropsWithChildren,
   useContext, // useEffect,
-  useState,
+  useState, // useEffect,
 } from 'react';
 
 // export type List = {
@@ -27,6 +27,10 @@ const VoiceInputContext = createContext<VoiceInputProps>({
 
 export const VoiceInputProvider = ({ children }: PropsWithChildren) => {
   const [result, setResult] = useState<string>('');
+
+  // useEffect(() => {
+  //   console.log(result);
+  // }, [result]);
 
   return (
     <VoiceInputContext.Provider value={{ result, setResult }}>

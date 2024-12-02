@@ -12,7 +12,6 @@ const SpeechToText = () => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const { setResult } = useVoiceInputSession();
-
   const setResultCallback = useCallback(
     (text: string) => {
       setResult(text);
@@ -35,7 +34,7 @@ const SpeechToText = () => {
           setIsExpanded(false);
           setResultCallback(currentTranscript);
         }
-      }, 500);
+      }, 4000);
     },
     [setResultCallback]
   );
