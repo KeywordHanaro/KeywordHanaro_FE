@@ -4,7 +4,7 @@ import KeywordInputButton from '@/components/templates/KeywordInputButton';
 import { useInquiry } from '@/contexts/InquiryContext';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 
 export default function Step2() {
   const router = useRouter();
@@ -12,13 +12,14 @@ export default function Step2() {
   console.log(formData);
   const { result, setResult } = useVoiceInputSession();
 
-  const nextStep = () => {
-    router.push('/keyword/create/inquiry/step3');
+  const nextStep = useCallback(() => {
     setResult('');
-  };
+    router.push('/keyword/create/inquiry/step3');
+  }, [router, setResult]);
 
   useEffect(() => {
-    if (result) {
+    alert(result);
+    if (result.length > 0) {
       updateFormData({ inquiry: result });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
