@@ -49,7 +49,8 @@ export default function Step1() {
         handleAccountClick(bestMatch);
       }
     }
-  }, [result, handleAccountClick]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result]);
 
   return (
     <SelectAccount

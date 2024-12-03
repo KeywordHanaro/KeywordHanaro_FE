@@ -3,6 +3,7 @@
 import SpeechToText from '@/components/SpeechToText';
 import Header from '@/components/atoms/Header';
 import { TransferProvider } from '@/contexts/TransferContext';
+import { VoiceInputProvider } from '@/contexts/VoiceContext';
 import { usePathname, useRouter } from 'next/navigation';
 import { ReactNode } from 'react';
 
@@ -27,18 +28,20 @@ function TransferContent({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className='flex flex-col w-full h-full'>
-      <Header
-        text='키워드 생성하기'
-        onBack={handleBack}
-        showActionButton={false}
-        showBackButton={!pathname.includes('step6')}
-      />
-      <div className='h-full flex flex-col flex-grow overflow-hidden mt-[24px] px-[20px] pb-[34px]'>
-        {children}
+    <VoiceInputProvider>
+      <div className='flex flex-col w-full h-full'>
+        <Header
+          text='키워드 생성하기'
+          onBack={handleBack}
+          showActionButton={false}
+          showBackButton={!pathname.includes('step6')}
+        />
+        <div className='h-full flex flex-col flex-grow overflow-hidden mt-[24px] px-[20px] pb-[34px]'>
+          {children}
+        </div>
+        {/* 마지막 페이지에서 Mic 안나오게 */}
+        {!pathname.includes('/step6') && <SpeechToText />}
       </div>
-      {/* 마지막 페이지에서 Mic 안나오게 */}
-      {!pathname.includes('/step6') && <SpeechToText />}
-    </div>
+    </VoiceInputProvider>
   );
 }

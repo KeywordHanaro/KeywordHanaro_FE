@@ -116,3 +116,60 @@ export const levenshtein = (a: string, b: string) => {
 
   return matrix[b.length][a.length];
 };
+
+export function koreanCurrencyToNumber(currencyStr: string): number {
+  const units: { [key: string]: number } = {
+    십: 10,
+    백: 100,
+    천: 1000,
+    만: 10000,
+    억: 100000000,
+  };
+
+  const numMap: { [key: string]: number } = {
+    일: 1,
+    이: 2,
+    삼: 3,
+    사: 4,
+    오: 5,
+    육: 6,
+    칠: 7,
+    팔: 8,
+    구: 9,
+  };
+
+  const postfixes: { [key: string]: number } = {
+    원: 1,
+    만: 10000,
+    억: 100000000,
+  };
+
+  function parseKoreanNumber(s: string): number {
+    let value = 0;
+    let current = 0;
+    for (const char of s) {
+      if (char in numMap) {
+        current += numMap[char];
+      } else if (char in units) {
+        current = current ? current * units[char] : units[char];
+        value += current;
+        current = 0;
+      } else if (char in postfixes) {
+        value += current;
+        value *= postfixes[char];
+        current = 0;
+      }
+    }
+    value += current;
+    return value;
+  }
+
+  // Remove spaces and commas
+  // currencyStr = currencyStr.replace(/[\s,]/g, '');
+
+  // // Parse the string and convert to number
+  const result = parseKoreanNumber(currencyStr);
+
+  // Return the result with thousands separators
+  return result;
+}

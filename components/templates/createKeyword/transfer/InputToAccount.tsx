@@ -4,6 +4,7 @@ import { Button } from '@/components/atoms/Button';
 import { AccountInputRef } from '@/components/atoms/Inputs';
 import SelectBank from '@/components/molecules/SelectBank';
 import { TransferForm } from '@/contexts/TransferContext';
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { MyAccount, OthersAccount } from '@/data/account';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { formatAccountNumber } from '@/lib/utils';
@@ -52,6 +53,29 @@ export default function InputToAccount({
   useEffect(() => {
     accountRef.current?.focus();
   }, []);
+
+  const { result } = useVoiceInputSession();
+
+  useEffect(() => {
+    if (result) {
+      const cleanedResult = result.replace(/[\s-]/g, '');
+      if (/^\d+$/.test(cleanedResult)) {
+        const formattedAccountNum = formatAccountNumber(
+          selectedID,
+          cleanedResult
+        );
+        const othersAccount: OthersAccount = {
+          type: 'OthersAccount',
+          bankId: selectedID,
+          accountNumber: formattedAccountNum,
+          name: 'OOO', //TODO: 예금주성명 조회 api 필요
+        };
+        setInputValue(cleanedResult);
+        onUpdate(othersAccount);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result]);
 
   return (
     <div className='flex flex-col gap-[17px]'>
