@@ -8,11 +8,12 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { bankList } from '@/data/bank';
 import { FaAngleDown } from 'react-icons/fa';
 import Image from 'next/image';
-import { useState } from 'react';
-import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
+import { cn, levenshtein } from '@/lib/utils';
 
 type SelectBankProps = {
   onSelect: (index: number) => void;
@@ -29,6 +30,36 @@ const SelectBank: React.FC<SelectBankProps> = ({ onSelect, value }) => {
     setBankId(id);
     onSelect(id);
   };
+
+  const { result, setResult } = useVoiceInputSession();
+  console.log(bankList);
+  useEffect(() => {
+    const cleanedResult = result.replace(/[\s-]/g, '');
+    if (cleanedResult && !/^\d+$/.test(cleanedResult)) {
+      const threshold = 3; // 허용할 최대 편집 거리
+      let bestMatch = null;
+      let minDistance = Infinity;
+
+      for (const bank of bankList) {
+        const distance = levenshtein(
+          bank.bankname,
+          cleanedResult.toLowerCase()
+        );
+        if (distance < minDistance && distance <= threshold) {
+          minDistance = distance;
+          bestMatch = bank;
+        }
+      }
+      console.log('result', result);
+      console.log('bestMatch', bestMatch);
+      if (bestMatch) {
+        setResult('');
+        setBankId(bestMatch.id);
+        onSelect(bestMatch.id);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result]);
   return (
     <>
       <div className='w-full'>
