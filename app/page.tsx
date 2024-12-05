@@ -1,3 +1,5 @@
+'use client';
+
 import SpeechToText from '@/components/SpeechToText';
 // import { MicRef } from '@/components/atoms/Mic';
 import AccountCard from '@/components/molecules/AccountCard';
@@ -5,7 +7,9 @@ import Keyword from '@/components/molecules/Keyword';
 import { Toggle } from '@/components/ui/toggle';
 // import { VoiceInputProvider } from '@/contexts/VoiceContext';
 import { keywordList } from '@/data/keyword';
+import { motion } from 'motion/react';
 import { SlArrowRight } from 'react-icons/sl';
+import { ulVariants, liVariants } from '@/lib/motionVariable';
 
 export default function Home() {
   return (
@@ -44,12 +48,19 @@ export default function Home() {
             </a>
           </div>
           {/* 나의 키워드 헤더 끝 */}
-          {
-            // 여기에 나의 키워드 5개 불러와야함
-            keywordList.slice(0, 5).map((data, idx) => (
-              <Keyword key={idx} data={data} />
-            ))
-          }
+
+          <motion.ul
+            variants={ulVariants}
+            initial='hidden'
+            animate='visible'
+            className='flex flex-col  gap-2.5'
+          >
+            {keywordList.slice(0, 5).map((each, index) => (
+              <motion.li key={each.id} variants={liVariants} custom={index}>
+                <Keyword key={each.id} data={each}></Keyword>
+              </motion.li>
+            ))}
+          </motion.ul>
         </div>
         {/* 나의 키워드 끝 */}
         <SpeechToText />
