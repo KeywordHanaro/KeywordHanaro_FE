@@ -13,6 +13,8 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { useId } from 'react';
+import { InputHTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
 type baseInputTypeProps = {
@@ -366,6 +368,63 @@ function AIInput(
 }
 const AIInputRef = forwardRef(AIInput);
 
+export type AuthInputProps = {
+  name: string;
+  label: string;
+  type?: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  classNames?: string;
+  inputAttrs?: InputHTMLAttributes<HTMLInputElement>;
+  children?: React.ReactNode;
+  value?: string;
+};
+
+const AuthInput = (
+  {
+    value,
+    name,
+    label,
+    type,
+    onChange,
+    classNames,
+    inputAttrs,
+    children,
+  }: AuthInputProps,
+  ref: ForwardedRef<HTMLInputElement>
+) => {
+  const id = useId();
+  return (
+    <>
+      <div className='input-box'>
+        <span className='input-icon'>{children}</span>
+        <input
+          value={value}
+          name={name}
+          id={id}
+          type={type}
+          className={`peer ${classNames}`}
+          onChange={onChange}
+          ref={ref}
+          {...inputAttrs}
+          required
+        />
+        <label
+          // className='peer-valid:top-[-5px] peer-focus:top-[-5px]'
+          className={cn(
+            'peer-valid:top-[-5px] peer-focus:top-[-5px]',
+            value &&  'top-[-5px]'
+          )}
+          htmlFor={id}
+        >
+          {label}
+        </label>
+      </div>
+    </>
+  );
+};
+
+const AuthInputRef = forwardRef(AuthInput);
+
 export {
   DefaultInputRef,
   SearchInpuRef,
@@ -373,4 +432,5 @@ export {
   MoneyInputRef,
   KeywordInputRef,
   AIInputRef,
+  AuthInputRef,
 };

@@ -92,6 +92,51 @@
   .btn-del {
     @apply text-[11px] text-errorRed border-errorRed bg-white border-[0.5px];
   }
+  /* L->R white underline animation*/
+  .animate-underline {
+    @apply after:transform-left after:absolute after:left-auto after:right-0 after:block after:w-0 after:transform after:border-b-2 after:border-white after:duration-300 after:ease-out hover:after:left-0 hover:after:right-auto hover:after:w-full;
+  }
+  /* L->R white background animation*/
+  .animate-bg {
+    @apply after:transform-left flex after:absolute after:left-auto after:right-0 after:block after:h-full after:w-0 after:transform after:overflow-hidden after:bg-white after:duration-700 after:ease-out hover:after:left-0 hover:after:right-auto hover:after:w-full;
+  }
+
+  .main-container {
+    @apply flex h-full w-full justify-center rounded-md px-4 pt-20;
+  }
+
+  .recipe-item {
+    @apply border p-2 border-gray-600 rounded-xl justify-center flex hover:bg-white hover:text-black transition-all duration-200 cursor-pointer h-52;
+  }
+
+  .btn {
+    @apply border-spacing-1.5 rounded-md border px-4 py-2 uppercase shadow-md transition duration-300 hover:bg-slate-100 hover:text-black focus:ring focus:ring-opacity-75;
+  }
+
+  .inp {
+    @apply bg-gray-400 p-4 rounded-md text-black max-w-5xl w-full;
+  }
+
+  .root {
+    @apply max-w-7xl w-full text-center;
+  }
+
+  .hover-floating {
+    @apply hover:border hover:p-4 p-2 hover:bg-neutral-500 hover:bg-opacity-50 transition-all duration-700 rounded-xl ease-out;
+  }
+
+  .input-box {
+    @apply relative mt-8 h-12 w-1/2 min-w-96 border-b-2 border-b-black;
+  }
+  .input-icon {
+    @apply absolute right-2 top-4 h-6 w-6;
+  }
+  .input-box input {
+    @apply h-full w-full border-none bg-transparent px-2 outline-none;
+  }
+  .input-box label {
+    @apply pointer-events-none absolute left-1 top-1/2 -translate-y-1/2 text-sm font-medium duration-500;
+  }
 }
 
 @layer utilities {
@@ -128,6 +173,13 @@
     left: 0px;
     width: 100%;
     height: 25px;
+  }
+  /*animate css*/
+  .transform-left {
+    transform-origin: left;
+  }
+  .transform-right {
+    transform-origin: right;
   }
   .transform-bottom {
     transform-origin: bottom;
