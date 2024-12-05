@@ -41,6 +41,26 @@ export default function SelectToAccount({
     return account.accountNumber !== selectedAccountNumber;
   });
 
+  const { result } = useVoiceInputSession();
+
+  // 새로운 계좌번호 입력시(다른 사람, 은행 계좌)
+  useEffect(() => {
+    if (result) {
+      const cleanedResult = result.replace(/[\s-]/g, '');
+      if (/^\d+$/.test(cleanedResult)) {
+        const othersAccount: OthersAccount = {
+          type: 'OthersAccount',
+          name: '',
+          bankId: 0,
+          accountNumber: cleanedResult,
+        };
+        onUpdate(othersAccount);
+        handleInputClick();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result]);
+
   return (
     <div className='flex flex-col gap-[17px] h-full'>
       <h1 className='font-extrabold text-2xl'>어디로 돈을 보낼까요?</h1>
