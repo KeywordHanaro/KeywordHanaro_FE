@@ -395,8 +395,8 @@ const AuthInput = (
   const id = useId();
   return (
     <>
-      <div className='input-box'>
-        <span className='input-icon'>{children}</span>
+      <div className='login-input-box'>
+        <span className='login-input-icon'>{children}</span>
         <input
           value={value}
           name={name}

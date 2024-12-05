@@ -3,9 +3,11 @@
 import { DefaultInputRef } from '@/components/atoms/Inputs';
 import { ChipsList } from '@/components/molecules/ChipList';
 import ContactItem from '@/components/molecules/ContactListItem';
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { Member, MemberList } from '@/data/member';
 import { FormData } from '@/data/settlement';
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import { levenshtein } from '@/lib/utils';
 
 type SettlementMemberSettingProps = {
   formData: FormData;
@@ -21,6 +23,7 @@ export default function SettlementMemberSetting({
   );
   const [searchQuery, setSearchQuery] = useState<string>('');
   const searchRef = useRef<HTMLInputElement>(null);
+  const { result, setResult } = useVoiceInputSession();
 
   useEffect(() => {
     onUpdate(selectedMember);
@@ -64,6 +67,74 @@ export default function SettlementMemberSetting({
 
     return results.length > 0 ? results : selectedMember;
   }, [searchQuery, selectedMember]);
+
+  // useEffect(() => {
+  //   if (result) {
+  //     const threshold = 1; // 허용할 최대 편집 거리
+  //     let bestMatch = null;
+  //     let minDistance = Infinity;
+
+  //     for (const member of MemberList) {
+  //       const distance = levenshtein(
+  //         member.name.toLowerCase(),
+  //         result.toLowerCase()
+  //       );
+  //       if (distance < minDistance && distance <= threshold) {
+  //         minDistance = distance;
+  //         bestMatch = member;
+  //       }
+  //     }
+
+  //     if (bestMatch) {
+  //       setResult('');
+  //       handleToggleSelect(bestMatch.id);
+  //     }
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [result]);
+
+  useEffect(() => {
+    if (result) {
+      const names = result.split(' ').filter((name) => name.trim() !== '');
+      const threshold = 1; // 허용할 최대 편집 거리
+
+      const newSelectedMembers = names.reduce((acc: Member[], name: string) => {
+        let bestMatch = null;
+        let minDistance = Infinity;
+
+        for (const member of MemberList) {
+          const distance = levenshtein(
+            member.name.toLowerCase(),
+            name.toLowerCase()
+          );
+          if (distance < minDistance && distance <= threshold) {
+            minDistance = distance;
+            bestMatch = member;
+          }
+        }
+
+        if (bestMatch && !acc.some((m) => m.id === bestMatch!.id)) {
+          acc.push(bestMatch);
+        }
+        return acc;
+      }, []);
+
+      setSelectedMember((prev) => {
+        const uniqueMembers = [...prev, ...newSelectedMembers].reduce(
+          (acc: Member[], current) => {
+            if (!acc.some((item) => item.id === current.id)) {
+              acc.push(current);
+            }
+            return acc;
+          },
+          []
+        );
+        return uniqueMembers;
+      });
+
+      setResult('');
+    }
+  }, [result]);
 
   return (
     <div className='flex flex-col w-full h-full gap-[24px]'>

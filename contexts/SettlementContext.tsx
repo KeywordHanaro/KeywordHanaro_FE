@@ -23,7 +23,7 @@ type SettlementProps = {
 
 const SettlementContext = createContext<SettlementProps>({
   formData: {
-    account: {
+    fromAccount: {
       type: 'MyAccount',
       accountName: '',
       accountNumber: '',
@@ -51,7 +51,7 @@ export const SettlementProvider = ({
   originalData?: KeywordDetail | null;
 }>) => {
   const [formData, setFormData] = useState<FormData>({
-    account: {
+    fromAccount: {
       type: 'MyAccount',
       accountName: '',
       accountNumber: '',
@@ -94,7 +94,7 @@ export const SettlementProvider = ({
         originalData.type === 'settlementAmount')
     ) {
       setFormData({
-        account: originalData.accountFrom,
+        fromAccount: originalData.accountFrom,
         members: originalData.memberList,
         category: 'Settlement',
         checkEveryTime: originalData.type === 'settlement',

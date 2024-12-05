@@ -7,11 +7,9 @@ export default function SettlementStep2() {
   const { formData, updateFormData } = useSettlementContext();
 
   return (
-    <>
-      <SettlementMemberSetting
-        formData={formData}
-        onUpdate={(members) => updateFormData({ members })}
-      />
-    </>
+    <SettlementMemberSetting
+      formData={formData}
+      onUpdate={(members) => updateFormData({ members })}
+    />
   );
 }

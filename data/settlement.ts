@@ -2,7 +2,7 @@ import { Member } from '@/data/member';
 import { MyAccount } from './account';
 
 export type FormData = {
-  account: MyAccount;
+  fromAccount: MyAccount;
   members: Member[];
   category: 'Settlement' | 'Dues';
   checkEveryTime: boolean;
@@ -11,7 +11,7 @@ export type FormData = {
 };
 
 export const settlementData: FormData = {
-  account: {
+  fromAccount: {
     accountName: '내 나라사랑 계좌',
     bankId: 111,
     accountNumber: '123-4567-2221',
