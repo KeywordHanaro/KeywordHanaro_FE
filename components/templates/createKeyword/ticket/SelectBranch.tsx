@@ -1,8 +1,10 @@
 'use client';
 
+import SpeechToText from '@/components/SpeechToText';
 import { SearchInpuRef } from '@/components/atoms/Inputs';
 import BankInfoItem from '@/components/molecules/BankInfoItem';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { Branch } from '@/data/bank';
 import { useEffect, useRef, useState } from 'react';
 
@@ -13,8 +15,9 @@ export default function SelectBranch({
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [branches, setBranches] = useState<Branch[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  console.log(searchQuery);
+  // const [searchQuery, setSearchQuery] = useState('');
+  const { result, setResult } = useVoiceInputSession();
+  // console.log(searchQuery);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -55,7 +58,7 @@ export default function SelectBranch({
 
   const handleSearch = () => {
     if (inputRef?.current?.value) {
-      setSearchQuery(inputRef.current.value);
+      // setSearchQuery(inputRef.current.value);
       navigator.geolocation.getCurrentPosition(
         (position) => {
           fetchNearbyBranches(
@@ -73,8 +76,32 @@ export default function SelectBranch({
 
   const handleClick = (branch: Branch) => {
     handleSetBranch(branch);
-    setSearchQuery('');
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
   };
+
+  useEffect(() => {
+    if (result) {
+      // setSearchQuery(result);
+      if (inputRef.current) {
+        inputRef.current.value = result;
+      }
+      setResult('');
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          fetchNearbyBranches(
+            position.coords.latitude,
+            position.coords.longitude,
+            result
+          );
+        },
+        (error) => {
+          console.error('Error getting current position:', error);
+        }
+      );
+    }
+  }, [result]);
 
   return (
     <div className='w-full flex flex-col gap-[24px]'>
@@ -117,6 +144,7 @@ export default function SelectBranch({
           </div>
         )}
       </div>
+      <SpeechToText />
     </div>
   );
 }

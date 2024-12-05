@@ -1,8 +1,8 @@
 'use client';
 
 import Header from '@/components/atoms/Header';
-import { MicRef } from '@/components/atoms/Mic';
 import { TicketProvider } from '@/contexts/TicketContext';
+import { VoiceInputProvider } from '@/contexts/VoiceContext';
 import { usePathname, useRouter } from 'next/navigation';
 import { PropsWithChildren } from 'react';
 
@@ -14,18 +14,20 @@ export default function CreateTicketLayout({ children }: PropsWithChildren) {
   };
 
   return (
-    <TicketProvider>
-      <div className='w-full h-full relative'>
-        <Header
-          text='키워드 생성하기'
-          showActionButton={pathname !== '4' ? false : true}
-          onAction={pathname !== '4' ? onAction : undefined}
-        />
-        <div className='w-full flex flex-col mt-[24px] px-[20px] pb-[34px]'>
-          {children}
+    <VoiceInputProvider>
+      <TicketProvider>
+        <div className='w-full h-full relative'>
+          <Header
+            text='키워드 생성하기'
+            showActionButton={pathname !== '4' ? false : true}
+            onAction={pathname !== '4' ? onAction : undefined}
+          />
+          <div className='w-full flex flex-col mt-[24px] px-[20px] pb-[34px]'>
+            {children}
+          </div>
+          {/* {pathname === '3' && <MicRef />} */}
         </div>
-        {pathname === '3' && <MicRef />}
-      </div>
-    </TicketProvider>
+      </TicketProvider>
+    </VoiceInputProvider>
   );
 }

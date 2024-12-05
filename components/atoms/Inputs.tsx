@@ -279,7 +279,7 @@ function KeywordInput(
       <input
         ref={ref}
         className={cn(
-          'w-full text-center text-2xl font-semibold placeholder:text-placeholderGray',
+          'w-full text-center text-2xl font-semibold placeholder:text-placeholderGray placeholder:text-xl',
           className
         )}
         placeholder={placeHolder}

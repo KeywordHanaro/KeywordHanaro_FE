@@ -10,6 +10,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import SpeechToText from '../SpeechToText';
 import { Button } from '../atoms/Button';
 import { KeywordInputRef } from '../atoms/Inputs';
 
@@ -56,7 +57,6 @@ const KeywordInputButton = forwardRef(
         setInputValue(result);
         onUpdate(result);
         setResult('');
-        // onNext();
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [result]);
@@ -87,6 +87,7 @@ const KeywordInputButton = forwardRef(
         <div className='flex flex-col gap-5 text-center font-semibold text-[14px]'>
           {children}
         </div>
+        <SpeechToText />
       </div>
     );
   }
