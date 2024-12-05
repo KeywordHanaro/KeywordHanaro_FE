@@ -57,6 +57,7 @@ const KeywordInputButton = forwardRef(
         setInputValue(result);
         onUpdate(result);
         setResult('');
+        // onNext();
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [result]);

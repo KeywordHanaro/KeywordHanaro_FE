@@ -5,7 +5,7 @@ import SpeechToText from '@/components/SpeechToText';
 import AccountCard from '@/components/molecules/AccountCard';
 import Keyword from '@/components/molecules/Keyword';
 import { Toggle } from '@/components/ui/toggle';
-// import { VoiceInputProvider } from '@/contexts/VoiceContext';
+// // import { VoiceInputProvider } from '@/contexts/VoiceContext';
 import { keywordList } from '@/data/keyword';
 import { motion } from 'motion/react';
 import { SlArrowRight } from 'react-icons/sl';
@@ -67,6 +67,7 @@ export default function Home() {
       </div>
 
       {/* stt context 사용 예시*/}
+      {/* <VoiceInputProvider>
       {/* <VoiceInputProvider>
         <MicRef />
       </VoiceInputProvider> */}
