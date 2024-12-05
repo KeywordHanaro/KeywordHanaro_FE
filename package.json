@@ -23,6 +23,7 @@
     "@radix-ui/react-toast": "^1.2.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "korean-number-converter": "^1.0.0",
     "lucide-react": "^0.453.0",
     "motion": "^11.11.17",
     "next": "14.2.15",

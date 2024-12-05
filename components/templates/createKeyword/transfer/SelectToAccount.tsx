@@ -44,6 +44,7 @@ export default function SelectToAccount({
 
   const { result, setResult } = useVoiceInputSession();
 
+  // 새로운 계좌번호 입력시(다른 사람, 은행 계좌)
   useEffect(() => {
     if (result) {
       const cleanedResult = result.replace(/[\s-]/g, '');
