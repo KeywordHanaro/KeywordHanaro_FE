@@ -1,4 +1,4 @@
-import { FormData } from "@/data/settlement";
+import { FormData } from '@/data/settlement';
 
 export default function SetKeywordComplete({
   formData,
@@ -7,7 +7,7 @@ export default function SetKeywordComplete({
 }) {
   return (
     <div className='flex flex-col justify-center items-center'>
-      <span className=''>내 {formData.account.accountName} 계좌로</span>
+      <span className=''>내 {formData.fromAccount.accountName} 계좌로</span>
       <div className='font-semibold text-[24px] justify-center items-center'>
         {formData.members.map((member, idx) => (
           <span key={member.id} className='text-hanaPrimary mr-[3px]'>

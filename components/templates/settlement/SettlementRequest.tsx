@@ -47,7 +47,7 @@ const SettlementRequest = ({
   useEffect(() => {
     if (keyword?.type === 'settlement') {
       onUpdate({
-        account: {
+        fromAccount: {
           accountName: keyword.accountFrom.accountName,
           bankId: keyword.accountFrom.bankId,
           accountNumber: keyword.accountFrom.accountNumber,
@@ -63,7 +63,7 @@ const SettlementRequest = ({
     }
     if (keyword?.type === 'settlementAmount') {
       onUpdate({
-        account: {
+        fromAccount: {
           accountName: keyword.accountFrom.accountName,
           bankId: keyword.accountFrom.bankId,
           accountNumber: keyword.accountFrom.accountNumber,
@@ -84,7 +84,7 @@ const SettlementRequest = ({
     <div className='flex flex-col gap-[30px] pt-[30px] px-[20px]'>
       {/* 계좌번호 및 선택된 멤버 글자 출력 */}
       <p className='text-[24px] font-semibold'>
-        {formData.account.accountName}로
+        {formData.fromAccount.accountName}로
       </p>
       <div className='text-[#069894] text-[24px] font-semibold break-keep'>
         {members.map((member, idx) =>

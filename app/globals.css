@@ -125,16 +125,16 @@
     @apply hover:border hover:p-4 p-2 hover:bg-neutral-500 hover:bg-opacity-50 transition-all duration-700 rounded-xl ease-out;
   }
 
-  .input-box {
+  .login-input-box {
     @apply relative mt-8 h-12 w-1/2 min-w-96 border-b-2 border-b-black;
   }
-  .input-icon {
+  .login-input-icon {
     @apply absolute right-2 top-4 h-6 w-6;
   }
-  .input-box input {
+  .login-input-box input {
     @apply h-full w-full border-none bg-transparent px-2 outline-none;
   }
-  .input-box label {
+  .login-input-box label {
     @apply pointer-events-none absolute left-1 top-1/2 -translate-y-1/2 text-sm font-medium duration-500;
   }
 }
