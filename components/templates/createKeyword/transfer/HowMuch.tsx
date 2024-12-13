@@ -3,11 +3,13 @@
 import { Button } from '@/components/atoms/Button';
 import SetAmount from '@/components/molecules/SetAmount';
 import { TransferForm } from '@/contexts/TransferContext';
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { MyAccount, OthersAccount } from '@/data/account';
 import { bankList } from '@/data/bank';
 import { MyAccountWithBalance } from '@/data/transfer';
-import { useCallback, useRef, useState } from 'react';
-import { cn } from '@/lib/utils';
+import { convertKorToNum } from 'korean-number-converter';
+import { useState, useEffect, useRef } from 'react';
+import { cn, formatNumberWithCommas } from '@/lib/utils';
 
 export type WithAmountProps = {
   checkEverytime: false;
@@ -55,13 +57,6 @@ export default function HowMuch({
     (bank) => bank.id === toAccount.bankId
   )?.bankname;
 
-  const formatNumberWithCommas = useCallback((inputValue: string): string => {
-    if (!inputValue) return '';
-    const numericValue = inputValue.replace(/[^0-9]/g, '');
-    const parsedValue = numericValue ? parseInt(numericValue, 10) : 0;
-    return new Intl.NumberFormat('ko-KR').format(parsedValue);
-  }, []);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const money = e.target.value;
     const formatData = formatNumberWithCommas(money);
@@ -74,8 +69,6 @@ export default function HowMuch({
       onNext();
     } else {
       const amountValue = amountRef.current?.value;
-
-      console.log('!!!!', amountValue);
       if (amountValue) {
         const amount = parseInt(amountValue.replace(/,/g, ''), 10);
         onUpdate({
@@ -89,6 +82,20 @@ export default function HowMuch({
       }
     }
   };
+
+  const { result, setResult } = useVoiceInputSession();
+  useEffect(() => {
+    if (result) {
+      const cleanedResult = result.replace(/[\s-]/g, '');
+      const amountVal = convertKorToNum(cleanedResult);
+      if (amountRef.current) {
+        amountRef.current.value = amountVal.toLocaleString();
+      }
+      setAmount(amountVal.toLocaleString());
+      setValid(amountVal > 0);
+      setResult('');
+    }
+  }, [result]);
 
   return (
     <div className='flex flex-col gap-[24px]'>

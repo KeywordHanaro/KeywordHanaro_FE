@@ -279,7 +279,7 @@ function KeywordInput(
       <input
         ref={ref}
         className={cn(
-          'w-full text-center text-2xl font-semibold placeholder:text-placeholderGray',
+          'w-full text-center text-2xl font-semibold placeholder:text-placeholderGray placeholder:text-xl',
           className
         )}
         placeholder={placeHolder}
@@ -395,8 +395,8 @@ const AuthInput = (
   const id = useId();
   return (
     <>
-      <div className='input-box'>
-        <span className='input-icon'>{children}</span>
+      <div className='login-input-box'>
+        <span className='login-input-icon'>{children}</span>
         <input
           value={value}
           name={name}

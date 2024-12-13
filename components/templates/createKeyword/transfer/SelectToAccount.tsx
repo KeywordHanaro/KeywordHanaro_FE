@@ -2,6 +2,7 @@
 
 import MyAccountList from '@/components/organisms/MyAccountList';
 import RecentAccountList from '@/components/organisms/RecentAccountList';
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import {
   MyAccount,
   MyAccounts,
@@ -9,7 +10,7 @@ import {
   RecentAccount,
 } from '@/data/account';
 import { ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export type SelectToAccountType = {
   onUpdate: (account: MyAccount | OthersAccount) => void;
@@ -22,7 +23,7 @@ export default function SelectToAccount({
   onNext,
   selectedAccountNumber,
 }: SelectToAccountType) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const toggleAccountList = () => {
     setIsOpen((prev) => !prev);
@@ -40,11 +41,36 @@ export default function SelectToAccount({
     return account.accountNumber !== selectedAccountNumber;
   });
 
+  const { result } = useVoiceInputSession();
+
+  // 새로운 계좌번호 입력시(다른 사람, 은행 계좌)
+  useEffect(() => {
+    if (result) {
+      const cleanedResult = result.replace(/[\s-]/g, '');
+      if (/^\d+$/.test(cleanedResult)) {
+        const othersAccount: OthersAccount = {
+          type: 'OthersAccount',
+          name: '',
+          bankId: 0,
+          accountNumber: cleanedResult,
+        };
+        onUpdate(othersAccount);
+        handleInputClick();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result]);
+
   return (
     <div className='flex flex-col gap-[17px] h-full'>
       <h1 className='font-extrabold text-2xl'>어디로 돈을 보낼까요?</h1>
       <div className=''>
-        <button className='text-placeholderGray text-[18px] font-semibold border-b-2 py-2 w-full text-left' onClick={handleInputClick}>계좌번호 입력</button>
+        <button
+          className='text-placeholderGray text-[18px] font-semibold border-b-2 py-2 w-full text-left'
+          onClick={handleInputClick}
+        >
+          계좌번호 입력
+        </button>
       </div>
       <div className='flex flex-col h-full overflow-y-scroll pb-24'>
         <div className='flex justify-between'>

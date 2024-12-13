@@ -1,5 +1,6 @@
 'use client';
 
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import {
   ButtonHTMLAttributes,
   ChangeEvent,
@@ -9,6 +10,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import SpeechToText from '../SpeechToText';
 import { Button } from '../atoms/Button';
 import { KeywordInputRef } from '../atoms/Inputs';
 
@@ -35,6 +37,7 @@ const KeywordInputButton = forwardRef(
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     const [inputValue, setInputValue] = useState('');
+    const { result, setResult } = useVoiceInputSession();
 
     useEffect(() => {
       setInputValue(initialValue);
@@ -48,6 +51,15 @@ const KeywordInputButton = forwardRef(
       onUpdate(inputValue);
       onNext();
     };
+
+    useEffect(() => {
+      if (result.length > 0) {
+        setInputValue(result);
+        onUpdate(result);
+        setResult('');
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [result]);
 
     const isInputFilled = inputValue.length > 0;
 
@@ -75,6 +87,7 @@ const KeywordInputButton = forwardRef(
         <div className='flex flex-col gap-5 text-center font-semibold text-[14px]'>
           {children}
         </div>
+        <SpeechToText />
       </div>
     );
   }

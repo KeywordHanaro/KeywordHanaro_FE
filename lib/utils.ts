@@ -85,3 +85,91 @@ export const formatNumberWithCommas = (inputValue: string): string => {
   const parsedValue = numericValue ? parseInt(numericValue, 10) : 0;
   return new Intl.NumberFormat('ko-KR').format(parsedValue);
 };
+
+export const levenshtein = (a: string, b: string) => {
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
+
+  const matrix = [];
+
+  for (let i = 0; i <= b.length; i++) {
+    matrix[i] = [i];
+  }
+
+  for (let j = 0; j <= a.length; j++) {
+    matrix[0][j] = j;
+  }
+
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j] + 1
+        );
+      }
+    }
+  }
+
+  return matrix[b.length][a.length];
+};
+
+export function koreanCurrencyToNumber(currencyStr: string): number {
+  const units: { [key: string]: number } = {
+    십: 10,
+    백: 100,
+    천: 1000,
+    만: 10000,
+    억: 100000000,
+  };
+
+  const numMap: { [key: string]: number } = {
+    일: 1,
+    이: 2,
+    삼: 3,
+    사: 4,
+    오: 5,
+    육: 6,
+    칠: 7,
+    팔: 8,
+    구: 9,
+  };
+
+  const postfixes: { [key: string]: number } = {
+    원: 1,
+    만: 10000,
+    억: 100000000,
+  };
+
+  function parseKoreanNumber(s: string): number {
+    let value = 0;
+    let current = 0;
+    for (const char of s) {
+      if (char in numMap) {
+        current += numMap[char];
+      } else if (char in units) {
+        current = current ? current * units[char] : units[char];
+        value += current;
+        current = 0;
+      } else if (char in postfixes) {
+        value += current;
+        value *= postfixes[char];
+        current = 0;
+      }
+    }
+    value += current;
+    return value;
+  }
+
+  // Remove spaces and commas
+  // currencyStr = currencyStr.replace(/[\s,]/g, '');
+
+  // // Parse the string and convert to number
+  const result = parseKoreanNumber(currencyStr);
+
+  // Return the result with thousands separators
+  return result;
+}

@@ -2,6 +2,7 @@
 
 import SettlementLayout from '@/components/layouts/SettlementLayout';
 import { SettlementProvider } from '@/contexts/SettlementContext';
+import { VoiceInputProvider } from '@/contexts/VoiceContext';
 
 export default function SettlementPageLayout({
   children,
@@ -9,8 +10,10 @@ export default function SettlementPageLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <SettlementProvider>
-      <SettlementLayout>{children}</SettlementLayout>
-    </SettlementProvider>
+    <VoiceInputProvider>
+      <SettlementProvider>
+        <SettlementLayout>{children}</SettlementLayout>
+      </SettlementProvider>
+    </VoiceInputProvider>
   );
 }
