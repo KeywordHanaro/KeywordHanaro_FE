@@ -12,12 +12,18 @@ export const transferData = UseKeywordTransfer[0];
 //   formData : FormData
 // }
 
+// TransferCompletion의 MSG에 들어가야 함.
+// 멀티 키워드에서는 multiKeyword 들어감
+// 추가
+// Transfer도 불가능한게 TransferAmountKeyword 타입의 BaseKeyword 타입에 id, title 형식이 필요한데 키워드 생성 시기에 이게 있나? 없을 것 같아서 못쓸듯
 export type MultiTransfer = TransferAmountKeyword & {
   multiKeyword: string;
 };
 
+// SettlementCompletion의 MSG에 들어가야 함
+// 멀티 키워드에는 multiKeyword 들어가기에 nullable
 export type MultiForm = FormData & {
-  multiKeyword: string;
+  multiKeyword?: string;
 };
 
 export type MultiTicket = TicketKeyword & {

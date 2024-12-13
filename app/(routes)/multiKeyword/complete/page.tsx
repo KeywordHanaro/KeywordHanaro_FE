@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/atoms/Button';
 import Header from '@/components/atoms/Header';
-import MultiKeywordComponent from '@/components/templates/multiKeyword/MultiKeywordComponent';
+import MultiKeywordCompletion from '@/components/templates/multiKeyword/MultiKeywordCompletion';
 import { multiKeywordData } from '@/data/multiKeyword';
 import { useRouter } from 'next/navigation';
 
@@ -23,7 +23,7 @@ export default function MultiKeywordCompletePage() {
 
         {multiKeywordData.map((data, idx) => (
           <div key={idx}>
-            <MultiKeywordComponent data={data} />
+            <MultiKeywordCompletion data={data} />
           </div>
         ))}
       </div>
