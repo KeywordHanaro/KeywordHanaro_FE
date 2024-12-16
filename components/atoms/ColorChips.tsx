@@ -10,6 +10,7 @@ const colorMap: Record<string, { bgColor: string; textColor: string }> = {
   green: { bgColor: '#E9FEE8', textColor: '#72B16D' },
   yellow: { bgColor: '#FFFBDC', textColor: '#D89B00' },
   blue: { bgColor: '#E7F5FF', textColor: '#4DABF7' },
+  orange: { bgColor: '#FFEFDB', textColor: '#FF9100' },
 };
 
 export default function ColorChip({

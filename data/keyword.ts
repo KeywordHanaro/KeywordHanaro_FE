@@ -15,7 +15,8 @@ export type Keyword = {
     | 'inquiry'
     | 'ticket'
     | 'settlement'
-    | 'settlementAmount';
+    | 'settlementAmount'
+    | 'multiKeyword';
   // 송금, 조회, 번호표, 정산
   title: string;
   description: string;
@@ -84,6 +85,8 @@ export const getColorByType = (type: Keyword['type']) => {
     case 'settlement':
     case 'settlementAmount':
       return 'blue';
+    case 'multiKeyword':
+      return 'orange';
     default:
       return '';
   }
@@ -101,6 +104,8 @@ export const getNameByType = (type: Keyword['type']) => {
     case 'settlement':
     case 'settlementAmount':
       return '정산/회비';
+    case 'multiKeyword':
+      return '키워드 조합';
     default:
       return '';
   }
@@ -169,6 +174,13 @@ export const keywordList: Keyword[] = [
     title: '압구정 번호표',
     description: '번호표 > 압구정점',
     isFavorite: false,
+  },
+  {
+    id: 10,
+    type: 'multiKeyword',
+    title: '조합한 키워드',
+    description: '성엽이 용돈 > 월급 확인 > 압구정 번호표 > 터틀넥즈 정산',
+    isFavorite: true,
   },
 ];
 
