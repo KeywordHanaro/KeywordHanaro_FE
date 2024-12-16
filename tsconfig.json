@@ -10,7 +10,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "plugins": [
       {
@@ -30,5 +30,5 @@
     "contexts/TransferUseContext.tsx",
     "global.d.ts",
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", ".storybook"]
 }
