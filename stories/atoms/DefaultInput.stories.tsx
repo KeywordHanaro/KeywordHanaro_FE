@@ -17,7 +17,6 @@ export const Focus: Story = {
   render: (args) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
-    // 포커스를 설정하는 함수
     useEffect(() => {
       if (inputRef.current) {
         inputRef.current.value = 'DefaultInput 포커스';
