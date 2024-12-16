@@ -9,7 +9,7 @@ import { bankList } from '@/data/bank';
 import { MyAccountWithBalance } from '@/data/transfer';
 import { convertKorToNum } from 'korean-number-converter';
 import { useState, useEffect, useRef } from 'react';
-import { cn, formatNumberWithCommas } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 export type WithAmountProps = {
   checkEverytime: false;
@@ -40,16 +40,14 @@ export default function HowMuch({
   const amountRef = useRef<HTMLInputElement>(null);
 
   const [checkEverytime, setCheckEverytime] = useState(formData.checkEverytime);
-  const [amount, setAmount] = useState(
-    formData.type === 'WithAmount' ? formData.amount.toLocaleString() : ''
-  );
+
   const [valid, setValid] = useState(
     formData.checkEverytime || formData.amount > 0
   );
+  if (formData.type === 'WithAmount') console.log(formData);
 
   const toggleCheckEverytime = () => {
     setValid(!checkEverytime);
-    setAmount('');
     setCheckEverytime((prev) => !prev);
   };
 
@@ -59,8 +57,7 @@ export default function HowMuch({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const money = e.target.value;
-    const formatData = formatNumberWithCommas(money);
-    setAmount(formatData);
+    setValid(Number(money.replaceAll(',', '')) > 0);
   };
 
   const handleSubmit = () => {
@@ -91,11 +88,19 @@ export default function HowMuch({
       if (amountRef.current) {
         amountRef.current.value = amountVal.toLocaleString();
       }
-      setAmount(amountVal.toLocaleString());
       setValid(amountVal > 0);
       setResult('');
     }
-  }, [result]);
+  }, [result, setResult]);
+
+  useEffect(() => {
+    if (amountRef.current && formData.type === 'WithAmount') {
+      if (formData.amount === 0) amountRef.current.value = '';
+      else amountRef.current.value = formData.amount.toLocaleString();
+      amountRef.current.focus();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData.type === 'WithAmount' && formData.amount]);
 
   return (
     <div className='flex flex-col gap-[24px]'>
@@ -121,8 +126,7 @@ export default function HowMuch({
       <div>
         <SetAmount
           onChange={handleChange}
-          value={amount == '0' ? '' : amount}
-          ref={amountRef}
+          amountRef={amountRef}
           checkEverytime={checkEverytime}
           toggleCheckEverytime={toggleCheckEverytime}
           onChangeValidity={setValid}

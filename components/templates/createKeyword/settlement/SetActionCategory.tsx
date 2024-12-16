@@ -21,7 +21,6 @@ const SetActionCategory = ({
   const [checkEveryTime, setCheckEverytime] = useState<boolean>(
     formData.checkEveryTime
   );
-  const [amount, setAmount] = useState(formData.amount);
   const [valid, setValid] = useState<boolean>(
     formData.checkEveryTime || formData.amount.length > 0
   );
@@ -30,11 +29,10 @@ const SetActionCategory = ({
 
   useEffect(() => {
     if (amountRef.current) {
-      console.log(amount);
       amountRef.current.value = formData.amount;
       amountRef.current.focus();
     }
-  }, [amount, formData.amount]);
+  }, [formData.amount]);
 
   const onClickCategory = (category: 'Settlement' | 'Dues') => {
     setCategory(category);
@@ -42,7 +40,6 @@ const SetActionCategory = ({
 
   const toggleCheckEverytime = () => {
     setValid(!checkEveryTime);
-    setAmount('');
     setCheckEverytime((prev) => !prev);
   };
 
