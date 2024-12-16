@@ -28,7 +28,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "contexts/TransferUseContext.tsx",
-    "global.d.ts"
+    "global.d.ts",
   ],
   "exclude": ["node_modules"]
 }

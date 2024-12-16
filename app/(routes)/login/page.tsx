@@ -4,9 +4,11 @@ import { Button } from '@/components/atoms/Button';
 import { AuthInputRef } from '@/components/atoms/Inputs';
 import { useFormState, useFormStatus } from 'react-dom';
 import { FaLock } from 'react-icons/fa';
-import { MdOutlineMailOutline } from 'react-icons/md';
+// import { MdOutlineMailOutline } from 'react-icons/md';
 import { useRef } from 'react';
 import { authenticate } from '@/lib/actions';
+// import { CiUser } from "react-icons/ci";
+import { FaUser } from "react-icons/fa";
 
 export default function Login() {
   const [errorMsg, dispatchLogin] = useFormState(authenticate, undefined);
@@ -20,13 +22,13 @@ export default function Login() {
         <form action={dispatchLogin} className='space-y-3 flex flex-col gap-3'>
           <input type='hidden' name='redirectTo' value='/' />
           <AuthInputRef
-            name='email'
-            label='Email'
-            type='email'
+            name='id'
+            label='Id'
+            type='text'
             classNames=''
             ref={EmailRef}
           >
-            <MdOutlineMailOutline />
+            <FaUser />
           </AuthInputRef>
           <AuthInputRef
             name='passwd'

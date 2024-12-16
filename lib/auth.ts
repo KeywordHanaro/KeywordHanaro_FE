@@ -9,29 +9,24 @@ export const {
 } = NextAuth({
   providers: [
     Credentials({
-      name: 'Email',
+      name: 'Id',
       credentials: {
-        email: {
-          label: '이메일',
-          type: 'email',
-          placeholder: 'example@example.com',
-        },
+        id: { label: 'Id', type: 'text' },
         passwd: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        if (!credentials || !credentials.email || !credentials.passwd)
-          return null;
+        if (!credentials || !credentials.id || !credentials.passwd) return null;
 
         console.log('🚀  credentials:', credentials);
-        const { email } = credentials;
-        const user = { email, name: 'TmpUser' } as User;
+        const { id } = credentials;
+        const user = { email: id, name: 'TmpUser' } as User;
         return user;
       },
     }),
   ],
   callbacks: {
     session({ session }) {
-      console.log('🚀 cb - session:', session);
+      console.log('🚀 cb - session:', session.user);
       return session;
     },
   },
