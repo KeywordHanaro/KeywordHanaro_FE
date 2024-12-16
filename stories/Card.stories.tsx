@@ -13,6 +13,6 @@ export const Default: Story = {
   args: {
     padding: 'p-[15px_20px]',
     className: '',
-    children: 'Default Card',
+    children: '기본 카드',
   },
 };
