@@ -1,6 +1,8 @@
 import { Toaster } from '@/components/ui/toaster';
+import { SessionProvider } from 'next-auth/react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { auth } from '@/lib/auth';
 import './globals.css';
 
 const pretendard = localFont({
@@ -15,17 +17,20 @@ export const metadata: Metadata = {
   description: '키워드 하나로 빠르게 실행해보세요',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   return (
-    <html>
-      <body className={`font-pretendard ${pretendard.variable} antialiased`}>
-        {children}
-        <Toaster />
-      </body>
-    </html>
+    <SessionProvider session={session}>
+      <html>
+        <body className={`font-pretendard ${pretendard.variable} antialiased`}>
+          {children}
+          <Toaster />
+        </body>
+      </html>
+    </SessionProvider>
   );
 }

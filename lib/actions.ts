@@ -9,11 +9,12 @@ export async function authenticate(
   prevState: string | undefined,
   formData: FormData
 ) {
-  const email = formData.get('email');
+  const id = formData.get('id');
   const passwd = formData.get('passwd');
-  if (!email || !passwd) return 'Input the email or password!!';
+  if (!id || !passwd) return 'Input the ID or password!!';
 
   try {
+    //fetch로 로그인 확인하기
     await signIn('credentials', formData);
   } catch (error) {
     if (error instanceof AuthError) {
