@@ -15,7 +15,7 @@ export default function InquiryLayout({ children }: { children: ReactNode }) {
 
   const handleOnBack = () => {
     const currentStep = parseInt(pathname.split('step')[1]);
-    if (currentStep === 1) router.push('/');
+    if (currentStep === 1) router.push('/keyword/create');
     else {
       router.push(`/keyword/create/inquiry/step${currentStep - 1}`);
     }

@@ -1,6 +1,7 @@
 'use client';
 
 import { MultiKeywordProvider } from '@/contexts/MultiKeywordContext';
+import { VoiceInputProvider } from '@/contexts/VoiceContext';
 import { ReactNode } from 'react';
 
 export default function MultiKeywordLayout({
@@ -10,7 +11,9 @@ export default function MultiKeywordLayout({
 }) {
   return (
     <MultiKeywordProvider>
-      <MultiKeywordContent>{children}</MultiKeywordContent>
+      <VoiceInputProvider>
+        <MultiKeywordContent>{children}</MultiKeywordContent>
+      </VoiceInputProvider>
     </MultiKeywordProvider>
   );
 }

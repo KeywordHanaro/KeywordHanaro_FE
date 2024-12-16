@@ -1,9 +1,12 @@
+import SpeechToText from '@/components/SpeechToText';
 import { Button } from '@/components/atoms/Button';
 import { MoneyInputRef } from '@/components/atoms/Inputs';
 import InputPassword from '@/components/molecules/InputPassword';
 import { TransferProps } from '@/data/transfer';
 import { useState, useEffect, forwardRef } from 'react';
 import { formatNumberWithCommas } from '@/lib/utils';
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
+import { convertKorToNum } from 'korean-number-converter';
 
 export type SetTransferAmountProps = {
   data: TransferProps;
@@ -16,7 +19,14 @@ export const SetTransferAmount = forwardRef<
 >(({ data, onNext }, ref) => {
   const [open, setOpen] = useState<boolean>(false);
   const [verified, setVerified] = useState<boolean>(false);
+  const [valid, setValid] = useState<boolean>(false);
   //[new]
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const money = e.target.value;
+    setValid(Number(money.replaceAll(',', '')) > 0);
+  };
+
   const checkPassword = () => {
     setVerified(true);
     setOpen(false);
@@ -41,8 +51,10 @@ export const SetTransferAmount = forwardRef<
   useEffect(() => {
     if (data.type === 'WithoutAmount') {
       setOpen(false);
+      setValid(false);
     } else {
       setOpen(true);
+      setValid(true);
     }
   }, [data.type]);
 
@@ -53,6 +65,21 @@ export const SetTransferAmount = forwardRef<
       setOpen(true);
     }
   };
+
+  const { result, setResult } = useVoiceInputSession();
+    useEffect(() => {
+      if (result) {
+        const cleanedResult = result.replace(/[\s-]/g, '');
+        const amountVal = convertKorToNum(cleanedResult);
+        if (ref && 'current' in ref && ref.current) {
+          ref.current.value = amountVal.toLocaleString();
+        }
+        setValid(amountVal > 0);
+        setResult('');
+      }
+    }, [result, setResult]);
+  
+
   return (
     <div className='flex flex-col justify-between p-[20px] w-full h-full '>
       <div className='flex flex-col gap-6'>
@@ -77,7 +104,11 @@ export const SetTransferAmount = forwardRef<
           </div>
         </div>
         {data.type === 'WithoutAmount' ? (
-          <MoneyInputRef ref={ref} placeHolder='얼마를 요청할까요?' />
+          <MoneyInputRef
+            ref={ref}
+            onChange={handleChange}
+            placeHolder='얼마를 요청할까요?'
+          />
         ) : (
           //withAmount는 input 비활성화
           <div className='text-hanaPrimary font-semibold h-[32px] text-[24px] flex items-center'>
@@ -87,6 +118,13 @@ export const SetTransferAmount = forwardRef<
             </div>
           </div>
         )}
+        <Button
+          isDisabled={!valid}
+          onClick={handleNextClick}
+          className='w-full'
+        >
+          다음
+        </Button>
       </div>
       <div className='absolute bottom-0 '>
         {!verified && open && (
@@ -98,9 +136,8 @@ export const SetTransferAmount = forwardRef<
           />
         )}
       </div>
-      <Button onClick={handleNextClick} className='w-full'>
-        다음
-      </Button>
+
+      <SpeechToText />
     </div>
   );
 });

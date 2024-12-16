@@ -16,7 +16,7 @@ export default function SettlementLayout({ children }: PropsWithChildren) {
   const prevStep =
     currentIndex > 0
       ? '/keyword/create/settlement/' + steps[currentIndex - 1]
-      : '/';
+      : '/keyword/create';
   return (
     <div className='flex flex-col h-full'>
       {/* Header 2번째 페이지만 selectedMember가 있으면 다음 버튼 출현 */}
