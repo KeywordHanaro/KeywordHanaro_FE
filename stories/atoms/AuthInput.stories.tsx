@@ -1,6 +1,5 @@
 import { AuthInputRef } from '@/components/atoms/Inputs';
 import { Meta, StoryObj } from '@storybook/react';
-import { useEffect, useRef } from 'react';
 
 const meta: Meta = {
   title: 'Components/Atoms/AuthInput',
