@@ -1,11 +1,13 @@
+import SpeechToText from '@/components/SpeechToText';
 import Header from '@/components/atoms/Header';
-import { MicRef } from '@/components/atoms/Mic';
 import MultiKeyword from '@/components/molecules/MultiKeyword';
 import { MultiKeywordForm } from '@/contexts/MultiKeywordContext';
-import { keywordList } from '@/data/keyword';
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
+import { Keyword, keywordList } from '@/data/keyword';
 import { useToast } from '@/hooks/use-toast';
 import { usePathname } from 'next/navigation';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { levenshtein } from '@/lib/utils';
 
 type MultiKeywordProps = {
   formData: MultiKeywordForm;
@@ -22,6 +24,7 @@ export default function SelectKeywords({
   const [selectedIds, setSelectedIds] = useState<number[]>(
     formData.keywordIdArr ?? []
   );
+  const { result, setResult } = useVoiceInputSession();
 
   const pathname = usePathname();
 
@@ -49,6 +52,49 @@ export default function SelectKeywords({
   const handleNext = () => {
     onUpdate(selectedIds);
   };
+
+  useEffect(() => {
+    if (result) {
+      const findSimilarKeywords = (input: string, threshold: number = 0.3) => {
+        const inputWords = input.toLowerCase().split(' ');
+        const similarKeywords: Keyword[] = [];
+
+        keywordList.forEach((keyword) => {
+          const keywordWords = keyword.title.toLowerCase().split(' ');
+          const keywordLength = keywordWords.length;
+
+          for (let i = 0; i <= inputWords.length - keywordLength; i++) {
+            const inputSubset = inputWords
+              .slice(i, i + keywordLength)
+              .join(' ');
+            const distance = levenshtein(
+              inputSubset,
+              keyword.title.toLowerCase()
+            );
+            const similarity =
+              1 - distance / Math.max(inputSubset.length, keyword.title.length);
+
+            if (similarity >= threshold) {
+              similarKeywords.push(keyword);
+              break;
+            }
+          }
+        });
+
+        return similarKeywords;
+      };
+
+      const similarKeywords = findSimilarKeywords(result, 0.7);
+      const newSelectedIds = similarKeywords.map((keyword) => keyword.id);
+
+      setSelectedIds((prev) => {
+        const uniqueIds = [...prev, ...newSelectedIds];
+        return uniqueIds.slice(0, 5); // 최대 5개까지만 선택
+      });
+
+      setResult('');
+    }
+  }, [result, setResult]);
 
   return (
     <div className='flex flex-col h-full'>
@@ -86,7 +132,7 @@ export default function SelectKeywords({
           />
         ))}
       </div>
-      <MicRef />
+      <SpeechToText />
     </div>
   );
 }
