@@ -1,7 +1,7 @@
 import { Button } from '@/components/atoms/Button';
 import SetAmount from '@/components/molecules/SetAmount';
 import { FormData } from '@/data/settlement';
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 interface SetActionCategoryProps {
@@ -46,17 +46,9 @@ const SetActionCategory = ({
     setCheckEverytime((prev) => !prev);
   };
 
-  const formatNumberWithCommas = useCallback((inputValue: string): string => {
-    if (!inputValue) return '';
-    const numericValue = inputValue.replace(/[^0-9]/g, '');
-    const parsedValue = numericValue ? parseInt(numericValue, 10) : 0;
-    return new Intl.NumberFormat('ko-KR').format(parsedValue);
-  }, []);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const money = e.target.value;
-    const formatData = formatNumberWithCommas(money);
-    setAmount(formatData);
+    setValid(Number(money.replaceAll(',', '')) > 0);
   };
 
   const handleOnNext = () => {
@@ -110,8 +102,7 @@ const SetActionCategory = ({
       </div>
       <SetAmount
         onChange={handleChange}
-        value={amount}
-        ref={amountRef}
+        amountRef={amountRef}
         checkEverytime={checkEveryTime}
         toggleCheckEverytime={toggleCheckEverytime}
         onChangeValidity={setValid}

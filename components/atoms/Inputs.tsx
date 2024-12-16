@@ -5,10 +5,9 @@ import { IoSearch } from 'react-icons/io5';
 import { TiDelete } from 'react-icons/ti';
 import React, {
   ChangeEvent,
+  FormEvent,
   ForwardedRef,
   forwardRef,
-  useCallback,
-  useEffect,
   useImperativeHandle,
   useRef,
   useState,
@@ -184,89 +183,52 @@ function AccountInput(
 const AccountInputRef = forwardRef(AccountInput);
 
 /** ------------------------------------------ */
-type MoneyInputProps = baseInputTypeProps & {
-  onChangeValidity?: (valid: boolean) => void;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
-/** 금액 입력, ref로 입력 값 가져오기 */
-function MoneyInput(
-  {
-    className,
-    placeHolder,
-    onChangeValidity,
-    onChange = () => {},
-    ...props
-  }: MoneyInputProps,
-  ref: ForwardedRef<HTMLInputElement>
-) {
-  const [value, setValue] = useState<string>('');
-  const spanRef = useRef<HTMLSpanElement>(null);
-
-  const formatNumberWithCommas = useCallback((inputValue: string): string => {
-    if (!inputValue) return '';
-    const numericValue = inputValue.replace(/[^0-9]/g, '');
-    const parsedValue = numericValue ? parseInt(numericValue, 10) : 0;
-    return new Intl.NumberFormat('ko-KR').format(parsedValue);
-  }, []);
-
-  useEffect(() => {
-    if (spanRef.current && ref && typeof ref !== 'function') {
-      const textWidth = spanRef.current.offsetWidth;
-      // console.log("🚀 ~ useEffect ~ textWidth:", !!textWidth)
-      if (!textWidth && ref.current) {
-        ref.current.style.width = '100%';
-      } else if (ref.current?.value) {
-        ref.current.style.width = `${textWidth + 1}px`;
-      }
-    }
-  }, [value, ref]);
-
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      e.preventDefault();
-      const inputValue = e.target.value;
-      const number = parseInt(inputValue.replace(/[^0-9]/g, ''), 10);
-      const valid = !isNaN(number) && number > 0;
-      onChangeValidity?.(valid);
-      const formattedValue = formatNumberWithCommas(inputValue);
-      setValue(formattedValue);
-      onChange(e);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [setValue, formatNumberWithCommas, onChangeValidity]
-  );
-
-  return (
-    <div className='flex flex-row items-center jusc text-hanaPrimary'>
-      <input
-        ref={ref}
-        value={value}
-        onChange={handleChange}
-        className={cn(
-          'max-w-full text-2xl font-semibold placeholder:text-placeholderGray transition-all duration-500 ',
-          className
-        )}
-        placeholder={placeHolder}
-        required
-        {...props}
-      />
-      <span
-        ref={spanRef}
-        className={cn(
-          'invisible absolute whitespace-pre max-w-full text-2xl font-semibold',
-          className
-        )}
-        aria-hidden='true'
-      >
-        {value}
-      </span>
-      {value && (
-        <span className={cn('z-50 text-2xl font-semibold', className)}>원</span>
-      )}
-    </div>
-  );
+interface MoneyInputRefProps {
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  placeHolder: string;
 }
-const MoneyInputRef = forwardRef(MoneyInput);
+
+const MoneyInputRef = forwardRef<HTMLInputElement, MoneyInputRefProps>(
+  ({ onChange, placeHolder }, ref) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      const inputValue = e.target.value.replace(/[^\d]/g, '');
+      const numericValue = parseInt(inputValue, 10);
+
+      if (!isNaN(numericValue) && numericValue <= Number.MAX_SAFE_INTEGER) {
+        const formattedValue = new Intl.NumberFormat('ko-KR').format(
+          numericValue
+        );
+        if (ref && 'current' in ref && ref.current) {
+          ref.current.value = formattedValue;
+        }
+      } else {
+        if (ref && 'current' in ref && ref.current) {
+          ref.current.value = ref.current.value.slice(0, -1);
+        }
+      }
+      onChange(e);
+    };
+
+    return (
+      <div className='flex w-full text-2xl text-hanaPrimary'>
+        <input
+          ref={ref}
+          type='text'
+          onChange={handleChange}
+          placeholder={placeHolder}
+          max={Number.MAX_VALUE}
+          className='flex w-fit text-center text-2xl font-semibold placeholder:text-placeholderGray '
+        />
+        {ref &&
+          'current' in ref &&
+          ref.current &&
+          parseInt(ref.current.value, 10) > 0 && <span>원</span>}
+      </div>
+    );
+  }
+);
+
+MoneyInputRef.displayName = 'MoneyInputRef';
 
 /** ------------------------------------------ */
 type KeywordInputProps = baseInputTypeProps;
@@ -292,7 +254,7 @@ const KeywordInputRef = forwardRef(KeywordInput);
 
 /** ------------------------------------------ */
 type AIInputProps = baseInputTypeProps & {
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   isLoading: boolean;
   formClassName: string;
 };
@@ -412,7 +374,7 @@ const AuthInput = (
           // className='peer-valid:top-[-5px] peer-focus:top-[-5px]'
           className={cn(
             'peer-valid:top-[-5px] peer-focus:top-[-5px]',
-            value &&  'top-[-5px]'
+            value && 'top-[-5px]'
           )}
           htmlFor={id}
         >
