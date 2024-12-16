@@ -217,7 +217,7 @@ const MoneyInputRef = forwardRef<HTMLInputElement, MoneyInputRefProps>(
           onChange={handleChange}
           placeholder={placeHolder}
           max={Number.MAX_VALUE}
-          className='flex w-fit text-center text-2xl font-semibold placeholder:text-placeholderGray '
+          className='flex w-full text-center text-2xl font-semibold placeholder:text-placeholderGray '
         />
         {ref &&
           'current' in ref &&

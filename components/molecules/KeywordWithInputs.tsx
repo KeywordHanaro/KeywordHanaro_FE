@@ -94,7 +94,6 @@ const KeywordWithInputs = ({
                 ? '얼마를 송금할까요?'
                 : '얼마를 요청할까요?'
             }
-            className='text-base'
           />
         )}
 
