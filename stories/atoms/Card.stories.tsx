@@ -12,7 +12,8 @@ type Story = StoryObj<typeof Card>;
 export const Default: Story = {
   args: {
     padding: 'p-[15px_20px]',
-    className: '',
-    children: '기본 카드',
+    className:
+      'w-[370px] h-[300px] flex items-center justify-center text-xl font-bold',
+    children: '카드',
   },
 };
