@@ -1,6 +1,7 @@
 import { Chip } from '@/components/atoms/Chips';
 import { Member } from '@/data/member';
 import { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 
 const mockMember: Member = {
   id: 1,
@@ -34,13 +35,20 @@ export const CanDelete: Story = {
   args: {
     item: mockMember,
     canDelete: true,
-    onRemove: (id) => console.log(`Removed member with id: ${id}`),
   },
-  render: (args) => (
-    <div style={{ width: '80px' }}>
-      <Chip {...args} />
-    </div>
-  ),
+  render: (args) => {
+    const [isShow, setisShow] = useState(true);
+
+    const handelShow = () => {
+      setisShow(!isShow);
+    };
+
+    return (
+      <div style={{ width: '80px', display: isShow ? 'block' : 'none' }}>
+        <Chip {...args} onRemove={handelShow} />
+      </div>
+    );
+  },
 };
 
 export const Deleted: Story = {

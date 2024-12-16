@@ -17,7 +17,6 @@ const createCheckboxRender = (args: { checked: boolean }) => {
 
     const handleChange = (checked: boolean) => {
       setIsChecked(checked);
-      console.log('Checkbox changed:', checked);
     };
 
     return <CheckBox {...args} checked={isChecked} onChange={handleChange} />;
@@ -25,9 +24,9 @@ const createCheckboxRender = (args: { checked: boolean }) => {
 };
 
 export const Default: Story = {
-  render: createCheckboxRender({ checked: true }),
+  render: createCheckboxRender({ checked: false }),
 };
 
-export const UnChecked: Story = {
-  render: createCheckboxRender({ checked: false }),
+export const Checked: Story = {
+  render: createCheckboxRender({ checked: true }),
 };

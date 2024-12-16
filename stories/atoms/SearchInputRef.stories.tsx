@@ -22,3 +22,22 @@ export const Default: Story = {
     return <SearchInpuRef ref={inputRef} {...args} onSubmit={handleSubmit} />;
   },
 };
+
+export const Filled: Story = {
+  render: (args) => {
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+      if (inputRef.current) {
+        inputRef.current.value = '성수역점';
+        inputRef.current.focus();
+      }
+    }, []);
+
+    const handleSubmit = () => {
+      alert(inputRef.current?.value + '가 입력되었습니다.');
+    };
+
+    return <SearchInpuRef ref={inputRef} {...args} onSubmit={handleSubmit} />;
+  },
+};
