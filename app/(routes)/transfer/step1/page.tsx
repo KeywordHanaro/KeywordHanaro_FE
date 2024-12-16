@@ -3,6 +3,7 @@
 import Header from '@/components/atoms/Header';
 import SetTransferAmount from '@/components/templates/useKeyword/transfer/SetTransferAmount';
 import { useTransferUseSession } from '@/contexts/TransferUseContext';
+import { VoiceInputProvider } from '@/contexts/VoiceContext';
 import { UseKeywordTransfer } from '@/data/transfer';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
@@ -18,7 +19,7 @@ export default function SetTransferAmountPage() {
   const { formData, saveFormData } = useTransferUseSession();
 
   /**fetching 가정 */
-  const initialData = UseKeywordTransfer[1];
+  const initialData = UseKeywordTransfer[0];
 
   useEffect(() => {
     saveFormData({ ...initialData, transferAmount: '' });
@@ -53,9 +54,9 @@ export default function SetTransferAmountPage() {
         showActionButton={false}
         onBack={handleBack}
       />
-      <>
+      <VoiceInputProvider>
         <SetTransferAmount data={initialData} onNext={onNext} ref={amountRef} />
-      </>
+      </VoiceInputProvider>
     </div>
   );
 }
