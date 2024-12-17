@@ -1,7 +1,6 @@
 'use client';
 
 import Header from '@/components/atoms/Header';
-import { MicRef } from '@/components/atoms/Mic';
 import AddNewKeyword from '@/components/molecules/AddNewKeyword';
 import EditKeyword from '@/components/molecules/EditKeyword';
 import { KeywordDetailList } from '@/data/keyword';
@@ -40,7 +39,6 @@ export default function EditKeywordPage() {
         ))}
         <AddNewKeyword></AddNewKeyword>
       </div>
-      <MicRef></MicRef>
     </div>
   );
 }

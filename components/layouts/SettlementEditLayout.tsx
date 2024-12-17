@@ -1,8 +1,8 @@
 import { useSettlementContext } from '@/contexts/SettlementContext';
 import { usePathname, useRouter } from 'next/navigation';
 import { PropsWithChildren } from 'react';
+import SpeechToText from '../SpeechToText';
 import Header from '../atoms/Header';
-import { MicRef } from '../atoms/Mic';
 
 const steps = ['/step1', '/step2', '/step3', '/step4', '/step5'];
 
@@ -21,7 +21,7 @@ export default function SettlementEditLayout({ children }: PropsWithChildren) {
     <div className='flex flex-col h-full'>
       {/* Header 2번째 페이지만 selectedMember가 있으면 다음 버튼 출현 */}
       {pathname.includes('/keyword/edit/settlement/step1') &&
-      formData.account ? (
+      formData.fromAccount ? (
         <Header
           text='키워드 수정하기'
           onBack={() => {
@@ -57,7 +57,9 @@ export default function SettlementEditLayout({ children }: PropsWithChildren) {
         {children}
 
         {/* 마지막 페이지에서 Mic 안나오게 */}
-        {!pathname.startsWith('/keyword/edit/settlement/step5') && <MicRef />}
+        {!pathname.startsWith('/keyword/edit/settlement/step5') && (
+          <SpeechToText />
+        )}
       </div>
     </div>
   );
