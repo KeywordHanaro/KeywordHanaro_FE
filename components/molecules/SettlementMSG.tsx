@@ -1,6 +1,10 @@
-import { MultiForm } from '@/data/multiKeyword';
+import { MultiFormFinish } from '@/data/multiKeyword';
 
-export default function MultiKeywordSettlement({ data }: { data: MultiForm }) {
+export default function MultiKeywordSettlement({
+  data,
+}: {
+  data: MultiFormFinish;
+}) {
   return (
     <div className='flex flex-col gap-[11px]'>
       <div className='flex flex-col items-center justify-center gap-[11px] flex-grow break-keep'>

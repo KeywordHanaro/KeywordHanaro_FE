@@ -1,8 +1,8 @@
 import {
-  MultiForm,
-  MultiKeyword,
-  MultiTicket,
-  MultiTransfer,
+  MultiFormFinish,
+  MultiKeywordFinish,
+  MultiTicketFinish,
+  MultiTransferFinish,
 } from '@/data/multiKeyword';
 import MultiKeywordSettlement from '../../molecules/SettlementMSG';
 import MultiKeywordTicket from '../../molecules/TIcketMSG';
@@ -11,17 +11,21 @@ import MultiKeywordTransfer from '../../molecules/TransferMSG';
 export default function MultiKeywordCompletion({
   data,
 }: {
-  data: MultiKeyword;
+  data: MultiKeywordFinish;
 }) {
-  const isMultiTransfer = (data: MultiKeyword): data is MultiTransfer => {
+  const isMultiTransfer = (
+    data: MultiKeywordFinish
+  ): data is MultiTransferFinish => {
     return data.multiKeyword === 'MultiTransfer';
   };
 
-  const isMultiForm = (data: MultiKeyword): data is MultiForm => {
+  const isMultiForm = (data: MultiKeywordFinish): data is MultiFormFinish => {
     return data.multiKeyword === 'MultiForm';
   };
 
-  const isMultiTicket = (data: MultiKeyword): data is MultiTicket => {
+  const isMultiTicket = (
+    data: MultiKeywordFinish
+  ): data is MultiTicketFinish => {
     return data.multiKeyword === 'MultiTicket';
   };
 

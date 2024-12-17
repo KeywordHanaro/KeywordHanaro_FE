@@ -1,9 +1,9 @@
-import { MultiTransfer } from '@/data/multiKeyword';
+import { MultiTransferFinish } from '@/data/multiKeyword';
 
 export default function MultiKeywordTransfer({
   data,
 }: {
-  data: MultiTransfer;
+  data: MultiTransferFinish;
 }) {
   return (
     <div className='flex flex-col items-center justify-center gap-[11px]'>

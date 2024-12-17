@@ -1,5 +1,6 @@
 import { MyAccount, OthersAccount } from './account';
 import { Member } from './member';
+import { MultiKeywordDetail } from './multiKeyword';
 
 export type Account = {
   bankId: number;
@@ -29,7 +30,8 @@ export type KeywordDetail =
   | InquiryKeyword
   | TicketKeyword
   | SettlementKeyword
-  | SettlementAmountKeyword;
+  | SettlementAmountKeyword
+  | MultiKeyword;
 
 type BaseKeyword = {
   id: number;
@@ -71,6 +73,11 @@ export type SettlementAmountKeyword = BaseKeyword & {
   accountFrom: MyAccount;
   memberList: Member[];
   amount: number;
+};
+
+export type MultiKeyword = BaseKeyword & {
+  type: 'multiKeyword';
+  keywordList?: MultiKeywordDetail[];
 };
 
 export const getColorByType = (type: Keyword['type']) => {
@@ -308,5 +315,71 @@ export const KeywordDetailList: KeywordDetail[] = [
     type: 'ticket',
     title: '압구정 번호표',
     bankName: '압구정점',
+  },
+  {
+    id: 10,
+    type: 'multiKeyword',
+    title: '조합한 키워드',
+    keywordList: [
+      {
+        id: 1,
+        type: 'transferAmount',
+        title: '성엽이 용돈',
+        accountFrom: {
+          type: 'MyAccount',
+          accountName: '하나패스 자유입출금',
+          bankId: 81,
+          accountNumber: '156-5483-111-6854',
+        },
+        accountTo: {
+          type: 'OthersAccount',
+          bankId: 2,
+          accountNumber: '987-654-321',
+          name: '정성엽',
+        },
+        amount: '350000',
+        seqOrder: 1,
+      },
+      {
+        id: 2,
+        type: 'inquiry',
+        title: '월급 확인',
+        accountFrom: {
+          type: 'MyAccount',
+          bankId: 81,
+          accountNumber: '156-5483-111-6854',
+          accountName: '하나패스 자유입출금',
+        },
+        searchKeyword: '급여',
+        seqOrder: 2,
+      },
+      {
+        id: 9,
+        type: 'ticket',
+        title: '압구정 번호표',
+        bankName: '압구정점',
+        seqOrder: 3,
+      },
+      {
+        id: 4,
+        type: 'settlementAmount',
+        title: '터틀넥즈 정산',
+        accountFrom: {
+          type: 'MyAccount',
+          accountName: '하나패스 자유입출금',
+          bankId: 81,
+          accountNumber: '156-5483-111-6854',
+        },
+        memberList: [
+          { id: 1, name: '남인우', phoneNumber: '010-4824-1469' },
+          { id: 2, name: '박준용', phoneNumber: '010-9110-5864' },
+          { id: 3, name: '문서아', phoneNumber: '010-1541-2537' },
+          { id: 4, name: '정성엽', phoneNumber: '010-5392-3797' },
+          { id: 5, name: '김도희', phoneNumber: '010-4046-7672' },
+        ],
+        amount: 30000,
+        seqOrder: 4,
+      },
+    ],
   },
 ];
