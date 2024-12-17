@@ -4,7 +4,11 @@ import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { FaMicrophone } from 'react-icons/fa';
 import { useState, useEffect, useRef, useCallback } from 'react';
 
-const SpeechToText = () => {
+interface SpeechToTextProps {
+  autoStart?: boolean;
+}
+
+const SpeechToText = ({ autoStart = false }: SpeechToTextProps) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [transcript, setTranscript] = useState<string>('');
   const [isListening, setIsListening] = useState<boolean>(false);
@@ -66,17 +70,61 @@ const SpeechToText = () => {
     };
   }, [handleRecognitionResult]);
 
+  useEffect(() => {
+    if (autoStart && !isListening && recognitionRef.current) {
+      try {
+        setTranscript('');
+        setIsExpanded(true);
+        recognitionRef.current.start();
+        setIsListening(true);
+      } catch (error) {
+        if (
+          error instanceof Error &&
+          error.message.includes('already started')
+        ) {
+          recognitionRef.current.stop();
+          setTimeout(() => {
+            recognitionRef.current?.start();
+          }, 100);
+        } else {
+          console.error('Speech recognition error:', error);
+        }
+      }
+    }
+
+    return () => {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch (error) {
+          console.error('Error stopping recognition:', error);
+        }
+      }
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [autoStart]);
+
   const toggleListening = useCallback(() => {
     if (isListening) {
       setIsExpanded(false);
       if (recognitionRef.current) {
-        recognitionRef.current.stop();
+        try {
+          recognitionRef.current.stop();
+        } catch (error) {
+          console.error('Error stopping recognition:', error);
+        }
       }
     } else {
       setTranscript('');
       setIsExpanded(true);
       if (recognitionRef.current) {
-        recognitionRef.current.start();
+        try {
+          recognitionRef.current.start();
+        } catch (error) {
+          console.error('Error starting recognition:', error);
+        }
       }
     }
     setIsListening((prev) => !prev);
@@ -94,8 +142,9 @@ const SpeechToText = () => {
         </div>
       )}
       <div
-        className='flex items-center justify-center w-[77px] h-[77px] border border-hanaPrimary rounded-full bg-white cursor-pointer absolute bottom-[38px] left-1/2 transform -translate-x-1/2'
+        className='microphone-button flex items-center justify-center w-[77px] h-[77px] border border-hanaPrimary rounded-full bg-white cursor-pointer absolute bottom-[38px] left-1/2 transform -translate-x-1/2'
         onClick={toggleListening}
+        tabIndex={-1}
       >
         <FaMicrophone className='text-hanaPrimary w-[41.3px] h-[41.3px]' />
       </div>
