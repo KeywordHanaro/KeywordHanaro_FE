@@ -70,7 +70,7 @@ const KeywordWithInputs = ({
       if (amountVal) {
         amountRef.current.value = amountVal.toLocaleString();
         onInputChange(keyword.id, Number(amountVal));
-        setIsFocused(false); // 결과가 반영된 후 isFocused를 false로 설정
+        setIsFocused(false); 
       }
     }
   }, [result]);

@@ -22,11 +22,6 @@ export default function TransferDocumentPage() {
 
   const router = useRouter();
 
-  // const handleSelectBank = (id: number) => {
-  //   (() => id && setBankID(id))();
-  //   setOtherAccount(otherAccountRef.current?.value ?? null);
-  // };
-
   console.log('myAccount', myAccount);
   console.log('otherAccount', otherAccount);
   console.log('isValid', isValid);
@@ -70,7 +65,7 @@ export default function TransferDocumentPage() {
       <div>
         <Header text='송금 서류 미리 작성하기' showActionButton={false} />
         <div className='p-4 flex flex-col gap-6'>
-          <h1 className='text-[28px] font-semibold'>송금 서류 미리 작성하기</h1>
+          <h1 className='text-[24px] font-semibold'>송금 서류 미리 작성하기</h1>
 
           <div className='flex flex-col'>
             <strong>보낼 계좌</strong>
@@ -89,7 +84,6 @@ export default function TransferDocumentPage() {
             <strong>입금 금액</strong>
             <span className='border-b'>
               <MoneyInputRef
-                className='w-full '
                 placeHolder='금액을 입력하세요'
                 onChangeValidity={setIsValid}
                 ref={ammountRef}

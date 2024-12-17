@@ -216,7 +216,7 @@ const MoneyInputRef = forwardRef<HTMLInputElement, MoneyInputProps>(
         <input
           type='text'
           ref={ref}
-          onChange={onChange}
+          onChange={handleChange}
           onFocus={onFocus}
           onBlur={onBlur}
           placeholder={placeHolder}
