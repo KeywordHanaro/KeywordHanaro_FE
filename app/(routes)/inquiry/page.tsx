@@ -1,7 +1,6 @@
 'use client';
 
 import Header from '@/components/atoms/Header';
-import { MicRef } from '@/components/atoms/Mic';
 import TransactionList from '@/components/templates/useKeyword/inquiry/TransactionList';
 // import { InquiryList } from '@/data/inquiry';
 import { useRouter } from 'next/navigation';
@@ -46,7 +45,6 @@ export default function InquiryPage() {
         </h1>
         <TransactionList keyword={keyword} />
       </div>
-      <MicRef />
     </div>
   );
 }

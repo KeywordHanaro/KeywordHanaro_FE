@@ -1,6 +1,5 @@
 'use client';
 
-// import { MicRef } from '@/components/atoms/Mic';
 import SpeechToText from '@/components/SpeechToText';
 import Header from '@/components/atoms/Header';
 import { InquiryProvider } from '@/contexts/InquiryContext';

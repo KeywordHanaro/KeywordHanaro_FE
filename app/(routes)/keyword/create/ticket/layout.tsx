@@ -25,7 +25,6 @@ export default function CreateTicketLayout({ children }: PropsWithChildren) {
           <div className='w-full flex flex-col mt-[24px] px-[20px] pb-[34px]'>
             {children}
           </div>
-          {/* {pathname === '3' && <MicRef />} */}
         </div>
       </TicketProvider>
     </VoiceInputProvider>

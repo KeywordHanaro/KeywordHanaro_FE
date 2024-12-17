@@ -1,4 +1,5 @@
 import { bankList } from '@/data/bank';
+import { Keyword } from '@/data/keyword';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -173,3 +174,31 @@ export function koreanCurrencyToNumber(currencyStr: string): number {
   // Return the result with thousands separators
   return result;
 }
+
+export const findSimilarKeywords = (
+  keywordList: Keyword[],
+  input: string,
+  threshold: number = 0.3
+) => {
+  const inputWords = input.toLowerCase().split(' ');
+  const similarKeywords: typeof keywordList = [];
+
+  keywordList.forEach((keyword) => {
+    const keywordWords = keyword.title.toLowerCase().split(' ');
+    const keywordLength = keywordWords.length;
+
+    for (let i = 0; i <= inputWords.length - keywordLength; i++) {
+      const inputSubset = inputWords.slice(i, i + keywordLength).join(' ');
+      const distance = levenshtein(inputSubset, keyword.title.toLowerCase());
+      const similarity =
+        1 - distance / Math.max(inputSubset.length, keyword.title.length);
+
+      if (similarity >= threshold) {
+        similarKeywords.push(keyword);
+        break;
+      }
+    }
+  });
+
+  return similarKeywords;
+};

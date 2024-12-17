@@ -4,11 +4,13 @@ import SpeechToText from '@/components/SpeechToText';
 import Header from '@/components/atoms/Header';
 import AddNewKeyword from '@/components/molecules/AddNewKeyword';
 import Keyword from '@/components/molecules/Keyword';
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { keywordList } from '@/data/keyword';
 import { motion, Reorder } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { ulVariants, liVariants } from '@/lib/motionVariable';
+import { findSimilarKeywords } from '@/lib/utils';
 
 export default function KeywordPage() {
   const router = useRouter();
@@ -16,7 +18,6 @@ export default function KeywordPage() {
     router.push('/keyword/edit');
   };
   const [items, setItems] = useState<number[]>([]);
-  console.log(items);
   useEffect(() => {
     setItems(keywordList.map((keyword) => keyword.id));
   }, []);
@@ -24,6 +25,23 @@ export default function KeywordPage() {
   const handleReorder = (newOrder: number[]) => {
     setItems(newOrder);
   };
+
+  const { result, resetResult } = useVoiceInputSession();
+
+  useEffect(() => {
+    if (result) {
+      const similarKeywords = findSimilarKeywords(keywordList, result);
+      if (similarKeywords.length > 0) {
+        const keywordElement = document.querySelector(
+          `[data-keyword-id="${similarKeywords[0].id}"]`
+        );
+        if (keywordElement) {
+          (keywordElement as HTMLElement).click();
+        }
+      }
+      resetResult();
+    }
+  }, [result]);
 
   return (
     <div className='flex flex-col h-full'>
@@ -33,8 +51,6 @@ export default function KeywordPage() {
         onBack={() => router.push('/')}
         onAction={onEdit}
       ></Header>
-
-      {/* <div> */}
 
       <motion.ul
         variants={ulVariants}
@@ -57,7 +73,7 @@ export default function KeywordPage() {
             return (
               <motion.li key={id} variants={liVariants} custom={index}>
                 <Reorder.Item key={id} value={id} drag='y'>
-                  <Keyword data={data}></Keyword>
+                  <Keyword data={data} data-keyword-id={id}></Keyword>
                 </Reorder.Item>
               </motion.li>
             );
@@ -68,8 +84,7 @@ export default function KeywordPage() {
         </motion.li>
       </motion.ul>
 
-      {/* </div> */}
-      <SpeechToText />
+      <SpeechToText placeholder='키워드를 선택해주세요.' />
     </div>
   );
 }

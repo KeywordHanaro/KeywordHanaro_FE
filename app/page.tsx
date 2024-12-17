@@ -2,20 +2,40 @@
 
 import SpeechToText from '@/components/SpeechToText';
 import { CustomSidebarTrigger } from '@/components/atoms/CustomSidebarTrigger';
-// import { MicRef } from '@/components/atoms/Mic';
 import AccountCard from '@/components/molecules/AccountCard';
 import Keyword from '@/components/molecules/Keyword';
 import { AppSidebar } from '@/components/organisms/AppSidebar';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { Toggle } from '@/components/ui/toggle';
-// import { VoiceInputProvider } from '@/contexts/VoiceContext';
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { keywordList } from '@/data/keyword';
 import { motion } from 'motion/react';
 // import { signOut } from 'next-auth/react';
 import { SlArrowRight } from 'react-icons/sl';
+import { useEffect } from 'react';
 import { ulVariants, liVariants } from '@/lib/motionVariable';
+import { findSimilarKeywords } from '@/lib/utils';
 
 export default function Home() {
+  const { result, resetResult } = useVoiceInputSession();
+
+  useEffect(() => {
+    if (result) {
+      const similarKeywords = findSimilarKeywords(
+        keywordList.slice(0, 5),
+        result
+      );
+      if (similarKeywords.length > 0) {
+        const keywordElement = document.querySelector(
+          `[data-keyword-id="${similarKeywords[0].id}"]`
+        );
+        if (keywordElement) {
+          (keywordElement as HTMLElement).click();
+        }
+      }
+      resetResult();
+    }
+  }, [result]);
 
   return (
     <SidebarProvider className='block'>
@@ -48,7 +68,7 @@ export default function Home() {
           {/* 카드 끝 */}
 
           {/* 나의 키워드 */}
-          <div className='w-full flex flex-col gap-[8px] mb-[110.5px] mt-[20px]'>
+          <div className='w-full flex flex-col gap-[8px] mb-[120px] mt-[20px]'>
             {/* 나의 키워드 헤더 */}
             <div className='flex w-full justify-between'>
               <p className='text-[18px] font-semibold'>나의 키워드</p>
@@ -66,19 +86,18 @@ export default function Home() {
             >
               {keywordList.slice(0, 5).map((each, index) => (
                 <motion.li key={each.id} variants={liVariants} custom={index}>
-                  <Keyword key={each.id} data={each}></Keyword>
+                  <Keyword
+                    key={each.id}
+                    data={each}
+                    data-keyword-id={each.id}
+                  ></Keyword>
                 </motion.li>
               ))}
             </motion.ul>
           </div>
           {/* 나의 키워드 끝 */}
-          <SpeechToText />
+          <SpeechToText placeholder='키워드를 선택해주세요.' />
         </div>
-
-        {/* stt context 사용 예시*/}
-        {/* <VoiceInputProvider>
-        <MicRef />
-      </VoiceInputProvider> */}
       </div>
     </SidebarProvider>
   );

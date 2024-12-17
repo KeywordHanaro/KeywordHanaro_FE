@@ -1,7 +1,6 @@
 'use client';
 
 import Header from '@/components/atoms/Header';
-import { MicRef } from '@/components/atoms/Mic';
 import KeywordCategory from '@/components/molecules/KeywordCategory';
 import { useRouter } from 'next/navigation';
 
@@ -23,8 +22,6 @@ export default function KeywordCreatePage() {
         </div>
         <KeywordCategory />
       </div>
-
-      <MicRef />
     </div>
   );
 }

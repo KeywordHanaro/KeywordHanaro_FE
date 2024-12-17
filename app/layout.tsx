@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { auth } from '@/lib/auth';
 import './globals.css';
+import { VoiceInputProvider } from '@/contexts/VoiceContext';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -25,12 +26,16 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <SessionProvider session={session}>
-      <html>
-        <body className={`font-pretendard ${pretendard.variable} antialiased`}>
-          {children}
-          <Toaster />
-        </body>
-      </html>
+      <VoiceInputProvider>
+        <html>
+          <body
+            className={`font-pretendard ${pretendard.variable} antialiased`}
+          >
+            {children}
+            <Toaster />
+          </body>
+        </html>
+      </VoiceInputProvider>
     </SessionProvider>
   );
 }
