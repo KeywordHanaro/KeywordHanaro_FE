@@ -36,6 +36,7 @@ export default function DepositDocumentPage() {
       );
       amountRef.current.value = formattedValue;
     }
+    setIsValid(numericValue > 0 && myAccount !== undefined);
   };
 
   useEffect(() => {
@@ -44,15 +45,10 @@ export default function DepositDocumentPage() {
       const amountVal = convertKorToNum(cleanedResult);
       if (amountVal) {
         amountRef.current.value = amountVal.toLocaleString();
+        setIsValid(amountVal > 0 && myAccount !== undefined);
       }
     }
   }, [result]);
-
-  useEffect(() => {
-    const currentAmount = amountRef.current?.value.replace(/[^\d]/g, '');
-    const numericAmount = parseInt(currentAmount || '0', 10);
-    setIsValid(numericAmount > 0 && myAccount !== undefined);
-  }, [myAccount, amountRef.current?.value]);
 
   return (
     <>
@@ -71,7 +67,6 @@ export default function DepositDocumentPage() {
               <MoneyInputRef
                 placeHolder='금액을 입력하세요'
                 onChange={onChangeAmount}
-                // onChangeValidity={setIsValid}
                 ref={amountRef}
               />
             </span>
