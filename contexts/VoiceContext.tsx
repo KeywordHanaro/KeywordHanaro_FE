@@ -1,12 +1,7 @@
 'use client';
 
 // import { useRouter } from 'next/navigation';
-import {
-  createContext,
-  PropsWithChildren,
-  useContext, 
-  useState,
-} from 'react';
+import { createContext, PropsWithChildren, useContext, useState } from 'react';
 
 // export type List = {
 //   name: string;
@@ -16,24 +11,27 @@ import {
 type VoiceInputProps = {
   result: string;
   setResult: (data: string) => void;
-  // setLists: (data: List[]) => void;
+  resetResult: () => void;
 };
 
 const VoiceInputContext = createContext<VoiceInputProps>({
   result: '',
   setResult: () => {},
-  // setLists: () => {},
+  resetResult: () => {},
 });
 
 export const VoiceInputProvider = ({ children }: PropsWithChildren) => {
   const [result, setResult] = useState<string>('');
+  const resetResult = () => {
+    setResult('');
+  };
 
   // useEffect(() => {
   //   console.log(result);
   // }, [result]);
 
   return (
-    <VoiceInputContext.Provider value={{ result, setResult }}>
+    <VoiceInputContext.Provider value={{ result, setResult, resetResult }}>
       {children}
     </VoiceInputContext.Provider>
   );

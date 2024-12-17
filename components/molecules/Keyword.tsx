@@ -13,10 +13,12 @@ import ColorChip from '../atoms/ColorChips';
 
 type KeywordProps = {
   data: TKeyword;
+  'data-keyword-id'?: string | number;
 };
 
 const Keyword = ({
   data: { id, type, title, description, isFavorite },
+  'data-keyword-id': dataKeywordId,
 }: KeywordProps) => {
   const router = useRouter();
   const chipColor = getColorByType(type);
@@ -25,6 +27,7 @@ const Keyword = ({
   return (
     <Card
       className='flex flex-row justify-between items-center rounded-[12px]'
+      data-keyword-id={dataKeywordId}
       onClick={() => {
         router.push(
           type.includes('transfer') || type.includes('settlement')

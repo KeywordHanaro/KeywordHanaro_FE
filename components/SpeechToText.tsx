@@ -6,9 +6,13 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 
 interface SpeechToTextProps {
   autoStart?: boolean;
+  placeholder?: string;
 }
 
-const SpeechToText = ({ autoStart = false }: SpeechToTextProps) => {
+const SpeechToText = ({
+  autoStart = false,
+  placeholder = '음성인식 된 내용이 나타납니다.',
+}: SpeechToTextProps) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [transcript, setTranscript] = useState<string>('');
   const [isListening, setIsListening] = useState<boolean>(false);
@@ -138,7 +142,7 @@ const SpeechToText = ({ autoStart = false }: SpeechToTextProps) => {
     >
       {isExpanded && (
         <div className='w-full text-center text-white mt-[70px] text-lg font-bold overflow-hidden'>
-          {transcript || '음성인식 된 내용이 나타납니다.'}
+          {transcript || placeholder}
         </div>
       )}
       <div
