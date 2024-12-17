@@ -4,6 +4,10 @@ import Header from '@/components/atoms/Header';
 import InputPassword from '@/components/molecules/InputPassword';
 import KeywordWithInputs from '@/components/molecules/KeywordWithInputs';
 import TransactionList from '@/components/templates/useKeyword/inquiry/TransactionList';
+import {
+  useVoiceInputSession,
+  VoiceInputProvider,
+} from '@/contexts/VoiceContext';
 import { KeywordDetail, KeywordDetailList } from '@/data/keyword';
 import { Member } from '@/data/member';
 import { useRouter } from 'next/navigation';
@@ -131,6 +135,7 @@ const MultiKeyword = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   // 비밀번호
   const [open, setOpen] = useState<boolean>(false);
+  const { result, setResult } = useVoiceInputSession();
   const router = useRouter();
   // 금액 변경 핸들러
   const handleAmountChange = (id: number, amount: number) => {
@@ -211,15 +216,17 @@ const MultiKeyword = () => {
         <TransactionList keyword='급여' />
         {/* 키워드 리스트 */}
         <div className='flex flex-col gap-3 pb-10'>
-          {KeywordDetailList.map((keyword) => (
-            <KeywordWithInputs
-              keyword={keyword}
-              key={keyword.id}
-              onInputChange={handleAmountChange}
-              onMemberListChange={handleMemberListChange}
-              onTicketServiceChange={handleTicketServiceChange}
-            ></KeywordWithInputs>
-          ))}
+          <VoiceInputProvider>
+            {KeywordDetailList.map((keyword) => (
+              <KeywordWithInputs
+                keyword={keyword}
+                key={keyword.id}
+                onInputChange={handleAmountChange}
+                onMemberListChange={handleMemberListChange}
+                onTicketServiceChange={handleTicketServiceChange}
+              ></KeywordWithInputs>
+            ))}
+          </VoiceInputProvider>
         </div>
         <div className='absolute bottom-0 '>
           <InputPassword

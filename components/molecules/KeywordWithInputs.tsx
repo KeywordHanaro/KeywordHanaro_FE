@@ -1,8 +1,11 @@
 'use client';
 
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { getColorByType, getNameByType, KeywordDetail } from '@/data/keyword';
 import { Member } from '@/data/member';
-import { useState, useRef } from 'react';
+import { convertKorToNum } from 'korean-number-converter';
+import { useState, useRef, useEffect } from 'react';
+import SpeechToText from '../SpeechToText';
 import { Button } from '../atoms/Button';
 import { Card } from '../atoms/Card';
 import ColorChip from '../atoms/ColorChips';
@@ -51,14 +54,46 @@ const KeywordWithInputs = ({
 }: KeywordWithInputsProps) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [currentService, setCurrentService] = useState<string>('');
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const { result } = useVoiceInputSession();
 
   const chipColor = getColorByType(keyword.type);
   const chipName = getNameByType(keyword.type);
 
   const amountRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    console.log('result', result);
+    if (result && isFocused && amountRef.current) {
+      const cleanedResult = result.replace(/[\s-]/g, '');
+      const amountVal = convertKorToNum(cleanedResult);
+      if (amountVal) {
+        amountRef.current.value = amountVal.toLocaleString();
+        onInputChange(keyword.id, Number(amountVal));
+        setIsFocused(false); // 결과가 반영된 후 isFocused를 false로 설정
+      }
+    }
+  }, [result]);
+
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onInputChange(keyword.id, Number(e.target.value));
+  };
+
+  const handleFocus = () => {
+    console.log('focus');
+    setIsFocused(true);
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    // Check if the related target is the microphone button
+    if (e.relatedTarget?.closest('.microphone-button')) {
+      // Don't blur if clicking the microphone
+      e.preventDefault();
+      // Restore focus to the input
+      amountRef.current?.focus();
+      return;
+    }
+    setIsFocused(false);
   };
 
   const handleMemberListChange = (newMemberList: Member[]) => {
@@ -89,6 +124,8 @@ const KeywordWithInputs = ({
           <MoneyInputRef
             ref={amountRef}
             onChange={handleAmountChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             placeHolder={
               keyword.type === 'transfer'
                 ? '얼마를 송금할까요?'
@@ -135,6 +172,7 @@ const KeywordWithInputs = ({
           </div>
         ))}
       </Modal>
+      {isFocused && <SpeechToText autoStart />}
     </Card>
   );
 };

@@ -183,13 +183,15 @@ function AccountInput(
 const AccountInputRef = forwardRef(AccountInput);
 
 /** ------------------------------------------ */
-interface MoneyInputRefProps {
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  placeHolder: string;
-}
+type MoneyInputProps = {
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onFocus?: () => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  placeHolder?: string;
+};
 
-const MoneyInputRef = forwardRef<HTMLInputElement, MoneyInputRefProps>(
-  ({ onChange, placeHolder }, ref) => {
+const MoneyInputRef = forwardRef<HTMLInputElement, MoneyInputProps>(
+  ({ onChange, onFocus, onBlur, placeHolder }, ref) => {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       const inputValue = e.target.value.replace(/[^\d]/g, '');
       const numericValue = parseInt(inputValue, 10);
@@ -212,9 +214,11 @@ const MoneyInputRef = forwardRef<HTMLInputElement, MoneyInputRefProps>(
     return (
       <div className='flex w-full text-2xl text-hanaPrimary'>
         <input
-          ref={ref}
           type='text'
-          onChange={handleChange}
+          ref={ref}
+          onChange={onChange}
+          onFocus={onFocus}
+          onBlur={onBlur}
           placeholder={placeHolder}
           max={Number.MAX_VALUE}
           className='flex w-full text-center text-2xl font-semibold placeholder:text-placeholderGray '
