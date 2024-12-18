@@ -12,14 +12,20 @@ import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { bankList } from '@/data/bank';
 import { FaAngleDown } from 'react-icons/fa';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { cn, levenshtein } from '@/lib/utils';
 
 type SelectBankProps = {
   onSelect: (index: number) => void;
   value?: number;
+  useStt?: boolean;
 };
-const SelectBank: React.FC<SelectBankProps> = ({ onSelect, value }) => {
+
+const SelectBank = memo(function SelectBank({
+  onSelect,
+  value,
+  useStt,
+}: SelectBankProps) {
   const [hasScrolled, setHasScrolled] = useState(false);
   const [bankId, setBankId] = useState<number>(value ?? 0);
 
@@ -32,32 +38,32 @@ const SelectBank: React.FC<SelectBankProps> = ({ onSelect, value }) => {
   };
 
   const { result, setResult } = useVoiceInputSession();
-  console.log(bankList);
   useEffect(() => {
-    const cleanedResult = result.replace(/[\s-]/g, '');
-    if (cleanedResult && !/^\d+$/.test(cleanedResult)) {
-      const threshold = 3; // 허용할 최대 편집 거리
-      let bestMatch = null;
-      let minDistance = Infinity;
+    if (useStt) {
+      const cleanedResult = result.replace(/[\s-]/g, '');
+      if (cleanedResult && !/^\d+$/.test(cleanedResult)) {
+        const threshold = 3; // 허용할 최대 편집 거리
+        let bestMatch = null;
+        let minDistance = Infinity;
 
-      for (const bank of bankList) {
-        const distance = levenshtein(
-          bank.bankname,
-          cleanedResult.toLowerCase()
-        );
-        if (distance < minDistance && distance <= threshold) {
-          minDistance = distance;
-          bestMatch = bank;
+        for (const bank of bankList) {
+          const distance = levenshtein(
+            bank.bankname,
+            cleanedResult.toLowerCase()
+          );
+          if (distance < minDistance && distance <= threshold) {
+            minDistance = distance;
+            bestMatch = bank;
+          }
+        }
+        if (bestMatch) {
+          setResult('');
+          setBankId(bestMatch.id);
+          onSelect(bestMatch.id);
         }
       }
-      console.log('result', result);
-      console.log('bestMatch', bestMatch);
-      if (bestMatch) {
-        setResult('');
-        setBankId(bestMatch.id);
-        onSelect(bestMatch.id);
-      }
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
   return (
@@ -119,6 +125,6 @@ const SelectBank: React.FC<SelectBankProps> = ({ onSelect, value }) => {
       </div>
     </>
   );
-};
+});
 
 export default SelectBank;
