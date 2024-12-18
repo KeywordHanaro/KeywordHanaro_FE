@@ -57,7 +57,7 @@ const Keyword = ({
           height='20'
           viewBox='0 0 20 20'
           fill='none'
-          style={{ cursor: 'pointer', zIndex: '99' }}
+          style={{ cursor: 'pointer' }}
           onClick={(e) => {
             e.stopPropagation();
             if (onDelete) onDelete(id);
