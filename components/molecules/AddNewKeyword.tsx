@@ -2,7 +2,11 @@ import { FaPlus } from 'react-icons/fa';
 import Link from 'next/link';
 import { Card } from '../atoms/Card';
 
-const AddNewKeyword = () => {
+type AddNewKeywordProps = {
+  text?: string; // 선택적인 text Prop 정의
+};
+
+const AddNewKeyword = ({ text }: AddNewKeywordProps) => {
   return (
     <Link href='/keyword/create'>
       <Card className='items-center gap-[10px] rounded-[12px] shadow-none border'>
@@ -10,7 +14,7 @@ const AddNewKeyword = () => {
           <FaPlus className='text-lightGray'></FaPlus>
         </div>
         <span className='text-lightGray text-[15px]'>
-          새로운 키워드를 만들어보세요
+          {text ? text : '새로운 키워드를 만들어보세요'}
         </span>
       </Card>
     </Link>
