@@ -20,29 +20,37 @@ type Story = StoryObj<typeof MoneyInputRef>;
 
 export const Default: Story = {
   render: (args) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+    const MoneyInputWithRef = () => {
+      const inputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
-    }, []);
+      useEffect(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      }, []);
 
-    return <MoneyInputRef ref={inputRef} {...args} />;
+      return <MoneyInputRef ref={inputRef} {...args} />;
+    };
+
+    return <MoneyInputWithRef />;
   },
 };
 
 export const Filled: Story = {
   render: (args) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+    const MoneyInputWithValue = () => {
+      const inputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
-      if (inputRef.current) {
-        inputRef.current.value = '1,000,000원';
-        inputRef.current.focus();
-      }
-    }, []);
+      useEffect(() => {
+        if (inputRef.current) {
+          inputRef.current.value = '1,000,000원';
+          inputRef.current.focus();
+        }
+      }, []);
 
-    return <MoneyInputRef ref={inputRef} {...args} />;
+      return <MoneyInputRef ref={inputRef} {...args} />;
+    };
+
+    return <MoneyInputWithValue />;
   },
 };

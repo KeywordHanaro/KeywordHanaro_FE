@@ -1,6 +1,5 @@
 import UserCheckBox from '@/components/atoms/UserCheckBox';
 import { Meta, StoryObj } from '@storybook/react';
-import { UserCheckIcon } from 'lucide-react';
 import { useState } from 'react';
 
 const meta: Meta = {
@@ -13,21 +12,33 @@ export default meta;
 type Story = StoryObj<typeof UserCheckBox>;
 
 export const Default: Story = {
-  render: (args) => {
-    const [isChecked, setIsChecked] = useState(false);
-    const handelClick = () => {
-      setIsChecked(!isChecked);
+  render: () => {
+    const UserCheckBoxWithState = () => {
+      const [isChecked, setIsChecked] = useState(false);
+
+      const handleClick = () => {
+        setIsChecked(!isChecked);
+      };
+
+      return <UserCheckBox checked={isChecked} onChange={handleClick} />;
     };
-    return <UserCheckBox checked={isChecked} onChange={handelClick} />;
+
+    return <UserCheckBoxWithState />;
   },
 };
 
 export const Checked: Story = {
-  render: (args) => {
-    const [isChecked, setIsChecked] = useState(true);
-    const handelClick = () => {
-      setIsChecked(!isChecked);
+  render: () => {
+    const UserCheckBoxWithState = () => {
+      const [isChecked, setIsChecked] = useState(true);
+
+      const handleClick = () => {
+        setIsChecked(!isChecked);
+      };
+
+      return <UserCheckBox checked={isChecked} onChange={handleClick} />;
     };
-    return <UserCheckBox checked={isChecked} onChange={handelClick} />;
+
+    return <UserCheckBoxWithState />;
   },
 };
