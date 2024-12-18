@@ -2,51 +2,11 @@
 
 import { Button } from '@/components/atoms/Button';
 import SetAmount from '@/components/molecules/SetAmount';
-import { TransferForm, useTransferForm } from '@/contexts/TransferContext';
-import { MyAccount, OthersAccount } from '@/data/account';
+import { useTransferForm } from '@/contexts/TransferContext';
 import { bankList } from '@/data/bank';
-import { MyAccountWithBalance } from '@/data/transfer';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
-
-// export default function Step4() {
-//   const router = useRouter();
-//   const { formData, updateFormData } = useTransferForm();
-//   const handleNext = () => {
-//     router.push('/keyword/create/transfer/step5');
-//   };
-//   //TODO: 리팩토링 필요함
-//   return (
-//     <HowMuch
-//       fromAccount={formData.fromAccount}
-//       toAccount={formData.toAccount}
-//       formData={formData}
-//       onNext={handleNext}
-//       onUpdate={(data: WithAmountProps | WithoutAmountProps) =>
-//         updateFormData(data)
-//       }
-//     />
-//   );
-// }
-type WithAmountProps = {
-  checkEverytime: false;
-  amount: number;
-  type: 'WithAmount';
-};
-
-type WithoutAmountProps = {
-  checkEverytime: true;
-  type: 'WithoutAmount';
-};
-
-export type HowMuchProps = {
-  formData: TransferForm;
-  fromAccount: MyAccountWithBalance;
-  toAccount: MyAccount | OthersAccount;
-  onNext: () => void;
-  onUpdate: (data: WithAmountProps | WithoutAmountProps) => void;
-};
 
 export default function Step4() {
   const router = useRouter();
