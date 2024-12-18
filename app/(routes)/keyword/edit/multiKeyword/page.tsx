@@ -106,6 +106,7 @@ export default function EditMultiKeywordPage() {
   };
 
   const handleCloseModal = () => {
+    console.log('모달 닫기');
     setIsDrawerOpen(false);
   };
 
