@@ -1,8 +1,12 @@
 import ColorChip from '@/components/atoms/ColorChips';
-import { MultiTicket } from '@/data/multiKeyword';
+import { MultiTicketFinish } from '@/data/multiKeyword';
 import { IoIosArrowForward } from 'react-icons/io';
 
-export default function MultiKeywordTicket({ data }: { data: MultiTicket }) {
+export default function MultiKeywordTicket({
+  data,
+}: {
+  data: MultiTicketFinish;
+}) {
   return (
     <div className='flex flex-col gap-[11px]'>
       <div className='flex justify-between'>

@@ -107,6 +107,14 @@ const EditKeyword = ({ data, onEdit, onDelete }: EditKeywordProps) => {
             </span>
           </>
         );
+      case 'multiKeyword':
+        return (
+          <div className='flex flex-col text-[13px] font-semibold'>
+            {data.keywordList?.map((keyword) => {
+              return <span>{keyword.title}</span>;
+            })}
+          </div>
+        );
       default:
         return null;
     }
