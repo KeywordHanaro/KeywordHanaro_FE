@@ -101,6 +101,7 @@ export default function SelectBranch({
         }
       );
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   return (

@@ -17,7 +17,7 @@ const SpeechToText = ({
   const [transcript, setTranscript] = useState<string>('');
   const [isListening, setIsListening] = useState<boolean>(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  // const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const { setResult } = useVoiceInputSession();
   const setResultCallback = useCallback(
@@ -69,9 +69,9 @@ const SpeechToText = ({
       }
     }
 
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
+    // return () => {
+    //   if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    // };
   }, [handleRecognitionResult]);
 
   useEffect(() => {
@@ -104,10 +104,12 @@ const SpeechToText = ({
           console.error('Error stopping recognition:', error);
         }
       }
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
+      
+      // if (timeoutRef.current) {
+      //   clearTimeout(timeoutRef.current);
+      // }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoStart]);
 
   const toggleListening = useCallback(() => {

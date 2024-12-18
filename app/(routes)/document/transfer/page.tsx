@@ -62,6 +62,7 @@ export default function TransferDocumentPage() {
     }
     setActiveInput(null);
     resetResult();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   const handleInputFocus = (inputType: 'account' | 'amount') => {

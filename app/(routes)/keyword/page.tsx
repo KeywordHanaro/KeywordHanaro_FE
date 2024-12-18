@@ -41,6 +41,7 @@ export default function KeywordPage() {
       }
       resetResult();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   return (

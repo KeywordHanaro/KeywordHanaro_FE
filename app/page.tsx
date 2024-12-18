@@ -35,6 +35,7 @@ export default function Home() {
       }
       resetResult();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   return (

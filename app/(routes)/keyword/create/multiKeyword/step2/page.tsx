@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 
 export default function Step2() {
   // TODO: 키워드 순서 변경
-  const { formData, updateFormData } = useMultiKeywordForm();
+  const { formData } = useMultiKeywordForm();
 
   const router = useRouter();
 

@@ -32,6 +32,7 @@ const SetAmount = ({
       onChangeValidity(amountVal > 0);
       setResult('');
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   return (

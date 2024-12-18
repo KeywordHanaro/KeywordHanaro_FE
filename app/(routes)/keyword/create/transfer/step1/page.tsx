@@ -24,6 +24,7 @@ export default function Step1() {
       updateFormData({ fromAccount });
       nextStep();
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [updateFormData, nextStep]
   );
 
