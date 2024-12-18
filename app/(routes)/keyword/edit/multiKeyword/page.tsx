@@ -30,6 +30,7 @@ export default function EditMultiKeywordPage() {
   const [multiKeywordData, setMultiKeywordData] =
     useState<KeywordDetail | null>(null);
   const [items, setItems] = useState<number[]>([]);
+  console.log(items);
 
   const searchParams = useSearchParams();
 
