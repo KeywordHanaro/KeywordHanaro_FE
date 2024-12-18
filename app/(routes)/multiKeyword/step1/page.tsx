@@ -5,7 +5,6 @@ import InputPassword from '@/components/molecules/InputPassword';
 import KeywordWithInputs from '@/components/molecules/KeywordWithInputs';
 import TransactionList from '@/components/templates/useKeyword/inquiry/TransactionList';
 import {
-  useVoiceInputSession,
   VoiceInputProvider,
 } from '@/contexts/VoiceContext';
 import { KeywordDetail, KeywordDetailList } from '@/data/keyword';
@@ -135,7 +134,7 @@ const MultiKeyword = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   // 비밀번호
   const [open, setOpen] = useState<boolean>(false);
-  const { result, setResult } = useVoiceInputSession();
+  // const { result, setResult } = useVoiceInputSession();
   const router = useRouter();
   // 금액 변경 핸들러
   const handleAmountChange = (id: number, amount: number) => {

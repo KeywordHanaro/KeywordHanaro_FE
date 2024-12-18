@@ -67,9 +67,9 @@ const Keyword = ({
           <path
             d='M6.5 10H13.5'
             stroke='white'
-            stroke-width='1.5'
-            stroke-linecap='round'
-            stroke-linejoin='round'
+            strokeWidth='1.5'
+            strokeLinecap='round'
+            strokeLinejoin='round'
           />
         </svg>
       ) : (

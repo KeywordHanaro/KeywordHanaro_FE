@@ -73,6 +73,7 @@ const KeywordWithInputs = ({
         setIsFocused(false); 
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {

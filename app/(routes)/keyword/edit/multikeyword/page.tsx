@@ -51,6 +51,7 @@ export default function EditMultiKeywordPage() {
         setItems(foundKeyword.keywordList.map((item) => item.id));
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // seqOrder 업데이트 후 이동

@@ -111,7 +111,7 @@ const EditKeyword = ({ data, onEdit, onDelete }: EditKeywordProps) => {
         return (
           <div className='flex flex-col text-[13px] font-semibold'>
             {data.keywordList?.map((keyword) => {
-              return <span>{keyword.title}</span>;
+              return <span key={keyword.id}>{keyword.title}</span>;
             })}
           </div>
         );

@@ -48,6 +48,7 @@ export default function WithdrawalDocumentPage() {
         setIsValid(amountVal > 0 && myAccount !== undefined);
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   return (

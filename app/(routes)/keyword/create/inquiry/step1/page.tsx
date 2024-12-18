@@ -30,6 +30,7 @@ export default function Step1() {
       updateFormData({ account });
       nextStep();
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [updateFormData, nextStep]
   );
 
@@ -55,6 +56,7 @@ export default function Step1() {
         handleAccountClick(bestMatch);
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result, handleAccountClick]);
 
   return (

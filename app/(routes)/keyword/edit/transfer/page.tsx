@@ -225,8 +225,8 @@ export default function EditTransferKeyword() {
             <strong>송금 금액</strong>
             <SetAmount
               onChange={handleChange}
-              ref={amountRef}
-              value={amount}
+              amountRef={amountRef}
+              // value={amount}
               checkEverytime={checkEverytime}
               toggleCheckEverytime={toggleCheckEverytime}
               onChangeValidity={setIsValid}

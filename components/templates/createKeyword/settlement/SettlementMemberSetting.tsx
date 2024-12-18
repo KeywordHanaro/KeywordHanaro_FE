@@ -134,6 +134,7 @@ export default function SettlementMemberSetting({
 
       setResult('');
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   return (

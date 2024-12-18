@@ -18,7 +18,7 @@ export function AppSidebar() {
     await signOut({ callbackUrl: '/login' });
   };
   return (
-    <Sidebar side='right'>
+    <Sidebar className='' side='right'>
       <SidebarHeader>
         <SidebarGroup>
           <SidebarGroupLabel>사용자 정보</SidebarGroupLabel>

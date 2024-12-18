@@ -4,7 +4,6 @@ import SpeechToText from '@/components/SpeechToText';
 import Header from '@/components/atoms/Header';
 import KeywordInputButton from '@/components/templates/KeywordInputButton';
 import { useMultiKeywordForm } from '@/contexts/MultiKeywordContext';
-import { VoiceInputProvider } from '@/contexts/VoiceContext';
 import { useRouter } from 'next/navigation';
 
 export default function Step3() {
