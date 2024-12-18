@@ -107,6 +107,9 @@ export default function SettlementUsageStep1() {
       const amountVal = convertKorToNum(cleanedResult);
       if (amountRef.current) {
         amountRef.current.value = amountVal.toLocaleString();
+        updateFormData({
+          amount: amountRef.current?.value.toString() ?? '',
+        });
       }
       setValid(amountVal > 0);
       setResult('');
