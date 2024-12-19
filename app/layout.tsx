@@ -1,10 +1,10 @@
 import { Toaster } from '@/components/ui/toaster';
+import { VoiceInputProvider } from '@/contexts/VoiceContext';
 import { SessionProvider } from 'next-auth/react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { auth } from '@/lib/auth';
 import './globals.css';
-import { VoiceInputProvider } from '@/contexts/VoiceContext';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',

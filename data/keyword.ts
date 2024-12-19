@@ -187,7 +187,7 @@ export const keywordList: Keyword[] = [
     type: 'multiKeyword',
     title: '조합한 키워드',
     description: '성엽이 용돈 > 월급 확인 > 압구정 번호표 > 터틀넥즈 정산',
-    isFavorite: true,
+    isFavorite: false,
   },
 ];
 

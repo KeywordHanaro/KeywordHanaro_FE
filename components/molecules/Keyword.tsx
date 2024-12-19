@@ -16,6 +16,7 @@ type KeywordProps = {
   'data-keyword-id'?: string | number;
   canDelete?: boolean;
   onDelete?: (id: number) => void;
+  onFavoriteChange?: (id: number, isFavorite: boolean) => void;
 };
 
 const Keyword = ({
@@ -23,10 +24,17 @@ const Keyword = ({
   'data-keyword-id': dataKeywordId,
   canDelete,
   onDelete,
+  onFavoriteChange,
 }: KeywordProps) => {
   const router = useRouter();
   const chipColor = getColorByType(type);
   const chipName = getNameByType(type);
+
+  const handleFavorite = () => {
+    if (onFavoriteChange) {
+      onFavoriteChange(id, !isFavorite);
+    }
+  };
 
   return (
     <Card
@@ -78,6 +86,10 @@ const Keyword = ({
             'w-[27px] h-[27px]',
             isFavorite ? 'text-yellow-300' : 'text-[#D9D9D9]'
           )}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleFavorite();
+          }}
         />
       )}
     </Card>
