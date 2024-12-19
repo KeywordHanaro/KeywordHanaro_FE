@@ -35,9 +35,20 @@ jobs:
 
       - name: zip next
         working-directory: .
-        run: zip -rq next.zip .next
+        run: zip -rq ./KeywordHanaro_FE/next.zip .next
 
-      - name: scp next to was
+       - name: Verify next.zip exists
+        working-directory: .
+        run: ls -l ./KeywordHanaro_FE/next.zip
+
+      - name: Debug next.zip path
+        working-directory: .
+        run: |
+          echo "Looking for next.zip in:"
+          ls -l ./KeywordHanaro_FE/
+
+     - name: scp next to was
+        working-directory: .
         run: |
           scp ./KeywordHanaro_FE/next.zip ec2-user@${{ secrets.WAS }}:/home/ec2-user/workspace/
 
