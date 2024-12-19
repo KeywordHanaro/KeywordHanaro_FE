@@ -39,7 +39,7 @@ jobs:
 
       - name: scp next to was
         run: |
-          scp KeywordHanaro_FE/next.zip ec2-user@${{ secrets.WAS }}:/home/ec2-user/workspace/
+          scp ./KeywordHanaro_FE/next.zip ec2-user@${{ secrets.WAS }}:/home/ec2-user/workspace/
 
       - name: restart next
         run: |
