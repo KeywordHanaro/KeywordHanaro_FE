@@ -1,9 +1,13 @@
 'use client';
 
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { motion } from 'motion/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { ulVariants, liVariants } from '@/lib/motionVariable';
+import { levenshtein } from '@/lib/utils';
+import SpeechToText from '../SpeechToText';
 import { Card } from '../atoms/Card';
 
 const categories = [
@@ -37,7 +41,33 @@ const categories = [
 const KeywordCategory = () => {
   const router = useRouter();
 
+  const { result, resetResult } = useVoiceInputSession();
   const handleCategory = (path: string) => router.push(path);
+
+  useEffect(() => {
+    if (result) {
+      const threshold = 1; // 허용할 최대 편집 거리
+      let bestMatch = null;
+      let minDistance = Infinity;
+
+      for (const category of categories) {
+        const distance = levenshtein(
+          category.name.toLowerCase(),
+          result.toLowerCase()
+        );
+        if (distance < minDistance && distance <= threshold) {
+          minDistance = distance;
+          bestMatch = category;
+        }
+      }
+
+      if (bestMatch) {
+        resetResult();
+        handleCategory(bestMatch.path);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result]);
 
   return (
     <div className='flex flex-col gap-3 p-[8px]'>
@@ -85,6 +115,7 @@ const KeywordCategory = () => {
           </motion.li>
         ))}
       </motion.ul>
+      <SpeechToText autoStart />
     </div>
   );
 };
