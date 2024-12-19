@@ -22,19 +22,19 @@ jobs:
           node-version: 21
 
       - name: Install dependencies
-        working-directory: KeywordHanaro_FE
+        working-directory: .
         run: pnpm install
 
       - name: set .env
-        working-directory: KeywordHanaro_FE
+        working-directory: .
         run: echo "${{ secrets.ENV }}" > .env
 
       - name: Build with Next.js
-        working-directory: KeywordHanaro_FE
+        working-directory: .
         run: pnpm next build
 
       - name: zip next
-        working-directory: KeywordHanaro_FE
+        working-directory: .
         run: zip -rq next.zip .next
 
       - name: scp next to was
