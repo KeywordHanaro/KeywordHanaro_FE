@@ -112,21 +112,20 @@ export default function KeywordPage() {
               const data = keywords.find((el) => el.id === id);
               if (!data) return null;
               return (
-                <Reorder.Item
-                  key={id}
-                  value={id}
-                  drag='y'
-                  as='div'
-                  variants={liVariants}
-                  custom={index}
-                  initial={{ opacity: 1 }}
-                  data-keyword-id={id}
-                >
-                  <Keyword
-                    data={data}
-                    onFavoriteChange={handleFavoriteChange}
-                  />
-                </Reorder.Item>
+                <motion.li key={id} variants={liVariants} custom={index}>
+                  <Reorder.Item
+                    value={id}
+                    drag='y'
+                    as='div'
+                    initial={{ opacity: 1 }}
+                    data-keyword-id={id}
+                  >
+                    <Keyword
+                      data={data}
+                      onFavoriteChange={handleFavoriteChange}
+                    />
+                  </Reorder.Item>
+                </motion.li>
               );
             })}
           </Reorder.Group>
@@ -144,21 +143,25 @@ export default function KeywordPage() {
               const data = keywords.find((el) => el.id === id);
               if (!data) return null;
               return (
-                <Reorder.Item
+                <motion.li
                   key={id}
-                  value={id}
-                  drag='y'
-                  as='div'
                   variants={liVariants}
-                  custom={index}
-                  initial={{ opacity: 1 }}
-                  data-keyword-id={id}
+                  custom={favoriteItems.length + index}
                 >
-                  <Keyword
-                    data={data}
-                    onFavoriteChange={handleFavoriteChange}
-                  />
-                </Reorder.Item>
+                  <Reorder.Item
+                    key={id}
+                    value={id}
+                    drag='y'
+                    as='div'
+                    initial={{ opacity: 1 }}
+                    data-keyword-id={id}
+                  >
+                    <Keyword
+                      data={data}
+                      onFavoriteChange={handleFavoriteChange}
+                    />
+                  </Reorder.Item>
+                </motion.li>
               );
             })}
           </Reorder.Group>
