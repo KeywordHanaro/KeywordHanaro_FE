@@ -16,11 +16,6 @@ jobs:
           version: 9
           run_install: false
 
-      - name: setup pages
-        uses: actions/configure-pages@v5
-        with:
-          static_site_generator: next
-
       - name: Install Node
         uses: actions/setup-node@v4
         with:
