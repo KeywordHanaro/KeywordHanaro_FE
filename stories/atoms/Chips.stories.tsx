@@ -1,7 +1,10 @@
 import { Chip } from '@/components/atoms/Chips';
 import { Member } from '@/data/member';
 import { Meta, StoryObj } from '@storybook/react';
+import { ClassValue } from 'clsx';
 import { useState } from 'react';
+
+// ClassValue 가져오기
 
 const mockMember: Member = {
   id: 1,
@@ -15,6 +18,14 @@ const meta: Meta<typeof Chip> = {
 };
 
 export default meta;
+
+type ChipProps = {
+  item: Member;
+  canDelete?: boolean;
+  canAdd?: boolean;
+  className?: ClassValue;
+  onRemove?: (id: number) => void;
+};
 
 type Story = StoryObj<typeof Chip>;
 
@@ -31,24 +42,26 @@ export const Default: Story = {
   ),
 };
 
+const CanDeleteComponent = (args: ChipProps) => {
+  const [isShow, setIsShow] = useState(true);
+
+  const handleShow = () => {
+    setIsShow(!isShow);
+  };
+
+  return (
+    <div style={{ width: '80px', display: isShow ? 'block' : 'none' }}>
+      <Chip {...args} onRemove={handleShow} />
+    </div>
+  );
+};
+
 export const CanDelete: Story = {
   args: {
     item: mockMember,
     canDelete: true,
   },
-  render: (args) => {
-    const [isShow, setisShow] = useState(true);
-
-    const handelShow = () => {
-      setisShow(!isShow);
-    };
-
-    return (
-      <div style={{ width: '80px', display: isShow ? 'block' : 'none' }}>
-        <Chip {...args} onRemove={handelShow} />
-      </div>
-    );
-  },
+  render: (args) => <CanDeleteComponent {...args} />,
 };
 
 export const Deleted: Story = {

@@ -19,15 +19,19 @@ export const Default: Story = {
 
 export const Filled: Story = {
   render: (args) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+    const InputWithRef = () => {
+      const inputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
-      if (inputRef.current) {
-        inputRef.current.value = '남인우 용돈';
-        inputRef.current.focus();
-      }
-    }, []);
+      useEffect(() => {
+        if (inputRef.current) {
+          inputRef.current.value = '남인우 용돈';
+          inputRef.current.focus();
+        }
+      }, []);
 
-    return <KeywordInputRef ref={inputRef} {...args} />;
+      return <KeywordInputRef ref={inputRef} {...args} />;
+    };
+
+    return <InputWithRef />;
   },
 };

@@ -10,7 +10,6 @@ export default meta;
 
 type Story = StoryObj<typeof SpeechToText>;
 
-// 기본 상태
 export const Default: Story = {
   args: {
     autoStart: false,
@@ -18,7 +17,6 @@ export const Default: Story = {
   },
 };
 
-// 활성화 상태
 export const Active: Story = {
   args: {
     autoStart: true,

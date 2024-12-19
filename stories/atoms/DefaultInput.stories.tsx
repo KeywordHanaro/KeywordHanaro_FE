@@ -15,16 +15,20 @@ export const Default: Story = {};
 
 export const Focus: Story = {
   render: (args) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+    const InputWithFocus = () => {
+      const inputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
-      if (inputRef.current) {
-        inputRef.current.value = 'DefaultInput 포커스';
-        inputRef.current.focus();
-      }
-    }, []);
+      useEffect(() => {
+        if (inputRef.current) {
+          inputRef.current.value = 'DefaultInput 포커스';
+          inputRef.current.focus();
+        }
+      }, []);
 
-    return <DefaultInputRef ref={inputRef} {...args} />;
+      return <DefaultInputRef ref={inputRef} {...args} />;
+    };
+
+    return <InputWithFocus />;
   },
 };
 
@@ -34,16 +38,19 @@ export const Error: Story = {
     error: 'This field is required.',
   },
   render: (args) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+    const InputWithError = () => {
+      const inputRef = useRef<HTMLInputElement>(null);
 
-    // 포커스를 설정하는 함수
-    useEffect(() => {
-      if (inputRef.current) {
-        inputRef.current.focus();
-        inputRef.current.blur();
-      }
-    }, []);
+      useEffect(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+          inputRef.current.blur();
+        }
+      }, []);
 
-    return <DefaultInputRef ref={inputRef} {...args} />;
+      return <DefaultInputRef ref={inputRef} {...args} />;
+    };
+
+    return <InputWithError />;
   },
 };

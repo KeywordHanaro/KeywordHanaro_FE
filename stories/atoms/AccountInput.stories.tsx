@@ -17,19 +17,22 @@ export const Default: Story = {
   },
 };
 
+const FilledAccountInput: React.FC = (args) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.value = '987-654-321';
+      inputRef.current.focus();
+    }
+  }, []);
+
+  return <AccountInputRef ref={inputRef} {...args} />;
+};
+
 export const Filled: Story = {
-  render: (args) => {
-    const inputRef = useRef<HTMLInputElement>(null);
-
-    useEffect(() => {
-      if (inputRef.current) {
-        inputRef.current.value = '987-654-321';
-        inputRef.current.focus();
-      }
-    }, []);
-
-    return (
-      <AccountInputRef ref={inputRef} placeHolder='계좌번호 입력' {...args} />
-    );
+  args: {
+    placeHolder: '계좌번호 입력',
   },
+  render: (args) => <FilledAccountInput {...args} />,
 };

@@ -23,28 +23,32 @@ export const Filled: Story = {
   },
 
   render: (args) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+    const InputWithRef = () => {
+      const inputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
-      if (inputRef.current) {
-        inputRef.current.value = '적금 추천해줘';
-        inputRef.current.focus();
-      }
-    }, []);
+      useEffect(() => {
+        if (inputRef.current) {
+          inputRef.current.value = '적금 추천해줘';
+          inputRef.current.focus();
+        }
+      }, []);
 
-    const onSubmit = () => {
-      if (inputRef.current) {
-        alert(inputRef.current.value + '가 입력되었습니다.');
-      }
+      const onSubmit = () => {
+        if (inputRef.current) {
+          alert(inputRef.current.value + '가 입력되었습니다.');
+        }
+      };
+
+      return (
+        <AIInputRef
+          ref={inputRef}
+          {...args}
+          onSubmit={onSubmit}
+          formClassName={''}
+        />
+      );
     };
 
-    return (
-      <AIInputRef
-        ref={inputRef}
-        onSubmit={onSubmit}
-        isLoading={false}
-        formClassName={''}
-      />
-    );
+    return <InputWithRef />;
   },
 };

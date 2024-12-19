@@ -1,4 +1,3 @@
-// Header.stories.tsx
 import Header from '@/components/atoms/Header';
 import { Meta, StoryObj } from '@storybook/react';
 
