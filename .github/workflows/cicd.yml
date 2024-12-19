@@ -33,6 +33,20 @@ jobs:
         working-directory: .
         run: pnpm next build
 
+      - name: Check directories before zipping
+        working-directory: .
+        run: |
+          echo "Workspace contents:"
+          ls -l
+          echo "Checking .next directory:"
+          ls -l .next || echo ".next directory not found"
+          echo "Checking KeywordHanaro_FE directory:"
+          ls -l ./KeywordHanaro_FE || echo "KeywordHanaro_FE directory not found"
+
+      - name: Ensure output directory exists
+        working-directory: .
+        run: mkdir -p ./KeywordHanaro_FE
+
       - name: zip next
         working-directory: .
         run: zip -rq ./KeywordHanaro_FE/next.zip .next
