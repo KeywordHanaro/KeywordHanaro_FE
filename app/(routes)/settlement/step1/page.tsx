@@ -15,6 +15,10 @@ import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 export default function SettlementUsageStep1() {
+  const rest_api_key = 'cf0b7e3e3feae9d12f5e11d619ffda3a';
+  const redirect_uri = 'http://localhost:3000/settlement/kakao-login';
+  const kakao_auth_path = 'https://kauth.kakao.com/oauth/authorize';
+  
   const router = useRouter();
   const { formData, updateFormData } = useSettlementContext();
   const searchParams = useSearchParams();
@@ -55,7 +59,9 @@ export default function SettlementUsageStep1() {
   };
 
   const handleSubmit = () => {
-    router.push('/settlement/step2');
+    router.push(
+      `${kakao_auth_path}?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`
+    );
   };
 
   useEffect(() => {
