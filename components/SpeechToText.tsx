@@ -17,7 +17,7 @@ const SpeechToText = ({
   const [transcript, setTranscript] = useState<string>('');
   const [isListening, setIsListening] = useState<boolean>(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
-  // const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const synthRef = useRef<SpeechSynthesis | null>(null);
 
   const { setResult } = useVoiceInputSession();
   const setResultCallback = useCallback(
@@ -69,30 +69,19 @@ const SpeechToText = ({
       }
     }
 
-    // return () => {
-    //   if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    // };
+    // TTS 초기화
+    if (typeof window !== 'undefined' && !synthRef.current) {
+      synthRef.current = window.speechSynthesis;
+    }
   }, [handleRecognitionResult]);
 
   useEffect(() => {
     if (autoStart && !isListening && recognitionRef.current) {
       try {
-        setTranscript('');
-        setIsExpanded(true);
-        recognitionRef.current.start();
-        setIsListening(true);
+        // Placeholder를 TTS로 읽어주기
+        speakPlaceholder(placeholder);
       } catch (error) {
-        if (
-          error instanceof Error &&
-          error.message.includes('already started')
-        ) {
-          recognitionRef.current.stop();
-          setTimeout(() => {
-            recognitionRef.current?.start();
-          }, 100);
-        } else {
-          console.error('Speech recognition error:', error);
-        }
+        console.error('Error in auto start:', error);
       }
     }
 
@@ -104,13 +93,44 @@ const SpeechToText = ({
           console.error('Error stopping recognition:', error);
         }
       }
-      
-      // if (timeoutRef.current) {
-      //   clearTimeout(timeoutRef.current);
-      // }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoStart]);
+
+  const speakPlaceholder = useCallback((text: string) => {
+    setIsExpanded(true);
+    if (!synthRef.current) return;
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    utterance.lang = 'ko-KR';
+    const voices = window.speechSynthesis.getVoices();
+    const googleKoreanVoice = voices.find(
+      (voice) => voice.name === 'Google 한국의'
+    );
+
+    if (googleKoreanVoice) {
+      utterance.voice = googleKoreanVoice;
+    }
+
+    utterance.onend = () => {
+      startListening(); // TTS가 끝난 후 STT 시작
+    };
+
+    synthRef.current.speak(utterance);
+  }, []);
+
+  const startListening = () => {
+    if (recognitionRef.current) {
+      setTranscript('');
+
+      try {
+        recognitionRef.current.start();
+        setIsListening(true);
+      } catch (error) {
+        console.error('Error starting recognition:', error);
+      }
+    }
+  };
 
   const toggleListening = useCallback(() => {
     if (isListening) {
@@ -123,18 +143,10 @@ const SpeechToText = ({
         }
       }
     } else {
-      setTranscript('');
-      setIsExpanded(true);
-      if (recognitionRef.current) {
-        try {
-          recognitionRef.current.start();
-        } catch (error) {
-          console.error('Error starting recognition:', error);
-        }
-      }
+      speakPlaceholder(placeholder); // TTS로 placeholder 읽기
     }
     setIsListening((prev) => !prev);
-  }, [isListening]);
+  }, [speakPlaceholder, isListening, placeholder]);
 
   return (
     <div
