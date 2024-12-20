@@ -178,7 +178,7 @@ export default function SettlementUsageStep1() {
         )}
 
         <Button
-          isDisabled={!valid}
+          isDisabled={!valid || members.length === 0}
           className={cn('w-full mt-[18px]')}
           onClick={handleSubmit}
         >
