@@ -1,15 +1,23 @@
 'use client';
 
+import { DatePicker } from '@/components/atoms/DatePicker';
 import Header from '@/components/atoms/Header';
 import TransactionList from '@/components/templates/useKeyword/inquiry/TransactionList';
+import { DateRange } from 'react-day-picker';
 // import { InquiryList } from '@/data/inquiry';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function InquiryPage() {
   const router = useRouter();
+  const [range, setRange] = useState<DateRange | undefined>();
 
   const handleOnBack = () => {
     router.push('/keyword');
+  };
+
+  const handleApply = () => {
+    console.log('시작 날짜 : ' + range?.from + ', 끝 날짜 : ' + range?.to);
   };
 
   // const searchParams = useSearchParams();
@@ -43,6 +51,13 @@ export default function InquiryPage() {
           <br />
           검색한 결과예요
         </h1>
+        <div className='flex justify-between items-center'>
+          <DatePicker range={range} onChange={setRange} />
+          <p className='font-semibold cursor-pointer' onClick={handleApply}>
+            적용
+          </p>
+        </div>
+
         <TransactionList keyword={keyword} />
       </div>
     </div>
