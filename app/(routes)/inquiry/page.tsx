@@ -10,7 +10,15 @@ import { useState } from 'react';
 
 export default function InquiryPage() {
   const router = useRouter();
-  const [range, setRange] = useState<DateRange | undefined>();
+
+  const defaultStartDate = new Date();
+  defaultStartDate.setMonth(defaultStartDate.getMonth() - 3);
+  const defaultEndDate = new Date();
+
+  const [range, setRange] = useState<DateRange | undefined>({
+    from: defaultStartDate,
+    to: defaultEndDate,
+  });
 
   const handleOnBack = () => {
     router.push('/keyword');
@@ -19,13 +27,6 @@ export default function InquiryPage() {
   const handleApply = () => {
     console.log('시작 날짜 : ' + range?.from + ', 끝 날짜 : ' + range?.to);
   };
-
-  // const searchParams = useSearchParams();
-  // const id = searchParams.get('id');
-
-  // const keywordDetail = InquiryList.find(
-  //   (keyword) => keyword.id === Number(id)
-  // );
 
   const keyword = '월급';
 

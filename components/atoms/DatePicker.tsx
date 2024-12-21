@@ -45,7 +45,9 @@ export function DatePicker({ range, onChange }: DatePickerProps) {
         <Calendar
           mode='range'
           selected={range}
-          onSelect={onChange}
+          onSelect={(selectedRange) => {
+            onChange(selectedRange || undefined);
+          }}
           initialFocus
         />
       </PopoverContent>
