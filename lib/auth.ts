@@ -1,4 +1,5 @@
-import NextAuth, { User } from 'next-auth';
+// import NextAuth, { User } from 'next-auth';
+import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 
 export const {
@@ -9,7 +10,7 @@ export const {
 } = NextAuth({
   providers: [
     Credentials({
-      name: 'Id',
+      name: 'Credentials',
       credentials: {
         id: { label: 'Id', type: 'text' },
         passwd: { label: 'Password', type: 'password' },
@@ -17,16 +18,40 @@ export const {
       async authorize(credentials) {
         if (!credentials || !credentials.id || !credentials.passwd) return null;
 
-        console.log('🚀  credentials:', credentials);
-        const { id } = credentials;
-        const user = { email: id, name: 'TmpUser' } as User;
-        return user;
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/login`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              username: credentials.id,
+              password: credentials.passwd,
+            }),
+          }
+        );
+        const jwt = await response.headers.get("Authorization")
+        if (response.ok && jwt) {
+          return { jwt: jwt.split(' ')[1], username: credentials.id };
+        } else {
+          return null;
+        }
       },
     }),
   ],
+  session: {
+    strategy: 'jwt',
+  },
   callbacks: {
-    session({ session }) {
-      console.log('🚀 cb - session:', session.user);
+    async jwt({ token, user }) {
+      if (user) {
+        token.jwt = user.jwt;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user = { ...session.user, jwt: token.jwt as string };
       return session;
     },
   },
