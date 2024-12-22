@@ -11,7 +11,10 @@ export async function authenticate(
 ) {
   const id = formData.get('id');
   const passwd = formData.get('passwd');
-  if (!id || !passwd) return 'Input the ID or password!!';
+  
+  if (!id || !passwd) {
+    return 'Input the ID or password!!';
+  }
 
   try {
     //fetch로 로그인 확인하기
