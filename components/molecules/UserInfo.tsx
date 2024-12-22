@@ -21,8 +21,7 @@ export default function UserInfo() {
   }
   return (
     <div className=''>
-      <p className='text-lg'>아이디: {session.user?.email}</p>
-      <p className='text-lg'>이름: {session.user?.name}</p>
+      <p className='text-lg'>아이디: {session.user.id}</p>
     </div>
   );
 }

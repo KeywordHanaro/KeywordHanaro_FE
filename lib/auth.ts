@@ -31,9 +31,13 @@ export const {
             }),
           }
         );
-        const jwt = await response.headers.get("Authorization")
+        const jwt = await response.headers.get('Authorization');
         if (response.ok && jwt) {
-          return { jwt: jwt.split(' ')[1], username: credentials.id };
+          return {
+            jwt: jwt.split(' ')[1],
+            id: credentials.id,
+            name: credentials.id
+          };
         } else {
           return null;
         }
@@ -47,11 +51,16 @@ export const {
     async jwt({ token, user }) {
       if (user) {
         token.jwt = user.jwt;
+        token.id = user.id;
       }
       return token;
     },
     async session({ session, token }) {
-      session.user = { ...session.user, jwt: token.jwt as string };
+      session.user = {
+        ...session.user,
+        jwt: token.jwt as string,
+        id: token.id as string,
+      };
       return session;
     },
   },
