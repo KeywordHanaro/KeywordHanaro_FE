@@ -1,23 +1,32 @@
 'use client';
 
+import { DatePicker } from '@/components/atoms/DatePicker';
 import Header from '@/components/atoms/Header';
 import TransactionList from '@/components/templates/useKeyword/inquiry/TransactionList';
+import { DateRange } from 'react-day-picker';
 // import { InquiryList } from '@/data/inquiry';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function InquiryPage() {
   const router = useRouter();
+
+  const defaultStartDate = new Date();
+  defaultStartDate.setMonth(defaultStartDate.getMonth() - 3);
+  const defaultEndDate = new Date();
+
+  const [range, setRange] = useState<DateRange | undefined>({
+    from: defaultStartDate,
+    to: defaultEndDate,
+  });
 
   const handleOnBack = () => {
     router.push('/keyword');
   };
 
-  // const searchParams = useSearchParams();
-  // const id = searchParams.get('id');
-
-  // const keywordDetail = InquiryList.find(
-  //   (keyword) => keyword.id === Number(id)
-  // );
+  const handleApply = () => {
+    console.log('시작 날짜 : ' + range?.from + ', 끝 날짜 : ' + range?.to);
+  };
 
   const keyword = '월급';
 
@@ -43,6 +52,13 @@ export default function InquiryPage() {
           <br />
           검색한 결과예요
         </h1>
+        <div className='flex justify-between items-center'>
+          <DatePicker range={range} onChange={setRange} />
+          <p className='font-semibold cursor-pointer' onClick={handleApply}>
+            적용
+          </p>
+        </div>
+
         <TransactionList keyword={keyword} />
       </div>
     </div>
