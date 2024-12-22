@@ -35,8 +35,8 @@ export const {
         if (response.ok && jwt) {
           return {
             jwt: jwt.split(' ')[1],
-            id: credentials.id,
-            name: credentials.id
+            id: String(credentials.id),
+            name: String(credentials.id)
           };
         } else {
           return null;
