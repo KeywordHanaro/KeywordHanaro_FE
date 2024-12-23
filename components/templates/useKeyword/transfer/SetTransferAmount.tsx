@@ -2,11 +2,11 @@ import SpeechToText from '@/components/SpeechToText';
 import { Button } from '@/components/atoms/Button';
 import { MoneyInputRef } from '@/components/atoms/Inputs';
 import InputPassword from '@/components/molecules/InputPassword';
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { TransferProps } from '@/data/transfer';
+import { convertKorToNum } from 'korean-number-converter';
 import { useState, useEffect, forwardRef } from 'react';
 import { formatNumberWithCommas } from '@/lib/utils';
-import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { convertKorToNum } from 'korean-number-converter';
 
 export type SetTransferAmountProps = {
   data: TransferProps;
@@ -67,19 +67,18 @@ export const SetTransferAmount = forwardRef<
   };
 
   const { result, setResult } = useVoiceInputSession();
-    useEffect(() => {
-      if (result) {
-        const cleanedResult = result.replace(/[\s-]/g, '');
-        const amountVal = convertKorToNum(cleanedResult);
-        if (ref && 'current' in ref && ref.current) {
-          ref.current.value = amountVal.toLocaleString();
-        }
-        setValid(amountVal > 0);
-        setResult('');
+  useEffect(() => {
+    if (result) {
+      const cleanedResult = result.replace(/[\s-]/g, '');
+      const amountVal = convertKorToNum(cleanedResult);
+      if (ref && 'current' in ref && ref.current) {
+        ref.current.value = amountVal.toLocaleString();
       }
+      setValid(amountVal > 0);
+      setResult('');
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [result, setResult]);
-  
+  }, [result, setResult]);
 
   return (
     <div className='flex flex-col justify-between p-[20px] w-full h-full '>
@@ -138,7 +137,7 @@ export const SetTransferAmount = forwardRef<
         )}
       </div>
 
-      <SpeechToText />
+      <SpeechToText autoStart placeholder='얼마를 요청할까요' />
     </div>
   );
 });

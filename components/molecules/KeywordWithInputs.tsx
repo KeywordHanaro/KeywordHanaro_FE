@@ -70,10 +70,10 @@ const KeywordWithInputs = ({
       if (amountVal) {
         amountRef.current.value = amountVal.toLocaleString();
         onInputChange(keyword.id, Number(amountVal));
-        setIsFocused(false); 
+        setIsFocused(false);
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -173,7 +173,16 @@ const KeywordWithInputs = ({
           </div>
         ))}
       </Modal>
-      {isFocused && <SpeechToText autoStart />}
+      {isFocused && (
+        <SpeechToText
+          autoStart
+          placeholder={
+            keyword.type === 'transfer'
+              ? '얼마를 송금할까요?'
+              : '얼마를 요청할까요?'
+          }
+        />
+      )}
     </Card>
   );
 };

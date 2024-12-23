@@ -247,15 +247,17 @@ const MultiKeyword = () => {
         {/* 키워드 리스트 */}
         <div className='flex flex-col gap-3 pb-10'>
           <VoiceInputProvider>
-            {multikeywordDetail?.map((keyword) => (
-              <KeywordWithInputs
-                keyword={keyword}
-                key={keyword.id}
-                onInputChange={handleAmountChange}
-                onMemberListChange={handleMemberListChange}
-                onTicketServiceChange={handleTicketServiceChange}
-              ></KeywordWithInputs>
-            ))}
+            {multikeywordDetail?.map((keyword) =>
+              keyword.type !== 'inquiry' ? (
+                <KeywordWithInputs
+                  keyword={keyword}
+                  key={keyword.id}
+                  onInputChange={handleAmountChange}
+                  onMemberListChange={handleMemberListChange}
+                  onTicketServiceChange={handleTicketServiceChange}
+                ></KeywordWithInputs>
+              ) : null
+            )}
           </VoiceInputProvider>
         </div>
         <div className='absolute bottom-0 '>

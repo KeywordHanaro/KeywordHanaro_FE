@@ -132,7 +132,7 @@ export default function SelectKeywords({
           />
         ))}
       </div>
-      <SpeechToText />
+      <SpeechToText autoStart placeholder='조합할 키워드를 설정해주세요' />
     </div>
   );
 }
