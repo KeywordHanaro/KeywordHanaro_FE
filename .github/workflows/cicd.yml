@@ -1,10 +1,48 @@
 name: KeywordHanaro FE CI/CD
 on:
+  pull_request:
+    branches: [develop]
   push:
     branches: [develop]
 
 jobs:
-  build:
+  test-build:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: setup node pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21
+
+      - name: Install dependencies
+        working-directory: .
+        run: pnpm install
+
+      - name: set .env
+        working-directory: .
+        run: echo "${{ secrets.ENV }}" > .env
+
+      - name: Set next-auth.d.ts
+        working-directory: .
+        run: |
+          echo "${{ secrets.NEXT_AUTH_D_TS }}" > next-auth.d.ts
+
+      - name: Build with Next.js
+        working-directory: .
+        run: pnpm next build
+
+  deploy:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
 
     steps:
