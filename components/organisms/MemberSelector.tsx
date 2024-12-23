@@ -34,10 +34,11 @@ const MemberSelector: React.FC<MemberSelectorProps> = ({
     const addedMember = excludedMembers.find((member) => member.id === id);
 
     if (addedMember) {
-      setMembers((prev) => [...prev, addedMember]);
+      const newMembers = [...members, addedMember];
+      setMembers(newMembers);
+      onUpdate(newMembers);
     }
     setExcludedMembers(updatedExcludedMembers);
-    onUpdate(members);
   };
 
   return (
