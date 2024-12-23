@@ -8,13 +8,6 @@ import { UseKeywordTransfer } from '@/data/transfer';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
-const formatNumberWithCommas = (inputValue: string): string => {
-  if (!inputValue) return '';
-  const numericValue = inputValue.replace(/[^0-9]/g, '');
-  const parsedValue = numericValue ? parseInt(numericValue, 10) : 0;
-  return new Intl.NumberFormat('ko-KR').format(parsedValue);
-};
-
 export default function SetTransferAmountPage() {
   const { formData, saveFormData } = useTransferUseSession();
 
@@ -22,7 +15,7 @@ export default function SetTransferAmountPage() {
   const initialData = UseKeywordTransfer[0];
 
   useEffect(() => {
-    saveFormData({ ...initialData, transferAmount: '' });
+    saveFormData({ ...initialData });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -32,13 +25,18 @@ export default function SetTransferAmountPage() {
 
   const onNext = () => {
     saveFormData(
-      formData.type === 'WithoutAmount'
-        ? { ...formData, transferAmount: amountRef.current?.value || '' }
-        : {
-            ...formData,
-            transferAmount: formatNumberWithCommas(formData.amount.toString()),
-          }
+      formData.type === 'WithAmount'
+        ? { ...formData, amount: Number(amountRef.current?.value) }
+        : { ...formData }
     );
+    // saveFormData(
+    //   formData.type === 'WithoutAmount'
+    //     ? { ...formData, transferAmount: amountRef.current?.value || '' }
+    //     : {
+    //         ...formData,
+    //         transferAmount: formatNumberWithCommas(formData.amount.toString()),
+    //       }
+    // );
     router.push('/transfer/step2');
   };
 
