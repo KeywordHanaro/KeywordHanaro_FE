@@ -1,7 +1,6 @@
 import { useSettlementContext } from '@/contexts/SettlementContext';
 import { usePathname, useRouter } from 'next/navigation';
 import { PropsWithChildren } from 'react';
-import SpeechToText from '../SpeechToText';
 import Header from '../atoms/Header';
 
 const steps = ['/step1', '/step2', '/step3', '/step4', '/step5'];
@@ -50,9 +49,9 @@ export default function SettlementLayout({ children }: PropsWithChildren) {
         {children}
 
         {/* 마지막 페이지에서 Mic 안나오게 */}
-        {!pathname.startsWith('/keyword/create/settlement/step5') && (
+        {/* {!pathname.startsWith('/keyword/create/settlement/step5') && (
           <SpeechToText />
-        )}
+        )} */}
       </div>
     </div>
   );
