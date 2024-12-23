@@ -6,8 +6,8 @@ import { KeywordInputRef } from '@/components/atoms/Inputs';
 import BankInfoItem from '@/components/molecules/BankInfoItem';
 import SelectBranch from '@/components/templates/createKeyword/ticket/SelectBranch';
 import { useTicket } from '@/contexts/TicketContext';
-import { Branch } from '@/data/bank';
 import { ticketKeyword } from '@/data/ticket';
+import { TBranch } from '@/types/Branch';
 import { useRouter } from 'next/navigation';
 import {
   ChangeEvent,
@@ -23,7 +23,7 @@ export default function EditTicketKeywordPage() {
   // const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
   const { setSelectedBranch, setKeywordName, keywordName, selectedBranch } =
     useTicket();
-  const [branch, setBranch] = useState<Branch | null>(null);
+  const [branch, setBranch] = useState<TBranch | null>(null);
   const [keyword, setKeyword] = useState<string | null>(null);
   useEffect(() => {
     setBranch(ticketKeyword[0].branch);
@@ -33,7 +33,7 @@ export default function EditTicketKeywordPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSetBranch = (branch: Branch) => {
+  const handleSetBranch = (branch: TBranch) => {
     setSelectedBranch(branch);
     // router.push('/keyword/create/ticket/step3');
   };
@@ -57,9 +57,8 @@ export default function EditTicketKeywordPage() {
 
   const isBtnDisabled = useMemo(() => {
     const isDataChanged =
-      selectedBranch?.branchId !== branch?.branchId || keywordName !== keyword;
-    const isValid =
-      !!selectedBranch?.branchId && (keywordName?.length ?? 0 > 0);
+      selectedBranch?.id !== branch?.id || keywordName !== keyword;
+    const isValid = !!selectedBranch?.id && (keywordName?.length ?? 0 > 0);
 
     return !(isDataChanged && isValid);
   }, [selectedBranch, keywordName, branch, keyword]);
