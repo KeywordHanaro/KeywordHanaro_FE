@@ -118,9 +118,9 @@ export default function KeywordPage() {
                     drag='y'
                     as='div'
                     initial={{ opacity: 1 }}
-                    data-keyword-id={id}
                   >
                     <Keyword
+                      data-keyword-id={id}
                       data={data}
                       onFavoriteChange={handleFavoriteChange}
                     />
@@ -154,9 +154,9 @@ export default function KeywordPage() {
                     drag='y'
                     as='div'
                     initial={{ opacity: 1 }}
-                    data-keyword-id={id}
                   >
                     <Keyword
+                      data-keyword-id={id}
                       data={data}
                       onFavoriteChange={handleFavoriteChange}
                     />
