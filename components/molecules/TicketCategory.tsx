@@ -1,43 +1,46 @@
 'use client';
 
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
+import { ticketTasks } from '@/data/ticket';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { findTicketTask } from '@/lib/utils';
+import SpeechToText from '../SpeechToText';
 import { Card } from '../atoms/Card';
-
-const categories = [
-  {
-    name: '예금',
-    description: '(송금, 입금, 출금, 예적금 등)',
-    path: '/ticket/detail?task=예금',
-    src: '/images/icons/deposit.png',
-  },
-  {
-    name: '개인 대출',
-    description: '',
-    path: '/ticket/detail?task=개인 대출',
-    src: '/images/icons/personalLoan.png',
-  },
-  {
-    name: '기업 대출',
-    description: '',
-    path: '/ticket/detail?task=기업 대출',
-    src: '/images/icons/corporateLoan.png',
-  },
-];
 
 export default function TicketCategory() {
   const router = useRouter();
 
   const handleCategory = (path: string) => router.push(path);
 
+  const { result, resetResult } = useVoiceInputSession();
+
+  useEffect(() => {
+    if (result) {
+      const similarKeywords = findTicketTask(ticketTasks, result);
+      if (similarKeywords.length > 0) {
+        const keywordElement = document.querySelector(
+          `[data-keyword-id="${similarKeywords[0].name}"]`
+        );
+        if (keywordElement) {
+          (keywordElement as HTMLElement).click();
+        }
+      }
+      resetResult();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result]);
+
   return (
     <div className='flex flex-col gap-3 p-[8px]'>
-      {categories.map((category) => (
+      {ticketTasks.map((category) => (
         <Card
           key={category.name}
           onClick={() => handleCategory(category.path)}
           padding='p-[25px]'
           className='hover:bg-hanaPrimary hover:text-white'
+          data-keyword-id={category.name}
         >
           <div className='flex flex-row gap-5 items-center'>
             <Image
@@ -54,6 +57,7 @@ export default function TicketCategory() {
           </div>
         </Card>
       ))}
+      <SpeechToText autoStart placeholder='업무를 선택해주세요' />
     </div>
   );
 }

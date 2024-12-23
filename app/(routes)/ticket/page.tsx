@@ -1,6 +1,7 @@
 import Header from '@/components/atoms/Header';
 // import BankInfoItem from '@/components/molecules/BankInfoItem';
 import TicketCategory from '@/components/molecules/TicketCategory';
+import { VoiceInputProvider } from '@/contexts/VoiceContext';
 
 // import { branchList } from '@/data/bank';
 
@@ -15,7 +16,9 @@ export default function TicketPage() {
             어떤 업무를 보시겠어요?{' '}
           </h1>
           {/* <BankInfoItem data={branchList[0]} /> */}
-          <TicketCategory />
+          <VoiceInputProvider>
+            <TicketCategory />
+          </VoiceInputProvider>
         </div>
       </div>
     </>

@@ -1,5 +1,6 @@
 import { bankList } from '@/data/bank';
 import { Keyword } from '@/data/keyword';
+import { TicketTask } from '@/data/ticket';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -192,6 +193,34 @@ export const findSimilarKeywords = (
       const distance = levenshtein(inputSubset, keyword.title.toLowerCase());
       const similarity =
         1 - distance / Math.max(inputSubset.length, keyword.title.length);
+
+      if (similarity >= threshold) {
+        similarKeywords.push(keyword);
+        break;
+      }
+    }
+  });
+
+  return similarKeywords;
+};
+
+export const findTicketTask = (
+  keywordList: TicketTask[],
+  input: string,
+  threshold: number = 0.3
+) => {
+  const inputWords = input.toLowerCase().split(' ');
+  const similarKeywords: typeof keywordList = [];
+
+  keywordList.forEach((keyword) => {
+    const keywordWords = keyword.name.toLowerCase().split(' ');
+    const keywordLength = keywordWords.length;
+
+    for (let i = 0; i <= inputWords.length - keywordLength; i++) {
+      const inputSubset = inputWords.slice(i, i + keywordLength).join(' ');
+      const distance = levenshtein(inputSubset, keyword.name.toLowerCase());
+      const similarity =
+        1 - distance / Math.max(inputSubset.length, keyword.name.length);
 
       if (similarity >= threshold) {
         similarKeywords.push(keyword);
