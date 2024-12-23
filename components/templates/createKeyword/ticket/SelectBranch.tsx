@@ -5,67 +5,47 @@ import { SearchInpuRef } from '@/components/atoms/Inputs';
 import BankInfoItem from '@/components/molecules/BankInfoItem';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { Branch } from '@/data/bank';
+import { useBranchApi } from '@/hooks/useBranch/useBranch';
+import { TBranch } from '@/types/Branch';
 import { useEffect, useRef, useState } from 'react';
 
 export default function SelectBranch({
   handleSetBranch,
 }: {
-  handleSetBranch: (data: Branch) => void;
+  handleSetBranch: (data: TBranch) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [branches, setBranches] = useState<Branch[]>([]);
+  const [branches, setBranches] = useState<TBranch[]>([]);
   // const [searchQuery, setSearchQuery] = useState('');
   const { result, setResult } = useVoiceInputSession();
   // console.log(searchQuery);
+  const { getBranchList } = useBranchApi();
 
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          fetchNearbyBranches(
-            position.coords.latitude,
-            position.coords.longitude
-          );
-        },
-        (error) => {
-          console.error('Error getting current position:', error);
-        }
-      );
+      navigator.geolocation.getCurrentPosition((position) => {
+        getBranchList(position.coords.longitude, position.coords.latitude).then(
+          (response) => {
+            setBranches(response);
+          }
+        );
+      });
     } else {
       console.error('Geolocation is not supported by this browser.');
     }
   }, []);
 
-  const fetchNearbyBranches = async (
-    lat: number,
-    lng: number,
-    query?: string
-  ) => {
-    try {
-      const response = await fetch(
-        `/api/branches/nearby?lat=${lat}&lng=${lng}${query ? `&query=${query}` : ''}`
-      );
-      if (!response.ok) {
-        throw new Error('Failed to fetch nearby branches');
-      }
-      const data = await response.json();
-      setBranches(data);
-    } catch (error) {
-      console.error('Error fetching nearby branches:', error);
-    }
-  };
-
   const handleSearch = () => {
     if (inputRef?.current?.value) {
-      // setSearchQuery(inputRef.current.value);
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          fetchNearbyBranches(
-            position.coords.latitude,
+          getBranchList(
             position.coords.longitude,
-            inputRef.current?.value
-          );
+            position.coords.latitude,
+            inputRef?.current?.value
+          ).then((response) => {
+            setBranches(response);
+          });
         },
         (error) => {
           console.error('Error getting current position:', error);
@@ -74,7 +54,7 @@ export default function SelectBranch({
     }
   };
 
-  const handleClick = (branch: Branch) => {
+  const handleClick = (branch: TBranch) => {
     handleSetBranch(branch);
     if (inputRef.current) {
       inputRef.current.value = '';
@@ -83,16 +63,15 @@ export default function SelectBranch({
 
   useEffect(() => {
     if (result) {
-      // setSearchQuery(result);
       if (inputRef.current) {
         inputRef.current.value = result;
       }
       setResult('');
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          fetchNearbyBranches(
-            position.coords.latitude,
+          getBranchList(
             position.coords.longitude,
+            position.coords.latitude,
             result
           );
         },
@@ -101,7 +80,7 @@ export default function SelectBranch({
         }
       );
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   return (
@@ -123,7 +102,7 @@ export default function SelectBranch({
           <>
             {branches.map((branch) => (
               <div
-                key={branch.branchId}
+                key={branch.id}
                 className='border-b border-[#DFE2E6] pt-[10px] pb-[16px]'
                 onClick={() => handleClick(branch)}
               >

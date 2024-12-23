@@ -1,12 +1,12 @@
-import { Branch } from '@/data/bank';
+import { TBranch } from '@/types/Branch';
 import { BankLogoImg } from '../atoms/BankLogoImg';
 
 type BranchInfoItemProps = {
-  data: Branch;
+  data: TBranch;
 };
 
 export default function BankInfoItem({
-  data: { branchName, distance, address, contact, businessHours },
+  data: { distance, phone, placeName, addressName },
 }: BranchInfoItemProps) {
   return (
     <div className='flex gap-3 p-1 w-full '>
@@ -15,17 +15,17 @@ export default function BankInfoItem({
       </div>
       <div className='flex flex-col gap-1 pt-1'>
         <div className='flex gap-2 items-center'>
-          <span className='font-extrabold text-[16px]'>{branchName}</span>
+          <span className='font-extrabold text-[16px]'>{placeName}</span>
           <span className='font-semibold text-hanaPrimary text-[13px]'>
             {distance}m
           </span>
         </div>
         <div className='flex flex-col font-light text-slate-600 text-[13px]'>
-          <div>{address}</div>
+          <div>{addressName}</div>
           <div>
-            <span>{contact}</span>
+            <span>{phone}</span>
             <span className='text-lg'> | </span>
-            <span>{businessHours}</span>
+            <span>09:00 ~ 16:00</span>
           </div>
         </div>
       </div>
