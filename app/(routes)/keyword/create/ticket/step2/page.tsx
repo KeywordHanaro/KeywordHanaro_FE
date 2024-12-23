@@ -2,8 +2,7 @@
 
 import SelectBranch from '@/components/templates/createKeyword/ticket/SelectBranch';
 import { useTicket } from '@/contexts/TicketContext';
-import { TBranch } from '@/types/Branch';
-
+import { TBranch } from '@/types/Bank';
 import { useRouter } from 'next/navigation';
 
 export default function CreateTicketStep2Page() {

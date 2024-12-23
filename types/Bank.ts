@@ -5,3 +5,8 @@ export type TBranch = {
   phone: string;
   placeName: string;
 };
+
+export type Bank = {
+  id: number;
+  name: string;
+};

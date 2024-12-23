@@ -7,7 +7,7 @@ import BankInfoItem from '@/components/molecules/BankInfoItem';
 import SelectBranch from '@/components/templates/createKeyword/ticket/SelectBranch';
 import { useTicket } from '@/contexts/TicketContext';
 import { ticketKeyword } from '@/data/ticket';
-import { TBranch } from '@/types/Branch';
+import { TBranch } from '@/types/Bank';
 import { useRouter } from 'next/navigation';
 import {
   ChangeEvent,

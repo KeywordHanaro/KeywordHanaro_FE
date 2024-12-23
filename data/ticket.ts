@@ -1,4 +1,4 @@
-import { TBranch } from '@/types/Branch';
+import { TBranch } from '@/types/Bank';
 
 export type TicketProps = {
   branch: TBranch | null;

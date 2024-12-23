@@ -2,11 +2,13 @@ import SpeechToText from '@/components/SpeechToText';
 import { Button } from '@/components/atoms/Button';
 import { MoneyInputRef } from '@/components/atoms/Inputs';
 import InputPassword from '@/components/molecules/InputPassword';
+import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { TransferProps } from '@/data/transfer';
+import { useAccountApi } from '@/hooks/useAccount/useAccount';
+import { pswdReq } from '@/types/Account';
+import { convertKorToNum } from 'korean-number-converter';
 import { useState, useEffect, forwardRef } from 'react';
 import { formatNumberWithCommas } from '@/lib/utils';
-import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { convertKorToNum } from 'korean-number-converter';
 
 export type SetTransferAmountProps = {
   data: TransferProps;
@@ -20,6 +22,7 @@ export const SetTransferAmount = forwardRef<
   const [open, setOpen] = useState<boolean>(false);
   const [verified, setVerified] = useState<boolean>(false);
   const [valid, setValid] = useState<boolean>(false);
+  const { checkPswd } = useAccountApi();
   //[new]
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,18 +37,11 @@ export const SetTransferAmount = forwardRef<
   };
 
   const validatePassword = async (password: number[]): Promise<boolean> => {
-    try {
-      const response = await fetch('/api/validate-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
-      });
-      const data = await response.json();
-      return data.isValid; // Assume API returns { isValid: boolean }
-    } catch (error) {
-      console.error('Error validating password:', error);
-      return false; // Default to invalid on error
-    }
+    const form: pswdReq = {
+      accountNumber: data.fromAccount.accountNumber,
+      password: password.flat().join(''),
+    };
+    return checkPswd(form);
   };
 
   useEffect(() => {
@@ -67,19 +63,18 @@ export const SetTransferAmount = forwardRef<
   };
 
   const { result, setResult } = useVoiceInputSession();
-    useEffect(() => {
-      if (result) {
-        const cleanedResult = result.replace(/[\s-]/g, '');
-        const amountVal = convertKorToNum(cleanedResult);
-        if (ref && 'current' in ref && ref.current) {
-          ref.current.value = amountVal.toLocaleString();
-        }
-        setValid(amountVal > 0);
-        setResult('');
+  useEffect(() => {
+    if (result) {
+      const cleanedResult = result.replace(/[\s-]/g, '');
+      const amountVal = convertKorToNum(cleanedResult);
+      if (ref && 'current' in ref && ref.current) {
+        ref.current.value = amountVal.toLocaleString();
       }
+      setValid(amountVal > 0);
+      setResult('');
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [result, setResult]);
-  
+  }, [result, setResult]);
 
   return (
     <div className='flex flex-col justify-between p-[20px] w-full h-full '>
