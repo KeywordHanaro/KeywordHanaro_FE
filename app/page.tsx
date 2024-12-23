@@ -9,6 +9,7 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import { Toggle } from '@/components/ui/toggle';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { keywordList } from '@/data/keyword';
+import { useApi } from '@/hooks/useApi';
 import { motion } from 'motion/react';
 // import { signOut } from 'next-auth/react';
 import { SlArrowRight } from 'react-icons/sl';
@@ -17,6 +18,21 @@ import { ulVariants, liVariants } from '@/lib/motionVariable';
 import { findSimilarKeywords } from '@/lib/utils';
 
 export default function Home() {
+  const { fetchApi } = useApi();
+
+  const fetchData = async () => {
+    try {
+      const data = await fetchApi('/account/myaccounts');
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const { result, resetResult } = useVoiceInputSession();
 
   useEffect(() => {
@@ -35,7 +51,7 @@ export default function Home() {
       }
       resetResult();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   return (
