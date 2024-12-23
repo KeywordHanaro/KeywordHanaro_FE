@@ -1,6 +1,5 @@
 'use client';
 
-import SpeechToText from '@/components/SpeechToText';
 import Header from '@/components/atoms/Header';
 import { InquiryProvider } from '@/contexts/InquiryContext';
 import { VoiceInputProvider } from '@/contexts/VoiceContext';
@@ -40,7 +39,7 @@ export default function InquiryLayout({ children }: { children: ReactNode }) {
           )}
 
           <div className='px-[20px] mt-[24px]'>{children}</div>
-          {!pathname.includes('step4') && <SpeechToText />}
+          {/* {!pathname.includes('step4') && <SpeechToText />} */}
         </div>
       </InquiryProvider>
     </VoiceInputProvider>
