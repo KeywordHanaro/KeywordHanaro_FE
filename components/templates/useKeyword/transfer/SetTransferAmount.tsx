@@ -133,7 +133,7 @@ export const SetTransferAmount = forwardRef<
         )}
       </div>
 
-      <SpeechToText />
+      <SpeechToText autoStart placeholder='얼마를 요청할까요' />
     </div>
   );
 });

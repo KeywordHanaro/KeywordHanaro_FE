@@ -184,7 +184,9 @@ export default function SettlementUsageStep1() {
         >
           다음
         </Button>
-        {keyword?.type === 'settlement' && <SpeechToText />}
+        {keyword?.type === 'settlement' && (
+          <SpeechToText autoStart placeholder='얼마를 요청할까요?' />
+        )}
       </div>
     </Suspense>
   );

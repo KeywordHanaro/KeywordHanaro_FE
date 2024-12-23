@@ -1,7 +1,9 @@
 'use client';
 
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
+import { AnimatePresence, motion } from 'motion/react';
 import { FaMicrophone } from 'react-icons/fa';
+import Image from 'next/image';
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 interface SpeechToTextProps {
@@ -40,6 +42,7 @@ const SpeechToText = ({
       ) {
         recognitionRef.current.stop();
         setResultCallback(currentTranscript);
+        setTranscript('');
         setIsExpanded(false);
         setIsListening(false);
       }
@@ -113,6 +116,7 @@ const SpeechToText = ({
     }
 
     utterance.onend = () => {
+      setIsListening((prev) => !prev);
       startListening(); // TTS가 끝난 후 STT 시작
     };
 
@@ -135,6 +139,7 @@ const SpeechToText = ({
   const toggleListening = useCallback(() => {
     if (isListening) {
       setIsExpanded(false);
+      setIsListening((prev) => !prev);
       if (recognitionRef.current) {
         try {
           recognitionRef.current.stop();
@@ -145,7 +150,6 @@ const SpeechToText = ({
     } else {
       speakPlaceholder(placeholder); // TTS로 placeholder 읽기
     }
-    setIsListening((prev) => !prev);
   }, [speakPlaceholder, isListening, placeholder]);
 
   return (
@@ -164,7 +168,44 @@ const SpeechToText = ({
         onClick={toggleListening}
         tabIndex={-1}
       >
-        <FaMicrophone className='text-hanaPrimary w-[41.3px] h-[41.3px]' />
+        <AnimatePresence mode='wait'>
+          <motion.div
+            key={isListening ? 'microphone' : 'chatbot'}
+            initial={{ rotateY: -90 }}
+            animate={{ rotateY: 0 }}
+            exit={{ rotateY: 90 }}
+            transition={{
+              duration: 0.2,
+              type: 'keyframes',
+              stiffness: 150,
+            }}
+            style={{ transformStyle: 'preserve-3d' }}
+          >
+            {isListening ? (
+              <motion.div
+                animate={{
+                  scale: [1, 1, 1, 1, 1],
+                  rotate: [0, -30, 30, 0],
+                  borderRadius: ['0%', '50%', '50%', '0%'],
+                }}
+                transition={{
+                  duration: 1.5,
+                  ease: 'easeInOut',
+                  repeat: Infinity,
+                }}
+              >
+                <FaMicrophone className='text-hanaPrimary w-[41.3px] h-[41.3px]' />
+              </motion.div>
+            ) : (
+              <Image
+                src='/images/icons/chatbot.svg'
+                alt='chatbot'
+                width={41.3}
+                height={41.3}
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );

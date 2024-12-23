@@ -1,5 +1,6 @@
 'use client';
 
+import SpeechToText from '@/components/SpeechToText';
 import { Button } from '@/components/atoms/Button';
 import SetAmount from '@/components/molecules/SetAmount';
 import { useTransferForm } from '@/contexts/TransferContext';
@@ -96,6 +97,7 @@ export default function Step4() {
           다음
         </Button>
       </div>
+      <SpeechToText placeholder={'얼마를 보낼까요?'} autoStart />
     </div>
   );
 }

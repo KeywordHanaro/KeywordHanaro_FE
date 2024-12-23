@@ -36,7 +36,7 @@ export default function Step3() {
           onNext={handleNext}
         />
       </div>
-      <SpeechToText />
+      <SpeechToText autoStart placeholder='키워드 이름을 설정해주세요' />
     </div>
   );
 }

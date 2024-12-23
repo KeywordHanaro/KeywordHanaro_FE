@@ -124,7 +124,7 @@ export default function SelectBranch({
           </div>
         )}
       </div>
-      <SpeechToText />
+      <SpeechToText autoStart placeholder='영업점을 선택해주세요' />
     </div>
   );
 }

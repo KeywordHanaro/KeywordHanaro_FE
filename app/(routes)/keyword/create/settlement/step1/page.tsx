@@ -1,5 +1,6 @@
 'use client';
 
+import SpeechToText from '@/components/SpeechToText';
 import SelectAccount from '@/components/templates/SelectAccount';
 import { useSettlementContext } from '@/contexts/SettlementContext';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
@@ -53,9 +54,12 @@ export default function SettlementStep1() {
   }, [result]);
 
   return (
-    <SelectAccount
-      onUpdate={(fromAccount) => updateFormData({ fromAccount })}
-      onNext={nextStep}
-    />
+    <>
+      <SelectAccount
+        onUpdate={(fromAccount) => updateFormData({ fromAccount })}
+        onNext={nextStep}
+      />
+      <SpeechToText autoStart placeholder='내 계좌를 선택해주세요' />
+    </>
   );
 }

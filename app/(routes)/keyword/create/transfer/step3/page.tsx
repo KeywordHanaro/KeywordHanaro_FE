@@ -1,5 +1,6 @@
 'use client';
 
+import SpeechToText from '@/components/SpeechToText';
 import InputToAccount from '@/components/templates/createKeyword/transfer/InputToAccount';
 import { useTransferForm } from '@/contexts/TransferContext';
 import type { MyAccount, OthersAccount } from '@/data/account';
@@ -19,12 +20,15 @@ export default function Step3() {
   }, []);
 
   return (
-    <InputToAccount
-      formData={formData}
-      onNext={handleNext}
-      onUpdate={(toAccount: OthersAccount | MyAccount) =>
-        updateFormData({ toAccount })
-      }
-    />
+    <>
+      <InputToAccount
+        formData={formData}
+        onNext={handleNext}
+        onUpdate={(toAccount: OthersAccount | MyAccount) =>
+          updateFormData({ toAccount })
+        }
+      />
+      <SpeechToText placeholder={'어떤 계좌로 보낼까요?'} autoStart />
+    </>
   );
 }
