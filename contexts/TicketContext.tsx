@@ -1,16 +1,16 @@
 'use client';
 
-import { Branch } from '@/data/bank';
+import { TBranch } from '@/types/Branch';
 import { createContext, useContext, useState } from 'react';
 
 type TicketContextType = {
   isCheck: boolean;
   isTerms: boolean;
-  selectedBranch: Branch | null;
+  selectedBranch: TBranch | null;
   keywordName: string | null;
   setIsCheck: React.Dispatch<React.SetStateAction<boolean>>;
   setIsTerms: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedBranch: React.Dispatch<React.SetStateAction<Branch | null>>;
+  setSelectedBranch: React.Dispatch<React.SetStateAction<TBranch | null>>;
   setKeywordName: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
@@ -19,7 +19,7 @@ const TicketContext = createContext<TicketContextType | undefined>(undefined);
 export const TicketProvider = ({ children }: { children: React.ReactNode }) => {
   const [isCheck, setIsCheck] = useState(false);
   const [isTerms, setIsTerms] = useState(false);
-  const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
+  const [selectedBranch, setSelectedBranch] = useState<TBranch | null>(null);
   const [keywordName, setKeywordName] = useState<string | null>(null);
 
   return (

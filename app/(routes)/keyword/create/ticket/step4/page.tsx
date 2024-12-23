@@ -9,7 +9,6 @@ export default function CreateTicketStep4Page() {
   const router = useRouter();
 
   const handleComplete = () => {
-    console.log('최종 완료', selectedBranch, keywordName);
     router.push('/');
   };
 
@@ -21,7 +20,7 @@ export default function CreateTicketStep4Page() {
           <p>키워드로</p>
         </div>
         <div className='flex font-semibold text-[24px] gap-[2px] mt-[11px]'>
-          <p className='text-[#069894]'>{selectedBranch?.branchName}</p>
+          <p className='text-[#069894]'>{selectedBranch?.placeName}</p>
           <p>에서</p>
         </div>
         <p className='font-semibold text-[24px]'>모바일 번호표가 발급돼요</p>
