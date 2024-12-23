@@ -1,5 +1,6 @@
 'use client';
 
+import SpeechToText from '@/components/SpeechToText';
 import SelectAccount from '@/components/templates/SelectAccount';
 import { useTransferForm } from '@/contexts/TransferContext';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
@@ -54,11 +55,14 @@ export default function Step1() {
   }, [result]);
 
   return (
-    <SelectAccount
-      onUpdate={(fromAccount: MyAccountWithBalance) =>
-        updateFormData({ fromAccount })
-      }
-      onNext={nextStep}
-    />
+    <>
+      <SelectAccount
+        onUpdate={(fromAccount: MyAccountWithBalance) =>
+          updateFormData({ fromAccount })
+        }
+        onNext={nextStep}
+      />
+      <SpeechToText placeholder={'내 계좌를 선택해주세요'} autoStart />
+    </>
   );
 }

@@ -1,5 +1,6 @@
 'use client';
 
+import SpeechToText from '@/components/SpeechToText';
 import KeywordInputButton from '@/components/templates/KeywordInputButton';
 import { useTransferForm } from '@/contexts/TransferContext';
 import { useRouter } from 'next/navigation';
@@ -13,11 +14,14 @@ export default function Step5() {
   };
 
   return (
-    <KeywordInputButton
-      title='키워드의 이름을 설정해주세요'
-      placeHolder='키워드 이름을 작성해주세요'
-      onUpdate={(keyword: string) => updateFormData({ keyword })}
-      onNext={handleNext}
-    />
+    <>
+      <KeywordInputButton
+        title='키워드의 이름을 설정해주세요'
+        placeHolder='키워드 이름을 작성해주세요'
+        onUpdate={(keyword: string) => updateFormData({ keyword })}
+        onNext={handleNext}
+      />
+      <SpeechToText placeholder={'키워드 이름을 작성해주세요'} autoStart />
+    </>
   );
 }

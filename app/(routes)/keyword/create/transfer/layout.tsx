@@ -1,6 +1,5 @@
 'use client';
 
-import SpeechToText from '@/components/SpeechToText';
 import Header from '@/components/atoms/Header';
 import { TransferProvider } from '@/contexts/TransferContext';
 import { VoiceInputProvider } from '@/contexts/VoiceContext';
@@ -39,8 +38,6 @@ function TransferContent({ children }: { children: ReactNode }) {
         <div className='h-full flex flex-col flex-grow overflow-hidden mt-[24px] px-[20px] pb-[34px]'>
           {children}
         </div>
-        {/* 마지막 페이지에서 Mic 안나오게 */}
-        {!pathname.includes('/step6') && <SpeechToText />}
       </div>
     </VoiceInputProvider>
   );

@@ -1,6 +1,7 @@
 'use client';
 
 // import AccountListItem from '@/components/molecules/AccountListItem';
+import SpeechToText from '@/components/SpeechToText';
 import SelectAccount from '@/components/templates/SelectAccount';
 import { useInquiry } from '@/contexts/InquiryContext';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
@@ -56,13 +57,16 @@ export default function Step1() {
         handleAccountClick(bestMatch);
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result, handleAccountClick]);
 
   return (
-    <SelectAccount
-      onUpdate={(account: MyAccount) => updateFormData({ account })}
-      onNext={nextStep}
-    />
+    <>
+      <SelectAccount
+        onUpdate={(account: MyAccount) => updateFormData({ account })}
+        onNext={nextStep}
+      />
+      <SpeechToText autoStart placeholder='내 계좌를 선택해주세요' />
+    </>
   );
 }

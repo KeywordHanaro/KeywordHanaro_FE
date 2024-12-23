@@ -115,7 +115,7 @@ const KeywordCategory = () => {
           </motion.li>
         ))}
       </motion.ul>
-      <SpeechToText autoStart />
+      <SpeechToText autoStart placeholder='키워드 카테고리를 선택해 주세요' />
     </div>
   );
 };

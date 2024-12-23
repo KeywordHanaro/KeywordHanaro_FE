@@ -42,6 +42,7 @@ const SpeechToText = ({
       ) {
         recognitionRef.current.stop();
         setResultCallback(currentTranscript);
+        setTranscript('');
         setIsExpanded(false);
         setIsListening(false);
       }
