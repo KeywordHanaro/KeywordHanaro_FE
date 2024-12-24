@@ -1,5 +1,5 @@
 import { Member } from '@/data/member';
-import { MyAccount } from './account';
+import { MyAccount } from '@/types/Account';
 
 export type FormData = {
   fromAccount: MyAccount;
@@ -14,6 +14,7 @@ export const settlementData: FormData = {
   fromAccount: {
     accountName: '내 나라사랑 계좌',
     bankId: 111,
+    accountId: 1,
     accountNumber: '123-4567-2221',
     type: 'MyAccount',
   },

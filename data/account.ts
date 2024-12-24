@@ -1,26 +1,28 @@
+import { RecentAccount } from '@/types/Account';
 import { MyAccountWithBalance } from '@/types/Transfer';
 
-export type MyAccount = {
-  type: 'MyAccount';
-  accountName: string;
-  bankId: number;
-  accountNumber: string;
-};
+// export type MyAccount = {
+//   type: 'MyAccount';
+//   accountName: string;
+//   bankId: number;
+//   accountNumber: string;
+// };
 
-export type OthersAccount = {
-  type: 'OthersAccount';
-  name: string;
-  bankId: number;
-  accountNumber: string;
-};
+// export type OthersAccount = {
+//   type: 'OthersAccount';
+//   name: string;
+//   bankId: number;
+//   accountNumber: string;
+// };
 
-export type RecentAccount = MyAccount | OthersAccount;
+// export type RecentAccount = MyAccount | OthersAccount;
 
 export const MyAccounts: MyAccountWithBalance[] = [
   {
     type: 'MyAccount',
     accountName: '성엽이 용돈',
     bankId: 81,
+    accountId: 1,
     balance: '220,400',
     accountNumber: '156-5483-111-6854',
   },
@@ -29,6 +31,7 @@ export const MyAccounts: MyAccountWithBalance[] = [
     accountName: '청년 힘내라 저축',
     bankId: 81,
     balance: '1,800,000',
+    accountId: 2,
     accountNumber: '456-4236-454-11',
   },
   {
@@ -36,6 +39,7 @@ export const MyAccounts: MyAccountWithBalance[] = [
     accountName: '수수료패스 여행',
     bankId: 81,
     balance: '80,000',
+    accountId: 3,
     accountNumber: '222-3423-2223',
   },
   {
@@ -43,15 +47,18 @@ export const MyAccounts: MyAccountWithBalance[] = [
     accountName: '보금자리 주택청약',
     bankId: 81,
     balance: '9,000,000',
+    accountId: 4,
     accountNumber: '222-3444-34-2224',
   },
 ];
 
-export const RecentAccount: RecentAccount[] = [
+export const RecentAccounts: RecentAccount[] = [
   {
     type: 'MyAccount',
     accountName: '서아의 예적금통장',
     bankId: 81,
+    accountId: 1,
+
     accountNumber: '222-2222-2225',
   },
   {

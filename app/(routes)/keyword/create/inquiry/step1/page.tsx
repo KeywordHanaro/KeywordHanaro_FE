@@ -5,7 +5,10 @@ import SpeechToText from '@/components/SpeechToText';
 import SelectAccount from '@/components/templates/SelectAccount';
 import { useInquiry } from '@/contexts/InquiryContext';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { MyAccount, MyAccounts } from '@/data/account';
+import { MyAccounts } from '@/data/account';
+import { MyAccount } from '@/types/Account';
+// import { useAccountApi } from '@/hooks/useAccount/useAccount';
+// import { Account } from '@/types/Account';
 import { MyAccountWithBalance } from '@/types/Transfer';
 import { useRouter } from 'next/navigation';
 import { useEffect, useCallback } from 'react';
@@ -15,10 +18,19 @@ export default function Step1() {
   const router = useRouter();
   const { updateFormData, resetFormData } = useInquiry();
   const { result, setResult } = useVoiceInputSession();
+  // const [myAccounts, setMyAccounts] = useState<Account[]>();
+  // const { showMyAccounts } = useAccountApi();
 
   useEffect(() => {
     resetFormData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // const fetchMyAccounts = async () => {
+    //   const response = await showMyAccounts();
+    //   setMyAccounts(response);
+    // }
+
+    // fetchMyAccounts();
   }, []);
 
   const nextStep = useCallback(() => {

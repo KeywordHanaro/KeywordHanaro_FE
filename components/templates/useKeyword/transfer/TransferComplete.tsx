@@ -1,5 +1,5 @@
 import { Button } from '@/components/atoms/Button';
-import { MyAccount, OthersAccount } from '@/data/account';
+import { MyAccount, OthersAccount } from '@/types/Account';
 import { useRouter } from 'next/navigation';
 
 export default function TransferComplete({

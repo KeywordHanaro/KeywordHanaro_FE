@@ -55,6 +55,7 @@ export const multiKeywordFinishData: MultiKeywordFinish[] = [
     accountFrom: {
       type: 'MyAccount',
       bankId: 81,
+      accountId: 1,
       accountNumber: '456-4236-454-11',
       accountName: '청년 힘내라 저축',
     },
@@ -72,6 +73,7 @@ export const multiKeywordFinishData: MultiKeywordFinish[] = [
     fromAccount: {
       accountName: '내 나라사랑 계좌',
       bankId: 111,
+      accountId: 1,
       accountNumber: '123-4567-2221',
       type: 'MyAccount',
     },
@@ -114,6 +116,7 @@ export const multiKeywordData: MultiKeywordDetail[] = [
       type: 'MyAccount',
       accountName: '하나패스 자유입출금',
       bankId: 81,
+      accountId: 1,
       accountNumber: '156-5483-111-6854',
     },
     accountTo: {
@@ -132,6 +135,8 @@ export const multiKeywordData: MultiKeywordDetail[] = [
     accountFrom: {
       type: 'MyAccount',
       bankId: 81,
+      accountId: 1,
+
       accountNumber: '156-5483-111-6854',
       accountName: '하나패스 자유입출금',
     },
@@ -153,6 +158,8 @@ export const multiKeywordData: MultiKeywordDetail[] = [
       type: 'MyAccount',
       accountName: '하나패스 자유입출금',
       bankId: 81,
+      accountId: 1,
+
       accountNumber: '156-5483-111-6854',
     },
     memberList: [

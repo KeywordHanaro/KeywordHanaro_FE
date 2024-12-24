@@ -9,6 +9,7 @@ const initFormData: TransferProps = {
     type: 'MyAccount',
     accountName: '',
     bankId: 0,
+    accountId: 0,
     accountNumber: '',
     balance: '',
   },

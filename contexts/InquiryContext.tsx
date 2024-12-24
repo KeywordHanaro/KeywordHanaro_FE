@@ -1,4 +1,4 @@
-import { MyAccount } from '@/data/account';
+import { MyAccount } from '@/types/Account';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
 export type DataProps = {
@@ -18,6 +18,7 @@ const initialFormData: DataProps = {
     type: 'MyAccount',
     accountName: '',
     bankId: 0,
+    accountId: 0,
     accountNumber: '',
   },
   inquiry: '',

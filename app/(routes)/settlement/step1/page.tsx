@@ -80,6 +80,7 @@ export default function SettlementUsageStep1() {
         fromAccount: {
           accountName: keyword.accountFrom.accountName,
           bankId: keyword.accountFrom.bankId,
+          accountId: 1,
           accountNumber: keyword.accountFrom.accountNumber,
           type: 'MyAccount',
         },
@@ -97,6 +98,7 @@ export default function SettlementUsageStep1() {
           accountName: keyword.accountFrom.accountName,
           bankId: keyword.accountFrom.bankId,
           accountNumber: keyword.accountFrom.accountNumber,
+          accountId: 1,
           type: 'MyAccount',
         },
         members: keyword.memberList,

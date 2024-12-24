@@ -7,7 +7,8 @@ import { AccountInputRef, MoneyInputRef } from '@/components/atoms/Inputs';
 import SelectBank from '@/components/molecules/SelectBank';
 import SelectMyAccount from '@/components/molecules/SelectMyAccount';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { MyAccount, OthersAccount } from '@/data/account';
+import { OthersAccount } from '@/types/Account';
+import { MyAccount } from '@/types/Account';
 import { convertKorToNum } from 'korean-number-converter';
 import { useRouter } from 'next/navigation';
 import { useCallback, useRef, useState, useEffect } from 'react';
@@ -62,7 +63,7 @@ export default function TransferDocumentPage() {
     }
     setActiveInput(null);
     resetResult();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   const handleInputFocus = (inputType: 'account' | 'amount') => {

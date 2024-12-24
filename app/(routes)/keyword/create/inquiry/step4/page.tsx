@@ -2,14 +2,33 @@
 
 import KeywordCompletion from '@/components/templates/KeywordCompletion';
 import { useInquiry } from '@/contexts/InquiryContext';
+// import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
 import { useRouter } from 'next/navigation';
 
-export default function Step2() {
+export default function Step4() {
   const router = useRouter();
   const { formData } = useInquiry();
 
-  const handleComplete = () => {
-    router.push('/keyword');
+  // const { createKeyword } = useKeywordApi();
+
+  const handleComplete = async () => {
+    console.log(formData.account);
+    console.log(formData.inquiry);
+    console.log(formData.keywordName);
+    router.push('/');
+    // await createKeyword({
+    //   type: 'INQUIRY',
+    //   name: formData.keywordName,
+    //   account: { id: formData.account.accountId },
+    //   inquiryWord: formData.inquiry,
+    //   desc: formData.keywordName,
+    // })
+    //   .then(() => {
+    //     router.push('/keyword');
+    //   })
+    //   .catch((err) => {
+    //     alert(err);
+    //   });
   };
 
   return (

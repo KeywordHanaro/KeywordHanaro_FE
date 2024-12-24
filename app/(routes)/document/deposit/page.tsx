@@ -6,7 +6,7 @@ import Header from '@/components/atoms/Header';
 import { MoneyInputRef } from '@/components/atoms/Inputs';
 import SelectMyAccount from '@/components/molecules/SelectMyAccount';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { MyAccount } from '@/data/account';
+import { MyAccount } from '@/types/Account';
 import { convertKorToNum } from 'korean-number-converter';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -48,7 +48,7 @@ export default function DepositDocumentPage() {
         setIsValid(amountVal > 0 && myAccount !== undefined);
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   return (

@@ -18,6 +18,7 @@ const contextInitValue: TransferForm = {
     type: 'MyAccount',
     accountName: '',
     accountNumber: '',
+    accountId: 0,
     bankId: 0,
     balance: '',
   },

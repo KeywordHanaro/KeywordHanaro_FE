@@ -24,6 +24,7 @@ export type MyAccount = {
   type: 'MyAccount';
   accountName: string;
   bankId: number;
+  accountId: number;
   accountNumber: string;
 };
 
@@ -33,3 +34,5 @@ export type OthersAccount = {
   bankId: number;
   accountNumber: string;
 };
+
+export type RecentAccount = MyAccount | OthersAccount;

@@ -3,12 +3,9 @@
 import MyAccountList from '@/components/organisms/MyAccountList';
 import RecentAccountList from '@/components/organisms/RecentAccountList';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import {
-  MyAccount,
-  MyAccounts,
-  OthersAccount,
-  RecentAccount,
-} from '@/data/account';
+import { MyAccounts, RecentAccounts } from '@/data/account';
+import { OthersAccount } from '@/types/Account';
+import { MyAccount } from '@/types/Account';
 import { ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -112,7 +109,7 @@ export default function SelectToAccount({
           <div className='font-bold text-[18px] mt-8'>최근 보낸 계좌</div>
           <div>
             <RecentAccountList
-              accounts={RecentAccount}
+              accounts={RecentAccounts}
               onUpdate={onUpdate}
               onNext={handleListClick}
             />
