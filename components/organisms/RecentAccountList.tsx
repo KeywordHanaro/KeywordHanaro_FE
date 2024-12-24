@@ -1,7 +1,8 @@
 'use client';
 
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import type { RecentAccount, MyAccount, OthersAccount } from '@/data/account';
+import type { RecentAccount, OthersAccount } from '@/types/Account';
+import { MyAccount } from '@/types/Account';
 import { useEffect } from 'react';
 import { levenshtein } from '@/lib/utils';
 import AccountListItem from '../molecules/AccountListItem';

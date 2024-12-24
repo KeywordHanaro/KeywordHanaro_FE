@@ -1,7 +1,8 @@
 'use client';
 
-import type { MyAccount, OthersAccount } from '@/data/account';
 import { bankList } from '@/data/bank';
+import type { OthersAccount } from '@/types/Account';
+import { MyAccount } from '@/types/Account';
 import { FaCheck } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
 // import { BsStarFill } from 'react-icons/bs';

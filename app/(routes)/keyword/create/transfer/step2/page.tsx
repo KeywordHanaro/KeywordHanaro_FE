@@ -3,7 +3,8 @@
 import SpeechToText from '@/components/SpeechToText';
 import SelectToAccount from '@/components/templates/createKeyword/transfer/SelectToAccount';
 import { useTransferForm } from '@/contexts/TransferContext';
-import type { MyAccount, OthersAccount } from '@/data/account';
+import type { OthersAccount } from '@/types/Account';
+import { MyAccount } from '@/types/Account';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 

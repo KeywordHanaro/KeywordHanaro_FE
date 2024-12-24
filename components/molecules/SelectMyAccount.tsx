@@ -8,7 +8,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
-import { MyAccount, MyAccounts } from '@/data/account';
+import { MyAccounts } from '@/data/account';
+import { MyAccount } from '@/types/Account';
 import { FaAngleDown } from 'react-icons/fa';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';

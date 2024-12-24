@@ -5,7 +5,7 @@ import { AccountInputRef } from '@/components/atoms/Inputs';
 import SelectBank from '@/components/molecules/SelectBank';
 import { TransferForm } from '@/contexts/TransferContext';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { MyAccount, OthersAccount } from '@/data/account';
+import { MyAccount, OthersAccount } from '@/types/Account';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { formatAccountNumber } from '@/lib/utils';
 

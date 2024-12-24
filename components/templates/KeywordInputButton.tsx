@@ -45,6 +45,7 @@ const KeywordInputButton = forwardRef(
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
       setInputValue(e.target.value);
+      onUpdate(e.target.value);
     };
 
     const handleSubmit = () => {

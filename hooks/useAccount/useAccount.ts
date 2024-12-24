@@ -1,10 +1,9 @@
 import { useApi } from '@/hooks/useApi';
-import { pswdReq } from '@/types/Account';
+import { Account, pswdReq } from '@/types/Account';
 import { TransferData, TransferResponse } from '@/types/Transfer';
 
 export const useAccountApi = () => {
   const { fetchApi } = useApi();
-
   // 계좌 리스트 조회, 계좌 이체, 계좌 거래내역 조회
 
   const transfer = async (
@@ -29,11 +28,8 @@ export const useAccountApi = () => {
     return response;
   };
 
-  const showMyAccounts = async () => {
-    const options: RequestInit = {
-      method: 'GET',
-    };
-    const response = await fetchApi(`/account/myaccounts`, options);
+  const showMyAccounts = async (): Promise<Account[]> => {
+    const response = await fetchApi(`/account/myaccounts`);
 
     return response;
   };

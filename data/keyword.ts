@@ -1,4 +1,4 @@
-import { MyAccount, OthersAccount } from './account';
+import { MyAccount, OthersAccount } from '@/types/Account';
 import { Member } from './member';
 import { MultiKeywordDetail } from './multiKeyword';
 
@@ -201,6 +201,7 @@ export const KeywordDetailList: KeywordDetail[] = [
       type: 'MyAccount',
       accountName: '하나패스 자유입출금',
       bankId: 81,
+      accountId: 1,
       accountNumber: '156-5483-111-6854',
     },
     accountTo: {
@@ -217,6 +218,8 @@ export const KeywordDetailList: KeywordDetail[] = [
     accountFrom: {
       type: 'MyAccount',
       bankId: 81,
+      accountId: 2,
+
       accountNumber: '156-5483-111-6854',
       accountName: '하나패스 자유입출금',
     },
@@ -236,6 +239,8 @@ export const KeywordDetailList: KeywordDetail[] = [
       type: 'MyAccount',
       accountName: '하나패스 자유입출금',
       bankId: 81,
+      accountId: 3,
+
       accountNumber: '156-5483-111-6854',
     },
     memberList: [
@@ -254,6 +259,8 @@ export const KeywordDetailList: KeywordDetail[] = [
     accountFrom: {
       type: 'MyAccount',
       bankId: 81,
+      accountId: 4,
+
       accountNumber: '456-4236-454-11',
       accountName: '청년 힘내라 저축',
     },
@@ -270,6 +277,8 @@ export const KeywordDetailList: KeywordDetail[] = [
     accountFrom: {
       type: 'MyAccount',
       bankId: 81,
+      accountId: 5,
+
       accountNumber: '456-4236-454-11',
       accountName: '청년 힘내라 저축',
     },
@@ -288,6 +297,8 @@ export const KeywordDetailList: KeywordDetail[] = [
     accountFrom: {
       type: 'MyAccount',
       bankId: 81,
+      accountId: 1,
+
       accountNumber: '156-5483-111-6854',
       accountName: '하나패스 자유입출금',
     },
@@ -300,12 +311,16 @@ export const KeywordDetailList: KeywordDetail[] = [
     accountFrom: {
       type: 'MyAccount',
       bankId: 81,
+      accountId: 6,
+
       accountNumber: '456-4236-454-11',
       accountName: '청년 힘내라 저축',
     },
     accountTo: {
       type: 'MyAccount',
       bankId: 4,
+      accountId: 7,
+
       accountNumber: '25-777-888-999',
       accountName: '한국전력공사',
     },
@@ -329,6 +344,8 @@ export const KeywordDetailList: KeywordDetail[] = [
           type: 'MyAccount',
           accountName: '하나패스 자유입출금',
           bankId: 81,
+          accountId: 1,
+
           accountNumber: '156-5483-111-6854',
         },
         accountTo: {
@@ -347,6 +364,8 @@ export const KeywordDetailList: KeywordDetail[] = [
         accountFrom: {
           type: 'MyAccount',
           bankId: 81,
+          accountId: 8,
+
           accountNumber: '156-5483-111-6854',
           accountName: '하나패스 자유입출금',
         },
@@ -366,6 +385,8 @@ export const KeywordDetailList: KeywordDetail[] = [
         title: '터틀넥즈 정산',
         accountFrom: {
           type: 'MyAccount',
+          accountId: 1,
+
           accountName: '하나패스 자유입출금',
           bankId: 81,
           accountNumber: '156-5483-111-6854',
@@ -387,12 +408,16 @@ export const KeywordDetailList: KeywordDetail[] = [
         accountFrom: {
           type: 'MyAccount',
           bankId: 81,
+          accountId: 1,
+
           accountNumber: '456-4236-454-11',
           accountName: '청년 힘내라 저축',
         },
         accountTo: {
           type: 'MyAccount',
           bankId: 4,
+          accountId: 1,
+
           accountNumber: '25-777-888-999',
           accountName: '한국전력공사',
         },
@@ -405,6 +430,8 @@ export const KeywordDetailList: KeywordDetail[] = [
         accountFrom: {
           type: 'MyAccount',
           bankId: 81,
+          accountId: 1,
+
           accountNumber: '456-4236-454-11',
           accountName: '청년 힘내라 저축',
         },
@@ -422,6 +449,8 @@ export const KeywordDetailList: KeywordDetail[] = [
         accountFrom: {
           type: 'MyAccount',
           bankId: 81,
+          accountId: 1,
+
           accountNumber: '156-5483-111-6854',
           accountName: '하나패스 자유입출금',
         },

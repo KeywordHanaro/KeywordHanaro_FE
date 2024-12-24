@@ -7,12 +7,13 @@ import SelectBank from '@/components/molecules/SelectBank';
 import SelectMyAccount from '@/components/molecules/SelectMyAccount';
 import SetAmount from '@/components/molecules/SetAmount';
 import { Toggle } from '@/components/ui/toggle';
-import { MyAccount, OthersAccount } from '@/data/account';
 import {
   KeywordDetailList,
   TransferAmountKeyword,
   TransferKeyword,
 } from '@/data/keyword';
+import { OthersAccount } from '@/types/Account';
+import { MyAccount } from '@/types/Account';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   ChangeEvent,

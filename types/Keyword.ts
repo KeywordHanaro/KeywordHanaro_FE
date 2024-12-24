@@ -1,21 +1,23 @@
-// // 공통 요청 타입
-// interface BaseKeywordRequest {
-//   type: 'INQUIRY' | 'TRANSFER' | 'TICKET' | 'SETTLEMENT';
-//   name: string;
-//   desc: string;
-// }
+export type CreateKeywordRequest = InquiryKeywordRequest;
+
+// 공통 요청 타입
+type BaseKeywordRequest = {
+  type: 'INQUIRY' | 'TRANSFER' | 'TICKET' | 'SETTLEMENT';
+  name: string;
+  desc: string;
+};
 
 // // 계좌 정보 타입
 // interface AccountInfo {
 //   id: number;
 // }
 
-// // 조회 키워드 요청 타입
-// interface InquiryKeywordRequest extends BaseKeywordRequest {
-//   type: 'INQUIRY';
-//   account: AccountInfo;
-//   inquiryWord: string;
-// }
+// 조회 키워드 요청 타입
+type InquiryKeywordRequest = BaseKeywordRequest & {
+  type: 'INQUIRY';
+  account: { id: number };
+  inquiryWord: string;
+};
 
 // // 송금 키워드 요청 타입
 // interface TransferKeywordRequest extends BaseKeywordRequest {
