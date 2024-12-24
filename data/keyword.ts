@@ -80,8 +80,8 @@ export type MultiKeyword = BaseKeyword & {
   keywordList?: MultiKeywordDetail[];
 };
 
-export const getColorByType = (type: Keyword['type']) => {
-  switch (type) {
+export const getColorByType = (type: string) => {
+  switch (type.toLowerCase()) {
     case 'transfer':
     case 'transferAmount':
       return 'pink';
@@ -99,7 +99,7 @@ export const getColorByType = (type: Keyword['type']) => {
   }
 };
 
-export const getNameByType = (type: Keyword['type']) => {
+export const getNameByType = (type: string) => {
   switch (type) {
     case 'transfer':
     case 'transferAmount':

@@ -1,5 +1,9 @@
+import { Account } from './Account';
 import { TBranch } from './Bank';
+import { UserDetail } from './User';
 
+////////////////////////////////////////
+// 키워드 생성 type 정의
 export type CreateKeywordRequest =
   | InquiryKeywordRequest
   | TransferKeywordRequest
@@ -37,81 +41,45 @@ type TicketKeywordRequest = {
   desc: string;
   branch: TBranch;
 };
-// interface TicketKeywordRequest extends BaseKeywordRequest {
-//   type: 'TICKET';
-//   branch: {
-//     address_name: string;
-//     distance: string;
-//     id: string;
-//     phone: string;
-//     place_name: string;
-//     road_address_name: string;
-//     x: string;
-//     y: string;
-//   };
-// }
 
-// // 정산 키워드 요청 타입
-// interface SettlementKeywordRequest extends BaseKeywordRequest {
-//   type: 'SETTLEMENT';
-//   account: AccountInfo;
-//   groupMember: Array<{
-//     name: string;
-//     tel: string;
-//   }>;
-//   check_every_time: boolean;
-//   amount?: number; // check_every_time이 false일 때만 필요
-// }
+/////////////////////////////
+export type UseKeywordResponse =
+  | InquiryUsageResponse
+  | TransferUsageResponse
+  | TicketUsageResponse;
 
-// // 키워드 요청 타입 (모든 가능한 요청 타입의 유니온)
-// type KeywordRequest =
-//   | InquiryKeywordRequest
-//   | TransferKeywordRequest
-//   | TicketKeywordRequest
-//   | SettlementKeywordRequest;
+// 키워드 사용 type 정의
+type InquiryUsageResponse = {
+  id: number;
+  user: UserDetail;
+  type: 'INQUIRY';
+  name: string;
+  desc: string;
+  seqOrder: number;
+  account: Account;
+  inquiryWord: string;
+  favorite: boolean;
+};
 
-// // 응답 타입
-// interface KeywordResponse {
-//   id: number;
-//   userId: string;
-//   type: 'INQUIRY' | 'TRANSFER' | 'TICKET' | 'SETTLEMENT';
-//   name: string;
-//   desc: string;
-//   seqOrder: number;
-//   account?: {
-//     createAt: string;
-//     updateAt: string;
-//     id: number;
-//     accountNumber: string;
-//     userId: string;
-//     bankId: number;
-//     name: string;
-//     password: string;
-//     balance: number;
-//     transferLimit: number;
-//     type: string;
-//     mine: boolean;
-//     status: string;
-//   };
-//   subAccount?: {
-//     accountNumber: string;
-//   } | null;
-//   inquiryWord?: string;
-//   checkEveryTime?: boolean | null;
-//   amount?: number | null;
-//   groupMember?: Array<{
-//     name: string;
-//     tel: string;
-//   }> | null;
-//   branch?: {
-//     address_name: string;
-//     distance: string;
-//     id: string;
-//     phone: string;
-//     place_name: string;
-//     road_address_name: string;
-//     x: string;
-//     y: string;
-//   } | null;
-//   favorite: boolean;
-// }
+type TransferUsageResponse = {
+  id: number;
+  user: UserDetail;
+  type: 'TRANSFER';
+  name: string;
+  desc: string;
+  seqOrder: number;
+  account: Account;
+  subAccount: Account;
+  favorite: boolean;
+};
+
+type TicketUsageResponse = {
+  id: number;
+  user: UserDetail;
+  type: 'TICKET';
+  name: string;
+  desc: string;
+  seqOrder: number;
+  branch: TBranch;
+  favorite: boolean;
+};
