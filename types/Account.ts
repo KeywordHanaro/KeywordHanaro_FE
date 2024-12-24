@@ -3,8 +3,6 @@ import { User } from './User';
 
 // API 연동용 type
 export type Account = {
-  createAt: string;
-  updateAt: string;
   id: number;
   accountNumber: string;
   user: User;
