@@ -3,13 +3,30 @@
 import { DatePicker } from '@/components/atoms/DatePicker';
 import Header from '@/components/atoms/Header';
 import TransactionList from '@/components/templates/useKeyword/inquiry/TransactionList';
+import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
 import { DateRange } from 'react-day-picker';
 // import { InquiryList } from '@/data/inquiry';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function InquiryPage() {
   const router = useRouter();
+  const { getKeywordById } = useKeywordApi();
+  const searchParams = useSearchParams();
+  // const [transactionList, setTransactionList] = useState([]);
+
+  useEffect(() => {
+    const id = searchParams.get('id');
+    if (id) {
+      getKeywordById(parseInt(id))
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.error('Failed to fetch keyword:', error);
+        });
+    }
+  }, [searchParams]);
 
   const defaultStartDate = new Date();
   defaultStartDate.setMonth(defaultStartDate.getMonth() - 3);
