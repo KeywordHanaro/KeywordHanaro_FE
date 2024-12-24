@@ -9,7 +9,10 @@ export default function Step2() {
   const { formData } = useInquiry();
 
   const handleComplete = () => {
-    router.push('/keyword');
+    console.log(formData.account);
+    console.log(formData.inquiry);
+    console.log(formData.keywordName);
+    // router.push('/keyword');
   };
 
   return (

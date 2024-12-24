@@ -29,8 +29,18 @@ export const useAccountApi = () => {
     return response;
   };
 
+  const showMyAccounts = async () => {
+    const options: RequestInit = {
+      method: 'GET',
+    };
+    const response = await fetchApi(`/account/myaccounts`, options);
+
+    return response;
+  };
+
   return {
     transfer,
     checkPswd,
+    showMyAccounts,
   };
 };

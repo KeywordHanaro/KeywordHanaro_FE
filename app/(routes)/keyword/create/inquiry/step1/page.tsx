@@ -6,7 +6,12 @@ import SelectAccount from '@/components/templates/SelectAccount';
 import { useInquiry } from '@/contexts/InquiryContext';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { MyAccount, MyAccounts } from '@/data/account';
+<<<<<<< Updated upstream
 import { MyAccountWithBalance } from '@/types/Transfer';
+=======
+import { MyAccountWithBalance } from '@/data/transfer';
+import { useAccountApi } from '@/hooks/useAccount/useAccount';
+>>>>>>> Stashed changes
 import { useRouter } from 'next/navigation';
 import { useEffect, useCallback } from 'react';
 import { levenshtein } from '@/lib/utils';
@@ -15,10 +20,13 @@ export default function Step1() {
   const router = useRouter();
   const { updateFormData, resetFormData } = useInquiry();
   const { result, setResult } = useVoiceInputSession();
+  const { showMyAccounts } = useAccountApi();
 
   useEffect(() => {
     resetFormData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    const myAccounts = showMyAccounts();
+    console.log(myAccounts);
   }, []);
 
   const nextStep = useCallback(() => {

@@ -17,6 +17,7 @@ export default function SelectAccount({
     onUpdate(account);
     onNext();
   };
+
   return (
     <div className='flex flex-col gap-[24px]'>
       <h1 className='font-extrabold text-2xl'>내 계좌를 선택해주세요</h1>
