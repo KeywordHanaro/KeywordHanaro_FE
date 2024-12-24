@@ -1,6 +1,6 @@
 import AccountListItem from '@/components/molecules/AccountListItem';
 import { MyAccount, MyAccounts } from '@/data/account';
-import { MyAccountWithBalance } from '@/data/transfer';
+import { MyAccountWithBalance } from '@/types/Transfer';
 
 type SelectAccountProps = {
   onUpdate: (account: MyAccountWithBalance) => void;

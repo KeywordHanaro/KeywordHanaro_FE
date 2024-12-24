@@ -5,7 +5,7 @@ import SelectAccount from '@/components/templates/SelectAccount';
 import { useSettlementContext } from '@/contexts/SettlementContext';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { MyAccounts } from '@/data/account';
-import { MyAccountWithBalance } from '@/data/transfer';
+import { MyAccountWithBalance } from '@/types/Transfer';
 import { useRouter } from 'next/navigation';
 import { useEffect, useCallback } from 'react';
 import { levenshtein } from '@/lib/utils';
