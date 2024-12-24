@@ -3,7 +3,7 @@ import { Button } from '@/components/atoms/Button';
 import { MoneyInputRef } from '@/components/atoms/Inputs';
 import InputPassword from '@/components/molecules/InputPassword';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { TransferProps } from '@/data/transfer';
+import { TransferProps } from '@/types/Transfer';
 import { useAccountApi } from '@/hooks/useAccount/useAccount';
 import { pswdReq } from '@/types/Account';
 import { convertKorToNum } from 'korean-number-converter';
@@ -23,7 +23,6 @@ export const SetTransferAmount = forwardRef<
   const [verified, setVerified] = useState<boolean>(false);
   const [valid, setValid] = useState<boolean>(false);
   const { checkPswd } = useAccountApi();
-  //[new]
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const money = e.target.value;

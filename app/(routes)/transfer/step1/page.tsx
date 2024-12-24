@@ -5,11 +5,14 @@ import SetTransferAmount from '@/components/templates/useKeyword/transfer/SetTra
 import { useTransferUseSession } from '@/contexts/TransferUseContext';
 import { VoiceInputProvider } from '@/contexts/VoiceContext';
 import { UseKeywordTransfer } from '@/data/transfer';
+import { useAccountApi } from '@/hooks/useAccount/useAccount';
+import { TransferData } from '@/types/Transfer';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 export default function SetTransferAmountPage() {
   const { formData, saveFormData } = useTransferUseSession();
+  const { transfer } = useAccountApi();
 
   /**fetching 가정 */
   const initialData = UseKeywordTransfer[0];
@@ -23,21 +26,23 @@ export default function SetTransferAmountPage() {
 
   const amountRef = useRef<HTMLInputElement>(null);
 
-  const onNext = () => {
-    saveFormData(
-      formData.type === 'WithAmount'
-        ? { ...formData, amount: Number(amountRef.current?.value) }
-        : { ...formData }
-    );
-    // saveFormData(
-    //   formData.type === 'WithoutAmount'
-    //     ? { ...formData, transferAmount: amountRef.current?.value || '' }
-    //     : {
-    //         ...formData,
-    //         transferAmount: formatNumberWithCommas(formData.amount.toString()),
-    //       }
-    // );
-    router.push('/transfer/step2');
+  const onNext = async () => {
+    saveFormData({
+      ...formData,
+      amount: parseFloat((amountRef.current?.value || '0').replace(/,/g, '')),
+    });
+    const transferData: TransferData = {
+      fromAccountNumber: formData.fromAccount.accountNumber,
+      toAccountNumber: formData.toAccount.accountNumber,
+      amount: parseFloat((amountRef.current?.value || '0').replace(/,/g, '')),
+    };
+    await transfer(transferData)
+      .then(() => {
+        router.push('/transfer/step2');
+      })
+      .catch((e) => {
+        alert(e.message);
+      });
   };
 
   const handleBack = () => {

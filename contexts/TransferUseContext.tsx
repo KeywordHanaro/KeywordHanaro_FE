@@ -1,12 +1,7 @@
 'use client';
 
-import { TransferProps } from '@/data/transfer';
+import { TransferProps } from '@/types/Transfer';
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
-
-
-// type TransferData = {
-//   transferAmount: string;
-// } & TransferProps;
 
 const initFormData: TransferProps = {
   type: 'WithAmount',
@@ -26,7 +21,6 @@ const initFormData: TransferProps = {
   checkEverytime: false,
   keyword: '',
   amount: 0,
-  // transferAmount: '',
 };
 
 type TransferFormDataProps = {

@@ -23,7 +23,7 @@ export default function TransferCompletePage() {
         onBack={handleBack}
       />
       <TransferComplete
-        amount={formData?.transferAmount}
+        amount={formData.amount.toLocaleString()}
         fromAccount={formData?.fromAccount}
         toAccount={formData?.toAccount}
       />

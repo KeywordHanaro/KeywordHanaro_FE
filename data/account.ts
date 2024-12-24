@@ -1,4 +1,4 @@
-import { MyAccountWithBalance } from './transfer';
+import { MyAccountWithBalance } from '@/types/Transfer';
 
 export type MyAccount = {
   type: 'MyAccount';

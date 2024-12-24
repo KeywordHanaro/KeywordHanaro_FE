@@ -1,4 +1,4 @@
-import { MyAccount, OthersAccount } from './account';
+import { TransferProps } from '@/types/Transfer';
 
 export type KeywordInputToOther = {
   fromAccountName: string;
@@ -47,27 +47,6 @@ export const KeywordSearchInputToOtherData: KeywordSearchInputProps[] = [
     amount: 50000,
   },
 ];
-// useKeyword for transfer
-export type MyAccountWithBalance = {
-  balance: string;
-} & MyAccount;
-
-export type TransferProps =
-  | {
-      type: 'WithoutAmount';
-      fromAccount: MyAccountWithBalance;
-      toAccount: OthersAccount | MyAccount;
-      checkEverytime: true;
-      keyword: string;
-    }
-  | {
-      type: 'WithAmount';
-      fromAccount: MyAccountWithBalance;
-      toAccount: OthersAccount | MyAccount;
-      checkEverytime: false;
-      amount: number;
-      keyword: string;
-    };
 
 export const UseKeywordTransfer: TransferProps[] = [
   {
@@ -87,6 +66,7 @@ export const UseKeywordTransfer: TransferProps[] = [
     },
     checkEverytime: true, //금액은 매번 정한다.
     keyword: '서아 저금통',
+    amount: 0,
   },
   {
     type: 'WithAmount',
