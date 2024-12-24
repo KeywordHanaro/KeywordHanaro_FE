@@ -126,6 +126,7 @@ export default function SettlementUsageStep1() {
       setValid(amountVal > 0);
       setResult('');
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result, setResult]);
 
   return (
