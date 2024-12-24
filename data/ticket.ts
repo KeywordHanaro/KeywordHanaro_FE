@@ -1,8 +1,8 @@
 import { TBranch } from '@/types/Bank';
 
 export type TicketProps = {
-  branch: TBranch | null;
-  keyword: string | null;
+  branch: TBranch;
+  keyword: string;
 };
 
 export type TicketTask = {
