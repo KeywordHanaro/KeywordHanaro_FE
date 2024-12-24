@@ -1,15 +1,24 @@
 import TransactionHistory from '@/components/molecules/Transaction';
+import { Transaction } from '@/types/Keyword';
 // import { InquiryList } from '@/data/inquiry';
-import { transactionList } from '@/data/transaction';
+// import { transactionList } from '@/data/transaction';
 import Image from 'next/image';
 // import { useSearchParams } from 'next/navigation';
 import { formatDate } from '@/lib/utils';
 
+// type TransactionListProps = {
+//   keyword: string;
+// };
+
 type TransactionListProps = {
+  tranactions: Transaction[];
   keyword: string;
 };
 
-export default function TransactionList({ keyword }: TransactionListProps) {
+export default function TransactionList({
+  tranactions,
+  keyword,
+}: TransactionListProps) {
   // const searchParams = useSearchParams();
   // const id = searchParams.get('id');
 
@@ -40,13 +49,11 @@ export default function TransactionList({ keyword }: TransactionListProps) {
   // const keyword = '성수'; //input keyword
 
   // accountName에 keyword가 포함된 거래 내역만 필터링
-  const filteredTransactions = transactionList
-    .filter((transaction) =>
-      transaction.accountInfo.accountName?.includes(keyword)
-    )
-
+  const filteredTransactions = tranactions
+    .filter((transaction) => transaction.alias.includes(keyword))
     .sort(
-      (a, b) => new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime()
+      // (a, b) => new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime()
+      (a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime()
     );
 
   // 한글키워드 검색 시, 받침 유무에 따른 을/를 출력
@@ -69,12 +76,12 @@ export default function TransactionList({ keyword }: TransactionListProps) {
       <div className=''>
         <h1 className='text-[18px] font-semibold mb-[16px]'>
           최근 거래내역{' '}
-          <span className='text-[12px]'>({filteredTransactions.length}건)</span>
+          <span className='text-[12px]'>({tranactions.length}건)</span>
         </h1>
         <div className=''>
-          {filteredTransactions.length > 0 ? (
-            filteredTransactions.map((data) => {
-              const currentDate = formatDate(data.dateTime); // 현재 거래의 날짜
+          {tranactions.length > 0 ? (
+            tranactions.map((data) => {
+              const currentDate = formatDate(data.createAt); // 현재 거래의 날짜
               const showDate = lastDate !== currentDate; // 날짜가 달라지면 표시
               lastDate = currentDate; // 마지막 표시된 날짜 업데이트
 

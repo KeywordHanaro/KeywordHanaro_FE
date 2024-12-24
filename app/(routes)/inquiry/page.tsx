@@ -4,6 +4,7 @@ import { DatePicker } from '@/components/atoms/DatePicker';
 import Header from '@/components/atoms/Header';
 import TransactionList from '@/components/templates/useKeyword/inquiry/TransactionList';
 import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
+import { Transaction } from '@/types/Keyword';
 import { DateRange } from 'react-day-picker';
 // import { InquiryList } from '@/data/inquiry';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -13,7 +14,7 @@ export default function InquiryPage() {
   const router = useRouter();
   const { getKeywordById } = useKeywordApi();
   const searchParams = useSearchParams();
-  // const [transactionList, setTransactionList] = useState([]);
+  const [transactionList, setTransactionList] = useState<Transaction[]>([]);
 
   useEffect(() => {
     const id = searchParams.get('id');
@@ -21,6 +22,7 @@ export default function InquiryPage() {
       getKeywordById(parseInt(id))
         .then((res) => {
           console.log(res);
+          setTransactionList(res.transactions);
         })
         .catch((error) => {
           console.error('Failed to fetch keyword:', error);
@@ -75,8 +77,10 @@ export default function InquiryPage() {
             적용
           </p>
         </div>
-
-        <TransactionList keyword={keyword} />
+        {/* {transactionList.length > 0 && (
+          <TransactionList keyword={keyword} tranactions={transactionList} />
+        )} */}
+        <TransactionList keyword={keyword} tranactions={transactionList} />
       </div>
     </div>
   );
