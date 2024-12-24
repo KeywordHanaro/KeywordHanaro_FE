@@ -12,9 +12,10 @@ export const useKeywordApi = () => {
   };
 
   const createKeyword = async (keyword: CreateKeywordRequest) => {
+    const processedKeyword = stringifyBranchIfNeeded(keyword);
     return await fetchApi('/keyword', {
       method: 'POST',
-      body: JSON.stringify({ ...keyword }),
+      body: JSON.stringify(processedKeyword),
     });
   };
 
@@ -29,6 +30,17 @@ export const useKeywordApi = () => {
     return await fetchApi(`/keyword/${id}`, {
       method: 'DELETE',
     });
+  };
+
+  // Utility function to handle stringification
+  const stringifyBranchIfNeeded = (keyword: CreateKeywordRequest) => {
+    if (keyword.type === 'TICKET') {
+      return {
+        ...keyword,
+        branch: JSON.stringify(keyword.branch),
+      };
+    }
+    return keyword;
   };
 
   return {
