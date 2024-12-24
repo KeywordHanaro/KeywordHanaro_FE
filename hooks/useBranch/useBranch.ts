@@ -1,5 +1,5 @@
 import { useApi } from '@/hooks/useApi';
-import { TBranch } from '@/types/Branch';
+import { TBranch } from '@/types/Bank';
 
 export const useBranchApi = () => {
   const { fetchApi } = useApi();

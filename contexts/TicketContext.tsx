@@ -1,6 +1,6 @@
 'use client';
 
-import { TBranch } from '@/types/Branch';
+import { TBranch } from '@/types/Bank';
 import { createContext, useContext, useState } from 'react';
 
 type TicketContextType = {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { MyAccountWithBalance } from '@/data/transfer';
+import { MyAccountWithBalance } from '@/types/Transfer';
 import { useEffect } from 'react';
 import { levenshtein } from '@/lib/utils';
 import AccountListItem from '../molecules/AccountListItem';
@@ -26,7 +26,7 @@ export default function MyAccountList({
 
   useEffect(() => {
     console.log('result in myAccount list', result);
-    console.log('test myAccount list',!/^\d+$/.test(result));
+    console.log('test myAccount list', !/^\d+$/.test(result));
     if (result && !/^\d+$/.test(result)) {
       const threshold = 1; // 허용할 최대 편집 거리
       let bestMatch = null;

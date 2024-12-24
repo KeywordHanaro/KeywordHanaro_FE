@@ -5,24 +5,20 @@ import SetTransferAmount from '@/components/templates/useKeyword/transfer/SetTra
 import { useTransferUseSession } from '@/contexts/TransferUseContext';
 import { VoiceInputProvider } from '@/contexts/VoiceContext';
 import { UseKeywordTransfer } from '@/data/transfer';
+import { useAccountApi } from '@/hooks/useAccount/useAccount';
+import { TransferData } from '@/types/Transfer';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
-const formatNumberWithCommas = (inputValue: string): string => {
-  if (!inputValue) return '';
-  const numericValue = inputValue.replace(/[^0-9]/g, '');
-  const parsedValue = numericValue ? parseInt(numericValue, 10) : 0;
-  return new Intl.NumberFormat('ko-KR').format(parsedValue);
-};
-
 export default function SetTransferAmountPage() {
   const { formData, saveFormData } = useTransferUseSession();
+  const { transfer } = useAccountApi();
 
   /**fetching 가정 */
   const initialData = UseKeywordTransfer[0];
 
   useEffect(() => {
-    saveFormData({ ...initialData, transferAmount: '' });
+    saveFormData({ ...initialData });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -30,16 +26,23 @@ export default function SetTransferAmountPage() {
 
   const amountRef = useRef<HTMLInputElement>(null);
 
-  const onNext = () => {
-    saveFormData(
-      formData.type === 'WithoutAmount'
-        ? { ...formData, transferAmount: amountRef.current?.value || '' }
-        : {
-            ...formData,
-            transferAmount: formatNumberWithCommas(formData.amount.toString()),
-          }
-    );
-    router.push('/transfer/step2');
+  const onNext = async () => {
+    saveFormData({
+      ...formData,
+      amount: parseFloat((amountRef.current?.value || '0').replace(/,/g, '')),
+    });
+    const transferData: TransferData = {
+      fromAccountNumber: formData.fromAccount.accountNumber,
+      toAccountNumber: formData.toAccount.accountNumber,
+      amount: parseFloat((amountRef.current?.value || '0').replace(/,/g, '')),
+    };
+    await transfer(transferData)
+      .then(() => {
+        router.push('/transfer/step2');
+      })
+      .catch((e) => {
+        alert(e.message);
+      });
   };
 
   const handleBack = () => {

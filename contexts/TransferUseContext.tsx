@@ -1,14 +1,9 @@
 'use client';
 
-import { TransferProps } from '@/data/transfer';
+import { TransferProps } from '@/types/Transfer';
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 
-
-type TransferData = {
-  transferAmount: string;
-} & TransferProps;
-
-const initFormData: TransferData = {
+const initFormData: TransferProps = {
   type: 'WithAmount',
   fromAccount: {
     type: 'MyAccount',
@@ -26,12 +21,11 @@ const initFormData: TransferData = {
   checkEverytime: false,
   keyword: '',
   amount: 0,
-  transferAmount: '',
 };
 
 type TransferFormDataProps = {
-  formData: TransferData;
-  saveFormData: (data: TransferData) => void;
+  formData: TransferProps;
+  saveFormData: (data: TransferProps) => void;
 };
 
 const TransferUseContext = createContext<TransferFormDataProps>({
@@ -42,9 +36,9 @@ const TransferUseContext = createContext<TransferFormDataProps>({
 export const TransferUseFormDataProvider = ({
   children,
 }: PropsWithChildren) => {
-  const [formData, setFormData] = useState<TransferData>(initFormData);
+  const [formData, setFormData] = useState<TransferProps>(initFormData);
 
-  const saveFormData = (data: TransferData) => {
+  const saveFormData = (data: TransferProps) => {
     setFormData(data);
   };
 

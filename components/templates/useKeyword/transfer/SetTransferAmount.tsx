@@ -3,7 +3,9 @@ import { Button } from '@/components/atoms/Button';
 import { MoneyInputRef } from '@/components/atoms/Inputs';
 import InputPassword from '@/components/molecules/InputPassword';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { TransferProps } from '@/data/transfer';
+import { TransferProps } from '@/types/Transfer';
+import { useAccountApi } from '@/hooks/useAccount/useAccount';
+import { pswdReq } from '@/types/Account';
 import { convertKorToNum } from 'korean-number-converter';
 import { useState, useEffect, forwardRef } from 'react';
 import { formatNumberWithCommas } from '@/lib/utils';
@@ -20,7 +22,7 @@ export const SetTransferAmount = forwardRef<
   const [open, setOpen] = useState<boolean>(false);
   const [verified, setVerified] = useState<boolean>(false);
   const [valid, setValid] = useState<boolean>(false);
-  //[new]
+  const { checkPswd } = useAccountApi();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const money = e.target.value;
@@ -34,18 +36,11 @@ export const SetTransferAmount = forwardRef<
   };
 
   const validatePassword = async (password: number[]): Promise<boolean> => {
-    try {
-      const response = await fetch('/api/validate-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
-      });
-      const data = await response.json();
-      return data.isValid; // Assume API returns { isValid: boolean }
-    } catch (error) {
-      console.error('Error validating password:', error);
-      return false; // Default to invalid on error
-    }
+    const form: pswdReq = {
+      accountNumber: data.fromAccount.accountNumber,
+      password: password.flat().join(''),
+    };
+    return checkPswd(form);
   };
 
   useEffect(() => {

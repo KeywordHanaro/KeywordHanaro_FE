@@ -1,4 +1,4 @@
-import { TBranch } from '@/types/Branch';
+import { TBranch } from '@/types/Bank';
 import { BankLogoImg } from '../atoms/BankLogoImg';
 
 type BranchInfoItemProps = {

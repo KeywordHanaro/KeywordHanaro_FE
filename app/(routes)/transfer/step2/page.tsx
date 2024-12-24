@@ -13,7 +13,7 @@ export default function TransferCompletePage() {
   const handleBack = () => {
     router.back();
   };
-
+  console.log(formData);
   return (
     <div className='flex flex-col w-full h-full'>
       <Header
@@ -23,7 +23,7 @@ export default function TransferCompletePage() {
         onBack={handleBack}
       />
       <TransferComplete
-        amount={formData?.transferAmount}
+        amount={formData.amount.toLocaleString()}
         fromAccount={formData?.fromAccount}
         toAccount={formData?.toAccount}
       />

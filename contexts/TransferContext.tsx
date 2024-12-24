@@ -1,6 +1,6 @@
 'use client';
 
-import { TransferProps } from '@/data/transfer';
+import { TransferProps } from '@/types/Transfer';
 import { createContext, useState, PropsWithChildren, useContext } from 'react';
 
 export type TransferForm = TransferProps;

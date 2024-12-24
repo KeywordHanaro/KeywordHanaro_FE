@@ -6,7 +6,7 @@ import BankInfoItem from '@/components/molecules/BankInfoItem';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { useBranchApi } from '@/hooks/useBranch/useBranch';
-import { TBranch } from '@/types/Branch';
+import { TBranch } from '@/types/Bank';
 import { useEffect, useRef, useState } from 'react';
 
 export default function SelectBranch({
