@@ -6,13 +6,15 @@ import { useSettlementContext } from '@/contexts/SettlementContext';
 import { useRouter } from 'next/navigation';
 
 export default function SettlementUsageStep2() {
-  const { formData } = useSettlementContext();
+  const {  formData } = useSettlementContext();
   const router = useRouter();
 
   const handleSubmit = () => {
-    console.log('데이터 제출됨', formData.members, formData.amount);
+    // console.log('데이터 제출됨', formData.members, formData.amount);
     router.push('/');
   };
+
+
   return (
     <div className='w-full h-full flex flex-col gap-[30px] pt-[69px] pb-[34px] justify-between  px-[20px]'>
       <div className='w-full flex flex-col gap-[30px]'>

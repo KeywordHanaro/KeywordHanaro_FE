@@ -1,64 +1,64 @@
 'use client';
 
+import { useSettlementContext } from '@/contexts/SettlementContext';
+import { FormData } from '@/data/settlement';
+import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 export default function GetKakao() {
   const searchParams = useSearchParams();
+  const { data: session } = useSession();
+  const { updateFormData } = useSettlementContext();
   const router = useRouter();
 
-  const [data, setData] = useState(null);
   useEffect(() => {
-    const fetchCode = async () => {
+    const loadLocalStorage = (key: string) => {
+      const data = localStorage.getItem(key);
+      if (data) {
+        return JSON.parse(data) as FormData;
+      }
+    };
+    const data = loadLocalStorage('settlement');
+    if (data) {
+      updateFormData(data);
+    }
+    console.log(data);
+    const sendMessage = async () => {
       try {
-        const url = 'http://localhost:8080/api/resource';
         const code = searchParams.get('code');
         if (code === null) {
           throw new Error('code is null');
         }
-        const params = new URLSearchParams({
-          code: code,
-        });
-        // GET 요청
-        const response = await fetch(`${url}?${params}`);
-
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/settlement/message`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${session?.user.jwt}`,
+            },
+            body: JSON.stringify({
+              code: code,
+              formData: data,
+            }),
+          }
+        );
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-
-        const result = await response.json();
-        setData(result);
+        router.push('/settlement/step2');
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-    if (!!searchParams.get('code') !== null) {
-      fetchCode();
-    }
-  }, [searchParams]);
-
-  // const openKakaoLogin = () => {
-  //   window.open(
-  //     `${kakao_auth_path}?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`
-  //   );
-  // };
-  const selectFrients = () => {
-    router.push('/');
-  };
-
-  if (data === null) {
-    return (
-      <>
-        <p>Loading</p>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <div>
-          <button onClick={selectFrients}>친구 선택</button>
-        </div>
-      </>
-    );
-  }
+    sendMessage();
+  }, []);
+  return (
+    <>
+      <div>
+        <h1>멤버에게 카카오톡 메시지를 보내는 중이에요</h1>
+      </div>
+    </>
+  );
 }
