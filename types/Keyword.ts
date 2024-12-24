@@ -1,4 +1,6 @@
-export type CreateKeywordRequest = InquiryKeywordRequest;
+export type CreateKeywordRequest =
+  | InquiryKeywordRequest
+  | TransferKeywordRequest;
 
 // 공통 요청 타입
 type BaseKeywordRequest = {
@@ -19,16 +21,16 @@ type InquiryKeywordRequest = BaseKeywordRequest & {
   inquiryWord: string;
 };
 
-// // 송금 키워드 요청 타입
-// interface TransferKeywordRequest extends BaseKeywordRequest {
-//   type: 'TRANSFER';
-//   account: AccountInfo;
-//   subAccount: {
-//     accountNumber: string;
-//   };
-//   check_every_time: boolean;
-//   amount?: number; // check_every_time이 false일 때만 필요
-// }
+// 송금 키워드 요청 타입
+type TransferKeywordRequest = BaseKeywordRequest & {
+  type: 'TRANSFER';
+  account: { id: number };
+  subAccount: {
+    accountNumber: string;
+  };
+  check_every_time: boolean;
+  amount?: number; // check_every_time이 false일 때만 필요
+};
 
 // // 번호표 키워드 요청 타입
 // interface TicketKeywordRequest extends BaseKeywordRequest {
