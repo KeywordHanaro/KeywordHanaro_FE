@@ -8,6 +8,7 @@ import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { useBranchApi } from '@/hooks/useBranch/useBranch';
 import { TBranch } from '@/types/Bank';
 import { useEffect, useRef, useState } from 'react';
+import { levenshtein } from '@/lib/utils';
 
 export default function SelectBranch({
   handleSetBranch,
@@ -18,39 +19,46 @@ export default function SelectBranch({
   const [branches, setBranches] = useState<TBranch[]>([]);
   // const [searchQuery, setSearchQuery] = useState('');
   const { result, setResult } = useVoiceInputSession();
+  const [isLoading, setIsLoading] = useState(true);
+
   // console.log(searchQuery);
   const { getBranchList } = useBranchApi();
 
+  const fetchData = async (value?: string) => {
+    setIsLoading(true);
+    if (inputRef.current && value) {
+      inputRef.current.value = value;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        getBranchList(
+          position.coords.longitude,
+          position.coords.latitude,
+          value
+        ).then((response) => {
+          setBranches(response);
+          setIsLoading(false);
+        });
+      },
+      (error) => {
+        console.error('Error getting current position:', error);
+        setIsLoading(false);
+      }
+    );
+  };
+
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        getBranchList(position.coords.longitude, position.coords.latitude).then(
-          (response) => {
-            setBranches(response);
-          }
-        );
-      });
+      fetchData();
     } else {
       console.error('Geolocation is not supported by this browser.');
+      setIsLoading(false);
     }
   }, []);
 
   const handleSearch = () => {
     if (inputRef?.current?.value) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          getBranchList(
-            position.coords.longitude,
-            position.coords.latitude,
-            inputRef?.current?.value
-          ).then((response) => {
-            setBranches(response);
-          });
-        },
-        (error) => {
-          console.error('Error getting current position:', error);
-        }
-      );
+      fetchData(inputRef?.current?.value);
     }
   };
 
@@ -63,25 +71,45 @@ export default function SelectBranch({
 
   useEffect(() => {
     if (result) {
-      if (inputRef.current) {
-        inputRef.current.value = result;
+      const findSimilarBranches = (input: string, threshold: number = 0.3) => {
+        const inputWords = input.toLowerCase().split(' ');
+        let similarBranch = null;
+        let maxSimilarity = 0;
+
+        branches.forEach((branch) => {
+          const branchWords = branch.placeName.toLowerCase().split(' ');
+          const branchLength = branchWords.length;
+
+          for (let i = 0; i <= inputWords.length - branchLength; i++) {
+            const inputSubset = inputWords.slice(i, i + branchLength).join(' ');
+            const distance = levenshtein(
+              inputSubset,
+              branch.placeName.toLowerCase()
+            );
+            const similarity =
+              1 -
+              distance / Math.max(inputSubset.length, branch.placeName.length);
+
+            if (similarity >= threshold && similarity > maxSimilarity) {
+              maxSimilarity = similarity;
+              similarBranch = branch;
+            }
+          }
+        });
+
+        return similarBranch;
+      };
+
+      const similarBranch = findSimilarBranches(result, 0.7);
+      if (similarBranch) {
+        handleSetBranch(similarBranch);
+      } else {
+        fetchData(result);
       }
+
       setResult('');
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          getBranchList(
-            position.coords.longitude,
-            position.coords.latitude,
-            result
-          );
-        },
-        (error) => {
-          console.error('Error getting current position:', error);
-        }
-      );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [result]);
+  }, [result, setResult, branches]);
 
   return (
     <div className='w-full flex flex-col gap-[24px]'>
@@ -98,7 +126,19 @@ export default function SelectBranch({
       />
 
       <div className='flex flex-col pt-3 border-t border-[#DFE2E6] w-full'>
-        {branches.length ? (
+        {isLoading ? (
+          <div className='flex flex-wrap justify-around gap-3 items-start '>
+            {Array.from({ length: 12 }).map((_, index) => (
+              <div key={index} className='flex flex-col gap-3 w-full'>
+                <Skeleton className='h-[100px] w-full rounded-xl' />
+                <div className='space-y-2'>
+                  <Skeleton className='h-4 w-[250px]' />
+                  <Skeleton className='h-4 w-[200px]' />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : branches.length > 0 ? (
           <>
             {branches.map((branch) => (
               <div
@@ -112,15 +152,7 @@ export default function SelectBranch({
           </>
         ) : (
           <div className='flex flex-wrap justify-around gap-3 items-start '>
-            {Array.from({ length: 12 }).map((_, index) => (
-              <div key={index} className='flex flex-col gap-3 w-full'>
-                <Skeleton className='h-[100px] w-full rounded-xl  ' />
-                <div className='space-y-2'>
-                  <Skeleton className='h-4 w-[250px]' />
-                  <Skeleton className='h-4 w-[200px]' />
-                </div>
-              </div>
-            ))}
+            데이터가 없습니다.
           </div>
         )}
       </div>

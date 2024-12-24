@@ -1,9 +1,9 @@
 export type TBranch = {
+  id: string;
+  placeName: string;
   addressName: string;
   distance: string;
-  id: string;
   phone: string;
-  placeName: string;
 };
 
 export type Bank = {
