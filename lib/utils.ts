@@ -1,6 +1,6 @@
 import { bankList } from '@/data/bank';
 import { Keyword } from '@/data/keyword';
-import { TicketTask } from '@/data/ticket';
+import { TicketTask } from '@/types/Ticket';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 

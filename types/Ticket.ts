@@ -1,3 +1,5 @@
+import { TBranch } from './Bank';
+
 export type Ticket = {
   id: number;
   user: string;
@@ -7,4 +9,16 @@ export type Ticket = {
   waitingGuest: number;
   workNumber: string;
   createAt: string;
+};
+
+export type TicketProps = {
+  branch: TBranch;
+  keyword: string;
+};
+
+export type TicketTask = {
+  name: string;
+  description: string;
+  path: string;
+  src: string;
 };

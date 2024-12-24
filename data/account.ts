@@ -21,10 +21,10 @@ export const MyAccounts: MyAccountWithBalance[] = [
   {
     type: 'MyAccount',
     accountName: '성엽이 용돈',
-    bankId: 1,
-    accountId: 18,
+    bankId: 81,
+    accountId: 1,
     balance: '220,400',
-    accountNumber: '1231-1231-1231',
+    accountNumber: '156-5483-111-6854',
   },
   {
     type: 'MyAccount',
@@ -56,9 +56,10 @@ export const RecentAccounts: RecentAccount[] = [
   {
     type: 'MyAccount',
     accountName: '서아의 예적금통장',
-    bankId: 1,
-    accountId: 13,
-    accountNumber: '9999999',
+    bankId: 81,
+    accountId: 1,
+
+    accountNumber: '222-2222-2225',
   },
   {
     type: 'OthersAccount',

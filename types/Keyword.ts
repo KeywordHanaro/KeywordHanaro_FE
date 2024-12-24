@@ -1,6 +1,9 @@
+import { TBranch } from './Bank';
+
 export type CreateKeywordRequest =
   | InquiryKeywordRequest
-  | TransferKeywordRequest;
+  | TransferKeywordRequest
+  | TicketKeywordRequest;
 
 // 공통 요청 타입
 type BaseKeywordRequest = {
@@ -8,11 +11,6 @@ type BaseKeywordRequest = {
   name: string;
   desc: string;
 };
-
-// // 계좌 정보 타입
-// interface AccountInfo {
-//   id: number;
-// }
 
 // 조회 키워드 요청 타입
 type InquiryKeywordRequest = BaseKeywordRequest & {
@@ -33,6 +31,12 @@ type TransferKeywordRequest = BaseKeywordRequest & {
 };
 
 // // 번호표 키워드 요청 타입
+type TicketKeywordRequest = {
+  type: 'TICKET';
+  name: string;
+  desc: string;
+  branch: TBranch;
+};
 // interface TicketKeywordRequest extends BaseKeywordRequest {
 //   type: 'TICKET';
 //   branch: {
