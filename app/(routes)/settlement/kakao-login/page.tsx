@@ -2,6 +2,7 @@
 
 import { useSettlementContext } from '@/contexts/SettlementContext';
 import { FormData } from '@/data/settlement';
+// import { activateSettlement } from '@/types/SettlementRequest';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
@@ -22,8 +23,23 @@ export default function GetKakao() {
     const data = loadLocalStorage('settlement');
     if (data) {
       updateFormData(data);
+    } else {
+      return;
     }
-    console.log(data);
+    // console.log(data);
+
+    const account = {
+      accountNumber: data.fromAccount.accountNumber,
+      name: data.fromAccount.accountName,
+    };
+
+    const groupMembers = data.members.map((member) => ({
+      name: member.name,
+      tel: member.phoneNumber,
+    }));
+
+    // const members = JSON.stringify(groupMembers);
+
     const sendMessage = async () => {
       try {
         const code = searchParams.get('code');
@@ -40,7 +56,10 @@ export default function GetKakao() {
             },
             body: JSON.stringify({
               code: code,
-              formData: data,
+              amount: parseInt(data.amount),
+              account: account,
+              groupMember: groupMembers,
+              type: data.category
             }),
           }
         );
@@ -53,7 +72,7 @@ export default function GetKakao() {
       }
     };
     sendMessage();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>
