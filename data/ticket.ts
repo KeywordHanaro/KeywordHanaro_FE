@@ -1,16 +1,4 @@
-import { TBranch } from '@/types/Bank';
-
-export type TicketProps = {
-  branch: TBranch;
-  keyword: string;
-};
-
-export type TicketTask = {
-  name: string;
-  description: string;
-  path: string;
-  src: string;
-};
+import { TicketProps, TicketTask } from '@/types/Ticket';
 
 export const ticketKeyword: TicketProps[] = [
   {
