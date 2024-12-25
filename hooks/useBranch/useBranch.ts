@@ -1,5 +1,6 @@
 import { useApi } from '@/hooks/useApi';
 import { TBranch } from '@/types/Bank';
+import { TicketRequest } from '@/types/Ticket';
 
 export const useBranchApi = () => {
   const { fetchApi } = useApi();
@@ -27,7 +28,15 @@ export const useBranchApi = () => {
     return response;
   };
 
+  const issueTicket = async (data: TicketRequest) => {
+    return await fetchApi('/keyword', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  };
+
   return {
     getBranchList,
+    issueTicket,
   };
 };
