@@ -39,11 +39,11 @@ const Keyword = ({
       data-keyword-id={dataKeywordId}
       onClick={() => {
         router.push(
-          type.includes('transfer') || type.includes('settlement')
-            ? `/${type.toLowerCase().replace('amount', '')}/step1?id=${id}`
+          type.includes('TRANSFER') || type.includes('SETTLEMENT')
+            ? `/${type.toLowerCase()}/step1?id=${id}`
             : type.includes('multiKeyword')
               ? `/${type}/step1/?id=${id}`
-              : `/${type.toLowerCase().replace('amount', '')}?id=${id}`
+              : `/${type.toLowerCase()}?id=${id}`
         );
       }}
     >
