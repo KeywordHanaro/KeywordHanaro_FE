@@ -35,14 +35,13 @@ type TransferKeywordRequest = BaseKeywordRequest & {
 };
 
 // // 번호표 키워드 요청 타입
-type TicketKeywordRequest = {
+type TicketKeywordRequest = BaseKeywordRequest & {
   type: 'TICKET';
-  name: string;
-  desc: string;
   branch: TBranch;
 };
 
 /////////////////////////////
+// 키워드 사용 type 정의
 export type UseKeywordResponse =
   | InquiryUsageResponse
   | TransferUsageResponse
