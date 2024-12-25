@@ -3,7 +3,7 @@
 import Header from '@/components/atoms/Header';
 import InputPassword from '@/components/molecules/InputPassword';
 import KeywordWithInputs from '@/components/molecules/KeywordWithInputs';
-import TransactionList from '@/components/templates/useKeyword/inquiry/TransactionList';
+// import TransactionList from '@/components/templates/useKeyword/inquiry/TransactionList';
 import { VoiceInputProvider } from '@/contexts/VoiceContext';
 import { KeywordDetailList } from '@/data/keyword';
 import { Member } from '@/data/member';
@@ -238,11 +238,12 @@ const MultiKeyword = () => {
           </div>
         </div>
         {/* 조회 리스트 반복시켜야함 */}
-        {multikeywordDetail?.map((keyword) =>
+        {/* TransactionList 컴포넌트 props에서 keyword 빠지고 transactions 들어가서 fetch 받아서 넣어줘야 합니다. */}
+        {/* {multikeywordDetail?.map((keyword) =>
           keyword.type === 'inquiry' ? (
             <TransactionList key={keyword.id} keyword={keyword.searchKeyword} />
           ) : null
-        )}
+        )} */}
         {/* <TransactionList keyword='급여' /> */}
         {/* 키워드 리스트 */}
         <div className='flex flex-col gap-3 pb-10'>

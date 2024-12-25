@@ -23,6 +23,19 @@ type InquiryKeywordRequest = BaseKeywordRequest & {
   inquiryWord: string;
 };
 
+// 조회 거래 내역
+export type Transaction = {
+  id: string;
+  account: Account;
+  subAccount: Account;
+  amount: number;
+  type: string;
+  alias: string;
+  beforeBalance: number;
+  afterBalance: number;
+  createAt: string;
+};
+
 // 송금 키워드 요청 타입
 type TransferKeywordRequest = BaseKeywordRequest & {
   type: 'TRANSFER';
@@ -49,7 +62,7 @@ export type UseKeywordResponse =
   | TicketUsageResponse;
 
 // 키워드 사용 type 정의
-type InquiryUsageResponse = {
+export type InquiryUsageResponse = {
   id: number;
   user: UserDetail;
   type: 'INQUIRY';
@@ -59,6 +72,7 @@ type InquiryUsageResponse = {
   account: Account;
   inquiryWord: string;
   favorite: boolean;
+  transactions: Transaction[];
 };
 
 type TransferUsageResponse = {
