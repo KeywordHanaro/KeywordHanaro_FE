@@ -2,6 +2,8 @@
 
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { ticketTasks } from '@/data/ticket';
+import { useBranchApi } from '@/hooks/useBranch/useBranch';
+import { TicketUsageResponse } from '@/types/Keyword';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -9,10 +11,33 @@ import { findTicketTask } from '@/lib/utils';
 import SpeechToText from '../SpeechToText';
 import { Card } from '../atoms/Card';
 
-export default function TicketCategory() {
-  const router = useRouter();
+type TicektCategoryProps = {
+  data: TicketUsageResponse;
+};
 
-  const handleCategory = (path: string) => router.push(path);
+export default function TicketCategory({
+  data: {
+    id: keywordId,
+    branch: { id: branchId, placeName: branchName },
+  },
+}: TicektCategoryProps) {
+  const router = useRouter();
+  const { issueTicket } = useBranchApi();
+
+  const handleCategory = (workNumber: number, path: string) => {
+    issueTicket({
+      keywordId,
+      workNumber: workNumber,
+      branchId,
+      branchName,
+    })
+      .then(() => {
+        router.push(path);
+      })
+      .catch((error) => {
+        alert(`번호표 발급에 실패하였습니다. 다시시도해주세요 ${error}`);
+      });
+  };
 
   const { result, resetResult } = useVoiceInputSession();
 
@@ -34,10 +59,10 @@ export default function TicketCategory() {
 
   return (
     <div className='flex flex-col gap-3 p-[8px]'>
-      {ticketTasks.map((category) => (
+      {ticketTasks.map((category, index) => (
         <Card
           key={category.name}
-          onClick={() => handleCategory(category.path)}
+          onClick={() => handleCategory(index + 1, category.path)}
           padding='p-[25px]'
           className='hover:bg-hanaPrimary hover:text-white'
           data-keyword-id={category.name}

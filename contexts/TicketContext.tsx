@@ -20,7 +20,7 @@ export const TicketProvider = ({ children }: { children: React.ReactNode }) => {
   const [isCheck, setIsCheck] = useState(false);
   const [isTerms, setIsTerms] = useState(false);
   const [selectedBranch, setSelectedBranch] = useState<TBranch>({
-    id: '0',
+    id: 0,
     placeName: '',
     addressName: '',
     distance: '',

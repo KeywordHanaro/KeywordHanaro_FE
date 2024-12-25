@@ -3,7 +3,7 @@ import { TicketProps, TicketTask } from '@/types/Ticket';
 export const ticketKeyword: TicketProps[] = [
   {
     branch: {
-      id: '1',
+      id: 1,
       placeName: '성수역',
       distance: '100',
       addressName:
@@ -14,7 +14,7 @@ export const ticketKeyword: TicketProps[] = [
   },
   {
     branch: {
-      id: '2',
+      id: 2,
       placeName: '성수역',
       distance: '100',
       addressName:

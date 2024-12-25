@@ -20,6 +20,7 @@ export default async function TicketPage({
   }
 
   const keywordDetail = await getKeywordById(Number(searchParams.id));
+  console.log(keywordDetail);
   return (
     <>
       <div className='flex flex-col'>
@@ -31,7 +32,7 @@ export default async function TicketPage({
           </h1>
           <BankInfoItem data={keywordDetail.branch} />
           <VoiceInputProvider>
-            <TicketCategory />
+            <TicketCategory data={keywordDetail} />
           </VoiceInputProvider>
         </div>
       </div>
