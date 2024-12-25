@@ -1,5 +1,5 @@
 export type TBranch = {
-  id: string;
+  id: number;
   placeName: string;
   addressName: string;
   distance: string;
