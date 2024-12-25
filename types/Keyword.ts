@@ -9,9 +9,6 @@ export type CreateKeywordRequest =
   | TransferKeywordRequest
   | TicketKeywordRequest;
 
-// 키워드 사용 응답 타입
-// export type UseKeywordResponse = InquiryKeywordResponse;
-
 // 공통 요청 타입
 type BaseKeywordRequest = {
   type: 'INQUIRY' | 'TRANSFER' | 'TICKET' | 'SETTLEMENT';
@@ -39,21 +36,6 @@ export type Transaction = {
   createAt: string;
 };
 
-// 조회 키워드 응답 타입
-// export type InquiryKeywordResponse = {
-//   keywordDto: {
-//     account: Account;
-//     desc: string;
-//     favorite: boolean;
-//     id: number;
-//     inquiryWord: string;
-//     name: string;
-//     seqOrder: number;
-//     type: string;
-//   };
-//   transactions: Transaction[];
-// };
-
 // 송금 키워드 요청 타입
 type TransferKeywordRequest = BaseKeywordRequest & {
   type: 'TRANSFER';
@@ -80,7 +62,7 @@ export type UseKeywordResponse =
   | TicketUsageResponse;
 
 // 키워드 사용 type 정의
-type InquiryUsageResponse = {
+export type InquiryUsageResponse = {
   id: number;
   user: UserDetail;
   type: 'INQUIRY';

@@ -37,12 +37,28 @@ export const useAccountApi = () => {
 
   // 거래 내역 조회 - 날짜로
   const showMyTransactions = async (
-    accountId: number
+    accountId: number,
+    startDate: string,
+    endDate: string,
+    transactionType: string,
+    sortOrder: string,
+    searchWord: string
   ): Promise<Transaction[]> => {
-    const response = await fetchApi(`/inquiry/${accountId}`, {
-      method: 'POST',
-      body: JSON.stringify({ accountId }),
+    const queryParams = new URLSearchParams({
+      startDate,
+      endDate,
+      transactionType,
+      sortOrder,
+      searchWord,
     });
+
+    const response = await fetchApi(
+      `/inquiry/${accountId}?${queryParams.toString()}`,
+      {
+        method: 'GET',
+      }
+    );
+
     return response;
   };
 

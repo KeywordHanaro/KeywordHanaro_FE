@@ -3,17 +3,19 @@
 import { DatePicker } from '@/components/atoms/DatePicker';
 import Header from '@/components/atoms/Header';
 import TransactionList from '@/components/templates/useKeyword/inquiry/TransactionList';
+import { useAccountApi } from '@/hooks/useAccount/useAccount';
 import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
-import { Transaction } from '@/types/Keyword';
+import { InquiryUsageResponse, Transaction } from '@/types/Keyword';
 import { DateRange } from 'react-day-picker';
-// import { InquiryList } from '@/data/inquiry';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function InquiryPage() {
   const router = useRouter();
   const { getKeywordById } = useKeywordApi();
+  const { showMyTransactions } = useAccountApi();
   const searchParams = useSearchParams();
+  const [inquiryKeyword, setInquiryKeyword] = useState<InquiryUsageResponse>();
   const [transactionList, setTransactionList] = useState<Transaction[]>([]);
 
   useEffect(() => {
@@ -22,10 +24,11 @@ export default function InquiryPage() {
       getKeywordById(parseInt(id))
         .then((res) => {
           console.log(res);
-          setTransactionList(res.transactions);
+          setInquiryKeyword(res as InquiryUsageResponse);
+          setTransactionList((res as InquiryUsageResponse).transactions);
         })
         .catch((error) => {
-          console.error('Failed to fetch keyword:', error);
+          console.error('거래 내역 가져오기 실패:', error);
         });
     }
   }, [searchParams]);
@@ -43,14 +46,39 @@ export default function InquiryPage() {
     router.push('/keyword');
   };
 
-  const handleApply = () => {
-    console.log('시작 날짜 : ' + range?.from + ', 끝 날짜 : ' + range?.to);
+  const formatDate = (date: Date | undefined): string => {
+    if (!date) return '';
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   };
 
-  const keyword = '월급';
+  const handleApply = () => {
+    const fromDate = formatDate(range?.from);
+    const toDate = formatDate(range?.to);
+    if (inquiryKeyword) {
+      showMyTransactions(
+        parseInt(inquiryKeyword.account.id.toString()),
+        fromDate,
+        toDate,
+        'all',
+        'latest',
+        inquiryKeyword?.inquiryWord
+      )
+        .then((res) => {
+          console.log(res);
+          setTransactionList(res);
+        })
+        .catch((error) => {
+          console.error('거래 내역 가져오기 실패:', error);
+        });
+    }
+  };
 
   // 한글키워드 검색 시, 받침 유무에 따른 을/를 출력
   const hasBatchim = (word: string) => {
+    if (!word) return false;
     const lastChar = word[word.length - 1];
     const code = lastChar.charCodeAt(0);
     if (code < 44032 || code > 55203) return false;
@@ -66,8 +94,8 @@ export default function InquiryPage() {
       />
       <div className='flex flex-col flex-grow  overflow-y-scroll pt-[10px] px-5 pb-24 gap-2.5'>
         <h1 className='font-bold text-2xl'>
-          {keyword}
-          {hasBatchim(keyword) ? '을' : '를'} 기반으로
+          {inquiryKeyword?.inquiryWord}
+          {hasBatchim(inquiryKeyword?.inquiryWord || '') ? '을' : '를'} 기반으로
           <br />
           검색한 결과예요
         </h1>
@@ -80,7 +108,10 @@ export default function InquiryPage() {
         {/* {transactionList.length > 0 && (
           <TransactionList keyword={keyword} tranactions={transactionList} />
         )} */}
-        <TransactionList keyword={keyword} tranactions={transactionList} />
+        <TransactionList
+          keyword={inquiryKeyword?.inquiryWord || ''}
+          tranactions={transactionList}
+        />
       </div>
     </div>
   );
