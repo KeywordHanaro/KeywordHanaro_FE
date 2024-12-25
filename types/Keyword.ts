@@ -7,7 +7,8 @@ import { UserDetail } from './User';
 export type CreateKeywordRequest =
   | InquiryKeywordRequest
   | TransferKeywordRequest
-  | TicketKeywordRequest;
+  | TicketKeywordRequest
+  | SettlementKeywordRequest;
 
 // 공통 요청 타입
 type BaseKeywordRequest = {
@@ -51,6 +52,30 @@ type TransferKeywordRequest = BaseKeywordRequest & {
 type TicketKeywordRequest = BaseKeywordRequest & {
   type: 'TICKET';
   branch: TBranch;
+};
+
+//**********정산 키워드 요청 타입****************//
+//정산 생성 타입
+type SettlementKeywordRequest = BaseKeywordRequest & {
+  type: 'SETTLEMENT';
+  amount?: number;
+  checkEveryTime: boolean;
+  groupMember: string;
+  account: settlementAccount;
+};
+
+type settlementAccount = {
+  id: number,
+  accountNumber: string,
+  accountName: string,
+}
+
+
+//정산 사용 시 카톡 메시지 요청용
+export type activateSettlement = {
+  amount: number;
+  groupMember: string;
+  account: Account;
 };
 
 /////////////////////////////
