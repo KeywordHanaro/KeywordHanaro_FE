@@ -22,7 +22,7 @@ import { findSimilarKeywords } from '@/lib/utils';
 export default function Home() {
   const { getAllKeywords } = useKeywordApi();
 
-  const [keywordList, setKeywordList] = useState<UseKeywordResponse[] | []>([]);
+  const [keywordList, setKeywordList] = useState<UseKeywordResponse[]>([]);
   const { result, resetResult } = useVoiceInputSession();
 
   useEffect(() => {

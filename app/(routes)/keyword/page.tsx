@@ -5,8 +5,9 @@ import Header from '@/components/atoms/Header';
 import AddNewKeyword from '@/components/molecules/AddNewKeyword';
 import Keyword from '@/components/molecules/Keyword';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { keywordList, Keyword as TKeyword } from '@/data/keyword';
 import { useToast } from '@/hooks/use-toast';
+import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
+import { UseKeywordResponse } from '@/types/Keyword';
 import { motion, Reorder } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
@@ -15,19 +16,16 @@ import { findSimilarKeywords } from '@/lib/utils';
 
 export default function KeywordPage() {
   const router = useRouter();
+  const { getAllKeywords } = useKeywordApi();
   const onEdit = () => {
     router.push('/keyword/edit');
   };
   const { toast } = useToast();
 
-  const [keywords, setKeywords] = useState<TKeyword[]>(keywordList);
+  const [keywordList, setKeywordList] = useState<UseKeywordResponse[]>([]);
 
-  const [favoriteItems, setFavoriteItems] = useState<number[]>(() =>
-    keywordList.filter((k) => k.isFavorite).map((k) => k.id)
-  );
-  const [normalItems, setNormalItems] = useState<number[]>(() =>
-    keywordList.filter((k) => !k.isFavorite).map((k) => k.id)
-  );
+  const [favoriteItems, setFavoriteItems] = useState<number[]>([]);
+  const [normalItems, setNormalItems] = useState<number[]>([]);
 
   const { result, resetResult } = useVoiceInputSession();
 
@@ -41,7 +39,7 @@ export default function KeywordPage() {
       return;
     }
 
-    setKeywords((prevKeywords) => {
+    setKeywordList((prevKeywords) => {
       const updatedKeywords = prevKeywords.map((k) =>
         k.id === id ? { ...k, isFavorite } : k
       );
@@ -67,8 +65,20 @@ export default function KeywordPage() {
   };
 
   useEffect(() => {
+    const fetchKeywordList = async () => {
+      const response = await getAllKeywords();
+      console.log(response);
+      setKeywordList(response);
+      setFavoriteItems(response.filter((k) => k.favorite).map((k) => k.id));
+      setNormalItems(response.filter((k) => !k.favorite).map((k) => k.id));
+    };
+    fetchKeywordList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     if (result) {
-      const similarKeywords = findSimilarKeywords(keywords, result);
+      const similarKeywords = findSimilarKeywords(keywordList, result);
       if (similarKeywords.length > 0) {
         const keywordElement = document.querySelector(
           `[data-keyword-id="${similarKeywords[0].id}"]`
@@ -90,7 +100,6 @@ export default function KeywordPage() {
         onBack={() => router.push('/')}
         onAction={onEdit}
       />
-
       <motion.ul
         variants={ulVariants}
         initial='hidden'
@@ -101,7 +110,7 @@ export default function KeywordPage() {
           키워드 순서는 꾸욱 눌러서 변경할 수 있어요
         </span>
 
-        {favoriteItems.length > 0 && (
+        {favoriteItems && (
           <Reorder.Group
             axis='y'
             values={favoriteItems}
@@ -109,7 +118,8 @@ export default function KeywordPage() {
             className='flex flex-col gap-2.5'
           >
             {favoriteItems.map((id, index) => {
-              const data = keywords.find((el) => el.id === id);
+              const data = keywordList.find((el) => el.id === id);
+              console.log('data', data);
               if (!data) return null;
               return (
                 <motion.li key={id} variants={liVariants} custom={index}>
@@ -132,7 +142,7 @@ export default function KeywordPage() {
         )}
 
         {/* 일반 키워드 리스트 */}
-        {normalItems.length > 0 && (
+        {normalItems && (
           <Reorder.Group
             axis='y'
             values={normalItems}
@@ -140,7 +150,7 @@ export default function KeywordPage() {
             className='flex flex-col gap-2.5'
           >
             {normalItems.map((id, index) => {
-              const data = keywords.find((el) => el.id === id);
+              const data = keywordList.find((el) => el.id === id);
               if (!data) return null;
               return (
                 <motion.li
@@ -166,10 +176,11 @@ export default function KeywordPage() {
             })}
           </Reorder.Group>
         )}
-
-        <motion.li variants={liVariants} custom={keywords.length + 1}>
-          <AddNewKeyword />
-        </motion.li>
+        {(favoriteItems.length !== 0 || normalItems.length !== 0) && (
+          <motion.li variants={liVariants} custom={keywordList.length + 1}>
+            <AddNewKeyword />
+          </motion.li>
+        )}
       </motion.ul>
 
       <SpeechToText placeholder='키워드를 선택해주세요.' />

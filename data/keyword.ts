@@ -83,14 +83,14 @@ export type MultiKeyword = BaseKeyword & {
 export const getColorByType = (type: string) => {
   switch (type.toLowerCase()) {
     case 'transfer':
-    case 'transferAmount':
+    case 'transferamount':
       return 'pink';
     case 'inquiry':
       return 'green';
     case 'ticket':
       return 'yellow';
     case 'settlement':
-    case 'settlementAmount':
+    case 'settlementamount':
       return 'blue';
     case 'multiKeyword':
       return 'orange';
@@ -100,16 +100,16 @@ export const getColorByType = (type: string) => {
 };
 
 export const getNameByType = (type: string) => {
-  switch (type) {
+  switch (type.toLowerCase()) {
     case 'transfer':
-    case 'transferAmount':
+    case 'transferamount':
       return '송금';
     case 'inquiry':
       return '조회';
     case 'ticket':
       return '번호표';
     case 'settlement':
-    case 'settlementAmount':
+    case 'settlementamount':
       return '정산/회비';
     case 'multiKeyword':
       return '키워드 조합';

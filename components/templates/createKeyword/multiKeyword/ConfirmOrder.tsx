@@ -1,4 +1,4 @@
-import Keyword from '@/components/molecules/Keyword';
+// import Keyword from '@/components/molecules/Keyword';
 import { MultiKeywordForm } from '@/contexts/MultiKeywordContext';
 import { keywordList } from '@/data/keyword';
 import { Reorder } from 'motion/react';
@@ -40,7 +40,7 @@ export default function ConfirmOrder({
             if (!data) return null;
             return (
               <Reorder.Item key={id} value={id} drag='y'>
-                <Keyword data={data} />
+                {/* <Keyword data={data} /> */}
               </Reorder.Item>
             );
           })}
