@@ -1,10 +1,15 @@
 // hooks/useKeywordApi.ts
 import { KeywordDetail } from '@/data/keyword';
 import { useApi } from '@/hooks/useApi';
-import { CreateKeywordRequest } from '@/types/Keyword';
+import { CreateKeywordRequest, UseKeywordResponse } from '@/types/Keyword';
 
 export const useKeywordApi = () => {
   const { fetchApi } = useApi();
+
+  const getAllKeywords = async (): Promise<UseKeywordResponse[]> => {
+    const response = await fetchApi('/keyword');
+    return response;
+  };
 
   const getKeywordById = async (id: number): Promise<KeywordDetail> => {
     const response = await fetchApi(`/keyword/${id}`);
@@ -44,6 +49,7 @@ export const useKeywordApi = () => {
   };
 
   return {
+    getAllKeywords,
     getKeywordById,
     createKeyword,
     updateKeyword,

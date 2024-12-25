@@ -1,5 +1,5 @@
 import { bankList } from '@/data/bank';
-import { Keyword } from '@/data/keyword';
+import { UseKeywordResponse } from '@/types/Keyword';
 import { TicketTask } from '@/types/Ticket';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -177,7 +177,7 @@ export function koreanCurrencyToNumber(currencyStr: string): number {
 }
 
 export const findSimilarKeywords = (
-  keywordList: Keyword[],
+  keywordList: UseKeywordResponse[],
   input: string,
   threshold: number = 0.3
 ) => {
@@ -185,14 +185,14 @@ export const findSimilarKeywords = (
   const similarKeywords: typeof keywordList = [];
 
   keywordList.forEach((keyword) => {
-    const keywordWords = keyword.title.toLowerCase().split(' ');
+    const keywordWords = keyword.name.toLowerCase().split(' ');
     const keywordLength = keywordWords.length;
 
     for (let i = 0; i <= inputWords.length - keywordLength; i++) {
       const inputSubset = inputWords.slice(i, i + keywordLength).join(' ');
-      const distance = levenshtein(inputSubset, keyword.title.toLowerCase());
+      const distance = levenshtein(inputSubset, keyword.name.toLowerCase());
       const similarity =
-        1 - distance / Math.max(inputSubset.length, keyword.title.length);
+        1 - distance / Math.max(inputSubset.length, keyword.name.length);
 
       if (similarity >= threshold) {
         similarKeywords.push(keyword);

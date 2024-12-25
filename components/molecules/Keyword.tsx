@@ -1,10 +1,7 @@
 'use client';
 
-import {
-  getColorByType,
-  getNameByType,
-  Keyword as TKeyword,
-} from '@/data/keyword';
+import { getColorByType, getNameByType } from '@/data/keyword';
+import { UseKeywordResponse } from '@/types/Keyword';
 import { BsStarFill } from 'react-icons/bs';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -12,7 +9,7 @@ import { Card } from '../atoms/Card';
 import ColorChip from '../atoms/ColorChips';
 
 type KeywordProps = {
-  data: TKeyword;
+  data: UseKeywordResponse;
   'data-keyword-id'?: string | number;
   canDelete?: boolean;
   onDelete?: (id: number) => void;
@@ -20,7 +17,7 @@ type KeywordProps = {
 };
 
 const Keyword = ({
-  data: { id, type, title, description, isFavorite },
+  data: { id, type, name, desc, favorite },
   'data-keyword-id': dataKeywordId,
   canDelete,
   onDelete,
@@ -32,7 +29,7 @@ const Keyword = ({
 
   const handleFavorite = () => {
     if (onFavoriteChange) {
-      onFavoriteChange(id, !isFavorite);
+      onFavoriteChange(id, !favorite);
     }
   };
 
@@ -53,11 +50,11 @@ const Keyword = ({
       <div className='flex flex-col gap-[10px]'>
         <div className='flex gap-2 items-center'>
           <span className='text-fontBlack text-[16px] font-semibold'>
-            {title}
+            {name}
           </span>
           <ColorChip color={chipColor}>{chipName}</ColorChip>
         </div>
-        <span className='text-subGray text-[11px]'>{description}</span>
+        <span className='text-subGray text-[11px]'>{desc}</span>
       </div>
 
       {canDelete ? (
@@ -86,7 +83,7 @@ const Keyword = ({
         <BsStarFill
           className={cn(
             'w-[27px] h-[27px]',
-            isFavorite ? 'text-yellow-300' : 'text-[#D9D9D9]'
+            favorite ? 'text-yellow-300' : 'text-[#D9D9D9]'
           )}
           onClick={(e) => {
             e.stopPropagation();

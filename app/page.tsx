@@ -8,32 +8,30 @@ import { AppSidebar } from '@/components/organisms/AppSidebar';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { Toggle } from '@/components/ui/toggle';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { keywordList } from '@/data/keyword';
+// import { keywordList } from '@/data/keyword';
+import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
+import { UseKeywordResponse } from '@/types/Keyword';
 // import { useApi } from '@/hooks/useApi';
 import { motion } from 'motion/react';
 // import { signOut } from 'next-auth/react';
 import { SlArrowRight } from 'react-icons/sl';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ulVariants, liVariants } from '@/lib/motionVariable';
 import { findSimilarKeywords } from '@/lib/utils';
 
 export default function Home() {
-  // const { fetchApi } = useApi();
+  const { getAllKeywords } = useKeywordApi();
 
-  // const fetchData = async () => {
-  //   try {
-  //     const data = await fetchApi('/account/myaccounts');
-  //     console.log(data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
+  const [keywordList, setKeywordList] = useState<UseKeywordResponse[]>([]);
   const { result, resetResult } = useVoiceInputSession();
+
+  useEffect(() => {
+    const fetchKeywordList = async () => {
+      const response = await getAllKeywords();
+      setKeywordList(response);
+    };
+    fetchKeywordList();
+  }, []);
 
   useEffect(() => {
     if (result) {
