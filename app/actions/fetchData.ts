@@ -17,7 +17,7 @@ export async function fetchData(
 
   // API 기본 URL 설정
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const url = `${baseUrl}${apiRoute}`;
+  const url = `${baseUrl}/api${apiRoute}`;
 
   // 요청 헤더 설정
   const headers: HeadersInit = {

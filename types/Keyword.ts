@@ -73,7 +73,7 @@ type TransferUsageResponse = {
   favorite: boolean;
 };
 
-type TicketUsageResponse = {
+export type TicketUsageResponse = {
   id: number;
   user: UserDetail;
   type: 'TICKET';

@@ -1,13 +1,17 @@
-import { TBranch } from '@/types/Bank';
+// import { TBranch } from '@/types/Bank';
+import { TicketUsageResponse } from '@/types/Keyword';
 import { BankLogoImg } from '../atoms/BankLogoImg';
 
 type BranchInfoItemProps = {
-  data: TBranch;
+  data: TicketUsageResponse;
 };
 
 export default function BankInfoItem({
-  data: { distance, phone, placeName, addressName },
+  data: {
+    branch: { placeName, addressName, phone, distance },
+  },
 }: BranchInfoItemProps) {
+  console.log(placeName, addressName, phone, distance);
   return (
     <div className='flex gap-3 p-1 w-full '>
       <div className='relative w-11 h-11'>
