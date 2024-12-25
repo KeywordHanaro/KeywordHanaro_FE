@@ -19,7 +19,7 @@ export default function Step5() {
       desc: formData.keyword,
       account: { id: formData.fromAccount.accountId },
       subAccount: { accountNumber: formData.toAccount.accountNumber },
-      check_every_time: formData.checkEverytime,
+      checkEveryTime: formData.checkEverytime,
     })
       .then(() => {
         router.push('/keyword/create/transfer/step6');

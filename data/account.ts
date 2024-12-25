@@ -56,10 +56,10 @@ export const RecentAccounts: RecentAccount[] = [
   {
     type: 'MyAccount',
     accountName: '서아의 예적금통장',
-    bankId: 81,
+    bankId: 1,
     accountId: 1,
 
-    accountNumber: '222-2222-2225',
+    accountNumber: '9999999',
   },
   {
     type: 'OthersAccount',

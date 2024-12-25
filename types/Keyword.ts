@@ -43,7 +43,7 @@ type TransferKeywordRequest = BaseKeywordRequest & {
   subAccount: {
     accountNumber: string;
   };
-  check_every_time: boolean;
+  checkEveryTime: boolean;
   amount?: number; // check_every_time이 false일 때만 필요
 };
 
@@ -74,7 +74,7 @@ export type InquiryUsageResponse = {
   transactions: Transaction[];
 };
 
-type TransferUsageResponse = {
+export type TransferUsageResponse = {
   id: number;
   user: UserDetail;
   type: 'TRANSFER';
@@ -84,6 +84,7 @@ type TransferUsageResponse = {
   account: Account;
   subAccount: Account;
   favorite: boolean;
+  checkEveryTime: boolean;
 };
 
 export type TicketUsageResponse = {

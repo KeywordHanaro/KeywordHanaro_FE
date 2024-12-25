@@ -24,7 +24,6 @@ export type TransferResponse = {
 export type MyAccountWithBalance = {
   balance: string;
 } & MyAccount;
-
 export type TransferProps =
   | {
       type: 'WithoutAmount';

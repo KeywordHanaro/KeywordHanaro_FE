@@ -3,9 +3,9 @@ import { Button } from '@/components/atoms/Button';
 import { MoneyInputRef } from '@/components/atoms/Inputs';
 import InputPassword from '@/components/molecules/InputPassword';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { TransferProps } from '@/types/Transfer';
 import { useAccountApi } from '@/hooks/useAccount/useAccount';
 import { pswdReq } from '@/types/Account';
+import { TransferProps } from '@/types/Transfer';
 import { convertKorToNum } from 'korean-number-converter';
 import { useState, useEffect, forwardRef } from 'react';
 import { formatNumberWithCommas } from '@/lib/utils';
@@ -44,6 +44,7 @@ export const SetTransferAmount = forwardRef<
   };
 
   useEffect(() => {
+    console.log(data);
     if (data.type === 'WithoutAmount') {
       setOpen(false);
       setValid(false);
@@ -132,7 +133,7 @@ export const SetTransferAmount = forwardRef<
         )}
       </div>
 
-      <SpeechToText autoStart placeholder='얼마를 요청할까요' />
+      <SpeechToText placeholder='얼마를 요청할까요' />
     </div>
   );
 });
