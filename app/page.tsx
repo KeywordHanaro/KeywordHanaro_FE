@@ -13,6 +13,7 @@ import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
 import { UseKeywordResponse } from '@/types/Keyword';
 // import { useApi } from '@/hooks/useApi';
 import { motion } from 'motion/react';
+import { useSession } from 'next-auth/react';
 // import { signOut } from 'next-auth/react';
 import { SlArrowRight } from 'react-icons/sl';
 import { useEffect, useState } from 'react';
@@ -24,14 +25,20 @@ export default function Home() {
 
   const [keywordList, setKeywordList] = useState<UseKeywordResponse[]>([]);
   const { result, resetResult } = useVoiceInputSession();
+  const { status } = useSession();
+
+  // if (status !== 'authenticated') {
+  //   window.location.reload();
+  // }
+  console.log(status);
 
   useEffect(() => {
     const fetchKeywordList = async () => {
       const response = await getAllKeywords();
       setKeywordList(response);
     };
-    fetchKeywordList();
-  }, []);
+    if (status === 'authenticated') fetchKeywordList();
+  }, [status]);
 
   useEffect(() => {
     if (result) {
