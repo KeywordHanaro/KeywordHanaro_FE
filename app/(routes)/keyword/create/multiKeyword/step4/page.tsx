@@ -3,7 +3,7 @@
 import Header from '@/components/atoms/Header';
 import KeywordCompletion from '@/components/templates/KeywordCompletion';
 import { useMultiKeywordForm } from '@/contexts/MultiKeywordContext';
-import { keywordList } from '@/data/keyword';
+// import { keywordList } from '@/data/keyword';
 import { useRouter } from 'next/navigation';
 
 export default function Step4() {
@@ -35,7 +35,7 @@ export default function Step4() {
             멀티 키워드를 호출하면
           </div>
           <div className='text-[24px] text-hanaPrimary font-semibold'>
-            {formData.keywordIdArr.map((keywordId) => {
+            {/* {formData.keywordIdArr.map((keywordId) => {
               const data = keywordList.find((el) => el.id === keywordId);
               if (!data) return null;
               return (
@@ -43,7 +43,7 @@ export default function Step4() {
                   {data.title}
                 </div>
               );
-            })}
+            })} */}
           </div>
           <div className='text-[18px] pt-14 font-semibold'>
             {formData.keywordIdArr.length}가지 키워드가 한번에 호출돼요

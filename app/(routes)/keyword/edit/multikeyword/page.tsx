@@ -3,7 +3,7 @@
 import Header from '@/components/atoms/Header';
 import { KeywordInputRef } from '@/components/atoms/Inputs';
 import AddNewKeyword from '@/components/molecules/AddNewKeyword';
-import Keyword from '@/components/molecules/Keyword';
+// import Keyword from '@/components/molecules/Keyword';
 import MultiKeyword from '@/components/molecules/MultiKeyword';
 import {
   Drawer,
@@ -51,7 +51,7 @@ export default function EditMultiKeywordPage() {
         setItems(foundKeyword.keywordList.map((item) => item.id));
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // seqOrder 업데이트 후 이동
@@ -86,21 +86,21 @@ export default function EditMultiKeywordPage() {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleDelete = (idToDelete: number) => {
-    setItems((prevItems) => prevItems.filter((item) => item !== idToDelete));
+  // const handleDelete = (idToDelete: number) => {
+  //   setItems((prevItems) => prevItems.filter((item) => item !== idToDelete));
 
-    setMultiKeywordData((prevData) => {
-      if (prevData && 'keywordList' in prevData && prevData.keywordList) {
-        return {
-          ...prevData,
-          keywordList: prevData.keywordList.filter(
-            (item) => item.id !== idToDelete
-          ),
-        };
-      }
-      return prevData;
-    });
-  };
+  //   setMultiKeywordData((prevData) => {
+  //     if (prevData && 'keywordList' in prevData && prevData.keywordList) {
+  //       return {
+  //         ...prevData,
+  //         keywordList: prevData.keywordList.filter(
+  //           (item) => item.id !== idToDelete
+  //         ),
+  //       };
+  //     }
+  //     return prevData;
+  //   });
+  // };
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const handleShowModal = () => {
@@ -169,11 +169,11 @@ export default function EditMultiKeywordPage() {
               return (
                 <motion.li key={id} variants={liVariants} custom={index}>
                   <Reorder.Item key={id} value={id} drag='y'>
-                    <Keyword
+                    {/* <Keyword
                       data={data}
                       canDelete={true}
                       onDelete={handleDelete}
-                    ></Keyword>
+                    ></Keyword> */}
                   </Reorder.Item>
                 </motion.li>
               );
