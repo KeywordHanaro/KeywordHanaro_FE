@@ -108,10 +108,7 @@ export default function InquiryPage() {
         {/* {transactionList.length > 0 && (
           <TransactionList keyword={keyword} tranactions={transactionList} />
         )} */}
-        <TransactionList
-          keyword={inquiryKeyword?.inquiryWord || ''}
-          tranactions={transactionList}
-        />
+        <TransactionList tranactions={transactionList} />
       </div>
     </div>
   );

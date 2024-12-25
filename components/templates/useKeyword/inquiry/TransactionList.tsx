@@ -12,13 +12,9 @@ import { formatDate } from '@/lib/utils';
 
 type TransactionListProps = {
   tranactions: Transaction[];
-  keyword: string;
 };
 
-export default function TransactionList({
-  tranactions,
-  keyword,
-}: TransactionListProps) {
+export default function TransactionList({ tranactions }: TransactionListProps) {
   // const searchParams = useSearchParams();
   // const id = searchParams.get('id');
 
@@ -49,12 +45,13 @@ export default function TransactionList({
   // const keyword = '성수'; //input keyword
 
   // accountName에 keyword가 포함된 거래 내역만 필터링
-  const filteredTransactions = tranactions
-    .filter((transaction) => transaction.alias.includes(keyword))
-    .sort(
-      // (a, b) => new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime()
-      (a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime()
-    );
+  // 필터링된 데이터만 전송하기에 불필요한 데이터 제거
+  // const filteredTransactions = tranactions
+  //   .filter((transaction) => transaction.alias.includes(keyword))
+  //   .sort(
+  //     // (a, b) => new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime()
+  //     (a, b) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime()
+  //   );
 
   // 한글키워드 검색 시, 받침 유무에 따른 을/를 출력
   // const hasBatchim = (word: string) => {
