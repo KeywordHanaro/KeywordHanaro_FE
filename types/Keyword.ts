@@ -65,11 +65,10 @@ type SettlementKeywordRequest = BaseKeywordRequest & {
 };
 
 type settlementAccount = {
-  id: number,
-  accountNumber: string,
-  accountName: string,
-}
-
+  id: number;
+  accountNumber: string;
+  accountName: string;
+};
 
 //정산 사용 시 카톡 메시지 요청용
 export type activateSettlement = {
@@ -79,11 +78,13 @@ export type activateSettlement = {
 };
 
 /////////////////////////////
-// 키워드 사용 type 정의
+//*************************//
+/////////////////////////////
 export type UseKeywordResponse =
   | InquiryUsageResponse
   | TransferUsageResponse
-  | TicketUsageResponse;
+  | TicketUsageResponse
+  | SettlementUsageResponse;
 
 // 키워드 사용 type 정의
 export type InquiryUsageResponse = {
@@ -121,4 +122,24 @@ export type TicketUsageResponse = {
   seqOrder: number;
   branch: TBranch;
   favorite: boolean;
+};
+
+export type SettlementUsageResponse = {
+  id: number;
+  user: UserDetail;
+  type: 'SETTLEMENT';
+  name: string;
+  desc: string;
+  seqOrder: number;
+  account: Account;
+  favorite: boolean;
+  groupMember: groupMember[];
+  amount: number;
+  checkEveryTime: boolean;
+};
+
+type groupMember = {
+  // id?: number;
+  name: string;
+  tel: string;
 };

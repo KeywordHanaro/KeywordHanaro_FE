@@ -6,9 +6,11 @@ import { MoneyInputRef } from '@/components/atoms/Inputs';
 import { ChipsList } from '@/components/molecules/ChipList';
 import { useSettlementContext } from '@/contexts/SettlementContext';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { KeywordDetailList } from '@/data/keyword';
+// import { KeywordDetailList } from '@/data/keyword';
 import { Member } from '@/data/member';
 import { FormData } from '@/data/settlement';
+import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
+import { SettlementUsageResponse } from '@/types/Keyword';
 import { convertKorToNum } from 'korean-number-converter';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
@@ -23,9 +25,25 @@ export default function SettlementUsageStep1() {
   const router = useRouter();
   const { formData, updateFormData } = useSettlementContext();
   const searchParams = useSearchParams();
-  const id = searchParams.get('id');
 
-  const keyword = KeywordDetailList.find((item) => item.id === Number(id));
+  const [keyword, setKeyword] = useState<SettlementUsageResponse>();
+
+  const { getKeywordById } = useKeywordApi();
+  useEffect(() => {
+    const id = searchParams.get('id');
+    if (id) {
+      getKeywordById(parseInt(id))
+        .then((res) => {
+          console.log(res);
+          setKeyword(res as SettlementUsageResponse);
+        })
+        .catch((error) => {
+          console.error('정산 키워드 조희 실패:', error);
+        });
+    }
+  }, [searchParams]);
+
+  // const keyword = KeywordDetailList.find((item) => item.id === Number(4));
 
   const [valid, setValid] = useState(
     formData.members.length > 0 && formData.amount !== ''
@@ -75,40 +93,50 @@ export default function SettlementUsageStep1() {
   }, [members, updateFormData]);
 
   useEffect(() => {
-    if (keyword?.type === 'settlement') {
+    if (keyword?.checkEveryTime === false) {
+      const groupMember = keyword.groupMember.map((member, index) => ({
+        id: index,
+        name: member.name,
+        phoneNumber: member.tel,
+      }));
       updateFormData({
         fromAccount: {
-          accountName: keyword.accountFrom.accountName,
-          bankId: keyword.accountFrom.bankId,
+          accountName: keyword.account.name,
+          bankId: keyword.account.bank.id,
           accountId: 1,
-          accountNumber: keyword.accountFrom.accountNumber,
+          accountNumber: keyword.account.accountNumber,
           type: 'MyAccount',
         },
-        members: keyword.memberList,
+        members: groupMember,
         category: 'Settlement',
         checkEveryTime: true,
         amount: '',
-        keywordName: keyword.title,
+        keywordName: keyword.name,
       });
-      setMembers(keyword.memberList);
+      setMembers(groupMember);
     }
-    if (keyword?.type === 'settlementAmount') {
+    if (keyword?.checkEveryTime === true) {
+      const groupMember = keyword.groupMember.map((member, index) => ({
+        id: index,
+        name: member.name,
+        phoneNumber: member.tel,
+      }));
       updateFormData({
         fromAccount: {
-          accountName: keyword.accountFrom.accountName,
-          bankId: keyword.accountFrom.bankId,
-          accountNumber: keyword.accountFrom.accountNumber,
+          accountName: keyword.account.name,
+          bankId: keyword.account.bank.id,
           accountId: 1,
+          accountNumber: keyword.account.accountNumber,
           type: 'MyAccount',
         },
-        members: keyword.memberList,
+        members: groupMember,
         category: 'Settlement',
         checkEveryTime: false,
         amount: keyword.amount.toString(),
-        keywordName: keyword.title,
+        keywordName: keyword.name,
       });
       setValid(true);
-      setMembers(keyword.memberList);
+      setMembers(groupMember);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -199,7 +227,7 @@ export default function SettlementUsageStep1() {
         >
           다음
         </Button>
-        {keyword?.type === 'settlement' && (
+        {keyword?.type === 'SETTLEMENT' && (
           <SpeechToText autoStart placeholder='얼마를 요청할까요?' />
         )}
       </div>
