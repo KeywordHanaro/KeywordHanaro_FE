@@ -1,5 +1,6 @@
 import { useApi } from '@/hooks/useApi';
 import { Account, pswdReq } from '@/types/Account';
+import { Transaction } from '@/types/Keyword';
 import { TransferData, TransferResponse } from '@/types/Transfer';
 
 export const useAccountApi = () => {
@@ -34,9 +35,21 @@ export const useAccountApi = () => {
     return response;
   };
 
+  // 거래 내역 조회 - 날짜로
+  const showMyTransactions = async (
+    accountId: number
+  ): Promise<Transaction[]> => {
+    const response = await fetchApi(`/inquiry/${accountId}`, {
+      method: 'POST',
+      body: JSON.stringify({ accountId }),
+    });
+    return response;
+  };
+
   return {
     transfer,
     checkPswd,
     showMyAccounts,
+    showMyTransactions,
   };
 };
