@@ -13,9 +13,9 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/', req.url));
   }
   if (!didLogin && req.nextUrl.pathname !== signinPath) {
-    const callbackUrl = encodeURIComponent(req.nextUrl.pathname);
+    // const callbackUrl = encodeURIComponent(req.nextUrl.pathname);
     return NextResponse.redirect(
-      new URL(`/login?callbackUrl=${callbackUrl}`, req.url)
+      new URL(`/login`, req.url)
     );
   }
   return NextResponse.next();
