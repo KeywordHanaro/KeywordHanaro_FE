@@ -29,7 +29,7 @@ export default async function TicketPage({
           <h1 className='text-[24px] font-semibold leading-8 mb-2'>
             어떤 업무를 보시겠어요?{' '}
           </h1>
-          <BankInfoItem data={keywordDetail} />
+          <BankInfoItem data={keywordDetail.branch} />
           <VoiceInputProvider>
             <TicketCategory />
           </VoiceInputProvider>

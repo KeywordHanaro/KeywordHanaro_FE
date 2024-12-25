@@ -1,15 +1,13 @@
-// import { TBranch } from '@/types/Bank';
-import { TicketUsageResponse } from '@/types/Keyword';
+import { TBranch } from '@/types/Bank';
+// import { TicketUsageResponse } from '@/types/Keyword';
 import { BankLogoImg } from '../atoms/BankLogoImg';
 
 type BranchInfoItemProps = {
-  data: TicketUsageResponse;
+  data: TBranch;
 };
 
 export default function BankInfoItem({
-  data: {
-    branch: { placeName, addressName, phone, distance },
-  },
+  data: { placeName, addressName, phone, distance },
 }: BranchInfoItemProps) {
   console.log(placeName, addressName, phone, distance);
   return (
