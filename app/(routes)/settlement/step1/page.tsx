@@ -16,8 +16,8 @@ import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 export default function SettlementUsageStep1() {
-  const rest_api_key = 'cf0b7e3e3feae9d12f5e11d619ffda3a';
-  const redirect_uri = 'http://localhost:3000/settlement/kakao-login';
+  const rest_api_key = process.env.NEXT_REST_API_KEY;
+  const redirect_uri = `${process.env.NEXT_PUBLIC_API_URL}${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL}`;
   const kakao_auth_path = 'https://kauth.kakao.com/oauth/authorize';
 
   const router = useRouter();
@@ -128,7 +128,7 @@ export default function SettlementUsageStep1() {
       setValid(amountVal > 0);
       setResult('');
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result, setResult]);
 
   return (
