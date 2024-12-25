@@ -9,7 +9,7 @@ export default function UserInfo() {
     if (status === 'unauthenticated') {
       update();
     }
-    console.log('hihi')
+    // console.log('hihi')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
