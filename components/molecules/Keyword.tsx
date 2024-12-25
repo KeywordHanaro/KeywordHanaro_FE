@@ -40,10 +40,10 @@ const Keyword = ({
       onClick={() => {
         router.push(
           type.includes('TRANSFER') || type.includes('SETTLEMENT')
-            ? `/${type.toLowerCase().replace('amount', '')}/step1?id=${id}`
+            ? `/${type.toLowerCase()}/step1?id=${id}`
             : type.includes('multiKeyword')
               ? `/${type}/step1/?id=${id}`
-              : `/${type.toLowerCase().replace('amount', '')}?id=${id}`
+              : `/${type.toLowerCase()}?id=${id}`
         );
       }}
     >
