@@ -1,5 +1,5 @@
 // hooks/useKeywordApi.ts
-import { KeywordDetail } from '@/data/keyword';
+// import { KeywordDetail } from '@/data/keyword';
 import { useApi } from '@/hooks/useApi';
 import { CreateKeywordRequest, UseKeywordResponse } from '@/types/Keyword';
 
@@ -11,7 +11,8 @@ export const useKeywordApi = () => {
     return response;
   };
 
-  const getKeywordById = async (id: number): Promise<KeywordDetail> => {
+  // 임시로 키워드 응답을 추가
+  const getKeywordById = async (id: number): Promise<UseKeywordResponse> => {
     const response = await fetchApi(`/keyword/${id}`);
     return response;
   };

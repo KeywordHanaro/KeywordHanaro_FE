@@ -31,8 +31,8 @@ export function DatePicker({ range, onChange }: DatePickerProps) {
           <CalendarIcon className='mr-2 h-4 w-4' />
           {range?.from && range?.to ? (
             <span className='font-semibold'>
-              {format(range.from, 'yy년 MM월 dd일')} -{' '}
-              {format(range.to, 'yy년 MM월 dd일')}
+              {format(range.from, 'yyyy-MM-dd')} ~{' '}
+              {format(range.to, 'yyyy-MM-dd')}
             </span>
           ) : range?.from ? (
             <span>{format(range.from, 'yyyy년 MM월 dd일')}</span>
