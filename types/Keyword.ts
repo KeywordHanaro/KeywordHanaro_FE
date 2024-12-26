@@ -12,7 +12,7 @@ export type CreateKeywordRequest =
 
 // 공통 요청 타입
 type BaseKeywordRequest = {
-  type: 'INQUIRY' | 'TRANSFER' | 'TICKET' | 'SETTLEMENT';
+  type: 'INQUIRY' | 'TRANSFER' | 'TICKET' | 'SETTLEMENT' | 'DUES';
   name: string;
   desc: string;
 };
@@ -59,7 +59,7 @@ type TicketKeywordRequest = {
 //**********정산 키워드 요청 타입****************//
 //정산 생성 타입
 type SettlementKeywordRequest = BaseKeywordRequest & {
-  type: 'SETTLEMENT';
+  type: 'SETTLEMENT' | 'DUES';
   amount?: number;
   checkEveryTime: boolean;
   groupMember: string;
@@ -131,7 +131,7 @@ export type TicketUsageResponse = {
 export type SettlementUsageResponse = {
   id: number;
   user: UserDetail;
-  type: 'SETTLEMENT';
+  type: 'SETTLEMENT' | 'DUES';
   name: string;
   desc: string;
   seqOrder: number;
