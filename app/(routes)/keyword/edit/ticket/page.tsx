@@ -6,9 +6,10 @@ import { KeywordInputRef } from '@/components/atoms/Inputs';
 import BankInfoItem from '@/components/molecules/BankInfoItem';
 import SelectBranch from '@/components/templates/createKeyword/ticket/SelectBranch';
 import { useTicket } from '@/contexts/TicketContext';
-import { ticketKeyword } from '@/data/ticket';
+import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
 import { TBranch } from '@/types/Bank';
-import { useRouter } from 'next/navigation';
+import { TicketKeywordRequest } from '@/types/Keyword';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   ChangeEvent,
   useCallback,
@@ -20,22 +21,34 @@ import {
 
 export default function EditTicketKeywordPage() {
   const router = useRouter();
+  const params = useSearchParams();
+  const id = params.get('id');
+  const { getKeywordById, updateKeyword } = useKeywordApi();
+
   // const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
   const { setSelectedBranch, setKeywordName, keywordName, selectedBranch } =
     useTicket();
   const [branch, setBranch] = useState<TBranch | null>(null);
   const [keyword, setKeyword] = useState<string | null>(null);
+
   useEffect(() => {
-    setBranch(ticketKeyword[0].branch);
-    setKeyword(ticketKeyword[0].keyword);
-    setSelectedBranch(ticketKeyword[0].branch);
-    setKeywordName(ticketKeyword[0].keyword);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (id) {
+      getKeywordById(parseInt(id))
+        .then((res) => {
+          if (res.type !== 'TICKET') return;
+          setBranch(res.branch);
+          setKeyword(res.name);
+          setSelectedBranch(res.branch);
+          setKeywordName(res.name);
+        })
+        .catch((error) => {
+          console.error('거래 내역 가져오기 실패:', error);
+        });
+    }
+  }, [id]);
 
   const handleSetBranch = (branch: TBranch) => {
     setSelectedBranch(branch);
-    // router.push('/keyword/create/ticket/step3');
   };
   const keywordNameRef = useRef<HTMLInputElement>(null);
   const handleInputChange = useCallback(
@@ -48,10 +61,12 @@ export default function EditTicketKeywordPage() {
 
   const onComplete = useCallback(() => {
     const updatedFormData = {
+      type: 'TICKET',
+      desc: '번호표 > ' + selectedBranch.placeName,
       branch: selectedBranch,
-      keywordName: keywordName,
-    };
-    console.log('Sending data to server:', updatedFormData);
+      name: keywordName,
+    } as TicketKeywordRequest;
+    updateKeyword(Number(id), updatedFormData);
     router.back();
   }, [keywordName, selectedBranch, router]);
 
@@ -65,7 +80,11 @@ export default function EditTicketKeywordPage() {
 
   return (
     <>
-      <Header text='키워드 수정하기' showActionButton={false} />
+      <Header
+        text='키워드 수정하기'
+        showActionButton={!isBtnDisabled}
+        onAction={onComplete}
+      />
       <div className='p-4 flex flex-col gap-6'>
         <div>
           <div className='flex flex-col'>
@@ -79,21 +98,14 @@ export default function EditTicketKeywordPage() {
             />
           </div>
         </div>
-        <div>
+        <div className='pb-20'>
           <strong>현재 영업점</strong>
           <div className='pb-6'>
             {!!selectedBranch && <BankInfoItem data={selectedBranch} />}
           </div>
 
-          <SelectBranch handleSetBranch={handleSetBranch} />
+          <SelectBranch handleSetBranch={handleSetBranch} autoStart={false} />
         </div>
-        <Button
-          onClick={onComplete}
-          className='w-full'
-          isDisabled={isBtnDisabled}
-        >
-          완료
-        </Button>
       </div>
     </>
   );

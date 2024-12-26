@@ -12,8 +12,10 @@ import { levenshtein } from '@/lib/utils';
 
 export default function SelectBranch({
   handleSetBranch,
+  autoStart,
 }: {
   handleSetBranch: (data: TBranch) => void;
+  autoStart?: boolean;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [branches, setBranches] = useState<TBranch[]>([]);
@@ -156,7 +158,7 @@ export default function SelectBranch({
           </div>
         )}
       </div>
-      <SpeechToText autoStart placeholder='영업점을 선택해주세요' />
+      <SpeechToText autoStart={autoStart} placeholder='영업점을 선택해주세요' />
     </div>
   );
 }

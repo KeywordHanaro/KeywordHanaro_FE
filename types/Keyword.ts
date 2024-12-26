@@ -38,7 +38,7 @@ export type Transaction = {
 };
 
 // 송금 키워드 요청 타입
-type TransferKeywordRequest = BaseKeywordRequest & {
+export type TransferKeywordRequest = BaseKeywordRequest & {
   type: 'TRANSFER';
   account: { id: number };
   subAccount: {
@@ -49,7 +49,7 @@ type TransferKeywordRequest = BaseKeywordRequest & {
 };
 
 // // 번호표 키워드 요청 타입
-type TicketKeywordRequest = {
+export type TicketKeywordRequest = {
   type: 'TICKET';
   name: string;
   desc: string;
