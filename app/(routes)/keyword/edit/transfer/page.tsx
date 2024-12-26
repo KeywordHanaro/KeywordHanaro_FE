@@ -7,13 +7,10 @@ import SelectBank from '@/components/molecules/SelectBank';
 import SelectMyAccount from '@/components/molecules/SelectMyAccount';
 import SetAmount from '@/components/molecules/SetAmount';
 import { Toggle } from '@/components/ui/toggle';
-import {
-  KeywordDetailList,
-  TransferAmountKeyword,
-  TransferKeyword,
-} from '@/data/keyword';
+import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
 import { OthersAccount } from '@/types/Account';
 import { MyAccount } from '@/types/Account';
+import { TransferUsageResponse } from '@/types/Keyword';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   ChangeEvent,
@@ -29,32 +26,77 @@ export default function EditTransferKeyword() {
   const router = useRouter();
   const params = useSearchParams();
   const id = params.get('id');
-  const keyword = KeywordDetailList.find((item) => item.id === Number(id)) as
-    | TransferKeyword
-    | TransferAmountKeyword;
 
-  const [keywordTitle, setKeywordTitle] = useState(keyword.title);
-  const [myAccount, setMyAccount] = useState<MyAccount | undefined>(
-    keyword.accountFrom as MyAccount
+  const { getKeywordById, updateKeyword } = useKeywordApi();
+  const [initialKeyword, setInitialKeyword] = useState<TransferUsageResponse>();
+
+  useEffect(() => {
+    if (id) {
+      getKeywordById(parseInt(id))
+        .then((res) => {
+          console.log('🚀  .then  res:', res);
+          if (res.type !== 'TRANSFER') return;
+          setInitialKeyword(res);
+          setKeywordTitle(res.name);
+          setMyAccount({
+            type: 'MyAccount',
+            accountName: res.account.name,
+            bankId: res.account.bank.id,
+            accountId: res.account.id,
+            accountNumber: res.account.accountNumber,
+          });
+          if (res.account.user.id === res.subAccount.user.id) {
+            setOtherAccount({
+              type: 'MyAccount',
+              accountName: res.subAccount.name,
+              accountId: res.subAccount.id,
+              bankId: res.subAccount.bank.id,
+              accountNumber: res.subAccount.accountNumber,
+            });
+            setTransferToMe(true);
+          } else {
+            setOtherAccount({
+              type: 'OthersAccount',
+              name: res.subAccount.name,
+              bankId: res.subAccount.bank.id,
+              accountNumber: res.subAccount.accountNumber,
+            });
+            setTransferToMe(false);
+          }
+          if (!res.checkEveryTime && res.amount) {
+            setAmount(res.amount.toLocaleString());
+            if (amountRef.current)
+              amountRef.current.value = res.amount.toLocaleString();
+          }
+          setCheckEverytime(res.checkEveryTime);
+        })
+        .catch((error) => {
+          console.error('거래 내역 가져오기 실패:', error);
+        });
+    }
+  }, [id]);
+
+  const [keywordTitle, setKeywordTitle] = useState<string>(
+    initialKeyword?.name || ''
   );
+  const [myAccount, setMyAccount] = useState<MyAccount | undefined>();
   const [otherAccount, setOtherAccount] = useState<
     MyAccount | OthersAccount | undefined
-  >(keyword.accountTo);
-  // console.log('accountTo', keyword.accountTo);
-  // console.log('otherAccount', otherAccount);
+  >();
+
   const [transferToMe, setTransferToMe] = useState(
-    keyword.accountTo.type === 'MyAccount'
+    initialKeyword?.account.user.id === initialKeyword?.subAccount.user.id
   );
   const [amount, setAmount] = useState<string>(
-    keyword.type === 'transferAmount'
-      ? formatNumberWithCommas(keyword.amount)
-      : ''
+    initialKeyword?.checkEveryTime
+      ? ''
+      : initialKeyword?.amount?.toString() || ''
   );
-  const [checkEverytime, setCheckEverytime] = useState(
-    keyword.type !== 'transferAmount'
+  const [checkEverytime, setCheckEverytime] = useState<boolean>(
+    initialKeyword?.checkEveryTime || false
   );
   const [isValid, setIsValid] = useState<boolean>(
-    keyword.type === 'transferAmount'
+    initialKeyword?.checkEveryTime || false
   );
 
   const keywordNameRef = useRef<HTMLInputElement>(null);
@@ -99,19 +141,46 @@ export default function EditTransferKeyword() {
     setIsValid((prev) => !prev);
   }, []);
 
-  const onComplete = useCallback(() => {
-    if (myAccount && otherAccount) {
-      const updatedFormData = {
-        id: keyword.id,
-        title: keywordTitle,
-        accountFrom: myAccount,
-        accountTo: otherAccount,
-        ...(checkEverytime
-          ? { type: 'transfer' as const }
-          : { type: 'transferAmount' as const, amount }),
-      };
+  const createDesc = (
+    myAccount: MyAccount,
+    otherAccount: MyAccount | OthersAccount,
+    checkEveryTime: boolean,
+    amount?: number
+  ): string => {
+    if (checkEveryTime) {
+      return (
+        myAccount?.accountName +
+        ' > ' +
+        otherAccount.accountNumber +
+        ' > 금액 미정'
+      );
+    } else {
+      return (
+        myAccount?.accountName +
+        ' > ' +
+        otherAccount.accountNumber +
+        ' > ' +
+        amount
+      );
+    }
+  };
 
-      console.log('Sending data to server:', updatedFormData);
+  const onComplete = useCallback(async () => {
+    if (myAccount && otherAccount) {
+      await updateKeyword(Number(id), {
+        type: 'TRANSFER',
+        name: keywordTitle,
+        account: { id: myAccount.accountId },
+        subAccount: { accountNumber: otherAccount.accountNumber },
+        checkEveryTime: checkEverytime,
+        amount: checkEverytime ? undefined : Number(amount.replace(/,/g, '')),
+        desc: createDesc(
+          myAccount,
+          otherAccount,
+          checkEverytime,
+          Number(amount.replace(/,/g, ''))
+        ),
+      });
       router.back();
     }
   }, [
@@ -120,20 +189,18 @@ export default function EditTransferKeyword() {
     otherAccount,
     checkEverytime,
     amount,
-    keyword.id,
+    // initialKeyword.id,
     router,
   ]);
 
   const isButtonDisabled = useMemo(() => {
     const isDataChanged =
-      keywordTitle !== keyword.title ||
-      myAccount !== keyword.accountFrom ||
-      otherAccount !== keyword.accountTo ||
-      checkEverytime !== (keyword.type === 'transfer') ||
-      (!checkEverytime &&
-        keyword.type === 'transferAmount' &&
-        amount !== formatNumberWithCommas(keyword.amount));
-    console.log('isDataChanged', isDataChanged);
+      keywordTitle !== initialKeyword?.name ||
+      myAccount?.accountNumber !== initialKeyword?.account.accountNumber ||
+      otherAccount?.accountNumber !==
+        initialKeyword?.subAccount.accountNumber ||
+      checkEverytime !== initialKeyword?.checkEveryTime ||
+      (!checkEverytime && amount !== initialKeyword?.amount?.toLocaleString());
 
     const isAccountValid =
       myAccount?.type === 'MyAccount' &&
@@ -145,11 +212,9 @@ export default function EditTransferKeyword() {
         (otherAccount?.type === 'OthersAccount' &&
           otherAccount.bankId !== 0 &&
           otherAccount.accountNumber !== ''));
-    console.log('isAccountValid', isAccountValid);
 
     const isAmountValid =
       checkEverytime || (!checkEverytime && amount !== '' && isValid);
-    console.log('isAmountValid', isAmountValid);
     return !(isDataChanged && isAccountValid && isAmountValid);
   }, [
     keywordTitle,
@@ -157,16 +222,16 @@ export default function EditTransferKeyword() {
     otherAccount,
     checkEverytime,
     amount,
-    keyword,
+    initialKeyword,
     isValid,
   ]);
 
   useEffect(() => {
-    if (otherAccountRef.current) {
-      otherAccountRef.current.value = keyword.accountTo.accountNumber;
+    if (otherAccountRef.current && initialKeyword?.subAccount) {
+      otherAccountRef.current.value = initialKeyword?.subAccount.accountNumber;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [initialKeyword]);
 
   return (
     <div className='flex flex-col h-full'>
@@ -177,18 +242,17 @@ export default function EditTransferKeyword() {
             <strong>키워드명</strong>
             <KeywordInputRef
               className='text-hanaPrimary w-full'
-              placeHolder={keyword.title}
+              placeHolder={initialKeyword?.name}
               onChange={handleInputChange}
-              defaultValue={keyword.title}
+              defaultValue={initialKeyword?.name}
               ref={keywordNameRef}
             />
           </div>
           <div className='flex flex-col'>
             <strong>보낼 계좌</strong>
-            <SelectMyAccount
-              selected={myAccount?.type === 'MyAccount' ? myAccount : undefined}
-              onSelect={setMyAccount}
-            />
+            {myAccount && (
+              <SelectMyAccount selected={myAccount} onSelect={setMyAccount} />
+            )}
           </div>
           <div>
             <div className='flex w-full justify-between'>
@@ -201,24 +265,30 @@ export default function EditTransferKeyword() {
                 />
               </div>
             </div>
-            {transferToMe ? (
-              <SelectMyAccount
-                selected={
-                  otherAccount?.type === 'MyAccount' ? otherAccount : undefined
-                }
-                onSelect={setOtherAccount}
-              />
-            ) : (
+            {initialKeyword && (
               <>
-                <AccountInputRef
-                  onChange={handleAccountInput}
-                  placeHolder='계좌번호 입력'
-                  ref={otherAccountRef}
-                />
-                <SelectBank
-                  onSelect={handleSelectBank}
-                  value={otherAccount?.bankId}
-                />
+                {transferToMe ? (
+                  <SelectMyAccount
+                    selected={
+                      otherAccount?.type === 'MyAccount'
+                        ? otherAccount
+                        : undefined
+                    }
+                    onSelect={setOtherAccount}
+                  />
+                ) : (
+                  <>
+                    <AccountInputRef
+                      onChange={handleAccountInput}
+                      placeHolder='계좌번호 입력'
+                      ref={otherAccountRef}
+                    />
+                    <SelectBank
+                      onSelect={handleSelectBank}
+                      value={otherAccount?.bankId}
+                    />
+                  </>
+                )}
               </>
             )}
           </div>

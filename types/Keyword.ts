@@ -75,6 +75,7 @@ export type InquiryUsageResponse = {
   transactions: Transaction[];
 };
 
+// amount 수정 페이지에서 있어야 해서 추가 -- 우선 nullable로 할게요
 export type TransferUsageResponse = {
   id: number;
   user: UserDetail;
