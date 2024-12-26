@@ -9,7 +9,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function SettlementStep1() {
-  const { formData, updateFormData, id, editId } = useSettlementContext();
+  const { formData, updateFormData, editId } = useSettlementContext();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { getKeywordById } = useKeywordApi();
@@ -32,7 +32,7 @@ export default function SettlementStep1() {
 
   useEffect(() => {
     if (keyword?.checkEveryTime === true) {
-      const groupMember = keyword.groupMember.map((member, index) => ({
+      const groupMember = keyword.groupMember.map((member) => ({
         id:
           MemberList.find((person) => person.phoneNumber === member.tel)?.id ??
           0,
@@ -55,7 +55,7 @@ export default function SettlementStep1() {
       });
     }
     if (keyword?.checkEveryTime === false) {
-      const groupMember = keyword.groupMember.map((member, index) => ({
+      const groupMember = keyword.groupMember.map((member) => ({
         id:
           MemberList.find((person) => person.phoneNumber === member.tel)?.id ??
           0,
