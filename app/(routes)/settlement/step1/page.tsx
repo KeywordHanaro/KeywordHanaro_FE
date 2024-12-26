@@ -15,7 +15,7 @@ import { convertKorToNum } from 'korean-number-converter';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import { useState, useRef, useEffect } from 'react';
-import { cn } from '@/lib/utils';
+import { cn, formatNumberWithCommas } from '@/lib/utils';
 
 export default function SettlementUsageStep1() {
   const rest_api_key = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
@@ -108,7 +108,7 @@ export default function SettlementUsageStep1() {
           type: 'MyAccount',
         },
         members: groupMember,
-        category: 'Settlement',
+        category: keyword.type === 'SETTLEMENT' ? 'Settlement' : 'Dues',
         checkEveryTime: true,
         amount: '',
         keywordName: keyword.name,
@@ -130,7 +130,7 @@ export default function SettlementUsageStep1() {
           type: 'MyAccount',
         },
         members: groupMember,
-        category: 'Settlement',
+        category: keyword.type === 'SETTLEMENT' ? 'Settlement' : 'Dues',
         checkEveryTime: false,
         amount: keyword.amount.toString(),
         keywordName: keyword.name,
@@ -176,7 +176,7 @@ export default function SettlementUsageStep1() {
               <span key={member.id}>{member.name}</span>
             )
           )}
-          <span className='text-black ml-[3px]'>님에게 정산요청 할게요</span>
+          <span className='text-black ml-[3px]'>님에게 {keyword?.type === 'SETTLEMENT' ? "정산" : "회비"} 요청 할게요</span>
         </div>
 
         {formData.checkEveryTime ? (
@@ -187,7 +187,7 @@ export default function SettlementUsageStep1() {
           />
         ) : (
           <p className='text-[24px] text-hanaPrimary font-semibold'>
-            {formData.amount} 원
+            {formatNumberWithCommas(formData.amount)} 원
           </p>
         )}
 

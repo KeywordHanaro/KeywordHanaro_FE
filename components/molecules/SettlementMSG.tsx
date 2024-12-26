@@ -1,4 +1,5 @@
 import { MultiFormFinish } from '@/data/multiKeyword';
+import { formatNumberWithCommas } from '@/lib/utils';
 
 export default function MultiKeywordSettlement({
   data,
@@ -23,7 +24,7 @@ export default function MultiKeywordSettlement({
           )}
           <span className='text-black ml-[3px]'>님에게</span>
           <p className='text-[18px] text-center mt-[11px]'>
-            {data.amount} 원이 요청됐어요
+            {formatNumberWithCommas(data.amount)} 원이 요청됐어요
           </p>
         </div>
       </div>

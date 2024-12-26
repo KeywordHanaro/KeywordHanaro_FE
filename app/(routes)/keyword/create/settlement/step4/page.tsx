@@ -16,13 +16,13 @@ export default function SettlementStep4() {
       name: member.name,
       tel: member.phoneNumber,
     }));
-    const desc = `정산 > ${formData.checkEveryTime ? '' : formData.amount + ' >'} ${groupMembers.map(
+    const desc = `${formData.category === 'Settlement' ? '정산' : '회비'} > ${formData.checkEveryTime ? '' : formData.amount + ' >'} ${groupMembers.map(
       (member) => member.name
     )}`;
     try {
       console.log(formData);
       createKeyword({
-        type: formData.category === 'Settlement' ? 'SETTLEMENT' : 'SETTLEMENT',
+        type: formData.category === 'Settlement' ? 'SETTLEMENT' : 'DUES',
         name: formData.keywordName,
         desc: desc,
         account: {
@@ -31,7 +31,7 @@ export default function SettlementStep4() {
           accountName: formData.fromAccount.accountName,
         },
         checkEveryTime: formData.checkEveryTime,
-        amount: parseInt(formData.amount),
+        amount: parseInt(formData.amount.replace(/,/g, ''), 10),
         groupMember: JSON.stringify(groupMembers),
       });
     } catch {

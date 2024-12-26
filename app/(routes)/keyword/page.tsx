@@ -176,11 +176,11 @@ export default function KeywordPage() {
             })}
           </Reorder.Group>
         )}
-        {(
+        {
           <motion.li variants={liVariants} custom={keywordList.length + 1}>
-            <AddNewKeyword />
+            {keywordList && <AddNewKeyword />}
           </motion.li>
-        )}
+        }
       </motion.ul>
 
       <SpeechToText placeholder='키워드를 선택해주세요.' />

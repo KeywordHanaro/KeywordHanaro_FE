@@ -90,6 +90,8 @@ export const getColorByType = (type: string) => {
     case 'ticket':
       return 'yellow';
     case 'settlement':
+    case 'dues':
+    case 'duesamount':
     case 'settlementamount':
       return 'blue';
     case 'multiKeyword':
@@ -109,6 +111,8 @@ export const getNameByType = (type: string) => {
     case 'ticket':
       return '번호표';
     case 'settlement':
+    case 'dues':
+    case 'duesamount':
     case 'settlementamount':
       return '정산/회비';
     case 'multiKeyword':
