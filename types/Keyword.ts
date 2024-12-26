@@ -44,7 +44,7 @@ type TransferKeywordRequest = BaseKeywordRequest & {
   subAccount: {
     accountNumber: string;
   };
-  check_every_time: boolean;
+  checkEveryTime: boolean;
   amount?: number; // check_every_time이 false일 때만 필요
 };
 
@@ -102,7 +102,7 @@ export type InquiryUsageResponse = {
   transactions: Transaction[];
 };
 
-// amount랑 check_every_time 수정 페이지에서 있어야 해서 추가 -- 우선 nullable로 할게요
+// amount 수정 페이지에서 있어야 해서 추가 -- 우선 nullable로 할게요
 type TransferUsageResponse = {
   id: number;
   user: UserDetail;
@@ -113,8 +113,8 @@ type TransferUsageResponse = {
   account: Account;
   subAccount: Account;
   favorite: boolean;
+  checkEveryTime: boolean;
   amount?: number;
-  checkEveryTime?: boolean;
 };
 
 export type TicketUsageResponse = {
