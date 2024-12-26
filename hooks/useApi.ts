@@ -6,7 +6,7 @@ export const useApi = () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const fetchApi = async (apiRoute: string, options: RequestInit = {}) => {
-    console.log(session?.user.jwt);
+    // console.log(session?.user.jwt);
     if (!session?.user?.jwt) {
       throw new Error('No JWT token found');
     }
