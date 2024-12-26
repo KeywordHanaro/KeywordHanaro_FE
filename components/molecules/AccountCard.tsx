@@ -17,7 +17,7 @@ export default function AccountCard({
 }: AccountCardProps) {
   const [isHide, setIsHide] = useState(false);
   return (
-    <Card className='flex flex-col w-full h-[201px] p-[20px] justify-between'>
+    <Card className='flex flex-col w-[calc(100%-20px)] h-[201px] p-[20px] justify-between'>
       {/* 제목 및 계좌 번호 및 잔액 */}
       <div className='flex flex-col justify-between'>
         {/* 제목 */}

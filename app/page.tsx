@@ -5,11 +5,19 @@ import { CustomSidebarTrigger } from '@/components/atoms/CustomSidebarTrigger';
 import AccountCard from '@/components/molecules/AccountCard';
 import Keyword from '@/components/molecules/Keyword';
 import { AppSidebar } from '@/components/organisms/AppSidebar';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from '@/components/ui/carousel';
 import { SidebarProvider } from '@/components/ui/sidebar';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Toggle } from '@/components/ui/toggle';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
+import { useAccountApi } from '@/hooks/useAccount/useAccount';
 // import { keywordList } from '@/data/keyword';
 import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
+import { Account } from '@/types/Account';
 import { UseKeywordResponse } from '@/types/Keyword';
 // import { useApi } from '@/hooks/useApi';
 import { motion } from 'motion/react';
@@ -22,8 +30,10 @@ import { findSimilarKeywords } from '@/lib/utils';
 
 export default function Home() {
   const { getAllKeywords } = useKeywordApi();
+  const { showMyAccounts } = useAccountApi();
 
   const [keywordList, setKeywordList] = useState<UseKeywordResponse[]>([]);
+  const [accountList, setAccountList] = useState<Account[]>([]);
   const { result, resetResult } = useVoiceInputSession();
   const { status } = useSession();
 
@@ -34,10 +44,17 @@ export default function Home() {
 
   useEffect(() => {
     const fetchKeywordList = async () => {
-      const response = await getAllKeywords();
-      setKeywordList(response);
+      const keywordResponse = await getAllKeywords();
+      setKeywordList(keywordResponse);
     };
-    if (status === 'authenticated') fetchKeywordList();
+    const fetchAccountList = async () => {
+      const accountResponse = await showMyAccounts();
+      setAccountList(accountResponse);
+    };
+    if (status === 'authenticated') {
+      fetchAccountList();
+      fetchKeywordList();
+    }
   }, [status]);
 
   useEffect(() => {
@@ -85,11 +102,31 @@ export default function Home() {
 
           <div className='px-[20px] flex flex-col items-center py-[10px]'>
             {/* 카드 */}
-            <AccountCard
-              title='터틀넥즈감자탕식비'
-              accountNumber='000-000000-00000'
-              balance='1000000'
-            />
+            {accountList.length > 0 ? (
+              <Carousel className='w-[calc(100%+20px)] h-[221px]'>
+                <CarouselContent className=''>
+                  {accountList.map((account) => (
+                    <CarouselItem
+                      key={account.id}
+                      className='rounded-xl h-[221px] flex justify-center items-center'
+                    >
+                      <AccountCard
+                        title={account.name}
+                        accountNumber={account.accountNumber}
+                        balance={account.balance.toString()}
+                      />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
+            ) : (
+              <>
+                <div className='flex flex-col w-full h-[221px] py-[10px]'>
+                  <Skeleton className='h-[201px] w-full rounded-xl' />
+                </div>
+              </>
+            )}
+
             {/* 카드 끝 */}
 
             {/* 나의 키워드 */}
