@@ -4,11 +4,11 @@ import { Button } from '@/components/atoms/Button';
 import { AuthInputRef } from '@/components/atoms/Inputs';
 import { useFormState, useFormStatus } from 'react-dom';
 import { FaLock } from 'react-icons/fa';
-// import { CiUser } from "react-icons/ci";
-import { FaUser } from 'react-icons/fa';
 // import { MdOutlineMailOutline } from 'react-icons/md';
 import { useRef } from 'react';
 import { authenticate } from '@/lib/actions';
+// import { CiUser } from "react-icons/ci";
+import { FaUser } from "react-icons/fa";
 
 export default function Login() {
   const [errorMsg, dispatchLogin] = useFormState(authenticate, undefined);
@@ -19,13 +19,7 @@ export default function Login() {
     <div className='w-full flex justify-center h-5/6 my-background before:bg-opacity-20  overflow-hidden relative rounded-xl'>
       <div className='flex justify-center items-center flex-col h-fit w-fit rounded-xl p-20 mt-20 bg-opacity-70 absolute z-100'>
         <h1 className='mb-9'>Login</h1>
-        <form
-          action={async () => {
-            'use server';
-            await dispatchLogin;
-          }}
-          className='space-y-3 flex flex-col gap-3'
-        >
+        <form action={dispatchLogin} className='space-y-3 flex flex-col gap-3'>
           <input type='hidden' name='redirectTo' value='/' />
           <AuthInputRef
             name='id'
