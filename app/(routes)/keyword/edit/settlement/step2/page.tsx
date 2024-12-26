@@ -5,7 +5,6 @@ import { useSettlementContext } from '@/contexts/SettlementContext';
 
 export default function SettlementStep2() {
   const { formData, updateFormData } = useSettlementContext();
-
   return (
     <>
       <SettlementMemberSetting
