@@ -18,8 +18,8 @@ import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 export default function SettlementUsageStep1() {
-  const rest_api_key = process.env.NEXT_REST_API_KEY;
-  const redirect_uri = `${process.env.NEXT_PUBLIC_API_URL}${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL}`;
+  const rest_api_key = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
+  const redirect_uri = `${process.env.NEXT_PUBLIC_CLIENT_DOMAIN}${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}`;
   const kakao_auth_path = 'https://kauth.kakao.com/oauth/authorize';
 
   const router = useRouter();
@@ -93,7 +93,7 @@ export default function SettlementUsageStep1() {
   }, [members, updateFormData]);
 
   useEffect(() => {
-    if (keyword?.checkEveryTime === false) {
+    if (keyword?.checkEveryTime === true) {
       const groupMember = keyword.groupMember.map((member, index) => ({
         id: index,
         name: member.name,
@@ -115,7 +115,7 @@ export default function SettlementUsageStep1() {
       });
       setMembers(groupMember);
     }
-    if (keyword?.checkEveryTime === true) {
+    if (keyword?.checkEveryTime === false) {
       const groupMember = keyword.groupMember.map((member, index) => ({
         id: index,
         name: member.name,
@@ -139,7 +139,7 @@ export default function SettlementUsageStep1() {
       setMembers(groupMember);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [keyword]);
 
   // STT연동
   const { result, setResult } = useVoiceInputSession();
