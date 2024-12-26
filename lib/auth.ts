@@ -19,7 +19,7 @@ export const {
         if (!credentials || !credentials.id || !credentials.passwd) return null;
 
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/login`,
+          `${process.env.NEXT_PUBLIC_API_URL}/be/login`,
           {
             method: 'POST',
             headers: {
