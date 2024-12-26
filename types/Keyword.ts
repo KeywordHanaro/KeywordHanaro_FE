@@ -18,7 +18,7 @@ type BaseKeywordRequest = {
 };
 
 // 조회 키워드 요청 타입
-type InquiryKeywordRequest = BaseKeywordRequest & {
+export type InquiryKeywordRequest = BaseKeywordRequest & {
   type: 'INQUIRY';
   account: { id: number };
   inquiryWord: string;
@@ -49,8 +49,10 @@ type TransferKeywordRequest = BaseKeywordRequest & {
 };
 
 // // 번호표 키워드 요청 타입
-type TicketKeywordRequest = BaseKeywordRequest & {
+type TicketKeywordRequest = {
   type: 'TICKET';
+  name: string;
+  desc: string;
   branch: TBranch;
 };
 
@@ -100,7 +102,8 @@ export type InquiryUsageResponse = {
   transactions: Transaction[];
 };
 
-export type TransferUsageResponse = {
+// amount 수정 페이지에서 있어야 해서 추가 -- 우선 nullable로 할게요
+type TransferUsageResponse = {
   id: number;
   user: UserDetail;
   type: 'TRANSFER';
@@ -111,6 +114,7 @@ export type TransferUsageResponse = {
   subAccount: Account;
   favorite: boolean;
   checkEveryTime: boolean;
+  amount?: number;
 };
 
 export type TicketUsageResponse = {
@@ -138,7 +142,7 @@ export type SettlementUsageResponse = {
   checkEveryTime: boolean;
 };
 
-type groupMember = {
+export type groupMember = {
   // id?: number;
   name: string;
   tel: string;
