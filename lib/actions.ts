@@ -11,7 +11,7 @@ export async function authenticate(
 ) {
   const id = formData.get('id');
   const passwd = formData.get('passwd');
-  
+
   if (!id || !passwd) {
     return 'Input the ID or password!!';
   }
