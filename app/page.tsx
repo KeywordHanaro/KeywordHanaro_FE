@@ -2,6 +2,7 @@
 
 import SpeechToText from '@/components/SpeechToText';
 import { CustomSidebarTrigger } from '@/components/atoms/CustomSidebarTrigger';
+import LoadingDot from '@/components/atoms/LoadingDot';
 import AccountCard from '@/components/molecules/AccountCard';
 import Keyword from '@/components/molecules/Keyword';
 import { AppSidebar } from '@/components/organisms/AppSidebar';
@@ -34,13 +35,15 @@ export default function Home() {
 
   const [keywordList, setKeywordList] = useState<UseKeywordResponse[]>([]);
   const [accountList, setAccountList] = useState<Account[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const { result, resetResult } = useVoiceInputSession();
   const { status } = useSession();
+  console.log(loading);
 
   // if (status !== 'authenticated') {
   //   window.location.reload();
   // }
-  console.log(status);
+  // console.log(status);
 
   useEffect(() => {
     const fetchKeywordList = async () => {
@@ -51,9 +54,14 @@ export default function Home() {
       const accountResponse = await showMyAccounts();
       setAccountList(accountResponse);
     };
-    if (status === 'authenticated') {
-      fetchAccountList();
-      fetchKeywordList();
+    try {
+      if (status === 'authenticated') {
+        fetchAccountList();
+        fetchKeywordList();
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
     }
   }, [status]);
 
@@ -79,6 +87,11 @@ export default function Home() {
   return (
     <>
       <SidebarProvider className=''>
+        {loading && (
+          <div className='absolute'>
+            <LoadingDot />
+          </div>
+        )}
         <div className='absolute'>
           <AppSidebar />
         </div>
