@@ -8,11 +8,12 @@ export type CreateKeywordRequest =
   | InquiryKeywordRequest
   | TransferKeywordRequest
   | TicketKeywordRequest
-  | SettlementKeywordRequest;
+  | SettlementKeywordRequest
+  | MultiKeywordRequest;
 
 // 공통 요청 타입
 type BaseKeywordRequest = {
-  type: 'INQUIRY' | 'TRANSFER' | 'TICKET' | 'SETTLEMENT' | 'DUES';
+  type: 'INQUIRY' | 'TRANSFER' | 'TICKET' | 'SETTLEMENT' | 'DUES' | 'MULTI';
   name: string;
   desc: string;
 };
@@ -77,6 +78,11 @@ export type activateSettlement = {
   amount: number;
   groupMember: string;
   account: Account;
+};
+
+export type MultiKeywordRequest = BaseKeywordRequest & {
+  type: 'MULTI';
+  multiKeywordIds: number[];
 };
 
 /////////////////////////////

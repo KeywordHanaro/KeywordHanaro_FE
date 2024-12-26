@@ -2,6 +2,7 @@
 
 import SelectKeywords from '@/components/templates/createKeyword/multiKeyword/SelectKeywords';
 import { useMultiKeywordForm } from '@/contexts/MultiKeywordContext';
+import { UseKeywordResponse } from '@/types/Keyword';
 import { useRouter } from 'next/navigation';
 
 export default function Step1() {
@@ -17,8 +18,8 @@ export default function Step1() {
     <SelectKeywords
       formData={formData}
       onBack={handleBack}
-      onUpdate={(keywordIdArr: number[]) => {
-        updateFormData({ keywordIdArr });
+      onUpdate={(keywordIdArr: number[], keywordList: UseKeywordResponse[]) => {
+        updateFormData({ keywordIdArr, keywordList });
         router.push('/keyword/create/multiKeyword/step2');
       }}
     />

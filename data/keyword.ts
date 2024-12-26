@@ -81,20 +81,17 @@ export type MultiKeyword = BaseKeyword & {
 };
 
 export const getColorByType = (type: string) => {
-  switch (type.toLowerCase()) {
-    case 'transfer':
-    case 'transferamount':
+  switch (type) {
+    case 'TRANSFER':
       return 'pink';
-    case 'inquiry':
+    case 'INQUIRY':
       return 'green';
-    case 'ticket':
+    case 'TICKET':
       return 'yellow';
-    case 'settlement':
-    case 'dues':
-    case 'duesamount':
-    case 'settlementamount':
+    case 'SETTLEMENT':
+    case 'DUES':
       return 'blue';
-    case 'multiKeyword':
+    case 'MULTI':
       return 'orange';
     default:
       return '';
@@ -102,20 +99,17 @@ export const getColorByType = (type: string) => {
 };
 
 export const getNameByType = (type: string) => {
-  switch (type.toLowerCase()) {
-    case 'transfer':
-    case 'transferamount':
+  switch (type) {
+    case 'TRANSFER':
       return '송금';
-    case 'inquiry':
+    case 'INQUIRY':
       return '조회';
-    case 'ticket':
+    case 'TICKET':
       return '번호표';
-    case 'settlement':
-    case 'dues':
-    case 'duesamount':
-    case 'settlementamount':
+    case 'SETTLEMENT':
+    case 'DUES':
       return '정산/회비';
-    case 'multiKeyword':
+    case 'MULTI':
       return '키워드 조합';
     default:
       return '';

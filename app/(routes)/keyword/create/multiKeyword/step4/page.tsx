@@ -35,15 +35,17 @@ export default function Step4() {
             멀티 키워드를 호출하면
           </div>
           <div className='text-[24px] text-hanaPrimary font-semibold'>
-            {/* {formData.keywordIdArr.map((keywordId) => {
-              const data = keywordList.find((el) => el.id === keywordId);
+            {formData.keywordIdArr.map((keywordId) => {
+              const data = formData.keywordList.find(
+                (el) => el.id === keywordId
+              );
               if (!data) return null;
               return (
                 <div key={keywordId} className='pt-[11px]'>
-                  {data.title}
+                  {data.name}
                 </div>
               );
-            })} */}
+            })}
           </div>
           <div className='text-[18px] pt-14 font-semibold'>
             {formData.keywordIdArr.length}가지 키워드가 한번에 호출돼요
