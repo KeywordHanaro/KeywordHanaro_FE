@@ -39,7 +39,6 @@ export default function EditKeywordPage() {
   useEffect(() => {
     const fetchKeywordList = async () => {
       const response = await getAllKeywords();
-      console.log(response);
       setKeywordList(response);
     };
     fetchKeywordList();

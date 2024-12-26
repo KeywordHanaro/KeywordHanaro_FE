@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Drawer,
   DrawerClose,
@@ -8,10 +10,11 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
-import { MyAccounts } from '@/data/account';
-import { MyAccount } from '@/types/Account';
+import { useAccountApi } from '@/hooks/useAccount/useAccount';
+// import { MyAccounts } from '@/data/account';
+import { Account, MyAccount } from '@/types/Account';
 import { FaAngleDown } from 'react-icons/fa';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import AccountListItem from './AccountListItem';
 
@@ -22,15 +25,32 @@ type SelectBankProps = {
 
 const SelectMyAccount: React.FC<SelectBankProps> = ({ selected, onSelect }) => {
   const [hasScrolled, setHasScrolled] = useState(false);
-  const [myAccount, SetMyAccount] = useState<MyAccount | null>(
+  const [myAccount, setMyAccount] = useState<MyAccount | null>(
     selected ?? null
   );
+
+  const [MyAccounts, setMyAccounts] = useState<MyAccount[]>([]);
+
+  const { showMyAccounts } = useAccountApi();
+
+  useEffect(() => {
+    showMyAccounts().then((res) => {
+      const myAccounts: MyAccount[] = res.map((account: Account) => ({
+        type: 'MyAccount' as const,
+        accountName: account.name,
+        bankId: account.bank.id,
+        accountId: account.id,
+        accountNumber: account.accountNumber,
+      }));
+      setMyAccounts(myAccounts);
+    });
+  }, []);
 
   const handleScroll = () => {
     setHasScrolled(true);
   };
   const handleSelect = (account: MyAccount) => {
-    SetMyAccount(account);
+    setMyAccount(account);
     onSelect(account);
   };
   return (
