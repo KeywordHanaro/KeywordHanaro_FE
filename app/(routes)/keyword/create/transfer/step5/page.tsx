@@ -16,10 +16,20 @@ export default function Step5() {
     await createKeyword({
       type: 'TRANSFER',
       name: formData.keyword,
-      desc: formData.keyword,
+      desc: formData.checkEverytime
+        ? formData.fromAccount.accountName +
+          ' > ' +
+          formData.toAccount.accountNumber +
+          ' > 금액 미정'
+        : formData.fromAccount.accountName +
+          ' > ' +
+          formData.toAccount.accountNumber +
+          ' > ' +
+          formData.amount,
       account: { id: formData.fromAccount.accountId },
       subAccount: { accountNumber: formData.toAccount.accountNumber },
       checkEveryTime: formData.checkEverytime,
+      amount: formData.amount,
     })
       .then(() => {
         router.push('/keyword/create/transfer/step6');

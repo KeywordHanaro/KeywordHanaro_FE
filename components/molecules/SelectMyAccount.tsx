@@ -23,7 +23,7 @@ type SelectBankProps = {
   onSelect: (account: MyAccount) => void;
 };
 
-const SelectMyAccount: React.FC<SelectBankProps> = ({ selected, onSelect }) => {
+const SelectMyAccount = ({ selected, onSelect }: SelectBankProps) => {
   const [hasScrolled, setHasScrolled] = useState(false);
   const [myAccount, setMyAccount] = useState<MyAccount | null>(
     selected ?? null
