@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/atoms/Button';
 import Header from '@/components/atoms/Header';
 import { KeywordInputRef } from '@/components/atoms/Inputs';
 import BankInfoItem from '@/components/molecules/BankInfoItem';
