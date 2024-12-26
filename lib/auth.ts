@@ -19,7 +19,7 @@ export const {
         if (!credentials || !credentials.id || !credentials.passwd) return null;
 
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/be/login`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/login`,
           {
             method: 'POST',
             headers: {
@@ -36,7 +36,7 @@ export const {
           return {
             jwt: jwt.split(' ')[1],
             id: String(credentials.id),
-            name: String(credentials.id)
+            name: String(credentials.id),
           };
         } else {
           return null;
