@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 export const useApi = () => {
   const { data: session } = useSession();
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_DOMAIN_URL;
 
   const fetchApi = async (apiRoute: string, options: RequestInit = {}) => {
     // console.log(session?.user.jwt);
@@ -11,7 +11,7 @@ export const useApi = () => {
       throw new Error('No JWT token found');
     }
 
-    const url = `${baseUrl}/api${apiRoute}`;
+    const url = `${baseUrl}${apiRoute}`;
 
     // 헤더 설정
     const headers = new Headers(options.headers);
