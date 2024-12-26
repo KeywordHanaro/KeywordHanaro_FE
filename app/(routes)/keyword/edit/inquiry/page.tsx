@@ -4,25 +4,59 @@ import { Button } from '@/components/atoms/Button';
 import Header from '@/components/atoms/Header';
 import { KeywordInputRef } from '@/components/atoms/Inputs';
 import SelectMyAccount from '@/components/molecules/SelectMyAccount';
-import { InquiryKeyword, KeywordDetailList } from '@/data/keyword';
+// import { InquiryKeyword, KeywordDetailList } from '@/data/keyword';
+import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
 import { MyAccount } from '@/types/Account';
+import { InquiryUsageResponse } from '@/types/Keyword';
+// import { useRouter, useSearchParams } from 'next/navigation';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ChangeEvent, useCallback, useMemo, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Suspense } from 'react';
 
 export default function EditInquiryPage() {
   const router = useRouter();
   const params = useSearchParams();
   const id = params.get('id');
-  const keyword = KeywordDetailList.find(
-    (item) => item.id === Number(id)
-  ) as InquiryKeyword;
+  // const keyword = KeywordDetailList.find(
+  //   (item) => item.id === Number(id)
+  // ) as InquiryKeyword;
 
-  const [keywordTitle, setKeywordTitle] = useState(keyword.title);
-  const [searchKeyword, setSearchKeyword] = useState(keyword.searchKeyword);
-  const [myAccount, setMyAccount] = useState<MyAccount | undefined>(
-    keyword.accountFrom as MyAccount
-  );
+  const { getKeywordById, updateKeyword } = useKeywordApi();
+
+  const [keyword, setKeyword] = useState<InquiryUsageResponse>();
+
+  useEffect(() => {
+    if (id) {
+      getKeywordById(parseInt(id))
+        .then((res) => {
+          if (res.type !== 'INQUIRY') return;
+          setKeyword(res);
+          setKeywordTitle(res.name);
+          setSearchKeyword(res.inquiryWord);
+          setMyAccount({
+            type: 'MyAccount',
+            accountName: res.account.name,
+            bankId: res.account.bank.id,
+            accountId: res.account.id,
+            accountNumber: res.account.accountNumber,
+          });
+        })
+        .catch((error) => {
+          console.error('거래 내역 가져오기 실패:', error);
+        });
+    }
+  }, [id]);
+
+  const [keywordTitle, setKeywordTitle] = useState<string>('');
+  const [searchKeyword, setSearchKeyword] = useState<string>('');
+  const [myAccount, setMyAccount] = useState<MyAccount>();
 
   const keywordTitleRef = useRef<HTMLInputElement>(null);
   const searchKeywordRef = useRef<HTMLInputElement>(null);
@@ -38,15 +72,18 @@ export default function EditInquiryPage() {
     []
   );
 
-  const onComplete = useCallback(() => {
+  const onComplete = useCallback(async () => {
     if (keyword) {
-      const updatedFormData = {
-        id: keyword.id,
-        title: keywordTitle,
-        accountForm: myAccount,
-        searchKeyword: searchKeyword,
-      };
-      console.log('🚀 ~ onComplete ~ updatedFormData:', updatedFormData);
+      if (!myAccount) return;
+
+      await updateKeyword(keyword.id, {
+        type: 'INQUIRY',
+        name: keywordTitle,
+        account: { id: myAccount.accountId },
+        inquiryWord: searchKeyword,
+        desc: myAccount?.accountName + '에서 조회 > ' + searchKeyword,
+      });
+
       router.back();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,9 +91,12 @@ export default function EditInquiryPage() {
 
   const isButtonDisabled = useMemo(() => {
     const isDataChanged =
-      keywordTitle !== keyword.title ||
-      myAccount !== keyword.accountFrom ||
-      searchKeyword !== keyword.searchKeyword;
+      keywordTitle !== keyword?.name ||
+      myAccount?.accountId !== keyword?.account.id ||
+      myAccount?.accountName !== keyword?.account.name ||
+      myAccount?.bankId !== keyword?.account.bank.id ||
+      myAccount?.accountNumber !== keyword?.account.accountNumber ||
+      searchKeyword !== keyword?.inquiryWord;
 
     return !keywordTitle || !searchKeyword || !isDataChanged;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,30 +112,31 @@ export default function EditInquiryPage() {
               <strong>키워드명</strong>
               <KeywordInputRef
                 className='text-hanaPrimary w-full'
-                placeHolder={keyword.title}
+                placeHolder={keyword?.name}
                 onChange={handleInputChange}
-                defaultValue={keyword.title}
+                defaultValue={keyword?.name}
                 ref={keywordTitleRef}
               />
             </div>
 
             <div className='flex flex-col'>
               <strong>내 계좌</strong>
-              <SelectMyAccount
-                selected={
-                  myAccount?.type === 'MyAccount' ? myAccount : undefined
-                }
+              {/* <SelectMyAccount
+                selected={myAccount}
                 onSelect={setMyAccount}
-              />
+              /> */}
+              {myAccount && (
+                <SelectMyAccount selected={myAccount} onSelect={setMyAccount} />
+              )}
             </div>
 
             <div className='flex flex-col'>
               <strong>조회 내용</strong>
               <KeywordInputRef
                 className='text-hanaPrimary w-full'
-                placeHolder={keyword.searchKeyword}
+                placeHolder={keyword?.inquiryWord}
                 onChange={handleSearchKeyword}
-                defaultValue={keyword.searchKeyword}
+                defaultValue={keyword?.inquiryWord}
                 ref={searchKeywordRef}
               />
             </div>

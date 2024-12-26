@@ -25,10 +25,11 @@ export const useKeywordApi = () => {
     });
   };
 
-  const updateKeyword = async (id: number, keyword: string) => {
+  const updateKeyword = async (id: number, keyword: CreateKeywordRequest) => {
+    const processedKeyword = stringifyBranchIfNeeded(keyword);
     return await fetchApi(`/keyword/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify({ keyword }),
+      method: 'PATCH',
+      body: JSON.stringify(processedKeyword),
     });
   };
 

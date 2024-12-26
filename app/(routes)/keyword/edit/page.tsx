@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 
 export default function EditKeywordPage() {
   const router = useRouter();
-  const { getAllKeywords } = useKeywordApi();
+  const { getAllKeywords, deleteKeyword } = useKeywordApi();
   const onComplete = () => {
     router.push('/keyword');
   };
@@ -25,14 +25,20 @@ export default function EditKeywordPage() {
       router.push(`/keyword/edit/${route}/step1?id=${id}`);
     else router.push(`/keyword/edit/${route}?id=${id}`);
   };
-  const onDeleteKeyword = (id: number) => {
-    alert(`delete ${id}`);
+  const onDeleteKeyword = async (id: number) => {
+    const confirmed = window.confirm(`정말로 키워드를 삭제하시겠습니까?`);
+    if (!confirmed) return;
+
+    await deleteKeyword(id);
+    setKeywordList((prevList) =>
+      prevList.filter((keyword) => keyword.id !== id)
+    );
+    alert('키워드를 삭제했습니다.');
   };
 
   useEffect(() => {
     const fetchKeywordList = async () => {
       const response = await getAllKeywords();
-      console.log(response);
       setKeywordList(response);
     };
     fetchKeywordList();
