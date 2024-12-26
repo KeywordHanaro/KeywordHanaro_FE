@@ -7,17 +7,18 @@ import { UserDetail } from './User';
 export type CreateKeywordRequest =
   | InquiryKeywordRequest
   | TransferKeywordRequest
-  | TicketKeywordRequest;
+  | TicketKeywordRequest
+  | SettlementKeywordRequest;
 
 // 공통 요청 타입
 type BaseKeywordRequest = {
-  type: 'INQUIRY' | 'TRANSFER' | 'TICKET' | 'SETTLEMENT';
+  type: 'INQUIRY' | 'TRANSFER' | 'TICKET' | 'SETTLEMENT' | 'DUES';
   name: string;
   desc: string;
 };
 
 // 조회 키워드 요청 타입
-type InquiryKeywordRequest = BaseKeywordRequest & {
+export type InquiryKeywordRequest = BaseKeywordRequest & {
   type: 'INQUIRY';
   account: { id: number };
   inquiryWord: string;
@@ -55,11 +56,37 @@ type TicketKeywordRequest = {
   branch: TBranch;
 };
 
+//**********정산 키워드 요청 타입****************//
+//정산 생성 타입
+type SettlementKeywordRequest = BaseKeywordRequest & {
+  type: 'SETTLEMENT' | 'DUES';
+  amount?: number;
+  checkEveryTime: boolean;
+  groupMember: string;
+  account: settlementAccount;
+};
+
+type settlementAccount = {
+  id: number;
+  accountNumber: string;
+  accountName: string;
+};
+
+//정산 사용 시 카톡 메시지 요청용
+export type activateSettlement = {
+  amount: number;
+  groupMember: string;
+  account: Account;
+};
+
+/////////////////////////////
+//*************************//
 /////////////////////////////
 export type UseKeywordResponse =
   | InquiryUsageResponse
   | TransferUsageResponse
-  | TicketUsageResponse;
+  | TicketUsageResponse
+  | SettlementUsageResponse;
 
 // 키워드 사용 type 정의
 export type InquiryUsageResponse = {
@@ -76,7 +103,7 @@ export type InquiryUsageResponse = {
 };
 
 // amount 수정 페이지에서 있어야 해서 추가 -- 우선 nullable로 할게요
-export type TransferUsageResponse = {
+type TransferUsageResponse = {
   id: number;
   user: UserDetail;
   type: 'TRANSFER';
@@ -87,6 +114,7 @@ export type TransferUsageResponse = {
   subAccount: Account;
   favorite: boolean;
   checkEveryTime: boolean;
+  amount?: number;
 };
 
 export type TicketUsageResponse = {
@@ -98,4 +126,24 @@ export type TicketUsageResponse = {
   seqOrder: number;
   branch: TBranch;
   favorite: boolean;
+};
+
+export type SettlementUsageResponse = {
+  id: number;
+  user: UserDetail;
+  type: 'SETTLEMENT' | 'DUES';
+  name: string;
+  desc: string;
+  seqOrder: number;
+  account: Account;
+  favorite: boolean;
+  groupMember: groupMember[];
+  amount: number;
+  checkEveryTime: boolean;
+};
+
+export type groupMember = {
+  // id?: number;
+  name: string;
+  tel: string;
 };

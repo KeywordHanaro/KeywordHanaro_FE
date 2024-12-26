@@ -6,26 +6,44 @@ import { MoneyInputRef } from '@/components/atoms/Inputs';
 import { ChipsList } from '@/components/molecules/ChipList';
 import { useSettlementContext } from '@/contexts/SettlementContext';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { KeywordDetailList } from '@/data/keyword';
+// import { KeywordDetailList } from '@/data/keyword';
 import { Member } from '@/data/member';
 import { FormData } from '@/data/settlement';
+import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
+import { SettlementUsageResponse } from '@/types/Keyword';
 import { convertKorToNum } from 'korean-number-converter';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import { useState, useRef, useEffect } from 'react';
-import { cn } from '@/lib/utils';
+import { cn, formatNumberWithCommas } from '@/lib/utils';
 
 export default function SettlementUsageStep1() {
-  const rest_api_key = 'cf0b7e3e3feae9d12f5e11d619ffda3a';
-  const redirect_uri = 'http://localhost:3000/settlement/kakao-login';
+  const rest_api_key = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
+  const redirect_uri = `${process.env.NEXT_PUBLIC_CLIENT_DOMAIN}${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}`;
   const kakao_auth_path = 'https://kauth.kakao.com/oauth/authorize';
 
   const router = useRouter();
   const { formData, updateFormData } = useSettlementContext();
   const searchParams = useSearchParams();
-  const id = searchParams.get('id');
 
-  const keyword = KeywordDetailList.find((item) => item.id === Number(id));
+  const [keyword, setKeyword] = useState<SettlementUsageResponse>();
+
+  const { getKeywordById } = useKeywordApi();
+  useEffect(() => {
+    const id = searchParams.get('id');
+    if (id) {
+      getKeywordById(parseInt(id))
+        .then((res) => {
+          console.log(res);
+          setKeyword(res as SettlementUsageResponse);
+        })
+        .catch((error) => {
+          console.error('정산 키워드 조희 실패:', error);
+        });
+    }
+  }, [searchParams]);
+
+  // const keyword = KeywordDetailList.find((item) => item.id === Number(4));
 
   const [valid, setValid] = useState(
     formData.members.length > 0 && formData.amount !== ''
@@ -75,43 +93,53 @@ export default function SettlementUsageStep1() {
   }, [members, updateFormData]);
 
   useEffect(() => {
-    if (keyword?.type === 'settlement') {
+    if (keyword?.checkEveryTime === true) {
+      const groupMember = keyword.groupMember.map((member, index) => ({
+        id: index,
+        name: member.name,
+        phoneNumber: member.tel,
+      }));
       updateFormData({
         fromAccount: {
-          accountName: keyword.accountFrom.accountName,
-          bankId: keyword.accountFrom.bankId,
+          accountName: keyword.account.name,
+          bankId: keyword.account.bank.id,
           accountId: 1,
-          accountNumber: keyword.accountFrom.accountNumber,
+          accountNumber: keyword.account.accountNumber,
           type: 'MyAccount',
         },
-        members: keyword.memberList,
-        category: 'Settlement',
+        members: groupMember,
+        category: keyword.type === 'SETTLEMENT' ? 'Settlement' : 'Dues',
         checkEveryTime: true,
         amount: '',
-        keywordName: keyword.title,
+        keywordName: keyword.name,
       });
-      setMembers(keyword.memberList);
+      setMembers(groupMember);
     }
-    if (keyword?.type === 'settlementAmount') {
+    if (keyword?.checkEveryTime === false) {
+      const groupMember = keyword.groupMember.map((member, index) => ({
+        id: index,
+        name: member.name,
+        phoneNumber: member.tel,
+      }));
       updateFormData({
         fromAccount: {
-          accountName: keyword.accountFrom.accountName,
-          bankId: keyword.accountFrom.bankId,
-          accountNumber: keyword.accountFrom.accountNumber,
+          accountName: keyword.account.name,
+          bankId: keyword.account.bank.id,
           accountId: 1,
+          accountNumber: keyword.account.accountNumber,
           type: 'MyAccount',
         },
-        members: keyword.memberList,
-        category: 'Settlement',
+        members: groupMember,
+        category: keyword.type === 'SETTLEMENT' ? 'Settlement' : 'Dues',
         checkEveryTime: false,
         amount: keyword.amount.toString(),
-        keywordName: keyword.title,
+        keywordName: keyword.name,
       });
       setValid(true);
-      setMembers(keyword.memberList);
+      setMembers(groupMember);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [keyword]);
 
   // STT연동
   const { result, setResult } = useVoiceInputSession();
@@ -128,7 +156,7 @@ export default function SettlementUsageStep1() {
       setValid(amountVal > 0);
       setResult('');
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result, setResult]);
 
   return (
@@ -148,7 +176,7 @@ export default function SettlementUsageStep1() {
               <span key={member.id}>{member.name}</span>
             )
           )}
-          <span className='text-black ml-[3px]'>님에게 정산요청 할게요</span>
+          <span className='text-black ml-[3px]'>님에게 {keyword?.type === 'SETTLEMENT' ? "정산" : "회비"} 요청 할게요</span>
         </div>
 
         {formData.checkEveryTime ? (
@@ -159,7 +187,7 @@ export default function SettlementUsageStep1() {
           />
         ) : (
           <p className='text-[24px] text-hanaPrimary font-semibold'>
-            {formData.amount} 원
+            {formatNumberWithCommas(formData.amount)} 원
           </p>
         )}
 
@@ -199,7 +227,7 @@ export default function SettlementUsageStep1() {
         >
           다음
         </Button>
-        {keyword?.type === 'settlement' && (
+        {keyword?.type === 'SETTLEMENT' && (
           <SpeechToText autoStart placeholder='얼마를 요청할까요?' />
         )}
       </div>
