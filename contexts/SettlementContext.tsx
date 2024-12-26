@@ -13,8 +13,10 @@ import {
 } from 'react';
 
 type SettlementProps = {
+  id: number;
   formData: FormData;
   updateFormData: (newData: Partial<FormData>) => void;
+  editId: (id: number) => void;
   handleOnBack: () => void;
   handleOnNext: () => void;
   isEdit?: boolean;
@@ -36,11 +38,13 @@ const SettlementContext = createContext<SettlementProps>({
     amount: '',
     keywordName: '',
   },
+  editId: () => {},
   updateFormData: () => {},
   handleOnBack: () => {},
   handleOnNext: () => {},
   isEdit: false,
   originalData: null,
+  id: 0,
 });
 
 export const SettlementProvider = ({
@@ -65,6 +69,7 @@ export const SettlementProvider = ({
     amount: '',
     keywordName: '',
   });
+  const [id, setId] = useState<number>(0);
   const router = useRouter();
   const nextStep = () => router.push('/keyword/create/settlement/step3');
   const prevStep = () => router.push('/');
@@ -87,6 +92,10 @@ export const SettlementProvider = ({
       ...newData,
     }));
   }, []);
+
+  const editId = (id: number) => {
+    setId(id);
+  };
 
   useEffect(() => {
     if (
@@ -111,7 +120,14 @@ export const SettlementProvider = ({
 
   return (
     <SettlementContext.Provider
-      value={{ formData, updateFormData, handleOnBack, handleOnNext }}
+      value={{
+        formData,
+        id,
+        editId,
+        updateFormData,
+        handleOnBack,
+        handleOnNext,
+      }}
     >
       {children}
     </SettlementContext.Provider>

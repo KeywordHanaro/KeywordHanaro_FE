@@ -66,6 +66,7 @@ const EditKeyword = ({ data, onEdit, onDelete }: EditKeywordProps) => {
           </>
         );
       case 'SETTLEMENT':
+      case 'DUES':
         return (
           <>
             <span className='text-[13px] font-semibold'>
