@@ -3,7 +3,7 @@
 import Header from '@/components/atoms/Header';
 import { KeywordInputRef } from '@/components/atoms/Inputs';
 import AddNewKeyword from '@/components/molecules/AddNewKeyword';
-// import Keyword from '@/components/molecules/Keyword';
+import Keyword from '@/components/molecules/Keyword';
 import MultiKeyword from '@/components/molecules/MultiKeyword';
 import {
   Drawer,
@@ -15,27 +15,28 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
-import { KeywordDetail, KeywordDetailList, keywordList } from '@/data/keyword';
+import { KeywordDetail } from '@/data/keyword';
 import { useToast } from '@/hooks/use-toast';
 import { motion, Reorder } from 'motion/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { ulVariants, liVariants } from '@/lib/motionVariable';
 import { cn } from '@/lib/utils';
+import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
 
 export default function EditMultiKeywordPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { toast } = useToast();
+  const { getKeywordById, updateKeyword } = useKeywordApi();
+  const id = searchParams.get('id');
 
   const [multiKeywordData, setMultiKeywordData] =
     useState<KeywordDetail | null>(null);
   const [items, setItems] = useState<number[]>([]);
-  console.log(items);
 
-  const searchParams = useSearchParams();
-
+  
   useEffect(() => {
-    const id = searchParams.get('id');
     if (id) {
       const foundKeyword = KeywordDetailList.find(
         (keyword) =>
@@ -86,21 +87,21 @@ export default function EditMultiKeywordPage() {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // const handleDelete = (idToDelete: number) => {
-  //   setItems((prevItems) => prevItems.filter((item) => item !== idToDelete));
+  const handleDelete = (idToDelete: number) => {
+    setItems((prevItems) => prevItems.filter((item) => item !== idToDelete));
 
-  //   setMultiKeywordData((prevData) => {
-  //     if (prevData && 'keywordList' in prevData && prevData.keywordList) {
-  //       return {
-  //         ...prevData,
-  //         keywordList: prevData.keywordList.filter(
-  //           (item) => item.id !== idToDelete
-  //         ),
-  //       };
-  //     }
-  //     return prevData;
-  //   });
-  // };
+    setMultiKeywordData((prevData) => {
+      if (prevData && 'keywordList' in prevData && prevData.keywordList) {
+        return {
+          ...prevData,
+          keywordList: prevData.keywordList.filter(
+            (item) => item.id !== idToDelete
+          ),
+        };
+      }
+      return prevData;
+    });
+  };
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const handleShowModal = () => {
@@ -169,11 +170,11 @@ export default function EditMultiKeywordPage() {
               return (
                 <motion.li key={id} variants={liVariants} custom={index}>
                   <Reorder.Item key={id} value={id} drag='y'>
-                    {/* <Keyword
+                    <Keyword
                       data={data}
                       canDelete={true}
                       onDelete={handleDelete}
-                    ></Keyword> */}
+                    ></Keyword>
                   </Reorder.Item>
                 </motion.li>
               );

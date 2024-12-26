@@ -23,6 +23,7 @@ export default function EditKeywordPage() {
     const route = type.toLowerCase().replace('amount', '');
     if (route.includes('settlement'))
       router.push(`/keyword/edit/${route}/step1?id=${id}`);
+    if (type === 'MULTI') router.push(`/keyword/edit/multikeyword?id=${id}`);
     else router.push(`/keyword/edit/${route}?id=${id}`);
   };
   const onDeleteKeyword = async (id: number) => {

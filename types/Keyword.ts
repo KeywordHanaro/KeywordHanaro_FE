@@ -92,7 +92,8 @@ export type UseKeywordResponse =
   | InquiryUsageResponse
   | TransferUsageResponse
   | TicketUsageResponse
-  | SettlementUsageResponse;
+  | SettlementUsageResponse
+  | MultiUsageResponse;
 
 // 키워드 사용 type 정의
 export type InquiryUsageResponse = {
@@ -146,6 +147,24 @@ export type SettlementUsageResponse = {
   groupMember: groupMember[];
   amount: number;
   checkEveryTime: boolean;
+};
+
+export type MultiUsageResponse = {
+  id: number;
+  user: UserDetail;
+  type: 'MULTI';
+  name: string;
+  desc: string;
+  seqOrder: number;
+  favorite: boolean;
+  multiKeyword: MultiKeywordDetail[];
+};
+
+export type MultiKeywordDetail = {
+  id: number;
+  parentId: number;
+  keyword: UseKeywordResponse;
+  seqOrder: number;
 };
 
 export type groupMember = {
