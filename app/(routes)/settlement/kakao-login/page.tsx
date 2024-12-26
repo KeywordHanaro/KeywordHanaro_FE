@@ -1,5 +1,6 @@
 'use client';
 
+import LoadingKakao from '@/components/atoms/LoadingKakao';
 import { useSettlementContext } from '@/contexts/SettlementContext';
 import { FormData } from '@/data/settlement';
 // import { activateSettlement } from '@/types/SettlementRequest';
@@ -59,14 +60,14 @@ export default function GetKakao() {
               amount: parseInt(data.amount),
               account: account,
               groupMember: groupMembers,
-              type: data.category
+              type: data.category,
             }),
           }
         );
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        router.replace('/settlement/step2');
+        // router.replace('/settlement/step2');
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -77,6 +78,7 @@ export default function GetKakao() {
   return (
     <>
       <div>
+        <LoadingKakao />
         <h1>멤버에게 카카오톡 메시지를 보내는 중이에요</h1>
       </div>
     </>
