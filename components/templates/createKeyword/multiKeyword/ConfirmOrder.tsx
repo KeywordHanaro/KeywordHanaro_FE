@@ -1,6 +1,5 @@
 import Keyword from '@/components/molecules/Keyword';
 import { MultiKeywordForm } from '@/contexts/MultiKeywordContext';
-import { keywordList } from '@/data/keyword';
 import { Reorder } from 'motion/react';
 import { useState } from 'react';
 

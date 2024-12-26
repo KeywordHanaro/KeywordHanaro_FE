@@ -3,11 +3,9 @@ import Header from '@/components/atoms/Header';
 import MultiKeyword from '@/components/molecules/MultiKeyword';
 import { MultiKeywordForm } from '@/contexts/MultiKeywordContext';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { Keyword } from '@/data/keyword';
 import { useToast } from '@/hooks/use-toast';
 import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
 import { UseKeywordResponse } from '@/types/Keyword';
-import { set } from 'date-fns';
 import { usePathname } from 'next/navigation';
 import { useState, useCallback, useEffect } from 'react';
 import { levenshtein } from '@/lib/utils';
@@ -77,7 +75,7 @@ export default function SelectKeywords({
 
   useEffect(() => {
     if (result) {
-      const findSimilarKeywords = (input: string, threshold: number = 0.3) => {
+      const findSimilarKeywords = (input: string, threshold: number = 0.2) => {
         const inputWords = input.toLowerCase().split(' ');
         const similarKeywords: UseKeywordResponse[] = [];
 
@@ -106,12 +104,29 @@ export default function SelectKeywords({
         return similarKeywords;
       };
 
-      const similarKeywords = findSimilarKeywords(result, 0.7);
+      const similarKeywords = findSimilarKeywords(result, 0.5);
       const newSelectedIds = similarKeywords.map((keyword) => keyword.id);
 
       setSelectedIds((prev) => {
+        if (prev.length >= 5) {
+          toast({
+            title: '최대 5개까지 선택할 수 있어요',
+            description: '',
+            variant: 'gray',
+          });
+          return prev;
+        }
         const uniqueIds = [...prev, ...newSelectedIds];
         return uniqueIds.slice(0, 5); // 최대 5개까지만 선택
+      });
+      setSelectedKeywordList((prev) => {
+        const uniqueKeywords = [
+          ...prev,
+          ...similarKeywords.filter(
+            (keyword) => !prev.map((k) => k.id).includes(keyword.id)
+          ),
+        ];
+        return uniqueKeywords.slice(0, 5); // 최대 5개까지만 선택
       });
 
       setResult('');

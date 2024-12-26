@@ -1,10 +1,6 @@
 'use client';
 
-import {
-  getColorByType,
-  getNameByType,
-  Keyword as TKeyword,
-} from '@/data/keyword';
+import { getColorByType, getNameByType } from '@/data/keyword';
 import { UseKeywordResponse } from '@/types/Keyword';
 import { BsStarFill } from 'react-icons/bs';
 import { cn } from '@/lib/utils';
