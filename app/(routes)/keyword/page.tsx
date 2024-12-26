@@ -176,7 +176,7 @@ export default function KeywordPage() {
             })}
           </Reorder.Group>
         )}
-        {(favoriteItems.length !== 0 || normalItems.length !== 0) && (
+        {(
           <motion.li variants={liVariants} custom={keywordList.length + 1}>
             <AddNewKeyword />
           </motion.li>
