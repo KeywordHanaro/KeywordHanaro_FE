@@ -6,12 +6,13 @@ import { FormData } from '@/data/settlement';
 // import { activateSettlement } from '@/types/SettlementRequest';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function GetKakao() {
   const searchParams = useSearchParams();
   const { data: session } = useSession();
   const { updateFormData } = useSettlementContext();
+  const [progress, setProgress] = useState<number>(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -22,6 +23,7 @@ export default function GetKakao() {
       }
     };
     const data = loadLocalStorage('settlement');
+    setProgress(25);
     if (data) {
       updateFormData(data);
     } else {
@@ -38,7 +40,7 @@ export default function GetKakao() {
       name: member.name,
       tel: member.phoneNumber,
     }));
-
+    setProgress(50);
     // const members = JSON.stringify(groupMembers);
 
     const sendMessage = async () => {
@@ -64,22 +66,25 @@ export default function GetKakao() {
             }),
           }
         );
+        setProgress(90);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        // router.replace('/settlement/step2');
+        setProgress(100);
+        router.replace('/settlement/step2');
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
+    setProgress(75);
     sendMessage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>
-      <div>
-        <LoadingKakao />
-        <h1>멤버에게 카카오톡 메시지를 보내는 중이에요</h1>
+      <div className='flex flex-col items-center h-full'>
+        <h1 className='text-xl font-bold mt-10 mb-10'>멤버에게 카카오톡 메시지를 보내는 중이에요</h1>
+        <LoadingKakao progress={progress} />
       </div>
     </>
   );
