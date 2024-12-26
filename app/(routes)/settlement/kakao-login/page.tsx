@@ -66,7 +66,7 @@ export default function GetKakao() {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        router.push('/settlement/step2');
+        router.replace('/settlement/step2');
       } catch (error) {
         console.error('Error fetching data:', error);
       }

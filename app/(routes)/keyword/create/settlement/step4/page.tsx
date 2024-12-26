@@ -16,7 +16,7 @@ export default function SettlementStep4() {
       name: member.name,
       tel: member.phoneNumber,
     }));
-    const desc = `정산 > ${formData.checkEveryTime ? '' : formData.amount + ' >'} ${groupMembers.map(
+    const desc = `${formData.category === 'Settlement' ? '정산' : '회비'} > ${formData.checkEveryTime ? '' : formData.amount + ' >'} ${groupMembers.map(
       (member) => member.name
     )}`;
     try {
