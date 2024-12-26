@@ -25,13 +25,13 @@ const EditKeyword = ({ data, onEdit, onDelete }: EditKeywordProps) => {
           <>
             <span className='font-semibold text-[13px]'>
               {data.account.name ?? data.account.accountNumber}
-              계좌에서&nbsp;
+              에서&nbsp;
               <span className='text-hanaPrimary'>
                 {data.subAccount.type === 'MyAccount'
                   ? data.subAccount.name
                   : `${data.subAccount.name}님`}
               </span>
-              &nbsp;계좌로
+              &nbsp;로
             </span>
             {data.checkEveryTime ? (
               <span className='text-hanaPrimary font-semibold text-[13px]'>
@@ -47,24 +47,22 @@ const EditKeyword = ({ data, onEdit, onDelete }: EditKeywordProps) => {
         );
       case 'INQUIRY':
         return (
-          <>
+          <div className='flex flex-wrap'>
             <span className=' font-semibold text-[13px]'>
               {data.account.name ?? data.account.accountNumber}
-              계좌에서
+              계좌에서 &nbsp;
+              <span className='text-hanaPrimary font-semibold text-[13px]'>
+                {data.inquiryWord} 조회
+              </span>
             </span>
-            <span className='text-hanaPrimary font-semibold text-[13px]'>
-              {data.inquiryWord}
-              <span>조회</span>
-            </span>
-          </>
+          </div>
         );
       case 'TICKET':
         return (
           <>
-            <span className='text-hanaPrimary font-semibold text-[13px]'>
-              {data.name}
+            <span className=' text-hanaPrimary font-semibold text-[13px]'>
+              {data.desc}
             </span>
-            <span className='text-[13px] font-semibold'>번호표 발급</span>
           </>
         );
       case 'SETTLEMENT':
@@ -114,7 +112,7 @@ const EditKeyword = ({ data, onEdit, onDelete }: EditKeywordProps) => {
 
   return (
     <Card className='flex-row flex-grow justify-between items-start rounded-[12px] h-full gap-4'>
-      <div className='flex flex-col flex-grow gap-4'>
+      <div className='flex flex-col flex-grow gap-4 h-full justify-between'>
         <div className='flex gap-2 items-center'>
           <span className='text-fontBlack text-[16px] font-semibold'>
             {name}
@@ -123,7 +121,7 @@ const EditKeyword = ({ data, onEdit, onDelete }: EditKeywordProps) => {
         </div>
         <div className='flex flex-col gap-2'>{renderDetails()}</div>
       </div>
-      <div className='flex flex-col justify-between h-full'>
+      <div className='flex flex-col justify-between h-full gap-3'>
         <EditButton onClick={() => onEdit(id)}></EditButton>
         <DelButton onClick={() => onDelete(id)}></DelButton>
       </div>
