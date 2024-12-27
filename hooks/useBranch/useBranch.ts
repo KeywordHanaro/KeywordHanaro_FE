@@ -40,7 +40,7 @@ export const useBranchApi = () => {
   const savePermission = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/ticket/permission`,
+        `${process.env.NEXT_PUBLIC_API_URL}/be/ticket/permission`,
         {
           method: 'POST',
           headers: {

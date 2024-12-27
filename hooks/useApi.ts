@@ -11,7 +11,7 @@ export const useApi = () => {
       throw new Error('No JWT token found');
     }
 
-    const url = `${baseUrl}/api${apiRoute}`;
+    const url = `${baseUrl}/be${apiRoute}`;
 
     // 헤더 설정
     const headers = new Headers(options.headers);
