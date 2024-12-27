@@ -25,6 +25,7 @@ import { motion } from 'motion/react';
 import { useSession } from 'next-auth/react';
 // import { signOut } from 'next-auth/react';
 import { SlArrowRight } from 'react-icons/sl';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { ulVariants, liVariants } from '@/lib/motionVariable';
 import { findSimilarKeywords } from '@/lib/utils';
@@ -47,7 +48,14 @@ export default function Home() {
   useEffect(() => {
     const fetchKeywordList = async () => {
       const keywordResponse = await getAllKeywords();
-      setKeywordList(keywordResponse.filter((k) => k.favorite));
+      const favoriteKeywords = keywordResponse.filter((k) => k.favorite);
+      const nonFavoriteKeywords = keywordResponse.filter((k) => !k.favorite);
+
+      if (keywordResponse.filter((k) => k.favorite).length > 0) {
+        setKeywordList(favoriteKeywords.slice(0, 5));
+      } else if (keywordResponse.filter((k) => !k.favorite).length > 0) {
+        setKeywordList(nonFavoriteKeywords.slice(0, 5));
+      }
     };
     const fetchAccountList = async () => {
       const accountResponse = await showMyAccounts();
@@ -158,15 +166,30 @@ export default function Home() {
                 animate='visible'
                 className='flex flex-col  gap-2.5'
               >
-                {keywordList.slice(0, 5).map((each, index) => (
-                  <motion.li key={each.id} variants={liVariants} custom={index}>
-                    <Keyword
+                {keywordList.length > 0 ? (
+                  keywordList.slice(0, 5).map((each, index) => (
+                    <motion.li
                       key={each.id}
-                      data={each}
-                      data-keyword-id={each.id}
-                    ></Keyword>
-                  </motion.li>
-                ))}
+                      variants={liVariants}
+                      custom={index}
+                    >
+                      <Keyword
+                        key={each.id}
+                        data={each}
+                        data-keyword-id={each.id}
+                      ></Keyword>
+                    </motion.li>
+                  ))
+                ) : (
+                  <div className='flex-col flex justify-center'>
+                    <p className='text-center font-bold text-[20px] mt-[20px]'>
+                      등록된 키워드가 없어요!
+                    </p>
+                    <p className='text-center'>
+                      키워드를 등록하여 사용해보세요!
+                    </p>
+                  </div>
+                )}
               </motion.ul>
             </div>
             {/* 나의 키워드 끝 */}

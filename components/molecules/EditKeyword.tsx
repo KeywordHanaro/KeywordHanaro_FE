@@ -110,7 +110,7 @@ const EditKeyword = ({ data, onEdit, onDelete }: EditKeywordProps) => {
   };
 
   return (
-    <Card className='flex-row flex-grow justify-between items-start rounded-[12px] h-full gap-4'>
+    <Card className='flex-row  justify-between items-start rounded-[12px] gap-4'>
       <div className='flex flex-col flex-grow gap-4 h-full justify-between'>
         <div className='flex gap-2 items-center'>
           <span className='text-fontBlack text-[16px] font-semibold'>
