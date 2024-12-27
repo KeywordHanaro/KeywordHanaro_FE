@@ -199,7 +199,7 @@ const MultiKeyword = () => {
 
   const { transfer } = useAccountApi();
   const { issueTicket } = useBranchApi();
-  const { sendMessage } = useSettlementApi();
+  const { sendMultiMessage } = useSettlementApi();
 
   const handleSubmit = async () => {
     const settlementRequests: SettlementRequest[] = [];
@@ -256,7 +256,7 @@ const MultiKeyword = () => {
       }
     }
     if (settlementRequests.length > 0 && code) {
-      await sendMessage({
+      await sendMultiMessage({
         code: code,
         settlementList: settlementRequests,
       })
