@@ -3,9 +3,10 @@
 import MyAccountList from '@/components/organisms/MyAccountList';
 import RecentAccountList from '@/components/organisms/RecentAccountList';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { MyAccounts, RecentAccounts } from '@/data/account';
-import { OthersAccount } from '@/types/Account';
+import { useAccountApi } from '@/hooks/useAccount/useAccount';
+import { Account, OthersAccount, RecentAccount } from '@/types/Account';
 import { MyAccount } from '@/types/Account';
+import { MyAccountWithBalance } from '@/types/Transfer';
 import { ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -13,12 +14,14 @@ export type SelectToAccountType = {
   onUpdate: (account: MyAccount | OthersAccount) => void;
   onNext: (step?: number) => void;
   selectedAccountNumber: string;
+  selectedAccountId: number;
 };
 
 export default function SelectToAccount({
   onUpdate,
   onNext,
   selectedAccountNumber,
+  selectedAccountId,
 }: SelectToAccountType) {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -34,7 +37,57 @@ export default function SelectToAccount({
     onNext(4);
   };
 
-  const myAccountWithoutSelected = MyAccounts.filter((account) => {
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const { showMyAccounts, showRecentAccountsbyAccountId } = useAccountApi();
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        const accounts = await showMyAccounts();
+        setAccounts(accounts);
+      } catch (error) {
+        console.error('Failed to fetch accounts:', error);
+      }
+    };
+
+    fetchAccounts();
+  }, []);
+
+  const [recentAccounts, setRecentAccounts] = useState<Account[]>([]);
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        const accounts = await showRecentAccountsbyAccountId(selectedAccountId);
+        setRecentAccounts(accounts);
+      } catch (error) {
+        console.error('Failed to fetch accounts:', error);
+      }
+    };
+
+    fetchAccounts();
+  }, []);
+
+  const myRecentAccounts: RecentAccount[] = recentAccounts.map((account) => {
+    return {
+      balance: account.balance.toString(),
+      type: 'OthersAccount',
+      name: account.name,
+      bankId: account.bank.id,
+      accountNumber: account.accountNumber,
+    };
+  });
+
+  const myAccounts: MyAccountWithBalance[] = accounts.map((account) => {
+    return {
+      balance: account.balance.toString(),
+      type: 'MyAccount',
+      accountName: account.name,
+      bankId: account.bank.id,
+      accountId: account.id,
+      accountNumber: account.accountNumber,
+    };
+  });
+
+  const myAccountWithoutSelected = myAccounts.filter((account) => {
     return account.accountNumber !== selectedAccountNumber;
   });
 
@@ -109,7 +162,7 @@ export default function SelectToAccount({
           <div className='font-bold text-[18px] mt-8'>최근 보낸 계좌</div>
           <div>
             <RecentAccountList
-              accounts={RecentAccounts}
+              accounts={myRecentAccounts}
               onUpdate={onUpdate}
               onNext={handleListClick}
             />

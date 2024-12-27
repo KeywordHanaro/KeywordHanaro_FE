@@ -3,17 +3,17 @@
 import LoadingKakao from '@/components/atoms/LoadingKakao';
 import { useSettlementContext } from '@/contexts/SettlementContext';
 import { FormData } from '@/data/settlement';
+import { useSettlementApi } from '@/hooks/useSettlement/useSettlement';
 // import { activateSettlement } from '@/types/SettlementRequest';
-import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function GetKakao() {
   const searchParams = useSearchParams();
-  const { data: session } = useSession();
   const { updateFormData } = useSettlementContext();
   const [progress, setProgress] = useState<number>(0);
   const router = useRouter();
+  const { sendMessage } = useSettlementApi();
 
   useEffect(() => {
     const loadLocalStorage = (key: string) => {
@@ -43,29 +43,20 @@ export default function GetKakao() {
     setProgress(50);
     // const members = JSON.stringify(groupMembers);
 
-    const sendMessage = async () => {
+    const send = async () => {
       try {
         const code = searchParams?.get('code');
         if (code === null) {
           throw new Error('code is null');
         }
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/be/settlement/message`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${session?.user.jwt}`,
-            },
-            body: JSON.stringify({
-              code: code,
-              amount: parseInt(data.amount),
-              account: account,
-              groupMember: groupMembers,
-              type: data.category,
-            }),
-          }
-        );
+        const reqBody = {
+          code: code,
+          amount: parseInt(data.amount),
+          account: account,
+          groupMember: groupMembers,
+          type: data.category,
+        };
+        const response = await sendMessage(reqBody);
         setProgress(90);
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -77,7 +68,7 @@ export default function GetKakao() {
       }
     };
     setProgress(75);
-    sendMessage();
+    send();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (

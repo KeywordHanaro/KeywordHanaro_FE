@@ -44,6 +44,13 @@ export const useAccountApi = () => {
 
     return response;
   };
+  const showRecentAccountsbyAccountId = async (
+    id: number
+  ): Promise<Account[]> => {
+    const response = await fetchApi(`/recentAccounts?accountId=${id}`);
+
+    return response;
+  };
 
   // 거래 내역 조회 - 날짜로
   const showMyTransactions = async (
@@ -77,5 +84,6 @@ export const useAccountApi = () => {
     checkPswd,
     showMyAccounts,
     showMyTransactions,
+    showRecentAccountsbyAccountId,
   };
 };

@@ -25,7 +25,7 @@ export default function SetTransferAmountPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const id = searchParams.get('id');
+    const id = searchParams?.get('id');
     if (id) {
       setIsLoading(true);
       getKeywordById(Number(id))
