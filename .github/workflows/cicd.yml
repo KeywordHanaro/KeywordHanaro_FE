@@ -30,7 +30,7 @@ jobs:
 
       - name: set .env
         working-directory: .
-        run: echo "${{ secrets.ENV }}" > .env.production
+        run: echo "${{ secrets.ENV }}" > .env
 
       - name: Build with Next.js
         working-directory: .
@@ -60,7 +60,10 @@ jobs:
 
       - name: set .env
         working-directory: .
-        run: echo "${{ secrets.ENV }}" > .env.production
+        run: |
+          echo "${{ secrets.ENV }}"
+          echo "${{ secrets.ENV }}" > .env
+          echo .env
 
       - name: Build with Next.js
         working-directory: .
