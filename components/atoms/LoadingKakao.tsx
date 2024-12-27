@@ -17,7 +17,8 @@ export default function LoadingKakao({ progress }: LoadingKakaoProps) {
           width={100}
           height={100}
           className='flex-1 transition-all'
-					style={{ transform: `translateX(${progress*2.5}%)` }}
+          style={{ transform: `translateX(${progress * 2.5}%)` }}
+          unoptimized
         />
       </div>
       <Progress value={progress} color='#069894' />
