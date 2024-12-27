@@ -29,6 +29,16 @@ export const useAccountApi = () => {
     return response;
   };
 
+  const checkMasterPswd = async (paswdData: pswdReq): Promise<boolean> => {
+    const options: RequestInit = {
+      method: 'POST',
+      body: JSON.stringify(paswdData),
+    };
+    const response = await fetchApi(`/account/checkPassword`, options);
+
+    return response;
+  };
+
   const showMyAccounts = async (): Promise<Account[]> => {
     const response = await fetchApi(`/account/myaccounts`);
 

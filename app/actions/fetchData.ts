@@ -34,7 +34,7 @@ export async function fetchData(
 
   // API 호출
   const response = await fetch(url, options);
-
+  console.log(response);
   // 응답 체크
   if (!response.ok) {
     throw new Error(`Failed to fetch data: ${response.statusText}`);

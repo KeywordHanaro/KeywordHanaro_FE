@@ -20,7 +20,6 @@ export default async function TicketPage({
   }
 
   const keywordDetail = await getKeywordById(Number(searchParams.id));
-  console.log(keywordDetail);
   return (
     <>
       <div className='flex flex-col'>
