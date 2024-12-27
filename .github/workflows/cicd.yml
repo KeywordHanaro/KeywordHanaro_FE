@@ -63,7 +63,7 @@ jobs:
         run: mkdir -p ./KeywordHanaro_FE
       
       - name: set .env
-        working-directory: ./KeywordHanaro_FE
+        working-directory: .
         run: |
           echo "${{ secrets.ENV }}"
           echo "${{ secrets.ENV }}" > .env
@@ -82,10 +82,6 @@ jobs:
           ls -l .next || echo ".next directory not found"
           echo "Checking KeywordHanaro_FE directory:"
           ls -l ./KeywordHanaro_FE || echo "KeywordHanaro_FE directory not found"
-
-      - name: Ensure output directory exists
-        working-directory: .
-        run: mkdir -p ./KeywordHanaro_FE
 
       - name: zip next
         working-directory: .
@@ -121,4 +117,5 @@ jobs:
             rm -rf KeywordHanaro_FE/.next
             unzip next.zip -d KeywordHanaro_FE &&
             pm2 reload keyword-next
+          
           '
