@@ -1,5 +1,4 @@
-import { SettlementUsageResponse, UseKeywordResponse } from '@/types/Keyword';
-import { formatNumberWithCommas } from '@/lib/utils';
+import { SettlementUsageResponse } from '@/types/Keyword';
 
 export default function MultiKeywordSettlement({
   data,

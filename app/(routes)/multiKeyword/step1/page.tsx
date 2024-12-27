@@ -16,7 +16,6 @@ import {
   MultiUsageResponse,
 } from '@/types/Keyword';
 import { SettlementRequest } from '@/types/Settlement';
-import { IssueTicketResponse } from '@/types/Ticket';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useReducer, useEffect, useState } from 'react';
 
@@ -206,7 +205,6 @@ const MultiKeyword = () => {
 
   const handleSubmit = async () => {
     const settlementRequests: SettlementRequest[] = [];
-    let ticketResponse: IssueTicketResponse | null = null;
     for (const keyword of state.keywords) {
       switch (keyword.keyword.type) {
         case 'TRANSFER':

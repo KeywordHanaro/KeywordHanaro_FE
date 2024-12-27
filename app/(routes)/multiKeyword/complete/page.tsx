@@ -4,7 +4,6 @@ import { Button } from '@/components/atoms/Button';
 import Header from '@/components/atoms/Header';
 import MultiKeywordCompletion from '@/components/templates/multiKeyword/MultiKeywordCompletion';
 import { useMultiKeywordResponse } from '@/contexts/MultiKeywordUseContext';
-import { ticketTasks } from '@/data/ticket';
 import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
 import { MultiUsageResponse } from '@/types/Keyword';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -17,7 +16,7 @@ export default function MultiKeywordCompletePage() {
   const { response } = useMultiKeywordResponse();
 
   const { getKeywordById } = useKeywordApi();
-  const [MultiKeyword, setMultiKeyword] = useState<MultiUsageResponse>();
+  const [, setMultiKeyword] = useState<MultiUsageResponse>();
   useEffect(() => {
     getKeywordById(id).then((data) => {
       if (data.type === 'MULTI') {

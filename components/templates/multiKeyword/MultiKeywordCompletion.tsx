@@ -1,5 +1,4 @@
 import { MultiResponse } from '@/contexts/MultiKeywordUseContext';
-import { MultiKeywordDetail } from '@/types/Keyword';
 import MultiKeywordSettlement from '../../molecules/SettlementMSG';
 import MultiKeywordTicket from '../../molecules/TIcketMSG';
 import MultiKeywordTransfer from '../../molecules/TransferMSG';

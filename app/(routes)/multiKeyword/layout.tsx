@@ -1,6 +1,5 @@
 'use client';
 
-import Header from '@/components/atoms/Header';
 import { UseMultiKeywordProvider } from '@/contexts/MultiKeywordUseContext';
 
 export default function SettlementUsagePageLayout({
