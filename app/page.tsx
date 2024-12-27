@@ -51,9 +51,9 @@ export default function Home() {
       const favoriteKeywords = keywordResponse.filter((k) => k.favorite);
       const nonFavoriteKeywords = keywordResponse.filter((k) => !k.favorite);
 
-      if (keywordResponse.filter((k) => k.favorite).length > 0) {
+      if (favoriteKeywords.length > 0) {
         setKeywordList(favoriteKeywords.slice(0, 5));
-      } else if (keywordResponse.filter((k) => !k.favorite).length > 0) {
+      } else if (nonFavoriteKeywords.length > 0) {
         setKeywordList(nonFavoriteKeywords.slice(0, 5));
       }
     };
