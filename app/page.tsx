@@ -39,7 +39,6 @@ export default function Home() {
   const { result, resetResult } = useVoiceInputSession();
   const { status } = useSession();
   console.log(loading);
-
   // if (status !== 'authenticated') {
   //   window.location.reload();
   // }
@@ -48,7 +47,7 @@ export default function Home() {
   useEffect(() => {
     const fetchKeywordList = async () => {
       const keywordResponse = await getAllKeywords();
-      setKeywordList(keywordResponse);
+      setKeywordList(keywordResponse.filter((k) => k.favorite));
     };
     const fetchAccountList = async () => {
       const accountResponse = await showMyAccounts();

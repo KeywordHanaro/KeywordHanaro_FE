@@ -16,7 +16,7 @@ import { findSimilarKeywords } from '@/lib/utils';
 
 export default function KeywordPage() {
   const router = useRouter();
-  const { getAllKeywords } = useKeywordApi();
+  const { getAllKeywords, updateFavorite } = useKeywordApi();
   const onEdit = () => {
     router.push('/keyword/edit');
   };
@@ -29,8 +29,8 @@ export default function KeywordPage() {
 
   const { result, resetResult } = useVoiceInputSession();
 
-  const handleFavoriteChange = (id: number, isFavorite: boolean) => {
-    if (isFavorite && favoriteItems.length === 5) {
+  const handleFavoriteChange = async (id: number, favorite: boolean) => {
+    if (favorite && favoriteItems.length === 5) {
       toast({
         title: '즐겨찾기는 최대 5개까지 선택할 수 있어요',
         description: '',
@@ -41,10 +41,10 @@ export default function KeywordPage() {
 
     setKeywordList((prevKeywords) => {
       const updatedKeywords = prevKeywords.map((k) =>
-        k.id === id ? { ...k, isFavorite } : k
+        k.id === id ? { ...k, favorite } : k
       );
 
-      if (isFavorite) {
+      if (favorite) {
         setFavoriteItems((prev) => [...prev.filter((fid) => fid !== id), id]);
         setNormalItems((prev) => prev.filter((nid) => nid !== id));
       } else {
@@ -53,6 +53,12 @@ export default function KeywordPage() {
       }
 
       return updatedKeywords;
+    });
+
+    // favorite만 업데이트 가능한 api 구현시 구현 가능
+
+    await updateFavorite({ id, favorite }).then((res) => {
+      console.log(res);
     });
   };
 

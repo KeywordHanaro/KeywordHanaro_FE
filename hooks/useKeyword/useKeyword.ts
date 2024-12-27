@@ -50,11 +50,25 @@ export const useKeywordApi = () => {
     return keyword;
   };
 
+  const updateFavorite = async ({
+    id,
+    favorite,
+  }: {
+    id: number;
+    favorite: boolean;
+  }) => {
+    return await fetchApi(`/keyword/isFavorite/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(favorite),
+    });
+  };
+
   return {
     getAllKeywords,
     getKeywordById,
     createKeyword,
     updateKeyword,
     deleteKeyword,
+    updateFavorite,
   };
 };
