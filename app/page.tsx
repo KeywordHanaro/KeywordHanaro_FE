@@ -25,7 +25,6 @@ import { motion } from 'motion/react';
 import { useSession } from 'next-auth/react';
 // import { signOut } from 'next-auth/react';
 import { SlArrowRight } from 'react-icons/sl';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { ulVariants, liVariants } from '@/lib/motionVariable';
 import { findSimilarKeywords } from '@/lib/utils';
