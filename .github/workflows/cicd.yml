@@ -58,6 +58,9 @@ jobs:
         working-directory: .
         run: pnpm install
 
+      - name: find my location
+        run : pwd
+      
       - name: set .env
         working-directory: .
         run: |
