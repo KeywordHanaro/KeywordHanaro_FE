@@ -109,6 +109,7 @@ jobs:
         working-directory: .
         run: |
           scp ./KeywordHanaro_FE/next.zip ec2-user@${{ secrets.WAS }}:/home/ec2-user/workspace/
+          scp -r ./KeywordHanaro_FE/public ec2-user@${{ secrets.WAS }}:/home/ec2-user/workspace/KeywordHanaro_FE/
 
       - name: restart next
         run: |
