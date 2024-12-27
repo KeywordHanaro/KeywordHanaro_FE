@@ -3,8 +3,9 @@
 import MyAccountList from '@/components/organisms/MyAccountList';
 import RecentAccountList from '@/components/organisms/RecentAccountList';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { MyAccounts, RecentAccounts } from '@/data/account';
-import { OthersAccount } from '@/types/Account';
+import { RecentAccounts } from '@/data/account';
+import { useAccountApi } from '@/hooks/useAccount/useAccount';
+import { Account, OthersAccount } from '@/types/Account';
 import { MyAccount } from '@/types/Account';
 import { ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -34,7 +35,22 @@ export default function SelectToAccount({
     onNext(4);
   };
 
-  const myAccountWithoutSelected = MyAccounts.filter((account) => {
+  const [myAccounts, setMyAccounts] = useState<Account[]>([]);
+  const { showMyAccounts } = useAccountApi();
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        const accounts = await showMyAccounts();
+        setMyAccounts(accounts);
+      } catch (error) {
+        console.error('Failed to fetch accounts:', error);
+      }
+    };
+
+    fetchAccounts();
+  }, []);
+
+  const myAccountWithoutSelected = myAccounts.filter((account) => {
     return account.accountNumber !== selectedAccountNumber;
   });
 
