@@ -32,11 +32,6 @@ jobs:
         working-directory: .
         run: echo "${{ secrets.ENV }}" > .env
 
-      # - name: Set next-auth.d.ts
-      #   working-directory: .
-      #   run: |
-      #     echo "${{ secrets.NEXT_AUTH_D_TS }}" > next-auth.d.ts
-
       - name: Build with Next.js
         working-directory: .
         run: pnpm next build
@@ -66,11 +61,6 @@ jobs:
       - name: set .env
         working-directory: .
         run: echo "${{ secrets.ENV }}" > .env
-
-      # - name: Set next-auth.d.ts
-      #   working-directory: .
-      #   run: |
-      #     echo "${{ secrets.NEXT_AUTH_D_TS }}" > next-auth.d.ts
 
       - name: Build with Next.js
         working-directory: .
