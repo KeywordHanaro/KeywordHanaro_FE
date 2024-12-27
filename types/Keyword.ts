@@ -16,6 +16,7 @@ type BaseKeywordRequest = {
   type: 'INQUIRY' | 'TRANSFER' | 'TICKET' | 'SETTLEMENT' | 'DUES' | 'MULTI';
   name: string;
   desc: string;
+  favorite?: boolean; // 즐겨찾기 업데이트 때문에 추가
 };
 
 // 조회 키워드 요청 타입
@@ -55,6 +56,7 @@ export type TicketKeywordRequest = {
   name: string;
   desc: string;
   branch: TBranch;
+  favorite?: boolean; // 즐겨찾기 업데이트 때문에 추가
 };
 
 //**********정산 키워드 요청 타입****************//
