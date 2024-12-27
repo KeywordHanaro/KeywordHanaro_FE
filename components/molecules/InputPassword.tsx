@@ -95,7 +95,7 @@ export default function InputPassword({
                 <button
                   key={index}
                   className={cn(
-                    'flex justify-center items-center text-4xl focus:bg-subGray ',
+                    'flex justify-center items-center text-4xl',
                     index === 9 && 'col-span-3'
                   )}
                   onClick={() => handleClick(item)}
