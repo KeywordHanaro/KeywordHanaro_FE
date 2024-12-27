@@ -8,7 +8,7 @@ import ColorChip from '../atoms/ColorChips';
 import { Toggle } from '../ui/toggle';
 
 type TicketProps = {
-  now: Date;
+  now: string;
   waitingQueue: number;
   people: number;
 };
@@ -18,7 +18,7 @@ export default function Ticket({ now, people, waitingQueue }: TicketProps) {
   const [position, setPosition] = useState<boolean>(false);
   const [print, setPrint] = useState<boolean>(false);
   const searchParams = useSearchParams();
-  const task = searchParams.get('task');
+  const task = searchParams?.get('task');
 
   const handleMore = () => {
     setMore(!more);
@@ -29,17 +29,17 @@ export default function Ticket({ now, people, waitingQueue }: TicketProps) {
   const handlePosition = () => {
     setPosition(true);
   };
-  const formatTime = (dateTime: Date): string => {
-    return dateTime.toLocaleTimeString('ko-KR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour12: false,
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    });
-  };
+  // const formatTime = (dateTime: string): string => {
+  //   return dateTime.toLocaleTimeString('ko-KR', {
+  //     year: 'numeric',
+  //     month: '2-digit',
+  //     day: '2-digit',
+  //     hour12: false,
+  //     hour: '2-digit',
+  //     minute: '2-digit',
+  //     second: '2-digit',
+  //   });
+  // };
 
   useEffect(() => {
     setTimeout(() => {
@@ -75,7 +75,7 @@ export default function Ticket({ now, people, waitingQueue }: TicketProps) {
           >
             <div className='flex flex-row justify-between items-center h-[23px]'>
               <ColorChip color='blue'>{task}</ColorChip>
-              <p className='text-[13px]'>{formatTime(now)}</p>
+              <span className='text-[13px]'>{now}</span>
             </div>
             <div className='flex flex-row justify-between h-[77px] pb-2.5'>
               <small className='mt-4'>대기번호</small>
