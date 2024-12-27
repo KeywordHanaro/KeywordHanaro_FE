@@ -1,11 +1,5 @@
 import { groupMember } from '@/types/Keyword';
 
-export type Member = {
-  id: number;
-  name: string;
-  tel: string;
-};
-
 export const MemberList: groupMember[] = [
   { name: '남인우', tel: '010-1111-1111' },
   { name: '김인선', tel: '010-2222-2222' },

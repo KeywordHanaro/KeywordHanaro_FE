@@ -1,26 +1,24 @@
-import { MultiTransferFinish } from '@/data/multiKeyword';
+import { TransferResponse } from '@/types/Transfer';
 
 export default function MultiKeywordTransfer({
   data,
 }: {
-  data: MultiTransferFinish;
+  data: TransferResponse;
 }) {
   return (
     <div className='flex flex-col items-center justify-center gap-[11px]'>
-      <p className='m text-[18px] font-normal'>
-        {data.accountFrom.accountName}에서
-      </p>
+      <p className='m text-[18px] font-normal'>{data.account.name}에서</p>
       <div className='flex flex-col text-center text-[24px] font-semibold'>
         <div>
           <span className='text-hanaPrimary'>
-            {data.accountTo.type === 'MyAccount'
-              ? data.accountTo.accountName
-              : `${data.accountTo.name}님 `}
+            {data.subAccount.user === data.account.user
+              ? data.subAccount.name
+              : `${data.subAccount.user.name}님 `}
           </span>
           <span>계좌로</span>
         </div>
         <span className='text-subGray text-[16px]'>
-          {data.accountTo.accountNumber}
+          {data.subAccount.accountNumber}
         </span>
       </div>
       <div className='flex flex-col text-center text-[24px] font-semibold text-hanaPrimary'>
