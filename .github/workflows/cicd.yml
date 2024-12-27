@@ -57,10 +57,6 @@ jobs:
       - name: Install dependencies
         working-directory: .
         run: pnpm install
-
-      - name: Ensure output directory exists
-        working-directory: .
-        run: mkdir -p ./KeywordHanaro_FE
       
       - name: set .env
         working-directory: .
@@ -82,6 +78,10 @@ jobs:
           ls -l .next || echo ".next directory not found"
           echo "Checking KeywordHanaro_FE directory:"
           ls -l ./KeywordHanaro_FE || echo "KeywordHanaro_FE directory not found"
+          
+      - name: Ensure output directory exists
+        working-directory: .
+        run: mkdir -p ./KeywordHanaro_FE
 
       - name: zip next
         working-directory: .
@@ -115,7 +115,8 @@ jobs:
           ssh ec2-user@${{ secrets.WAS }} '
             cd /home/ec2-user/workspace &&
             rm -rf KeywordHanaro_FE/.next
-            unzip next.zip -d KeywordHanaro_FE &&
+            unzip next.zip -d KeywordHanaro_FE
+            echo "${{ secrets.ENV }}" > KeywordHanaro_FE/.env
             pm2 reload keyword-next
           
           '
