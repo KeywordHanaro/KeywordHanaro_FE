@@ -1,12 +1,12 @@
-import { Member } from '@/data/member';
+import { groupMember } from '@/types/Keyword';
 import { ClassValue } from 'clsx';
 import { Chip } from '../atoms/Chips';
 
 type ChipsListProps = {
-  items: Member[];
+  items: groupMember[];
   canDelete?: boolean;
   canAdd?: boolean;
-  onRemove?: (id: number) => void;
+  onRemove?: (tel: string) => void;
   className?: ClassValue;
 };
 
@@ -21,11 +21,11 @@ export function ChipsList({
     <div className='flex flex-wrap overflow-x-auto gap-x-2 gap-y-2 w-full '>
       {items.map((item) => (
         <Chip
-          key={item.id}
+          key={item.tel}
           item={item}
           canAdd={canAdd}
           canDelete={canDelete}
-          onRemove={onRemove ? () => onRemove(item.id) : undefined}
+          onRemove={onRemove ? () => onRemove(item.tel) : undefined}
           className={className}
         />
       ))}

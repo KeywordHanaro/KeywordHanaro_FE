@@ -1,23 +1,20 @@
-import { Member } from '@/data/member';
-import React, { useState } from 'react';
+import { groupMember } from '@/types/Keyword';
+import { useState } from 'react';
 import { ChipsList } from '../molecules/ChipList';
 
 type MemberSelectorProps = {
-  initialMembers: Member[];
-  onUpdate: (newMemberList: Member[]) => void;
+  initialMembers: groupMember[];
+  onUpdate: (newMemberList: groupMember[]) => void;
 };
 
-const MemberSelector: React.FC<MemberSelectorProps> = ({
-  initialMembers,
-  onUpdate,
-}) => {
-  const [members, setMembers] = useState<Member[]>(initialMembers);
-  const [excludedMembers, setExcludedMembers] = useState<Member[]>([]);
+const MemberSelector = ({ initialMembers, onUpdate }: MemberSelectorProps) => {
+  const [members, setMembers] = useState<groupMember[]>(initialMembers);
+  const [excludedMembers, setExcludedMembers] = useState<groupMember[]>([]);
 
   // 멤버 제거 핸들러
-  const handleRemoveMember = (id: number) => {
-    const updatedMembers = members.filter((member) => member.id !== id);
-    const removedMember = members.find((member) => member.id === id);
+  const handleRemoveMember = (tel: string) => {
+    const updatedMembers = members.filter((member) => member.tel !== tel);
+    const removedMember = members.find((member) => member.tel === tel);
 
     if (removedMember) {
       setExcludedMembers((prev) => [...prev, removedMember]);
@@ -27,11 +24,11 @@ const MemberSelector: React.FC<MemberSelectorProps> = ({
   };
 
   // 멤버 추가 핸들러
-  const handleAddMember = (id: number) => {
+  const handleAddMember = (tel: string) => {
     const updatedExcludedMembers = excludedMembers.filter(
-      (member) => member.id !== id
+      (member) => member.tel !== tel
     );
-    const addedMember = excludedMembers.find((member) => member.id === id);
+    const addedMember = excludedMembers.find((member) => member.tel === tel);
 
     if (addedMember) {
       const newMembers = [...members, addedMember];

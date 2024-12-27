@@ -42,9 +42,7 @@ export const SetTransferAmount = forwardRef<
     };
     return checkPswd(form);
   };
-
   useEffect(() => {
-    console.log(data);
     if (data.type === 'WithoutAmount') {
       setOpen(false);
       setValid(false);

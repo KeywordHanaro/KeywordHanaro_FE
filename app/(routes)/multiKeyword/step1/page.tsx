@@ -3,31 +3,26 @@
 import Header from '@/components/atoms/Header';
 import InputPassword from '@/components/molecules/InputPassword';
 import KeywordWithInputs from '@/components/molecules/KeywordWithInputs';
-// import TransactionList from '@/components/templates/useKeyword/inquiry/TransactionList';
+import TransactionList from '@/components/templates/useKeyword/inquiry/TransactionList';
 import { VoiceInputProvider } from '@/contexts/VoiceContext';
-import { KeywordDetailList } from '@/data/keyword';
-import { Member } from '@/data/member';
-import { MultiKeywordDetail } from '@/data/multiKeyword';
+import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
+import {
+  groupMember,
+  MultiKeywordDetail,
+  MultiUsageResponse,
+} from '@/types/Keyword';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useReducer, useEffect, useState } from 'react';
 
-type MultiKeyword = {
-  id: number;
-  type: string;
-  amount?: number;
-  memberList?: Member[];
-  serviceId?: number;
-};
-
 type State = {
-  keywords: MultiKeyword[];
+  keywords: MultiKeywordDetail[];
   isNextButtonEnabled: boolean;
 };
 
 type Action =
   | { type: 'SET_KEYWORDS'; keywords: MultiKeywordDetail[] }
-  | { type: 'UPDATE_AMOUNT'; id: number; amount: number }
-  | { type: 'UPDATE_MEMBER_LIST'; id: number; memberList: Member[] }
+  | { type: 'UPDATE_AMOUNT'; id: number; amount: string }
+  | { type: 'UPDATE_MEMBER_LIST'; id: number; groupMember: groupMember[] }
   | { type: 'UPDATE_TICKET'; id: number; serviceId: number; service: string }
   | { type: 'VALIDATE_KEYWORDS' };
 
@@ -42,21 +37,24 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         keywords: action.keywords.map((keyword) => {
-          const base = { id: keyword.id, type: keyword.type };
-          if (keyword.type === 'transfer') {
-            return { ...base, amount: undefined };
+          const base = { ...keyword };
+          if (keyword.keyword.type === 'TRANSFER') {
+            return { ...base, amount: keyword.keyword.amount || undefined };
           }
-          if (keyword.type === 'settlement') {
+          if (
+            keyword.keyword.type === 'SETTLEMENT' ||
+            keyword.keyword.type === 'DUES'
+          ) {
             return {
               ...base,
-              amount: undefined,
-              memberList: [...keyword.memberList],
+              amount: keyword.keyword.amount || undefined,
+              keyword: {
+                ...keyword.keyword,
+                groupMember: [...keyword.keyword.groupMember],
+              },
             };
           }
-          if (keyword.type === 'settlementAmount') {
-            return { ...base, memberList: [...keyword.memberList] };
-          }
-          if (keyword.type === 'ticket') {
+          if (keyword.keyword.type === 'TICKET') {
             return { ...base, serviceId: undefined };
           }
           return base;
@@ -67,8 +65,8 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         keywords: state.keywords.map((keyword) =>
-          keyword.id === action.id
-            ? { ...keyword, amount: action.amount }
+          keyword.keyword.id === action.id
+            ? { ...keyword, amount: Number(action.amount.replace(/,/g, '')) }
             : keyword
         ),
       };
@@ -77,8 +75,14 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         keywords: state.keywords.map((keyword) =>
-          keyword.id === action.id
-            ? { ...keyword, memberList: action.memberList }
+          keyword.keyword.id === action.id
+            ? {
+                ...keyword,
+                keyword: {
+                  ...keyword.keyword,
+                  groupMember: action.groupMember,
+                },
+              }
             : keyword
         ),
       };
@@ -87,11 +91,10 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         keywords: state.keywords.map((keyword) =>
-          keyword.id === action.id
+          keyword.keyword.id === action.id
             ? {
                 ...keyword,
                 serviceId: action.serviceId,
-                service: action.service,
               }
             : keyword
         ),
@@ -100,23 +103,37 @@ function reducer(state: State, action: Action): State {
     case 'VALIDATE_KEYWORDS': {
       const allValid = state.keywords.every((keyword) => {
         if (
-          keyword.type !== 'inquiry' &&
-          keyword.type !== 'ticket' &&
-          !keyword.type.includes('Amount')
+          keyword.keyword.type === 'SETTLEMENT' ||
+          keyword.keyword.type === 'TRANSFER' ||
+          keyword.keyword.type === 'DUES'
         ) {
-          if (keyword.amount === undefined || keyword.amount <= 0) {
+          if (
+            keyword.keyword.checkEveryTime === true &&
+            (keyword.amount === undefined || keyword.amount <= 0)
+          ) {
+            console.log('amount failed');
             return false;
           }
         }
-        if (keyword.type.includes('settlement')) {
+        if (
+          keyword.keyword.type === 'SETTLEMENT' ||
+          keyword.keyword.type === 'DUES'
+        ) {
           if (
-            keyword.memberList === undefined ||
-            keyword.memberList.length <= 0
-          )
+            keyword.keyword.groupMember === undefined ||
+            keyword.keyword.groupMember.length <= 0
+          ) {
+            console.log('groupMember failed');
+
             return false;
+          }
         }
-        if (keyword.type === 'ticket') {
-          if (!keyword.serviceId) return false;
+        if (keyword.keyword.type === 'TICKET') {
+          if (keyword.serviceId === undefined) {
+            console.log('serviceId failed');
+
+            return false;
+          }
         }
         return true;
       });
@@ -130,25 +147,22 @@ function reducer(state: State, action: Action): State {
 }
 
 const MultiKeyword = () => {
+  const searchParams = useSearchParams();
+  const id = parseInt(searchParams.get('id')!);
   const [state, dispatch] = useReducer(reducer, initialState);
-  // 비밀번호
   const [open, setOpen] = useState<boolean>(false);
-  // const { result, setResult } = useVoiceInputSession();
 
-  const [multikeywordDetail, setMultikeywordDetail] =
-    useState<MultiKeywordDetail[]>();
+  const [keyword, setKeyword] = useState<MultiUsageResponse>();
+
   const router = useRouter();
   // 금액 변경 핸들러
-  const handleAmountChange = (id: number, amount: number) => {
+  const handleAmountChange = (id: number, amount: string) => {
     dispatch({ type: 'UPDATE_AMOUNT', id, amount });
   };
 
-  const searchParams = useSearchParams();
-  const multikeywordId = parseInt(searchParams.get('id')!);
-
   // 멤버 리스트 변경 핸들러
-  const handleMemberListChange = (id: number, members: Member[]) => {
-    dispatch({ type: 'UPDATE_MEMBER_LIST', id, memberList: members });
+  const handleMemberListChange = (id: number, members: groupMember[]) => {
+    dispatch({ type: 'UPDATE_MEMBER_LIST', id, groupMember: members });
     dispatch({ type: 'VALIDATE_KEYWORDS' });
   };
   // 번호표 업무 변경 핸들러
@@ -157,6 +171,7 @@ const MultiKeyword = () => {
     serviceId: number,
     service: string
   ) => {
+    console.log(id, serviceId);
     dispatch({ type: 'UPDATE_TICKET', id, serviceId, service });
   };
 
@@ -181,38 +196,18 @@ const MultiKeyword = () => {
   };
 
   // 초기 키워드 데이터를 가져옴
+  const { getKeywordById } = useKeywordApi();
   useEffect(() => {
-    const findData = KeywordDetailList.find(
-      (keyword) => multikeywordId === keyword.id
-    );
-
-    if (!findData || findData.type !== 'multiKeyword') {
-      console.error('데이터 없거나, 멀티키워드 아님');
-      setMultikeywordDetail(undefined);
-      return;
-    }
-
-    // seqOrder대로 정렬
-    const sortedKeywordList = [...(findData.keywordList || [])].sort(
-      (a, b) => (a.seqOrder || 0) - (b.seqOrder || 0)
-    );
-
-    setMultikeywordDetail(sortedKeywordList);
-  }, [multikeywordId]);
-
-  useEffect(() => {
-    if (multikeywordDetail !== undefined) {
-      const loadKeywords = async () => {
-        try {
-          // const keywords = await fetchKeywords();
-          dispatch({ type: 'SET_KEYWORDS', keywords: multikeywordDetail! });
-        } catch (error) {
-          console.error('Failed to load keywords:', error);
-        }
-      };
-      loadKeywords();
-    }
-  }, [multikeywordDetail]);
+    getKeywordById(id).then((data) => {
+      if (data.type === 'MULTI') {
+        const sortedKeywordList = [...(data.multiKeyword || [])].sort(
+          (a, b) => (a.seqOrder || 0) - (b.seqOrder || 0)
+        );
+        setKeyword({ ...data, multiKeyword: sortedKeywordList });
+        dispatch({ type: 'SET_KEYWORDS', keywords: data.multiKeyword });
+      }
+    });
+  }, []);
 
   // 유효성 검사 실행
   useEffect(() => {
@@ -237,21 +232,22 @@ const MultiKeyword = () => {
             나머지 키워드를 실행하시겠어요?
           </div>
         </div>
-        {/* 조회 리스트 반복시켜야함 */}
-        {/* TransactionList 컴포넌트 props에서 keyword 빠지고 transactions 들어가서 fetch 받아서 넣어줘야 합니다. */}
-        {/* {multikeywordDetail?.map((keyword) =>
-          keyword.type === 'inquiry' ? (
-            <TransactionList key={keyword.id} keyword={keyword.searchKeyword} />
-          ) : null
-        )} */}
-        {/* <TransactionList keyword='급여' /> */}
+        {keyword?.multiKeyword?.map(
+          (keyword) =>
+            keyword.keyword.type === 'INQUIRY' && (
+              <TransactionList
+                key={keyword.id}
+                tranactions={keyword.keyword.transactions}
+              />
+            )
+        )}
         {/* 키워드 리스트 */}
         <div className='flex flex-col gap-3 pb-10'>
           <VoiceInputProvider>
-            {multikeywordDetail?.map((keyword) =>
-              keyword.type !== 'inquiry' ? (
+            {keyword?.multiKeyword?.map((keyword) =>
+              keyword.keyword.type !== 'INQUIRY' ? (
                 <KeywordWithInputs
-                  keyword={keyword}
+                  keyword={keyword.keyword}
                   key={keyword.id}
                   onInputChange={handleAmountChange}
                   onMemberListChange={handleMemberListChange}

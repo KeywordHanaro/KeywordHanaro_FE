@@ -165,6 +165,8 @@ export type MultiKeywordDetail = {
   parentId: number;
   keyword: UseKeywordResponse;
   seqOrder: number;
+  serviceId?: number;
+  amount?: number;
 };
 
 export type groupMember = {

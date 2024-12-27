@@ -1,8 +1,8 @@
 'use client';
 
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { getColorByType, getNameByType, KeywordDetail } from '@/data/keyword';
-import { Member } from '@/data/member';
+import { getColorByType, getNameByType } from '@/data/keyword';
+import { groupMember, UseKeywordResponse } from '@/types/Keyword';
 import { convertKorToNum } from 'korean-number-converter';
 import { useState, useRef, useEffect } from 'react';
 import SpeechToText from '../SpeechToText';
@@ -14,9 +14,9 @@ import { Modal } from '../atoms/Modal';
 import MemberSelector from '../organisms/MemberSelector';
 
 type KeywordWithInputsProps = {
-  keyword: KeywordDetail;
-  onInputChange: (id: number, value: number) => void;
-  onMemberListChange: (id: number, memberList: Member[]) => void;
+  keyword: UseKeywordResponse;
+  onInputChange: (id: number, value: string) => void;
+  onMemberListChange: (id: number, memberList: groupMember[]) => void;
   onTicketServiceChange: (
     id: number,
     serviceId: number,
@@ -69,7 +69,7 @@ const KeywordWithInputs = ({
       const amountVal = convertKorToNum(cleanedResult);
       if (amountVal) {
         amountRef.current.value = amountVal.toLocaleString();
-        onInputChange(keyword.id, Number(amountVal));
+        onInputChange(keyword.id, amountVal.toLocaleString());
         setIsFocused(false);
       }
     }
@@ -77,7 +77,7 @@ const KeywordWithInputs = ({
   }, [result]);
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onInputChange(keyword.id, Number(e.target.value));
+    onInputChange(keyword.id, e.target.value);
   };
 
   const handleFocus = () => {
@@ -97,7 +97,7 @@ const KeywordWithInputs = ({
     setIsFocused(false);
   };
 
-  const handleMemberListChange = (newMemberList: Member[]) => {
+  const handleMemberListChange = (newMemberList: groupMember[]) => {
     onMemberListChange(keyword.id, newMemberList);
   };
 
@@ -111,39 +111,60 @@ const KeywordWithInputs = ({
     setOpenModal(!openModal);
   };
 
+  useEffect(() => {
+    if (
+      keyword.type === 'SETTLEMENT' ||
+      keyword.type === 'DUES' ||
+      keyword.type === 'TRANSFER'
+    ) {
+      if (amountRef.current) {
+        amountRef.current.value = keyword.amount?.toLocaleString() || '';
+      }
+    }
+  }, []);
+
   return (
     <Card className='flex flex-row justify-between items-center rounded-[12px]'>
       <div className='flex flex-col gap-[10px] w-full'>
         <div className='flex gap-2 items-center'>
           <span className='text-fontBlack text-[16px] font-semibold'>
-            {keyword.title}
+            {keyword.name}
           </span>
           <ColorChip color={chipColor}>{chipName}</ColorChip>
         </div>
 
-        {(keyword.type === 'transfer' || keyword.type === 'settlement') && (
-          <MoneyInputRef
-            ref={amountRef}
-            onChange={handleAmountChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            placeHolder={
-              keyword.type === 'transfer'
-                ? '얼마를 송금할까요?'
-                : '얼마를 요청할까요?'
-            }
-          />
+        {(keyword.type === 'TRANSFER' ||
+          keyword.type === 'SETTLEMENT' ||
+          keyword.type === 'DUES') && (
+          <>
+            {keyword.checkEveryTime ? (
+              <MoneyInputRef
+                ref={amountRef}
+                onChange={handleAmountChange}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                placeHolder={
+                  keyword.type === 'TRANSFER'
+                    ? '얼마를 송금할까요?'
+                    : '얼마를 요청할까요?'
+                }
+              />
+            ) : (
+              <div className='text-hanaPrimary font-semibold h-[32px] text-[24px] flex items-center'>
+                <div>{keyword.amount?.toLocaleString()}원</div>
+              </div>
+            )}
+          </>
         )}
 
-        {(keyword.type === 'settlement' ||
-          keyword.type === 'settlementAmount') && (
+        {keyword.type === 'SETTLEMENT' && (
           <MemberSelector
-            initialMembers={keyword.memberList || []}
+            initialMembers={keyword.groupMember || []}
             onUpdate={handleMemberListChange}
           />
         )}
       </div>
-      {keyword.type === 'ticket' && (
+      {keyword.type === 'TICKET' && (
         <div
           className={`text-end w-full text-[11px] ${
             currentService
@@ -177,7 +198,7 @@ const KeywordWithInputs = ({
         <SpeechToText
           autoStart
           placeholder={
-            keyword.type === 'transfer'
+            keyword.type === 'TRANSFER'
               ? '얼마를 송금할까요?'
               : '얼마를 요청할까요?'
           }
