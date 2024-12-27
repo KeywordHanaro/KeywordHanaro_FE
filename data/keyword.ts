@@ -1,4 +1,5 @@
 import { MyAccount, OthersAccount } from '@/types/Account';
+import { groupMember } from '@/types/Keyword';
 import { Member } from './member';
 
 // import { MultiKeywordDetail } from './multiKeyword';
@@ -25,14 +26,13 @@ export type Keyword = {
   isFavorite: boolean;
 };
 
-// export type KeywordDetail =
-//   | TransferKeyword
-//   | TransferAmountKeyword
-//   | InquiryKeyword
-//   | TicketKeyword
-//   | SettlementKeyword
-//   | SettlementAmountKeyword
-//   | MultiKeyword;
+export type KeywordDetail =
+  | TransferKeyword
+  | TransferAmountKeyword
+  | InquiryKeyword
+  | TicketKeyword
+  | SettlementKeyword
+  | SettlementAmountKeyword;
 
 type BaseKeyword = {
   id: number;
@@ -66,13 +66,13 @@ export type TicketKeyword = BaseKeyword & {
 export type SettlementKeyword = BaseKeyword & {
   type: 'settlement';
   accountFrom: MyAccount;
-  memberList: Member[];
+  memberList: groupMember[];
 };
 
 export type SettlementAmountKeyword = BaseKeyword & {
   type: 'settlementAmount';
   accountFrom: MyAccount;
-  memberList: Member[];
+  memberList: groupMember[];
   amount: number;
 };
 

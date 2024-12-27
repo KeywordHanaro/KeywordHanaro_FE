@@ -5,6 +5,8 @@ import InputPassword from '@/components/molecules/InputPassword';
 import KeywordWithInputs from '@/components/molecules/KeywordWithInputs';
 import TransactionList from '@/components/templates/useKeyword/inquiry/TransactionList';
 import { VoiceInputProvider } from '@/contexts/VoiceContext';
+import { useAccountApi } from '@/hooks/useAccount/useAccount';
+import { useBranchApi } from '@/hooks/useBranch/useBranch';
 import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
 import {
   groupMember,
@@ -190,6 +192,9 @@ const MultiKeyword = () => {
     }
   };
 
+  const { transfer } = useAccountApi();
+  const {issueTicket} = useBranchApi();
+  
   const handleSubmit = () => {
     router.push('/multiKeyword/complete');
     setOpen(false);
