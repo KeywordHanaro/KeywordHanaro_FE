@@ -31,3 +31,12 @@ export type TicketTask = {
   path: string;
   src: string;
 };
+
+export type IssueTicketResponse = {
+  id: number;
+  branchId: number;
+  branchName: string;
+  waitingNumber: number;
+  waitingGuest: number;
+  workNumber: string;
+};

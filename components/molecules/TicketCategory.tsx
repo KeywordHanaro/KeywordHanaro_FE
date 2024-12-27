@@ -4,6 +4,7 @@ import { useVoiceInputSession } from '@/contexts/VoiceContext';
 import { ticketTasks } from '@/data/ticket';
 import { useBranchApi } from '@/hooks/useBranch/useBranch';
 import { TicketUsageResponse } from '@/types/Keyword';
+import { IssueTicketResponse } from '@/types/Ticket';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -31,8 +32,10 @@ export default function TicketCategory({
       branchId,
       branchName,
     })
-      .then(() => {
-        router.push(path);
+      .then((res: IssueTicketResponse) => {
+        router.push(
+          `${path}&branchName=${res.branchName}&waitingNumber=${res.waitingNumber}&waitingGuest=${res.waitingGuest}`
+        );
       })
       .catch((error) => {
         alert(`번호표 발급에 실패하였습니다. 다시시도해주세요 ${error}`);
