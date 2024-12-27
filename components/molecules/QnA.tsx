@@ -1,42 +1,37 @@
 'use client';
 
+import { useLLMApi } from '@/hooks/useLLM/useLLM';
+// import { query } from '@/types/LLM';
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Card } from '../atoms/Card';
 import { AIInputRef } from '../atoms/Inputs';
-import DocumentSelector from './DocumentSelector';
 
 type Query = {
-  date: Date;
-  query: string;
+  question: string;
 };
 
 export default function QnA() {
   const [query, setQuery] = useState<Query[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const lastMessageRef = useRef<HTMLDivElement>(null);
+  const { chat } = useLLMApi();
 
-  const handleSelect = (index: number) => {
-    setSelectedIndex(index);
-  };
-  const handleSubmit = () => {
-    console.log(inputRef.current?.value);
-    const newQuery = {
-      date: new Date(),
-      query: inputRef.current?.value ?? '',
+  const handleSubmit = async () => {
+    // console.log(inputRef.current?.value);
+    const newQuery: Query = {
+      question: inputRef.current?.value ?? '',
     };
     setQuery((prev) => [...prev, newQuery]);
     setLoading(true);
-    setTimeout(() => {
-      const newAnswer = {
-        date: new Date(),
-        query: `${selectedIndex}번 항목에 대한 Answer`,
-      };
-      setQuery((prev) => [...prev, newAnswer]);
-      setLoading(false);
-    }, 2000);
+    const response = await chat(newQuery);
+    console.log(response);
+    const newAnswer = {
+      question: `${response.answer}`,
+    };
+    setQuery((prev) => [...prev, newAnswer]);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -55,27 +50,22 @@ export default function QnA() {
     <>
       <div className='w-full h-full relative'>
         <div className='h-full overflow-y-auto'>
-          <div className='pb-3'>
-            <DocumentSelector onSelect={handleSelect} />
-          </div>
           <div className='flex flex-col gap-3 mb-[60px]'>
             {query.map((item, index) => (
-              <>
-                <div
-                  key={index}
-                  className='odd:justify-end even:justify-start flex w-full'
-                  ref={index === query.length - 1 ? lastMessageRef : null}
+              <div
+                key={index}
+                className='odd:justify-end even:justify-start flex w-full'
+                ref={index === query.length - 1 ? lastMessageRef : null}
+              >
+                <Card
+                  className={cn(
+                    'w-1/2 break-words',
+                    !(index % 2) && 'bg-hanaPrimary text-white'
+                  )}
                 >
-                  <Card
-                    className={cn(
-                      'w-1/2 break-words',
-                      !(index % 2) && 'bg-hanaPrimary text-white'
-                    )}
-                  >
-                    <p>{item.query}</p>
-                  </Card>
-                </div>
-              </>
+                  <p>{item.question}</p>
+                </Card>
+              </div>
             ))}
           </div>
 
