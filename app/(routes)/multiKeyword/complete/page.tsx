@@ -2,8 +2,7 @@
 
 import { Button } from '@/components/atoms/Button';
 import Header from '@/components/atoms/Header';
-import MultiKeywordCompletion from '@/components/templates/multiKeyword/MultiKeywordCompletion';
-import { multiKeywordFinishData } from '@/data/multiKeyword';
+// import MultiKeywordCompletion from '@/components/templates/multiKeyword/MultiKeywordCompletion';
 import { useRouter } from 'next/navigation';
 
 export default function MultiKeywordCompletePage() {
@@ -21,11 +20,11 @@ export default function MultiKeywordCompletePage() {
           키워드 실행이 완료되었어요
         </div>
 
-        {multiKeywordFinishData.map((data, idx) => (
+        {/* {multiKeywordFinishData.map((data, idx) => (
           <div key={idx}>
             <MultiKeywordCompletion data={data} />
           </div>
-        ))}
+        ))} */}
       </div>
 
       <Button className='w-full' onClick={() => router.push('/')}>

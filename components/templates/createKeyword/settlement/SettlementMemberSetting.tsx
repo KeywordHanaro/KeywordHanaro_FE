@@ -4,7 +4,7 @@ import { DefaultInputRef } from '@/components/atoms/Inputs';
 import { ChipsList } from '@/components/molecules/ChipList';
 import ContactItem from '@/components/molecules/ContactListItem';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { Member, MemberList } from '@/data/member';
+import { MemberList } from '@/data/member';
 import { FormData } from '@/data/settlement';
 import { groupMember } from '@/types/Keyword';
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';

@@ -87,7 +87,7 @@ const SetActionCategory = ({
         </span>
         <div className='font-semibold text-[24px] justify-center items-center'>
           {formData.members.map((member, idx) => (
-            <span key={member.id} className='text-hanaPrimary mr-[3px]'>
+            <span key={member.tel} className='text-hanaPrimary mr-[3px]'>
               {member.name}
               {idx !== formData.members.length - 1 ? ',' : ''}
             </span>

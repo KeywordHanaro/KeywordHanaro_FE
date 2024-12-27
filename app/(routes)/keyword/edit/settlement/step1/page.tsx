@@ -2,7 +2,6 @@
 
 import SelectAccount from '@/components/templates/SelectAccount';
 import { useSettlementContext } from '@/contexts/SettlementContext';
-import { MemberList } from '@/data/member';
 import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
 import { SettlementUsageResponse } from '@/types/Keyword';
 import { useRouter, useSearchParams } from 'next/navigation';

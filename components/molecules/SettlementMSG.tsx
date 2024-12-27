@@ -15,11 +15,11 @@ export default function MultiKeywordSettlement({
         <div className='text-[#069894] text-[24px] font-semibold px-[20px] text-center'>
           {data.members.map((member, idx) =>
             idx !== data.members.length - 1 ? (
-              <span key={member.id} className='mr-[3px]'>
+              <span key={member.tel} className='mr-[3px]'>
                 {member.name},
               </span>
             ) : (
-              <span key={member.id}>{member.name}</span>
+              <span key={member.tel}>{member.name}</span>
             )
           )}
           <span className='text-black ml-[3px]'>님에게</span>

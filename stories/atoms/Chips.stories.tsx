@@ -1,15 +1,15 @@
 import { Chip } from '@/components/atoms/Chips';
 import { Member } from '@/data/member';
+import { groupMember } from '@/types/Keyword';
 import { Meta, StoryObj } from '@storybook/react';
 import { ClassValue } from 'clsx';
 import { useState } from 'react';
 
 // ClassValue 가져오기
 
-const mockMember: Member = {
-  id: 1,
+const mockMember: groupMember = {
   name: '남인우',
-  phoneNumber: '123-456-7890',
+  tel: '123-456-7890',
 };
 
 const meta: Meta<typeof Chip> = {
@@ -20,11 +20,11 @@ const meta: Meta<typeof Chip> = {
 export default meta;
 
 type ChipProps = {
-  item: Member;
+  item: groupMember;
   canDelete?: boolean;
   canAdd?: boolean;
   className?: ClassValue;
-  onRemove?: (id: number) => void;
+  onRemove?: (tel: string) => void;
 };
 
 type Story = StoryObj<typeof Chip>;
