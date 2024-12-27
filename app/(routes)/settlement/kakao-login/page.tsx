@@ -45,7 +45,7 @@ export default function GetKakao() {
 
     const sendMessage = async () => {
       try {
-        const code = searchParams.get('code');
+        const code = searchParams?.get('code');
         if (code === null) {
           throw new Error('code is null');
         }
