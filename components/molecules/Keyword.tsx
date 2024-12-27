@@ -45,8 +45,8 @@ const Keyword = ({
             ? type.includes('DUES')
               ? `settlement/step1?id=${id}`
               : `/${type.toLowerCase()}/step1?id=${id}`
-            : type.includes('multiKeyword')
-              ? `/${type}/step1/?id=${id}`
+            : type.includes('MULTI')
+              ? `/multiKeyword/step1/?id=${id}`
               : `/${type.toLowerCase()}?id=${id}`
         );
       }}
