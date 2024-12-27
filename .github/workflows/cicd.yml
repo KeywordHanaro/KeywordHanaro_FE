@@ -32,11 +32,6 @@ jobs:
         working-directory: .
         run: echo "${{ secrets.ENV }}" > .env
 
-      # - name: Set next-auth.d.ts
-      #   working-directory: .
-      #   run: |
-      #     echo "${{ secrets.NEXT_AUTH_D_TS }}" > next-auth.d.ts
-
       - name: Build with Next.js
         working-directory: .
         run: pnpm next build
@@ -62,15 +57,13 @@ jobs:
       - name: Install dependencies
         working-directory: .
         run: pnpm install
-
+      
       - name: set .env
         working-directory: .
-        run: echo "${{ secrets.ENV }}" > .env
-
-      # - name: Set next-auth.d.ts
-      #   working-directory: .
-      #   run: |
-      #     echo "${{ secrets.NEXT_AUTH_D_TS }}" > next-auth.d.ts
+        run: |
+          echo "${{ secrets.ENV }}"
+          echo "${{ secrets.ENV }}" > .env
+          echo .env
 
       - name: Build with Next.js
         working-directory: .
@@ -85,7 +78,7 @@ jobs:
           ls -l .next || echo ".next directory not found"
           echo "Checking KeywordHanaro_FE directory:"
           ls -l ./KeywordHanaro_FE || echo "KeywordHanaro_FE directory not found"
-
+          
       - name: Ensure output directory exists
         working-directory: .
         run: mkdir -p ./KeywordHanaro_FE
@@ -116,12 +109,15 @@ jobs:
         working-directory: .
         run: |
           scp ./KeywordHanaro_FE/next.zip ec2-user@${{ secrets.WAS }}:/home/ec2-user/workspace/
+          scp -r ./public ec2-user@${{ secrets.WAS }}:/home/ec2-user/workspace/KeywordHanaro_FE/
 
       - name: restart next
         run: |
           ssh ec2-user@${{ secrets.WAS }} '
             cd /home/ec2-user/workspace &&
             rm -rf KeywordHanaro_FE/.next
-            unzip next.zip -d KeywordHanaro_FE &&
+            unzip next.zip -d KeywordHanaro_FE
+            echo "${{ secrets.ENV }}" > KeywordHanaro_FE/.env
             pm2 reload keyword-next
+          
           '
