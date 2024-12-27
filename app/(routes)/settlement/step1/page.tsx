@@ -80,7 +80,7 @@ export default function SettlementUsageStep1() {
     saveData('settlement', formData);
     router.push(
       // "/settlement/step2"
-      `${kakao_auth_path}?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`
+      `${kakao_auth_path}?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code&state=${searchParams.get('id')}`
     );
   };
 

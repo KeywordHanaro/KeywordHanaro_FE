@@ -196,6 +196,7 @@ const MultiKeyword = () => {
   const {issueTicket} = useBranchApi();
   
   const handleSubmit = () => {
+    
     router.push('/multiKeyword/complete');
     setOpen(false);
   };

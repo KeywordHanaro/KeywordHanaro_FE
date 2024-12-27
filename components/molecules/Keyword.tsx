@@ -32,7 +32,9 @@ const Keyword = ({
       onFavoriteChange(id, !favorite);
     }
   };
-
+  const rest_api_key = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
+  const redirect_uri = `${process.env.NEXT_PUBLIC_CLIENT_DOMAIN}${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}`;
+  const kakao_auth_path = 'https://kauth.kakao.com/oauth/authorize';
   return (
     <Card
       className='flex flex-row justify-between items-center rounded-[12px]'
@@ -46,7 +48,7 @@ const Keyword = ({
               ? `settlement/step1?id=${id}`
               : `/${type.toLowerCase()}/step1?id=${id}`
             : type.includes('MULTI')
-              ? `/multiKeyword/step1/?id=${id}`
+              ? `${kakao_auth_path}?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code&state=${id}`
               : `/${type.toLowerCase()}?id=${id}`
         );
       }}
