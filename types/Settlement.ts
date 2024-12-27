@@ -13,3 +13,16 @@ export type SettlementMultiRequest = {
   code: string;
   settlementList: SettlementRequest[];
 };
+
+export type SettlementSingleRequest = {
+  code?: string;
+  amount: number;
+  account: singleAccount;
+  groupMember: groupMember[];
+  type: 'Settlement' | 'Dues';
+};
+
+type singleAccount = {
+  accountNumber: string;
+  name: string;
+};
