@@ -11,6 +11,7 @@ export async function authenticate(
 ) {
   const id = formData.get('id');
   const passwd = formData.get('passwd');
+  console.log('********************AUTH_SECRET:', process.env.AUTH_SECRET);
 
   if (!id || !passwd) {
     return 'Input the ID or password!!';
