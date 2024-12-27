@@ -26,6 +26,7 @@ export default function Step2() {
   return (
     <>
       <SelectToAccount
+        selectedAccountId={formData.fromAccount.accountId}
         selectedAccountNumber={formData.fromAccount.accountNumber}
         onNext={handleNext}
         onUpdate={(toAccount: OthersAccount | MyAccount) =>
