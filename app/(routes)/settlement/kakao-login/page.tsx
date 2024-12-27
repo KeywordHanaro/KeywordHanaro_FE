@@ -50,7 +50,7 @@ export default function GetKakao() {
           throw new Error('code is null');
         }
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/settlement/message`,
+          `${process.env.NEXT_PUBLIC_API_URL}/be/settlement/message`,
           {
             method: 'POST',
             headers: {
