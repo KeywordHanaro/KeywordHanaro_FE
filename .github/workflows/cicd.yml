@@ -67,10 +67,10 @@ jobs:
         working-directory: .
         run: echo "${{ secrets.ENV }}" > .env
 
-      - name: Set next-auth.d.ts
-        working-directory: .
-        run: |
-          echo "${{ secrets.NEXT_AUTH_D_TS }}" > next-auth.d.ts
+      # - name: Set next-auth.d.ts
+      #   working-directory: .
+      #   run: |
+      #     echo "${{ secrets.NEXT_AUTH_D_TS }}" > next-auth.d.ts
 
       - name: Build with Next.js
         working-directory: .
