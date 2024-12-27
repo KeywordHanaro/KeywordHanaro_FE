@@ -33,7 +33,7 @@ const Keyword = ({
     }
   };
   const rest_api_key = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
-  const redirect_uri = `${process.env.NEXT_PUBLIC_CLIENT_DOMAIN}${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}`;
+  const redirect_uri = `${process.env.NEXT_PUBLIC_CLIENT_DOMAIN}${process.env.NEXT_PUBLIC_KAKAO_MULTI_REDIRECT_URI}`;
   const kakao_auth_path = 'https://kauth.kakao.com/oauth/authorize';
   return (
     <Card

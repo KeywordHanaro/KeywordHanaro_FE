@@ -14,7 +14,7 @@ export default function SettlementStep1() {
   const searchParams = useSearchParams();
   const { getKeywordById } = useKeywordApi();
   const [keyword, setKeyword] = useState<SettlementUsageResponse>();
-
+  console.log(formData);
   useEffect(() => {
     const id = searchParams.get('id');
     if (id) {
@@ -32,13 +32,6 @@ export default function SettlementStep1() {
 
   useEffect(() => {
     if (keyword?.checkEveryTime === true) {
-      const groupMember = keyword.groupMember.map((member) => ({
-        id:
-          MemberList.find((person) => person.phoneNumber === member.tel)?.id ??
-          0,
-        name: member.name,
-        phoneNumber: member.tel,
-      }));
       updateFormData({
         fromAccount: {
           accountName: keyword.account.name,
@@ -47,7 +40,7 @@ export default function SettlementStep1() {
           accountNumber: keyword.account.accountNumber,
           type: 'MyAccount',
         },
-        members: groupMember,
+        members: keyword.groupMember,
         category: keyword.type === 'SETTLEMENT' ? 'Settlement' : 'Dues',
         checkEveryTime: true,
         amount: '',
@@ -55,13 +48,13 @@ export default function SettlementStep1() {
       });
     }
     if (keyword?.checkEveryTime === false) {
-      const groupMember = keyword.groupMember.map((member) => ({
-        id:
-          MemberList.find((person) => person.phoneNumber === member.tel)?.id ??
-          0,
-        name: member.name,
-        phoneNumber: member.tel,
-      }));
+      // const groupMember = keyword.groupMember.map((member) => ({
+      //   id:
+      //     MemberList.find((person) => person.phoneNumber === member.tel)?.id ??
+      //     0,
+      //   name: member.name,
+      //   phoneNumber: member.tel,
+      // }));
       updateFormData({
         fromAccount: {
           accountName: keyword.account.name,
@@ -70,7 +63,7 @@ export default function SettlementStep1() {
           accountNumber: keyword.account.accountNumber,
           type: 'MyAccount',
         },
-        members: groupMember,
+        members: keyword.groupMember,
         category: keyword.type === 'SETTLEMENT' ? 'Settlement' : 'Dues',
         checkEveryTime: false,
         amount: keyword.amount.toString(),
