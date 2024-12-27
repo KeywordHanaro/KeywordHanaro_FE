@@ -4,10 +4,12 @@ import SpeechToText from '@/components/SpeechToText';
 import Header from '@/components/atoms/Header';
 import KeywordInputButton from '@/components/templates/KeywordInputButton';
 import { useMultiKeywordForm } from '@/contexts/MultiKeywordContext';
+import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
 import { useRouter } from 'next/navigation';
 
 export default function Step3() {
   const { formData, updateFormData } = useMultiKeywordForm();
+  const { createKeyword } = useKeywordApi();
 
   const router = useRouter();
 
@@ -15,7 +17,16 @@ export default function Step3() {
     router.back();
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    const multiDesc = formData.keywordList
+      .map((keyword) => keyword.name)
+      .join(', ');
+    await createKeyword({
+      name: formData.keywordName,
+      type: 'MULTI',
+      desc: multiDesc,
+      multiKeywordIds: formData.keywordIdArr,
+    });
     router.push('/keyword/create/multiKeyword/step4');
   };
 

@@ -6,11 +6,9 @@ import { MoneyInputRef } from '@/components/atoms/Inputs';
 import { ChipsList } from '@/components/molecules/ChipList';
 import { useSettlementContext } from '@/contexts/SettlementContext';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-// import { KeywordDetailList } from '@/data/keyword';
-import { Member } from '@/data/member';
 import { FormData } from '@/data/settlement';
 import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
-import { SettlementUsageResponse } from '@/types/Keyword';
+import { groupMember, SettlementUsageResponse } from '@/types/Keyword';
 import { convertKorToNum } from 'korean-number-converter';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
@@ -43,13 +41,11 @@ export default function SettlementUsageStep1() {
     }
   }, [searchParams]);
 
-  // const keyword = KeywordDetailList.find((item) => item.id === Number(4));
-
   const [valid, setValid] = useState(
     formData.members.length > 0 && formData.amount !== ''
   );
-  const [members, setMembers] = useState<Member[]>([]);
-  const [deleteMember, setDeleteMember] = useState<Member[]>([]);
+  const [members, setMembers] = useState<groupMember[]>([]);
+  const [deleteMember, setDeleteMember] = useState<groupMember[]>([]);
   const amountRef = useRef<HTMLInputElement>(null);
 
   const onChange = () => {
@@ -61,19 +57,19 @@ export default function SettlementUsageStep1() {
     );
   };
 
-  const handleDeleteMember = (id: number) => {
-    setMembers(members.filter((member) => id !== member.id));
+  const handleDeleteMember = (tel: string) => {
+    setMembers(members.filter((member) => tel !== member.tel));
     setDeleteMember((prev) => [
       ...prev,
-      ...members.filter((member) => id === member.id),
+      ...members.filter((member) => tel === member.tel),
     ]);
   };
 
-  const handleAddMember = (id: number) => {
-    setDeleteMember(deleteMember.filter((member) => id !== member.id));
+  const handleAddMember = (tel: string) => {
+    setDeleteMember(deleteMember.filter((member) => tel !== member.tel));
     setMembers((prev) => [
       ...prev,
-      ...deleteMember.filter((member) => id === member.id),
+      ...deleteMember.filter((member) => tel === member.tel),
     ]);
   };
 
@@ -84,7 +80,7 @@ export default function SettlementUsageStep1() {
     saveData('settlement', formData);
     router.push(
       // "/settlement/step2"
-      `${kakao_auth_path}?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`
+      `${kakao_auth_path}?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code&state=${searchParams.get('id')}`
     );
   };
 
@@ -94,11 +90,6 @@ export default function SettlementUsageStep1() {
 
   useEffect(() => {
     if (keyword?.checkEveryTime === true) {
-      const groupMember = keyword.groupMember.map((member, index) => ({
-        id: index,
-        name: member.name,
-        phoneNumber: member.tel,
-      }));
       updateFormData({
         fromAccount: {
           accountName: keyword.account.name,
@@ -107,20 +98,15 @@ export default function SettlementUsageStep1() {
           accountNumber: keyword.account.accountNumber,
           type: 'MyAccount',
         },
-        members: groupMember,
+        members: keyword.groupMember,
         category: keyword.type === 'SETTLEMENT' ? 'Settlement' : 'Dues',
         checkEveryTime: true,
         amount: '',
         keywordName: keyword.name,
       });
-      setMembers(groupMember);
+      setMembers(keyword.groupMember);
     }
     if (keyword?.checkEveryTime === false) {
-      const groupMember = keyword.groupMember.map((member, index) => ({
-        id: index,
-        name: member.name,
-        phoneNumber: member.tel,
-      }));
       updateFormData({
         fromAccount: {
           accountName: keyword.account.name,
@@ -129,14 +115,14 @@ export default function SettlementUsageStep1() {
           accountNumber: keyword.account.accountNumber,
           type: 'MyAccount',
         },
-        members: groupMember,
+        members: keyword.groupMember,
         category: keyword.type === 'SETTLEMENT' ? 'Settlement' : 'Dues',
         checkEveryTime: false,
         amount: keyword.amount.toString(),
         keywordName: keyword.name,
       });
       setValid(true);
-      setMembers(groupMember);
+      setMembers(keyword.groupMember);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keyword]);
@@ -169,14 +155,17 @@ export default function SettlementUsageStep1() {
         <div className='text-[#069894] text-[24px] font-semibold break-keep'>
           {members.map((member, idx) =>
             idx !== members.length - 1 ? (
-              <span key={member.id} className='mr-[3px]'>
+              <span key={member.tel} className='mr-[3px]'>
                 {member.name},
               </span>
             ) : (
-              <span key={member.id}>{member.name}</span>
+              <span key={member.tel}>{member.name}</span>
             )
           )}
-          <span className='text-black ml-[3px]'>님에게 {keyword?.type === 'SETTLEMENT' ? "정산" : "회비"} 요청 할게요</span>
+          <span className='text-black ml-[3px]'>
+            님에게 {keyword?.type === 'SETTLEMENT' ? '정산' : '회비'} 요청
+            할게요
+          </span>
         </div>
 
         {formData.checkEveryTime ? (

@@ -4,21 +4,22 @@ import { DefaultInputRef } from '@/components/atoms/Inputs';
 import { ChipsList } from '@/components/molecules/ChipList';
 import ContactItem from '@/components/molecules/ContactListItem';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { Member, MemberList } from '@/data/member';
+import { MemberList } from '@/data/member';
 import { FormData } from '@/data/settlement';
+import { groupMember } from '@/types/Keyword';
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { levenshtein } from '@/lib/utils';
 
 type SettlementMemberSettingProps = {
   formData: FormData;
-  onUpdate: (members: Member[]) => void;
+  onUpdate: (members: groupMember[]) => void;
 };
 
 export default function SettlementMemberSetting({
   formData,
   onUpdate,
 }: SettlementMemberSettingProps) {
-  const [selectedMember, setSelectedMember] = useState<Member[]>(
+  const [selectedMember, setSelectedMember] = useState<groupMember[]>(
     formData.members ?? []
   );
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -30,19 +31,19 @@ export default function SettlementMemberSetting({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMember]); // onUpdate를 의존성 배열에서 제거
 
-  const handleDeleteMember = useCallback((id: number) => {
+  const handleDeleteMember = useCallback((tel: string) => {
     setSelectedMember((prevMembers) =>
-      prevMembers.filter((member) => id !== member.id)
+      prevMembers.filter((member) => tel !== member.tel)
     );
   }, []);
 
-  const handleToggleSelect = useCallback((id: number) => {
+  const handleToggleSelect = useCallback((tel: string) => {
     setSelectedMember((prev) => {
-      const isAlreadySelected = prev.some((member) => member.id === id);
+      const isAlreadySelected = prev.some((member) => member.tel === tel);
       if (isAlreadySelected) {
-        return prev.filter((member) => member.id !== id);
+        return prev.filter((member) => member.tel !== tel);
       } else {
-        const newMember = MemberList.find((member) => member.id === id);
+        const newMember = MemberList.find((member) => member.tel === tel);
         return newMember ? [...prev, newMember] : prev;
       }
     });
@@ -62,7 +63,7 @@ export default function SettlementMemberSetting({
     const results = MemberList.filter(
       (member) =>
         member.name.toLowerCase().includes(lowercasedQuery) ||
-        member.phoneNumber.replaceAll('-', '').includes(lowercasedQuery)
+        member.tel.replaceAll('-', '').includes(lowercasedQuery)
     );
 
     return results.length > 0 ? results : selectedMember;
@@ -98,31 +99,34 @@ export default function SettlementMemberSetting({
       const names = result.split(' ').filter((name) => name.trim() !== '');
       const threshold = 1; // 허용할 최대 편집 거리
 
-      const newSelectedMembers = names.reduce((acc: Member[], name: string) => {
-        let bestMatch = null;
-        let minDistance = Infinity;
+      const newSelectedMembers = names.reduce(
+        (acc: groupMember[], name: string) => {
+          let bestMatch = null;
+          let minDistance = Infinity;
 
-        for (const member of MemberList) {
-          const distance = levenshtein(
-            member.name.toLowerCase(),
-            name.toLowerCase()
-          );
-          if (distance < minDistance && distance <= threshold) {
-            minDistance = distance;
-            bestMatch = member;
+          for (const member of MemberList) {
+            const distance = levenshtein(
+              member.name.toLowerCase(),
+              name.toLowerCase()
+            );
+            if (distance < minDistance && distance <= threshold) {
+              minDistance = distance;
+              bestMatch = member;
+            }
           }
-        }
 
-        if (bestMatch && !acc.some((m) => m.id === bestMatch!.id)) {
-          acc.push(bestMatch);
-        }
-        return acc;
-      }, []);
+          if (bestMatch && !acc.some((m) => m.tel === bestMatch!.tel)) {
+            acc.push(bestMatch);
+          }
+          return acc;
+        },
+        []
+      );
 
       setSelectedMember((prev) => {
         const uniqueMembers = [...prev, ...newSelectedMembers].reduce(
-          (acc: Member[], current) => {
-            if (!acc.some((item) => item.id === current.id)) {
+          (acc: groupMember[], current) => {
+            if (!acc.some((item) => item.tel === current.tel)) {
               acc.push(current);
             }
             return acc;
@@ -134,7 +138,7 @@ export default function SettlementMemberSetting({
 
       setResult('');
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   return (
@@ -168,12 +172,12 @@ export default function SettlementMemberSetting({
       <div className='flex flex-col h-full overflow-y-scroll'>
         {filteredMembers.map((member) => (
           <ContactItem
-            key={member.id}
+            key={member.tel}
             member={member}
             isSelected={selectedMember.some(
-              (selected) => selected.id === member.id
+              (selected) => selected.tel === member.tel
             )}
-            onChange={() => handleToggleSelect(member.id)}
+            onChange={() => handleToggleSelect(member.tel)}
           />
         ))}
       </div>

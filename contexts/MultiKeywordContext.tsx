@@ -1,5 +1,6 @@
 'use client';
 
+import { UseKeywordResponse } from '@/types/Keyword';
 import {
   ReactNode,
   createContext,
@@ -10,6 +11,7 @@ import {
 
 export type MultiKeywordForm = {
   keywordIdArr: number[];
+  keywordList: UseKeywordResponse[];
   keywordName: string;
 };
 
@@ -20,6 +22,7 @@ type MultiKeywordContextType = {
 
 const contextInitValue: MultiKeywordForm = {
   keywordIdArr: [],
+  keywordList: [],
   keywordName: '',
 };
 

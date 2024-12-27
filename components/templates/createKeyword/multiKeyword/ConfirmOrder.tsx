@@ -1,6 +1,5 @@
-// import Keyword from '@/components/molecules/Keyword';
+import Keyword from '@/components/molecules/Keyword';
 import { MultiKeywordForm } from '@/contexts/MultiKeywordContext';
-import { keywordList } from '@/data/keyword';
 import { Reorder } from 'motion/react';
 import { useState } from 'react';
 
@@ -14,7 +13,6 @@ export default function ConfirmOrder({
   onUpdate,
 }: ConfirmOrderProps) {
   const [items, setItems] = useState<number[]>(formData.keywordIdArr);
-
   const handleReorder = (newOrder: number[]) => {
     setItems(newOrder);
     onUpdate(newOrder);
@@ -36,11 +34,11 @@ export default function ConfirmOrder({
           className='flex flex-col gap-2.5'
         >
           {items.map((id) => {
-            const data = keywordList.find((el) => el.id === id);
+            const data = formData.keywordList.find((el) => el.id === id);
             if (!data) return null;
             return (
               <Reorder.Item key={id} value={id} drag='y'>
-                {/* <Keyword data={data} /> */}
+                <Keyword data={data} />
               </Reorder.Item>
             );
           })}

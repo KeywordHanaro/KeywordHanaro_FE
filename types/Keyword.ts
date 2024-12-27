@@ -8,11 +8,12 @@ export type CreateKeywordRequest =
   | InquiryKeywordRequest
   | TransferKeywordRequest
   | TicketKeywordRequest
-  | SettlementKeywordRequest;
+  | SettlementKeywordRequest
+  | MultiKeywordRequest;
 
 // 공통 요청 타입
 type BaseKeywordRequest = {
-  type: 'INQUIRY' | 'TRANSFER' | 'TICKET' | 'SETTLEMENT' | 'DUES';
+  type: 'INQUIRY' | 'TRANSFER' | 'TICKET' | 'SETTLEMENT' | 'DUES' | 'MULTI';
   name: string;
   desc: string;
 };
@@ -79,6 +80,11 @@ export type activateSettlement = {
   account: Account;
 };
 
+export type MultiKeywordRequest = BaseKeywordRequest & {
+  type: 'MULTI';
+  multiKeywordIds: number[];
+};
+
 /////////////////////////////
 //*************************//
 /////////////////////////////
@@ -86,7 +92,8 @@ export type UseKeywordResponse =
   | InquiryUsageResponse
   | TransferUsageResponse
   | TicketUsageResponse
-  | SettlementUsageResponse;
+  | SettlementUsageResponse
+  | MultiUsageResponse;
 
 // 키워드 사용 type 정의
 export type InquiryUsageResponse = {
@@ -140,6 +147,26 @@ export type SettlementUsageResponse = {
   groupMember: groupMember[];
   amount: number;
   checkEveryTime: boolean;
+};
+
+export type MultiUsageResponse = {
+  id: number;
+  user: UserDetail;
+  type: 'MULTI';
+  name: string;
+  desc: string;
+  seqOrder: number;
+  favorite: boolean;
+  multiKeyword: MultiKeywordDetail[];
+};
+
+export type MultiKeywordDetail = {
+  id: number;
+  parentId: number;
+  keyword: UseKeywordResponse;
+  seqOrder: number;
+  serviceId?: number;
+  amount?: number;
 };
 
 export type groupMember = {

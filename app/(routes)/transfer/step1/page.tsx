@@ -57,14 +57,13 @@ export default function SetTransferAmountPage() {
                 accountNumber: data.subAccount.accountNumber,
               };
             }
-
             saveFormData({
               ...formData,
-              type: data.checkEveryTime ? 'WithoutAmount' : 'WithoutAmount',
+              type: data.checkEveryTime ? 'WithoutAmount' : 'WithAmount',
               fromAccount: fromAccount,
               toAccount: toAccount,
               checkEverytime: data.checkEveryTime,
-              amount: data.checkEveryTime ? 0 : formData.amount,
+              amount: data.checkEveryTime ? 0 : data.amount,
               keyword: data.name,
             } as TransferProps);
           }
@@ -106,7 +105,6 @@ export default function SetTransferAmountPage() {
   const handleBack = () => {
     router.back();
   };
-
   return (
     <div className='flex flex-col w-full h-full'>
       <Header

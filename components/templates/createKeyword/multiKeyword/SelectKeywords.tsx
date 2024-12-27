@@ -3,8 +3,9 @@ import Header from '@/components/atoms/Header';
 import MultiKeyword from '@/components/molecules/MultiKeyword';
 import { MultiKeywordForm } from '@/contexts/MultiKeywordContext';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { Keyword, keywordList } from '@/data/keyword';
 import { useToast } from '@/hooks/use-toast';
+import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
+import { UseKeywordResponse } from '@/types/Keyword';
 import { usePathname } from 'next/navigation';
 import { useState, useCallback, useEffect } from 'react';
 import { levenshtein } from '@/lib/utils';
@@ -12,7 +13,7 @@ import { levenshtein } from '@/lib/utils';
 type MultiKeywordProps = {
   formData: MultiKeywordForm;
   onBack: () => void;
-  onUpdate: (keywordIdArr: number[]) => void;
+  onUpdate: (keywordIdArr: number[], keywordList: UseKeywordResponse[]) => void;
 };
 
 export default function SelectKeywords({
@@ -21,6 +22,12 @@ export default function SelectKeywords({
   onUpdate,
 }: MultiKeywordProps) {
   const { toast } = useToast();
+  const { getAllKeywords } = useKeywordApi();
+  const [keywordList, setKeywordList] = useState<UseKeywordResponse[]>([]);
+  const [selectedKeywordList, setSelectedKeywordList] = useState<
+    UseKeywordResponse[]
+  >([]);
+
   const [selectedIds, setSelectedIds] = useState<number[]>(
     formData.keywordIdArr ?? []
   );
@@ -29,9 +36,12 @@ export default function SelectKeywords({
   const pathname = usePathname();
 
   const handleKeywordSelect = useCallback(
-    (id: number) => {
+    (id: number, keyword: UseKeywordResponse) => {
       if (selectedIds.includes(id)) {
         setSelectedIds(selectedIds.filter((prevId) => prevId !== id));
+        setSelectedKeywordList(
+          selectedKeywordList.filter((prev) => prev.id !== id)
+        );
       } else if (selectedIds.length >= 5) {
         toast({
           title: '최대 5개까지 선택할 수 있어요',
@@ -40,6 +50,7 @@ export default function SelectKeywords({
         });
       } else {
         setSelectedIds([...selectedIds, id]);
+        setSelectedKeywordList([...selectedKeywordList, keyword]);
       }
     },
     [toast, selectedIds, setSelectedIds]
@@ -50,17 +61,26 @@ export default function SelectKeywords({
   };
 
   const handleNext = () => {
-    onUpdate(selectedIds);
+    onUpdate(selectedIds, selectedKeywordList);
   };
 
   useEffect(() => {
+    const fetchKeywordList = async () => {
+      const response = await getAllKeywords();
+      setKeywordList(response);
+    };
+    fetchKeywordList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     if (result) {
-      const findSimilarKeywords = (input: string, threshold: number = 0.3) => {
+      const findSimilarKeywords = (input: string, threshold: number = 0.2) => {
         const inputWords = input.toLowerCase().split(' ');
-        const similarKeywords: Keyword[] = [];
+        const similarKeywords: UseKeywordResponse[] = [];
 
         keywordList.forEach((keyword) => {
-          const keywordWords = keyword.title.toLowerCase().split(' ');
+          const keywordWords = keyword.name.toLowerCase().split(' ');
           const keywordLength = keywordWords.length;
 
           for (let i = 0; i <= inputWords.length - keywordLength; i++) {
@@ -69,10 +89,10 @@ export default function SelectKeywords({
               .join(' ');
             const distance = levenshtein(
               inputSubset,
-              keyword.title.toLowerCase()
+              keyword.name.toLowerCase()
             );
             const similarity =
-              1 - distance / Math.max(inputSubset.length, keyword.title.length);
+              1 - distance / Math.max(inputSubset.length, keyword.name.length);
 
             if (similarity >= threshold) {
               similarKeywords.push(keyword);
@@ -84,12 +104,29 @@ export default function SelectKeywords({
         return similarKeywords;
       };
 
-      const similarKeywords = findSimilarKeywords(result, 0.7);
+      const similarKeywords = findSimilarKeywords(result, 0.5);
       const newSelectedIds = similarKeywords.map((keyword) => keyword.id);
 
       setSelectedIds((prev) => {
+        if (prev.length >= 5) {
+          toast({
+            title: '최대 5개까지 선택할 수 있어요',
+            description: '',
+            variant: 'gray',
+          });
+          return prev;
+        }
         const uniqueIds = [...prev, ...newSelectedIds];
         return uniqueIds.slice(0, 5); // 최대 5개까지만 선택
+      });
+      setSelectedKeywordList((prev) => {
+        const uniqueKeywords = [
+          ...prev,
+          ...similarKeywords.filter(
+            (keyword) => !prev.map((k) => k.id).includes(keyword.id)
+          ),
+        ];
+        return uniqueKeywords.slice(0, 5); // 최대 5개까지만 선택
       });
 
       setResult('');
@@ -117,17 +154,17 @@ export default function SelectKeywords({
       <div className='font-semibold text-[24px] pl-5 pt-6'>
         조합할 키워드를 <br></br>설정해주세요
       </div>
-      <div className='font-medium text-lightGray pl-5 pt-[11px]'>
+      <div className='font-medium text-lightGray pl-5 py-[11px]'>
         최소 <span className='text-hanaPrimary'>2개</span>부터 최대{' '}
         <span className='text-hanaPrimary'>5개</span>까지 선택 가능해요
       </div>
       {/* 키워드 리스트 */}
-      <div className='flex flex-col flex-grow overflow-y-scroll pt-[27px] px-5 pb-24 gap-2.5'>
+      <div className='flex flex-col flex-grow overflow-y-scroll pt-[20px] px-5 pb-24 gap-2.5'>
         {keywordList.map((each) => (
           <MultiKeyword
             key={each.id}
             data={each}
-            onClick={() => handleKeywordSelect(each.id)}
+            onClick={() => handleKeywordSelect(each.id, each)}
             isSelected={selectedIds.includes(each.id)}
           />
         ))}

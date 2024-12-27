@@ -47,8 +47,7 @@ export default function AccountListItem({
   // const toggleFavorite = () => {
   //   setFavoriteState((prev) => !prev);
   // };
-  const bank = bankList.find((i) => i.id === +bankId);
-
+  const bank = bankList.find((i) => i.id === bankId);
   return (
     <div
       className={cn(
@@ -63,7 +62,7 @@ export default function AccountListItem({
               className={`h-[40px] w-[40px] flex items-center justify-center border-1 rounded-full bg-white text-hanaPrimary text-xl
     ${isSelected ? ' border border-hanaPrimary' : ' border border-gray-100 '}`}
             >
-              {isSelected ? <FaCheck /> : <BankLogoImg bankId={+bankId} />}
+              {isSelected ? <FaCheck /> : <BankLogoImg bankId={bankId} />}
             </div>
           </div>
         ) : (

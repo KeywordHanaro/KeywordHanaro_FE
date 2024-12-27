@@ -1,23 +1,20 @@
 'use client';
 
-import {
-  getColorByType,
-  getNameByType,
-  Keyword as TKeyword,
-} from '@/data/keyword';
+import { getColorByType, getNameByType } from '@/data/keyword';
+import { UseKeywordResponse } from '@/types/Keyword';
 import { BsStarFill } from 'react-icons/bs';
 import { cn } from '@/lib/utils';
 import { Card } from '../atoms/Card';
 import ColorChip from '../atoms/ColorChips';
 
 type KeywordProps = {
-  data: TKeyword;
+  data: UseKeywordResponse;
   onClick: () => void;
   isSelected: boolean;
 };
 
 const MultiKeyword = ({
-  data: { type, title, description, isFavorite },
+  data: { type, name, desc, favorite },
   onClick,
   isSelected,
 }: KeywordProps) => {
@@ -40,7 +37,7 @@ const MultiKeyword = ({
               isSelected ? 'text-white' : 'text-fontBlack'
             )}
           >
-            {title}
+            {name}
           </span>
           <ColorChip color={chipColor}>{chipName}</ColorChip>
         </div>
@@ -50,13 +47,13 @@ const MultiKeyword = ({
             isSelected ? 'text-white' : 'text-subGray'
           )}
         >
-          {description}
+          {desc}
         </span>
       </div>
       <BsStarFill
         className={cn(
           'w-[27px] h-[27px]',
-          isFavorite ? 'text-yellow-300' : 'text-[#D9D9D9]'
+          favorite ? 'text-yellow-300' : 'text-[#D9D9D9]'
         )}
       />
     </Card>

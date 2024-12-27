@@ -38,7 +38,7 @@ export default function GetKakao() {
 
     const groupMembers = data.members.map((member) => ({
       name: member.name,
-      tel: member.phoneNumber,
+      tel: member.tel,
     }));
     setProgress(50);
     // const members = JSON.stringify(groupMembers);
@@ -50,7 +50,7 @@ export default function GetKakao() {
           throw new Error('code is null');
         }
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/be/settlement/message`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/settlement/message`,
           {
             method: 'POST',
             headers: {
@@ -83,7 +83,9 @@ export default function GetKakao() {
   return (
     <>
       <div className='flex flex-col items-center h-full'>
-        <h1 className='text-xl font-bold mt-10 mb-10'>멤버에게 카카오톡 메시지를 보내는 중이에요</h1>
+        <h1 className='text-xl font-bold mt-10 mb-10'>
+          멤버에게 카카오톡 메시지를 보내는 중이에요
+        </h1>
         <LoadingKakao progress={progress} />
       </div>
     </>

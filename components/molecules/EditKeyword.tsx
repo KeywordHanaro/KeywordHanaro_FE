@@ -98,14 +98,12 @@ const EditKeyword = ({ data, onEdit, onDelete }: EditKeywordProps) => {
             )}
           </>
         );
-      // case 'multiKeyword':
-      //   return (
-      //     <div className='flex flex-col text-[13px] font-semibold'>
-      //       {data.keywordList?.map((keyword) => {
-      //         return <span key={keyword.id}>{keyword.title}</span>;
-      //       })}
-      //     </div>
-      //   );
+      case 'MULTI':
+        return (
+          <span className=' text-hanaPrimary font-semibold text-[13px]'>
+            {data.desc}
+          </span>
+        );
       default:
         return null;
     }

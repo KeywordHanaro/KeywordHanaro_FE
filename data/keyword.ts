@@ -1,6 +1,8 @@
 import { MyAccount, OthersAccount } from '@/types/Account';
+import { groupMember } from '@/types/Keyword';
 import { Member } from './member';
-import { MultiKeywordDetail } from './multiKeyword';
+
+// import { MultiKeywordDetail } from './multiKeyword';
 
 export type Account = {
   bankId: number;
@@ -30,8 +32,7 @@ export type KeywordDetail =
   | InquiryKeyword
   | TicketKeyword
   | SettlementKeyword
-  | SettlementAmountKeyword
-  | MultiKeyword;
+  | SettlementAmountKeyword;
 
 type BaseKeyword = {
   id: number;
@@ -65,36 +66,33 @@ export type TicketKeyword = BaseKeyword & {
 export type SettlementKeyword = BaseKeyword & {
   type: 'settlement';
   accountFrom: MyAccount;
-  memberList: Member[];
+  memberList: groupMember[];
 };
 
 export type SettlementAmountKeyword = BaseKeyword & {
   type: 'settlementAmount';
   accountFrom: MyAccount;
-  memberList: Member[];
+  memberList: groupMember[];
   amount: number;
 };
 
-export type MultiKeyword = BaseKeyword & {
-  type: 'multiKeyword';
-  keywordList?: MultiKeywordDetail[];
-};
+// export type MultiKeyword = BaseKeyword & {
+//   type: 'multiKeyword';
+//   keywordList?: MultiKeywordDetail[];
+// };
 
 export const getColorByType = (type: string) => {
-  switch (type.toLowerCase()) {
-    case 'transfer':
-    case 'transferamount':
+  switch (type) {
+    case 'TRANSFER':
       return 'pink';
-    case 'inquiry':
+    case 'INQUIRY':
       return 'green';
-    case 'ticket':
+    case 'TICKET':
       return 'yellow';
-    case 'settlement':
-    case 'dues':
-    case 'duesamount':
-    case 'settlementamount':
+    case 'SETTLEMENT':
+    case 'DUES':
       return 'blue';
-    case 'multiKeyword':
+    case 'MULTI':
       return 'orange';
     default:
       return '';
@@ -102,20 +100,17 @@ export const getColorByType = (type: string) => {
 };
 
 export const getNameByType = (type: string) => {
-  switch (type.toLowerCase()) {
-    case 'transfer':
-    case 'transferamount':
+  switch (type) {
+    case 'TRANSFER':
       return '송금';
-    case 'inquiry':
+    case 'INQUIRY':
       return '조회';
-    case 'ticket':
+    case 'TICKET':
       return '번호표';
-    case 'settlement':
-    case 'dues':
-    case 'duesamount':
-    case 'settlementamount':
+    case 'SETTLEMENT':
+    case 'DUES':
       return '정산/회비';
-    case 'multiKeyword':
+    case 'MULTI':
       return '키워드 조합';
     default:
       return '';
@@ -195,272 +190,272 @@ export const keywordList: Keyword[] = [
   },
 ];
 
-export const KeywordDetailList: KeywordDetail[] = [
-  // TransferKeyword
-  {
-    id: 1,
-    type: 'transfer',
-    title: '성엽이 용돈',
-    accountFrom: {
-      type: 'MyAccount',
-      accountName: '하나패스 자유입출금',
-      bankId: 81,
-      accountId: 1,
-      accountNumber: '156-5483-111-6854',
-    },
-    accountTo: {
-      type: 'OthersAccount',
-      bankId: 2,
-      accountNumber: '987-654-321',
-      name: '정성엽',
-    },
-  },
-  {
-    id: 2,
-    type: 'inquiry',
-    title: '월급 확인',
-    accountFrom: {
-      type: 'MyAccount',
-      bankId: 81,
-      accountId: 2,
+// export const KeywordDetailList: KeywordDetail[] = [
+//   // TransferKeyword
+//   {
+//     id: 1,
+//     type: 'transfer',
+//     title: '성엽이 용돈',
+//     accountFrom: {
+//       type: 'MyAccount',
+//       accountName: '하나패스 자유입출금',
+//       bankId: 81,
+//       accountId: 1,
+//       accountNumber: '156-5483-111-6854',
+//     },
+//     accountTo: {
+//       type: 'OthersAccount',
+//       bankId: 2,
+//       accountNumber: '987-654-321',
+//       name: '정성엽',
+//     },
+//   },
+//   {
+//     id: 2,
+//     type: 'inquiry',
+//     title: '월급 확인',
+//     accountFrom: {
+//       type: 'MyAccount',
+//       bankId: 81,
+//       accountId: 2,
 
-      accountNumber: '156-5483-111-6854',
-      accountName: '하나패스 자유입출금',
-    },
-    searchKeyword: '급여',
-  },
-  {
-    id: 3,
-    type: 'ticket',
-    title: '성수점 번호표',
-    bankName: '성수점',
-  },
-  {
-    id: 4,
-    type: 'settlementAmount',
-    title: '터틀넥즈 정산',
-    accountFrom: {
-      type: 'MyAccount',
-      accountName: '하나패스 자유입출금',
-      bankId: 81,
-      accountId: 3,
+//       accountNumber: '156-5483-111-6854',
+//       accountName: '하나패스 자유입출금',
+//     },
+//     searchKeyword: '급여',
+//   },
+//   {
+//     id: 3,
+//     type: 'ticket',
+//     title: '성수점 번호표',
+//     bankName: '성수점',
+//   },
+//   {
+//     id: 4,
+//     type: 'settlementAmount',
+//     title: '터틀넥즈 정산',
+//     accountFrom: {
+//       type: 'MyAccount',
+//       accountName: '하나패스 자유입출금',
+//       bankId: 81,
+//       accountId: 3,
 
-      accountNumber: '156-5483-111-6854',
-    },
-    memberList: [
-      { id: 3, name: '남인우', phoneNumber: '010-1111-1111' },
-      { id: 5, name: '박준용', phoneNumber: '010-7777-7777' },
-      { id: 7, name: '문서아', phoneNumber: '010-4444-4444' },
-      { id: 6, name: '정성엽', phoneNumber: '010-6666-6666' },
-      { id: 2, name: '김도희', phoneNumber: '010-3333-3333' },
-    ],
-    amount: 30000,
-  },
-  {
-    id: 5,
-    type: 'settlement',
-    title: '등산팸 정산',
-    accountFrom: {
-      type: 'MyAccount',
-      bankId: 81,
-      accountId: 4,
+//       accountNumber: '156-5483-111-6854',
+//     },
+//     memberList: [
+//       { id: 3, name: '남인우', phoneNumber: '010-1111-1111' },
+//       { id: 5, name: '박준용', phoneNumber: '010-7777-7777' },
+//       { id: 7, name: '문서아', phoneNumber: '010-4444-4444' },
+//       { id: 6, name: '정성엽', phoneNumber: '010-6666-6666' },
+//       { id: 2, name: '김도희', phoneNumber: '010-3333-3333' },
+//     ],
+//     amount: 30000,
+//   },
+//   {
+//     id: 5,
+//     type: 'settlement',
+//     title: '등산팸 정산',
+//     accountFrom: {
+//       type: 'MyAccount',
+//       bankId: 81,
+//       accountId: 4,
 
-      accountNumber: '456-4236-454-11',
-      accountName: '청년 힘내라 저축',
-    },
-    memberList: [
-      { id: 6, name: '문해빈', phoneNumber: '010-4824-1469' },
-      { id: 7, name: '이규호', phoneNumber: '010-9110-5864' },
-      { id: 8, name: '조경은', phoneNumber: '010-1541-2537' },
-    ],
-  },
-  {
-    id: 6,
-    type: 'transferAmount',
-    title: '아빠 용돈',
-    accountFrom: {
-      type: 'MyAccount',
-      bankId: 81,
-      accountId: 5,
+//       accountNumber: '456-4236-454-11',
+//       accountName: '청년 힘내라 저축',
+//     },
+//     memberList: [
+//       { id: 6, name: '문해빈', phoneNumber: '010-4824-1469' },
+//       { id: 7, name: '이규호', phoneNumber: '010-9110-5864' },
+//       { id: 8, name: '조경은', phoneNumber: '010-1541-2537' },
+//     ],
+//   },
+//   {
+//     id: 6,
+//     type: 'transferAmount',
+//     title: '아빠 용돈',
+//     accountFrom: {
+//       type: 'MyAccount',
+//       bankId: 81,
+//       accountId: 5,
 
-      accountNumber: '456-4236-454-11',
-      accountName: '청년 힘내라 저축',
-    },
-    accountTo: {
-      bankId: 88,
-      type: 'OthersAccount',
-      accountNumber: '110-412-625368',
-      name: '정성호',
-    },
-    amount: '350000',
-  },
-  {
-    id: 7,
-    type: 'inquiry',
-    title: '삼성카드 환급 확인',
-    accountFrom: {
-      type: 'MyAccount',
-      bankId: 81,
-      accountId: 1,
+//       accountNumber: '456-4236-454-11',
+//       accountName: '청년 힘내라 저축',
+//     },
+//     accountTo: {
+//       bankId: 88,
+//       type: 'OthersAccount',
+//       accountNumber: '110-412-625368',
+//       name: '정성호',
+//     },
+//     amount: '350000',
+//   },
+//   {
+//     id: 7,
+//     type: 'inquiry',
+//     title: '삼성카드 환급 확인',
+//     accountFrom: {
+//       type: 'MyAccount',
+//       bankId: 81,
+//       accountId: 1,
 
-      accountNumber: '156-5483-111-6854',
-      accountName: '하나패스 자유입출금',
-    },
-    searchKeyword: '삼성카드 환급',
-  },
-  {
-    id: 8,
-    type: 'transfer',
-    title: '전기세 납부',
-    accountFrom: {
-      type: 'MyAccount',
-      bankId: 81,
-      accountId: 6,
+//       accountNumber: '156-5483-111-6854',
+//       accountName: '하나패스 자유입출금',
+//     },
+//     searchKeyword: '삼성카드 환급',
+//   },
+//   {
+//     id: 8,
+//     type: 'transfer',
+//     title: '전기세 납부',
+//     accountFrom: {
+//       type: 'MyAccount',
+//       bankId: 81,
+//       accountId: 6,
 
-      accountNumber: '456-4236-454-11',
-      accountName: '청년 힘내라 저축',
-    },
-    accountTo: {
-      type: 'MyAccount',
-      bankId: 4,
-      accountId: 7,
+//       accountNumber: '456-4236-454-11',
+//       accountName: '청년 힘내라 저축',
+//     },
+//     accountTo: {
+//       type: 'MyAccount',
+//       bankId: 4,
+//       accountId: 7,
 
-      accountNumber: '25-777-888-999',
-      accountName: '한국전력공사',
-    },
-  },
-  {
-    id: 9,
-    type: 'ticket',
-    title: '압구정 번호표',
-    bankName: '압구정점',
-  },
-  {
-    id: 10,
-    type: 'multiKeyword',
-    title: '조합한 키워드',
-    keywordList: [
-      {
-        id: 1,
-        type: 'transferAmount',
-        title: '성엽이 용돈',
-        accountFrom: {
-          type: 'MyAccount',
-          accountName: '하나패스 자유입출금',
-          bankId: 81,
-          accountId: 1,
+//       accountNumber: '25-777-888-999',
+//       accountName: '한국전력공사',
+//     },
+//   },
+//   {
+//     id: 9,
+//     type: 'ticket',
+//     title: '압구정 번호표',
+//     bankName: '압구정점',
+//   },
+//   {
+//     id: 10,
+//     type: 'multiKeyword',
+//     title: '조합한 키워드',
+//     keywordList: [
+//       {
+//         id: 1,
+//         type: 'transferAmount',
+//         title: '성엽이 용돈',
+//         accountFrom: {
+//           type: 'MyAccount',
+//           accountName: '하나패스 자유입출금',
+//           bankId: 81,
+//           accountId: 1,
 
-          accountNumber: '156-5483-111-6854',
-        },
-        accountTo: {
-          type: 'OthersAccount',
-          bankId: 2,
-          accountNumber: '987-654-321',
-          name: '정성엽',
-        },
-        amount: '350000',
-        seqOrder: 1,
-      },
-      {
-        id: 2,
-        type: 'inquiry',
-        title: '월급 확인',
-        accountFrom: {
-          type: 'MyAccount',
-          bankId: 81,
-          accountId: 8,
+//           accountNumber: '156-5483-111-6854',
+//         },
+//         accountTo: {
+//           type: 'OthersAccount',
+//           bankId: 2,
+//           accountNumber: '987-654-321',
+//           name: '정성엽',
+//         },
+//         amount: '350000',
+//         seqOrder: 1,
+//       },
+//       {
+//         id: 2,
+//         type: 'inquiry',
+//         title: '월급 확인',
+//         accountFrom: {
+//           type: 'MyAccount',
+//           bankId: 81,
+//           accountId: 8,
 
-          accountNumber: '156-5483-111-6854',
-          accountName: '하나패스 자유입출금',
-        },
-        searchKeyword: '급여',
-        seqOrder: 2,
-      },
-      {
-        id: 9,
-        type: 'ticket',
-        title: '압구정 번호표',
-        bankName: '압구정점',
-        seqOrder: 3,
-      },
-      {
-        id: 4,
-        type: 'settlementAmount',
-        title: '터틀넥즈 정산',
-        accountFrom: {
-          type: 'MyAccount',
-          accountId: 1,
+//           accountNumber: '156-5483-111-6854',
+//           accountName: '하나패스 자유입출금',
+//         },
+//         searchKeyword: '급여',
+//         seqOrder: 2,
+//       },
+//       {
+//         id: 9,
+//         type: 'ticket',
+//         title: '압구정 번호표',
+//         bankName: '압구정점',
+//         seqOrder: 3,
+//       },
+//       {
+//         id: 4,
+//         type: 'settlementAmount',
+//         title: '터틀넥즈 정산',
+//         accountFrom: {
+//           type: 'MyAccount',
+//           accountId: 1,
 
-          accountName: '하나패스 자유입출금',
-          bankId: 81,
-          accountNumber: '156-5483-111-6854',
-        },
-        memberList: [
-          { id: 3, name: '남인우', phoneNumber: '010-1111-1111' },
-          { id: 5, name: '박준용', phoneNumber: '010-7777-7777' },
-          { id: 7, name: '문서아', phoneNumber: '010-4444-4444' },
-          { id: 6, name: '정성엽', phoneNumber: '010-6666-6666' },
-          { id: 2, name: '김도희', phoneNumber: '010-3333-3333' },
-        ],
-        amount: 30000,
-        seqOrder: 4,
-      },
-      {
-        id: 8,
-        type: 'transfer',
-        title: '전기세 납부',
-        accountFrom: {
-          type: 'MyAccount',
-          bankId: 81,
-          accountId: 1,
+//           accountName: '하나패스 자유입출금',
+//           bankId: 81,
+//           accountNumber: '156-5483-111-6854',
+//         },
+//         memberList: [
+//           { id: 3, name: '남인우', phoneNumber: '010-1111-1111' },
+//           { id: 5, name: '박준용', phoneNumber: '010-7777-7777' },
+//           { id: 7, name: '문서아', phoneNumber: '010-4444-4444' },
+//           { id: 6, name: '정성엽', phoneNumber: '010-6666-6666' },
+//           { id: 2, name: '김도희', phoneNumber: '010-3333-3333' },
+//         ],
+//         amount: 30000,
+//         seqOrder: 4,
+//       },
+//       {
+//         id: 8,
+//         type: 'transfer',
+//         title: '전기세 납부',
+//         accountFrom: {
+//           type: 'MyAccount',
+//           bankId: 81,
+//           accountId: 1,
 
-          accountNumber: '456-4236-454-11',
-          accountName: '청년 힘내라 저축',
-        },
-        accountTo: {
-          type: 'MyAccount',
-          bankId: 4,
-          accountId: 1,
+//           accountNumber: '456-4236-454-11',
+//           accountName: '청년 힘내라 저축',
+//         },
+//         accountTo: {
+//           type: 'MyAccount',
+//           bankId: 4,
+//           accountId: 1,
 
-          accountNumber: '25-777-888-999',
-          accountName: '한국전력공사',
-        },
-        seqOrder: 5,
-      },
-      {
-        id: 5,
-        type: 'settlement',
-        title: '등산팸 정산',
-        accountFrom: {
-          type: 'MyAccount',
-          bankId: 81,
-          accountId: 1,
+//           accountNumber: '25-777-888-999',
+//           accountName: '한국전력공사',
+//         },
+//         seqOrder: 5,
+//       },
+//       {
+//         id: 5,
+//         type: 'settlement',
+//         title: '등산팸 정산',
+//         accountFrom: {
+//           type: 'MyAccount',
+//           bankId: 81,
+//           accountId: 1,
 
-          accountNumber: '456-4236-454-11',
-          accountName: '청년 힘내라 저축',
-        },
-        memberList: [
-          { id: 6, name: '문해빈', phoneNumber: '010-4824-1469' },
-          { id: 7, name: '이규호', phoneNumber: '010-9110-5864' },
-          { id: 8, name: '조경은', phoneNumber: '010-1541-2537' },
-        ],
-        seqOrder: 6,
-      },
-      {
-        id: 7,
-        type: 'inquiry',
-        title: '삼성카드 환급 확인',
-        accountFrom: {
-          type: 'MyAccount',
-          bankId: 81,
-          accountId: 1,
+//           accountNumber: '456-4236-454-11',
+//           accountName: '청년 힘내라 저축',
+//         },
+//         memberList: [
+//           { id: 6, name: '문해빈', phoneNumber: '010-4824-1469' },
+//           { id: 7, name: '이규호', phoneNumber: '010-9110-5864' },
+//           { id: 8, name: '조경은', phoneNumber: '010-1541-2537' },
+//         ],
+//         seqOrder: 6,
+//       },
+//       {
+//         id: 7,
+//         type: 'inquiry',
+//         title: '삼성카드 환급 확인',
+//         accountFrom: {
+//           type: 'MyAccount',
+//           bankId: 81,
+//           accountId: 1,
 
-          accountNumber: '156-5483-111-6854',
-          accountName: '하나패스 자유입출금',
-        },
-        searchKeyword: '삼성카드 환급',
-        seqOrder: 7,
-      },
-    ],
-  },
-];
+//           accountNumber: '156-5483-111-6854',
+//           accountName: '하나패스 자유입출금',
+//         },
+//         searchKeyword: '삼성카드 환급',
+//         seqOrder: 7,
+//       },
+//     ],
+//   },
+// ];

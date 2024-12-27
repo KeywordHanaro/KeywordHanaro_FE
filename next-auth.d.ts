@@ -6,6 +6,7 @@ declare module 'next-auth' {
     id: string;
     name: string;
     jwt: string;
+    permission: string;
   }
 
   interface Session {
@@ -13,6 +14,7 @@ declare module 'next-auth' {
       id: string;
       name: string;
       jwt: string;
+      permission: string;
     };
   }
 }
