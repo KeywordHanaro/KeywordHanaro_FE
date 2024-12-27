@@ -31,7 +31,7 @@ export const useBranchApi = () => {
   };
 
   const issueTicket = async (data: TicketRequest) => {
-    return await fetchApi('/keyword', {
+    return await fetchApi('/ticket', {
       method: 'POST',
       body: JSON.stringify(data),
     });

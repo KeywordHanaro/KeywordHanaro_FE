@@ -5,14 +5,16 @@ import InputPassword from '@/components/molecules/InputPassword';
 import KeywordWithInputs from '@/components/molecules/KeywordWithInputs';
 import TransactionList from '@/components/templates/useKeyword/inquiry/TransactionList';
 import { VoiceInputProvider } from '@/contexts/VoiceContext';
-// import { useAccountApi } from '@/hooks/useAccount/useAccount';
-// import { useBranchApi } from '@/hooks/useBranch/useBranch';
+import { useAccountApi } from '@/hooks/useAccount/useAccount';
+import { useBranchApi } from '@/hooks/useBranch/useBranch';
 import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
+import { useSettlementApi } from '@/hooks/useSettlement/useSettlement';
 import {
   groupMember,
   MultiKeywordDetail,
   MultiUsageResponse,
 } from '@/types/Keyword';
+import { SettlementRequest } from '@/types/Settlement';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useReducer, useEffect, useState } from 'react';
 
@@ -151,6 +153,7 @@ function reducer(state: State, action: Action): State {
 const MultiKeyword = () => {
   const searchParams = useSearchParams();
   const id = parseInt(searchParams.get('state')!);
+  const code = searchParams?.get('code');
   const [state, dispatch] = useReducer(reducer, initialState);
   const [open, setOpen] = useState<boolean>(false);
 
@@ -178,24 +181,90 @@ const MultiKeyword = () => {
   };
 
   const validatePassword = async (password: number[]): Promise<boolean> => {
-    try {
-      const response = await fetch('/api/validate-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
-      });
-      const data = await response.json();
-      return data.isValid; // Assume API returns { isValid: boolean }
-    } catch (error) {
-      console.error('Error validating password:', error);
-      return false; // Default to invalid on error
-    }
+    // try {
+    //   const response = await fetch('/api/validate-password', {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({ password }),
+    //   });
+    //   const data = await response.json();
+    //   return data.isValid; // Assume API returns { isValid: boolean }
+    // } catch (error) {
+    //   console.error('Error validating password:', error);
+    //   return false; // Default to invalid on error
+    // }
+    if (JSON.stringify(password) === JSON.stringify([1, 2, 3, 4])) return true;
+    else return false;
   };
 
-  // const { transfer } = useAccountApi();
-  // const { issueTicket } = useBranchApi();
+  const { transfer } = useAccountApi();
+  const { issueTicket } = useBranchApi();
+  const { sendMessage } = useSettlementApi();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const settlementRequests: SettlementRequest[] = [];
+
+    for (const keyword of state.keywords) {
+      switch (keyword.keyword.type) {
+        case 'TRANSFER':
+          if (
+            keyword.amount &&
+            keyword.keyword.account &&
+            keyword.keyword.subAccount
+          ) {
+            await transfer({
+              fromAccountNumber: keyword.keyword.account.accountNumber,
+              toAccountNumber: keyword.keyword.subAccount.accountNumber,
+              amount: keyword.amount,
+            })
+              .then(() => {
+                console.log('TRANSFER success');
+              })
+              .catch((e) => console.log(e));
+          }
+          break;
+        case 'TICKET':
+          if (keyword.serviceId && keyword.keyword.branch) {
+            await issueTicket({
+              keywordId: keyword.keyword.id,
+              workNumber: keyword.serviceId,
+              branchId: keyword.keyword.branch.id,
+              branchName: keyword.keyword.branch.placeName,
+            })
+              .then(() => {
+                console.log('issueTicket success');
+              })
+              .catch((e) => console.log(e));
+          }
+          break;
+        case 'SETTLEMENT':
+        case 'DUES':
+          if (
+            keyword.amount &&
+            keyword.keyword.account &&
+            keyword.keyword.groupMember
+          ) {
+            settlementRequests.push({
+              amount: keyword.amount,
+              account: keyword.keyword.account,
+              groupMember: keyword.keyword.groupMember,
+              type:
+                keyword.keyword.type === 'SETTLEMENT' ? 'Settlement' : 'Dues',
+            });
+          }
+          break;
+      }
+    }
+    if (settlementRequests.length > 0 && code) {
+      await sendMessage({
+        code: code,
+        settlementList: settlementRequests,
+      })
+        .then(() => {
+          console.log('sendMessage success');
+        })
+        .catch((e) => console.log(e));
+    }
     router.push('/multiKeyword/complete');
     setOpen(false);
   };

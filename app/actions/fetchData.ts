@@ -17,7 +17,7 @@ export async function fetchData(
 
   // API 기본 URL 설정
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  const url = `${baseUrl}/be${apiRoute}`;
+  const url = `${baseUrl}/api${apiRoute}`;
 
   // 요청 헤더 설정
   const headers: HeadersInit = {
@@ -34,7 +34,7 @@ export async function fetchData(
 
   // API 호출
   const response = await fetch(url, options);
-
+  console.log(response);
   // 응답 체크
   if (!response.ok) {
     throw new Error(`Failed to fetch data: ${response.statusText}`);
