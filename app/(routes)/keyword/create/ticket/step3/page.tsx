@@ -3,6 +3,7 @@
 import SpeechToText from '@/components/SpeechToText';
 import KeywordInputButton from '@/components/templates/KeywordInputButton';
 import { useTicket } from '@/contexts/TicketContext';
+import { useBranchApi } from '@/hooks/useBranch/useBranch';
 import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
 import { useRouter } from 'next/navigation';
 
@@ -10,21 +11,23 @@ export default function CreateTicketStep3Page() {
   const router = useRouter();
   const { setKeywordName, keywordName, selectedBranch } = useTicket();
   const { createKeyword } = useKeywordApi();
+  const { savePermission } = useBranchApi();
 
   const handleComplete = async () => {
-    console.log(selectedBranch);
-    await createKeyword({
-      type: 'TICKET',
-      name: keywordName,
-      desc: '번호표 > ' + selectedBranch.placeName,
-      branch: selectedBranch,
-    })
-      .then(() => {
-        router.push('/keyword/create/ticket/step4');
-      })
-      .catch((err) => {
-        alert(err);
+    try {
+      console.log(selectedBranch);
+      await createKeyword({
+        type: 'TICKET',
+        name: keywordName,
+        desc: '번호표 > ' + selectedBranch.placeName,
+        branch: selectedBranch,
       });
+
+      await savePermission();
+      router.push('/keyword/create/ticket/step4');
+    } catch (err) {
+      console.log('createKeyword error: ' + err);
+    }
   };
 
   return (
