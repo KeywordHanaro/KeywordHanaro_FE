@@ -1,4 +1,4 @@
-
+import { VoiceInputProvider } from '@/contexts/VoiceContext';
 import { Suspense } from 'react';
 
 export default function DocumentLayout({
@@ -6,5 +6,9 @@ export default function DocumentLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <Suspense>{children}</Suspense>;
+  return (
+    <Suspense>
+      <VoiceInputProvider>{children}</VoiceInputProvider>
+    </Suspense>
+  );
 }

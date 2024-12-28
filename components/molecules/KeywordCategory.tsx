@@ -27,7 +27,7 @@ const categories = [
     src: '/images/icons/ticket.png',
   },
   {
-    name: '정산하기/회비걷기',
+    name: '정산 / 회비',
     path: '/keyword/create/settlement/step1',
     src: '/images/icons/settlement.png',
   },
@@ -46,15 +46,17 @@ const KeywordCategory = () => {
 
   useEffect(() => {
     if (result) {
-      const threshold = 1; // 허용할 최대 편집 거리
+      console.log(result);
+      const threshold = 2; // 허용할 최대 편집 거리
       let bestMatch = null;
       let minDistance = Infinity;
-
       for (const category of categories) {
+        console.log(category.name.replace('/', '').toLowerCase());
         const distance = levenshtein(
-          category.name.toLowerCase(),
-          result.toLowerCase()
+          category.name.replace('/', '').toLowerCase(),
+          result.replace(' ', '').toLowerCase()
         );
+        console.log(distance);
         if (distance < minDistance && distance <= threshold) {
           minDistance = distance;
           bestMatch = category;

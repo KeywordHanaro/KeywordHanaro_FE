@@ -101,7 +101,7 @@ export default function TransferDocumentPage() {
 
   const onChangeAmount = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const amount = parseInt(e.target.value.replace(/[^0-9]/g, ''), 10);
+      const amount = Number(e.target.value.replaceAll(',', ''));
       setTransferDocument((prev) => ({ ...prev, amount }));
     },
     []

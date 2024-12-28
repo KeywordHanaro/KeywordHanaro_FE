@@ -1,4 +1,4 @@
-import { SettlementUsageResponse } from '@/types/Keyword';
+import { groupMember, SettlementUsageResponse } from '@/types/Keyword';
 
 export default function MultiKeywordSettlement({
   data,
@@ -6,6 +6,7 @@ export default function MultiKeywordSettlement({
   data: {
     keyword: SettlementUsageResponse | undefined;
     amount?: number;
+    members?: groupMember[];
   };
 }) {
   return (
@@ -15,16 +16,33 @@ export default function MultiKeywordSettlement({
           {data.keyword && data.keyword.account.name}로
         </p>
         <div className='text-[#069894] text-[24px] font-semibold px-[20px] text-center'>
-          {data.keyword &&
-            data.keyword.groupMember.map((member, idx) =>
-              idx !== (data.keyword?.groupMember?.length ?? 0) - 1 ? (
-                <span key={member.tel} className='mr-[3px]'>
-                  {member.name},
-                </span>
-              ) : (
-                <span key={member.tel}>{member.name}</span>
-              )
-            )}
+          {data.members ? (
+            <>
+              {data.members.map((member, idx) =>
+                idx !== (data.keyword?.groupMember?.length ?? 0) - 1 ? (
+                  <span key={member.tel} className='mr-[3px]'>
+                    {member.name}
+                  </span>
+                ) : (
+                  <span key={member.tel}>{member.name}</span>
+                )
+              )}
+            </>
+          ) : (
+            <>
+              {data.keyword &&
+                data.keyword.groupMember.map((member, idx) =>
+                  idx !== (data.keyword?.groupMember?.length ?? 0) - 1 ? (
+                    <span key={member.tel} className='mr-[3px]'>
+                      {member.name},
+                    </span>
+                  ) : (
+                    <span key={member.tel}>{member.name}</span>
+                  )
+                )}
+            </>
+          )}
+
           <span className='text-black ml-[3px]'>님에게</span>
           <p className='text-[18px] text-center mt-[11px]'>
             {data.amount

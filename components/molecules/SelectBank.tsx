@@ -42,7 +42,7 @@ const SelectBank = memo(function SelectBank({
     if (useStt) {
       const cleanedResult = result.replace(/[\s-]/g, '');
       if (cleanedResult && !/^\d+$/.test(cleanedResult)) {
-        const threshold = 0.5; // 허용할 최대 편집 거리
+        const threshold = 2; // 허용할 최대 편집 거리
         let bestMatch = null;
         let minDistance = Infinity;
 
