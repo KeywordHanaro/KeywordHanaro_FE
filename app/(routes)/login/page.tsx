@@ -16,9 +16,9 @@ export default function Login() {
   const PwRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className='flex flex-col justify-center items-center w-full h-full border-red-800'>
+    <div className='w-full flex justify-center h-5/6 my-background before:bg-opacity-20  overflow-hidden relative rounded-xl px-4'>
       <div className='flex justify-center items-center flex-col h-fit w-fit rounded-xl p-20 mt-20 bg-opacity-70 absolute z-100'>
-        <h1 className='text-2xl font-semibold mb-9 text-hanaPrimary'>
+        <h1 className='mb-9 text-hanaPrimary text-2xl font-bold'>
           키워드 하나로
         </h1>
         <form action={dispatchLogin} className='space-y-3 flex flex-col gap-3'>
