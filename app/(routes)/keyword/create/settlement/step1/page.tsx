@@ -8,7 +8,7 @@ import { useAccountApi } from '@/hooks/useAccount/useAccount';
 import { Account } from '@/types/Account';
 import { MyAccountWithBalance } from '@/types/Transfer';
 import { useRouter } from 'next/navigation';
-import { useEffect, useCallback, use, useState } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { levenshtein } from '@/lib/utils';
 
 export default function SettlementStep1() {
