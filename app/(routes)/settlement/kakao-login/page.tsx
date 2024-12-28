@@ -56,19 +56,20 @@ export default function GetKakao() {
           groupMember: groupMembers,
           type: data.category,
         };
-        const response = await sendMessage(reqBody);
-        console.log(response);
-        setProgress(90);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const jsonInit = localStorage.getItem('initialData');
-        if (jsonInit) {
-          if (updateResponse) {
-            updateResponse(JSON.parse(jsonInit));
-          }
-        }
-        setProgress(100);
+
+        await sendMessage(reqBody)
+          .then(() => {
+            setProgress(90);
+            const jsonInit = localStorage.getItem('initialData');
+            if (jsonInit) {
+              if (updateResponse) {
+                updateResponse(JSON.parse(jsonInit));
+              }
+            }
+            setProgress(100);
+          })
+          .catch(() => {});
+
         router.replace('/settlement/step2');
       } catch (error) {
         console.error('Error fetching data:', error);
