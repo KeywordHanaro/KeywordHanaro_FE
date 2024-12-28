@@ -30,7 +30,7 @@ export const TransactionHistory = ({
         <div className=' text-iconGray text-right '>
           <p
             className={`font-bold text-[15px] ${
-              data.amount < 0 ? 'text-fontBlack' : 'text-hanaPrimary'
+              data.type === 'WITHDRAW' ? 'text-fontBlack' : 'text-hanaPrimary'
             }`}
           >
             {data.type === 'WITHDRAW'
