@@ -4,16 +4,28 @@ import SpeechToText from '@/components/SpeechToText';
 import SelectAccount from '@/components/templates/SelectAccount';
 import { useTransferForm } from '@/contexts/TransferContext';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { MyAccounts } from '@/data/account';
+import { useAccountApi } from '@/hooks/useAccount/useAccount';
+import { Account } from '@/types/Account';
 import type { MyAccountWithBalance } from '@/types/Transfer';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { levenshtein } from '@/lib/utils';
 
 export default function Step1() {
   const router = useRouter();
   const { updateFormData } = useTransferForm();
   const { result, setResult } = useVoiceInputSession();
+  const { showMyAccounts } = useAccountApi();
+  const [myAccounts, setMyAccounts] = useState<Account[]>([]);
+
+  useEffect(() => {
+    const fetchMyAccounts = async () => {
+      const response = await showMyAccounts();
+      setMyAccounts(response);
+    };
+    fetchMyAccounts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const nextStep = useCallback(() => {
     router.push('/keyword/create/transfer/step2');
@@ -35,14 +47,21 @@ export default function Step1() {
       let bestMatch = null;
       let minDistance = Infinity;
 
-      for (const account of MyAccounts) {
+      for (const account of myAccounts) {
         const distance = levenshtein(
-          account.accountName.toLowerCase(),
-          result.toLowerCase()
+          account.name.toLowerCase(),
+          result.replaceAll(' ', '').toLowerCase()
         );
         if (distance < minDistance && distance <= threshold) {
           minDistance = distance;
-          bestMatch = account;
+          bestMatch = {
+            type: 'MyAccount',
+            accountName: account.name,
+            bankId: account.bank.id,
+            accountId: account.id,
+            accountNumber: account.accountNumber,
+            balance: account.balance.toString(),
+          } as MyAccountWithBalance;
         }
       }
 
