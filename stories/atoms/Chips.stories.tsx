@@ -1,5 +1,4 @@
 import { Chip } from '@/components/atoms/Chips';
-import { Member } from '@/data/member';
 import { groupMember } from '@/types/Keyword';
 import { Meta, StoryObj } from '@storybook/react';
 import { ClassValue } from 'clsx';

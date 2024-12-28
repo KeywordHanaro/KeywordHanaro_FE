@@ -4,6 +4,7 @@ import Header from '@/components/atoms/Header';
 import InputPassword from '@/components/molecules/InputPassword';
 import KeywordWithInputs from '@/components/molecules/KeywordWithInputs';
 import TransactionList from '@/components/templates/useKeyword/inquiry/TransactionList';
+import { useMultiKeywordResponse } from '@/contexts/MultiKeywordUseContext';
 import { VoiceInputProvider } from '@/contexts/VoiceContext';
 import { useAccountApi } from '@/hooks/useAccount/useAccount';
 import { useBranchApi } from '@/hooks/useBranch/useBranch';
@@ -156,6 +157,7 @@ const MultiKeyword = () => {
   const code = searchParams?.get('code');
   const [state, dispatch] = useReducer(reducer, initialState);
   const [open, setOpen] = useState<boolean>(false);
+  const { updateResponse } = useMultiKeywordResponse();
 
   const [keyword, setKeyword] = useState<MultiUsageResponse>();
 
@@ -203,7 +205,6 @@ const MultiKeyword = () => {
 
   const handleSubmit = async () => {
     const settlementRequests: SettlementRequest[] = [];
-
     for (const keyword of state.keywords) {
       switch (keyword.keyword.type) {
         case 'TRANSFER':
@@ -217,24 +218,24 @@ const MultiKeyword = () => {
               toAccountNumber: keyword.keyword.subAccount.accountNumber,
               amount: keyword.amount,
             })
-              .then(() => {
-                console.log('TRANSFER success');
+              .then((res) => {
+                updateResponse(res);
               })
               .catch((e) => console.log(e));
           }
           break;
         case 'TICKET':
           if (keyword.serviceId && keyword.keyword.branch) {
-            await issueTicket({
+            issueTicket({
               keywordId: keyword.keyword.id,
               workNumber: keyword.serviceId,
               branchId: keyword.keyword.branch.id,
               branchName: keyword.keyword.branch.placeName,
             })
-              .then(() => {
-                console.log('issueTicket success');
+              .then((res) => {
+                updateResponse(res);
               })
-              .catch((e) => console.log(e));
+              .catch((e) => console.error(e));
           }
           break;
         case 'SETTLEMENT':
@@ -251,6 +252,10 @@ const MultiKeyword = () => {
               type:
                 keyword.keyword.type === 'SETTLEMENT' ? 'Settlement' : 'Dues',
             });
+            updateResponse({
+              keyword: keyword.keyword,
+              amount: keyword.amount,
+            });
           }
           break;
       }
@@ -265,7 +270,8 @@ const MultiKeyword = () => {
         })
         .catch((e) => console.log(e));
     }
-    router.push('/multiKeyword/complete');
+
+    router.push(`/multiKeyword/complete?id=${id}`);
     setOpen(false);
   };
 
@@ -299,12 +305,20 @@ const MultiKeyword = () => {
       />
       <div className='flex flex-col gap-[24px] pt-[24px] px-[20px] overflow-y-scroll'>
         <div>
-          <div className='text-[24px] font-semibold'>
-            조회 키워드를 먼저 실행했어요
-          </div>
-          <div className='text-[24px] font-semibold'>
-            나머지 키워드를 실행하시겠어요?
-          </div>
+          {keyword?.multiKeyword.some((k) => k.keyword.type === 'INQUIRY') ? (
+            <>
+              <div className='text-[24px] font-semibold'>
+                조회 키워드를 먼저 실행했어요
+              </div>
+              <div className='text-[24px] font-semibold'>
+                나머지 키워드를 실행하시겠어요?
+              </div>
+            </>
+          ) : (
+            <div className='text-[24px] font-semibold'>
+              아래 키워드들을 실행할게요
+            </div>
+          )}
         </div>
         {keyword?.multiKeyword?.map(
           (keyword) =>

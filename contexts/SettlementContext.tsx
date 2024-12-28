@@ -2,6 +2,7 @@
 
 import { KeywordDetail } from '@/data/keyword';
 import { FormData } from '@/data/settlement';
+import { SettlementUsageResponse } from '@/types/Keyword';
 import { useRouter } from 'next/navigation';
 import {
   createContext,
@@ -21,6 +22,8 @@ type SettlementProps = {
   handleOnNext: () => void;
   isEdit?: boolean;
   originalData?: KeywordDetail | null;
+  response: SettlementUsageResponse | undefined;
+  updateResponse: (newResponse: SettlementUsageResponse) => void;
 };
 
 const SettlementContext = createContext<SettlementProps>({
@@ -45,6 +48,8 @@ const SettlementContext = createContext<SettlementProps>({
   isEdit: false,
   originalData: null,
   id: 0,
+  response: undefined,
+  updateResponse: () => {},
 });
 
 export const SettlementProvider = ({
@@ -69,6 +74,7 @@ export const SettlementProvider = ({
     amount: '',
     keywordName: '',
   });
+  const [response, setResponse] = useState<SettlementUsageResponse>();
   const [id, setId] = useState<number>(0);
   const router = useRouter();
   const nextStep = () => router.push('/keyword/create/settlement/step3');
@@ -96,6 +102,9 @@ export const SettlementProvider = ({
   const editId = (id: number) => {
     setId(id);
   };
+  const updateResponse = useCallback((newResponse: SettlementUsageResponse) => {
+    setResponse(newResponse);
+  }, []);
 
   useEffect(() => {
     if (
@@ -127,6 +136,8 @@ export const SettlementProvider = ({
         updateFormData,
         handleOnBack,
         handleOnNext,
+        response,
+        updateResponse,
       }}
     >
       {children}

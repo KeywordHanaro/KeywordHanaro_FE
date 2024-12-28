@@ -1,9 +1,4 @@
-import {
-  MultiFormFinish,
-  MultiKeywordFinish,
-  MultiTicketFinish,
-  MultiTransferFinish,
-} from '@/data/multiKeyword';
+import { MultiResponse } from '@/contexts/MultiKeywordUseContext';
 import MultiKeywordSettlement from '../../molecules/SettlementMSG';
 import MultiKeywordTicket from '../../molecules/TIcketMSG';
 import MultiKeywordTransfer from '../../molecules/TransferMSG';
@@ -11,35 +6,24 @@ import MultiKeywordTransfer from '../../molecules/TransferMSG';
 export default function MultiKeywordCompletion({
   data,
 }: {
-  data: MultiKeywordFinish;
+  data: MultiResponse;
 }) {
-  const isMultiTransfer = (
-    data: MultiKeywordFinish
-  ): data is MultiTransferFinish => {
-    return data.multiKeyword === 'MultiTransfer';
-  };
-
-  const isMultiForm = (data: MultiKeywordFinish): data is MultiFormFinish => {
-    return data.multiKeyword === 'MultiForm';
-  };
-
-  const isMultiTicket = (
-    data: MultiKeywordFinish
-  ): data is MultiTicketFinish => {
-    return data.multiKeyword === 'MultiTicket';
-  };
-
   const renderContent = () => {
-    if (isMultiTransfer(data)) {
+    if ('id' in data && 'account' in data && 'subAccount' in data) {
+      // TransferResponse 타입인 경우
       return <MultiKeywordTransfer data={data} />;
     }
 
-    if (isMultiForm(data)) {
-      return <MultiKeywordSettlement data={data} />;
+    if ('branchName' in data) {
+      // IssueTicketResponse 타입인 경우
+      return <MultiKeywordTicket data={data} />;
     }
 
-    if (isMultiTicket(data)) {
-      return <MultiKeywordTicket data={data} />;
+    if ('keyword' in data) {
+      // { keyword: UseKeywordResponse; amount?: number } 타입인 경우
+      if (data.keyword.type === 'SETTLEMENT' || data.keyword.type === 'DUES') {
+        return <MultiKeywordSettlement data={data} />;
+      }
     }
 
     return null;
