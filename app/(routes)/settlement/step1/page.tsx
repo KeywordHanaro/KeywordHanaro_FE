@@ -28,7 +28,7 @@ export default function SettlementUsageStep1() {
 
   const { getKeywordById } = useKeywordApi();
   useEffect(() => {
-    const id = searchParams.get('id');
+    const id = searchParams?.get('id');
     if (id) {
       getKeywordById(parseInt(id))
         .then((res) => {
@@ -81,7 +81,7 @@ export default function SettlementUsageStep1() {
     localStorage.setItem('initialData', JSON.stringify(keyword));
     router.push(
       // "/settlement/step2"
-      `${kakao_auth_path}?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code&state=${searchParams.get('id')}`
+      `${kakao_auth_path}?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code&state=${searchParams?.get('id')}`
     );
   };
 

@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 export default function MultiKeywordCompletePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const id = parseInt(searchParams.get('id')!);
+  const id = parseInt(searchParams?.get('id')||""!);
   const { response } = useMultiKeywordResponse();
 
   const { getKeywordById } = useKeywordApi();

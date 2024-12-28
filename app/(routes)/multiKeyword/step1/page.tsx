@@ -153,7 +153,7 @@ function reducer(state: State, action: Action): State {
 
 const MultiKeyword = () => {
   const searchParams = useSearchParams();
-  const id = parseInt(searchParams.get('state')!);
+  const id = parseInt(searchParams?.get('state') || ''!);
   const code = searchParams?.get('code');
   const [state, dispatch] = useReducer(reducer, initialState);
   const [open, setOpen] = useState<boolean>(false);

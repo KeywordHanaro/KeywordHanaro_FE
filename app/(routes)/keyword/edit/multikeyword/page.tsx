@@ -29,7 +29,7 @@ export default function EditMultiKeywordPage() {
   const searchParams = useSearchParams();
   const { toast } = useToast();
   const { getAllKeywords, getKeywordById } = useKeywordApi();
-  const id = searchParams.get('id');
+  const id = searchParams?.get('id');
 
   const [multiKeywordData, setMultiKeywordData] =
     useState<MultiUsageResponse>();

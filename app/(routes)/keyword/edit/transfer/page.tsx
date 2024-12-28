@@ -25,7 +25,7 @@ import { formatNumberWithCommas } from '@/lib/utils';
 export default function EditTransferKeyword() {
   const router = useRouter();
   const params = useSearchParams();
-  const id = params.get('id');
+  const id = params?.get('id');
 
   const { getKeywordById, updateKeyword } = useKeywordApi();
   const [initialKeyword, setInitialKeyword] = useState<TransferUsageResponse>();

@@ -146,7 +146,7 @@ export default function SelectKeywords({
       ) : (
         <Header
           text='멀티 키워드 생성하기'
-          showBackButton={!pathname.includes('/step4')}
+          showBackButton={!pathname?.includes('/step4')}
           onBack={handleBack}
           showActionButton={false}
         />

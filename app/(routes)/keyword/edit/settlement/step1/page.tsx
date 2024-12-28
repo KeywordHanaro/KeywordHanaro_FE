@@ -15,7 +15,7 @@ export default function SettlementStep1() {
   const [keyword, setKeyword] = useState<SettlementUsageResponse>();
   console.log(formData);
   useEffect(() => {
-    const id = searchParams.get('id');
+    const id = searchParams?.get('id');
     if (id) {
       editId(parseInt(id));
       getKeywordById(parseInt(id))

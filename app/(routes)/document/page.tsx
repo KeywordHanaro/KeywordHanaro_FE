@@ -7,8 +7,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function DocumentPage() {
   const searchParams = useSearchParams();
-  const task = searchParams.get('task');
-  const bank = searchParams.get('bank');
+  const task = searchParams?.get('task');
+  const bank = searchParams?.get('bank');
   const router = useRouter();
   return (
     <>

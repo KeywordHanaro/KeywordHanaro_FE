@@ -21,7 +21,7 @@ import {
 export default function EditTicketKeywordPage() {
   const router = useRouter();
   const params = useSearchParams();
-  const id = params.get('id');
+  const id = params?.get('id');
   const { getKeywordById, updateKeyword } = useKeywordApi();
 
   // const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);

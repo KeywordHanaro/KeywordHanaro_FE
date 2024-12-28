@@ -23,7 +23,7 @@ import { Suspense } from 'react';
 export default function EditInquiryPage() {
   const router = useRouter();
   const params = useSearchParams();
-  const id = params.get('id');
+  const id = params?.get('id');
   // const keyword = KeywordDetailList.find(
   //   (item) => item.id === Number(id)
   // ) as InquiryKeyword;

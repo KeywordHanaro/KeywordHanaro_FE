@@ -19,7 +19,7 @@ function TransferContent({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
   const handleBack = () => {
-    if (pathname.includes('/step1')) {
+    if (pathname?.includes('/step1')) {
       router.push('/keyword/create');
     } else {
       router.back();
@@ -33,7 +33,7 @@ function TransferContent({ children }: { children: ReactNode }) {
           text='키워드 생성하기'
           onBack={handleBack}
           showActionButton={false}
-          showBackButton={!pathname.includes('step6')}
+          showBackButton={!pathname?.includes('step6')}
         />
         <div className='h-full flex flex-col flex-grow overflow-hidden mt-[24px] px-[20px] pb-[34px]'>
           {children}

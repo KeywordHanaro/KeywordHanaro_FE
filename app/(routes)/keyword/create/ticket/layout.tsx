@@ -7,7 +7,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { PropsWithChildren } from 'react';
 
 export default function CreateTicketLayout({ children }: PropsWithChildren) {
-  const pathname = usePathname().split('step')[1];
+  const pathname = usePathname()?.split('step')[1];
   const router = useRouter();
   const onAction = () => {
     router.push('/');

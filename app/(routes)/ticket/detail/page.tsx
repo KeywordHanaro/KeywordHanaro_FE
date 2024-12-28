@@ -25,8 +25,8 @@ export default function TicketDetailPage() {
   const router = useRouter();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const searchParams = useSearchParams();
-  const document = searchParams.get('document') !== 'false';
-  const task = searchParams.get('task') === '예금'
+  const document = searchParams?.get('document') !== 'false';
+  const task = searchParams?.get('task') === '예금'
 
   const handleOpen = () => {
     setOpenModal(!openModal);

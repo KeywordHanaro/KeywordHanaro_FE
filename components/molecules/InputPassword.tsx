@@ -82,7 +82,7 @@ export default function InputPassword({
         >
           <DrawerHeader className='text-white flex flex-col justify-center items-center  font-semibold'>
             <DrawerTitle className='text-[18px]'>
-              {pathName.includes('multiKeyword')
+              {pathName?.includes('multiKeyword')
                 ? '간편 비밀번호'
                 : '계좌 비밀번호'}
             </DrawerTitle>

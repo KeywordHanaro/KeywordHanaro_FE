@@ -12,7 +12,7 @@ export default function InquiryLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
   const handleOnBack = () => {
-    const currentStep = parseInt(pathname.split('step')[1]);
+    const currentStep = parseInt((pathname||"").split('step')[1]);
     if (currentStep === 1) router.push('/keyword/create');
     else {
       router.push(`/keyword/create/inquiry/step${currentStep - 1}`);
@@ -23,7 +23,7 @@ export default function InquiryLayout({ children }: { children: ReactNode }) {
     <VoiceInputProvider>
       <InquiryProvider>
         <div className='h-screen relative'>
-          {pathname.startsWith('/keyword/create/inquiry/step4') ? (
+          {pathname?.startsWith('/keyword/create/inquiry/step4') ? (
             <Header
               text='키워드 생성하기'
               showActionButton={false}

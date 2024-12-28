@@ -8,7 +8,7 @@ const steps = ['/step1', '/step2', '/step3', '/step4', '/step5'];
 export default function SettlementLayout({ children }: PropsWithChildren) {
   const { formData } = useSettlementContext();
   const pathname = usePathname();
-  const path = '/' + pathname.split('/')[4];
+  const path = '/' + pathname?.split('/')[4];
   const currentIndex = steps.indexOf(path);
   const router = useRouter();
 
@@ -19,7 +19,7 @@ export default function SettlementLayout({ children }: PropsWithChildren) {
   return (
     <div className='flex flex-col h-full'>
       {/* Header 2번째 페이지만 selectedMember가 있으면 다음 버튼 출현 */}
-      {pathname.startsWith('/keyword/create/settlement/step2') &&
+      {pathname?.startsWith('/keyword/create/settlement/step2') &&
       formData.members.length ? (
         <Header
           text='키워드 생성하기'
@@ -35,7 +35,7 @@ export default function SettlementLayout({ children }: PropsWithChildren) {
         <Header
           text='키워드 생성하기'
           showBackButton={
-            pathname.startsWith('/keyword/create/settlement/step5')
+            pathname?.startsWith('/keyword/create/settlement/step5')
               ? false
               : true
           }

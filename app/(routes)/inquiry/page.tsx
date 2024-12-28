@@ -19,7 +19,7 @@ export default function InquiryPage() {
   const [transactionList, setTransactionList] = useState<Transaction[]>([]);
 
   useEffect(() => {
-    const id = searchParams.get('id');
+    const id = searchParams?.get('id');
     if (id) {
       getKeywordById(parseInt(id))
         .then((res) => {
