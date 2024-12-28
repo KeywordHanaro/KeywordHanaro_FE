@@ -86,12 +86,18 @@ export default function SetTransferAmountPage() {
   const onNext = async () => {
     saveFormData({
       ...formData,
-      amount: parseFloat((amountRef.current?.value || '0').replace(/,/g, '')),
+      amount:
+        formData.type === 'WithAmount'
+          ? formData.amount
+          : parseFloat((amountRef.current?.value || '0').replace(/,/g, '')),
     });
     const transferData: TransferData = {
       fromAccountNumber: formData.fromAccount.accountNumber,
       toAccountNumber: formData.toAccount.accountNumber,
-      amount: parseFloat((amountRef.current?.value || '0').replace(/,/g, '')),
+      amount:
+        formData.type === 'WithAmount'
+          ? formData.amount
+          : parseFloat((amountRef.current?.value || '0').replace(/,/g, '')),
     };
     await transfer(transferData)
       .then(() => {

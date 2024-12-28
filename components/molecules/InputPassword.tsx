@@ -61,6 +61,9 @@ export default function InputPassword({
   const handleClick = (num: number) => {
     setPassword([...password, num]);
   };
+  const handleDelete = () => {
+    setPassword((prev) => prev.slice(0, -1));
+  };
 
   useEffect(() => {
     if (password.length === 4) {
@@ -103,7 +106,10 @@ export default function InputPassword({
                   {item}
                 </button>
               ))}
-              <button className='bg-disableGray absolute left-0 bottom-0 w-1/3 h-[77px] justify-center items-center flex'>
+              <button
+                className='bg-disableGray absolute left-0 bottom-0 w-1/3 h-[77px] justify-center items-center flex'
+                onClick={handleDelete}
+              >
                 <FiDelete size={35} />
               </button>
               <DrawerClose
