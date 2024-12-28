@@ -60,7 +60,6 @@ export default function InputPassword({
 
   const handleClick = (num: number) => {
     setPassword([...password, num]);
-    setShuffleNumbers(shuffleArray(numbers));
   };
   const handleDelete = () => {
     setPassword((prev) => prev.slice(0, -1));
