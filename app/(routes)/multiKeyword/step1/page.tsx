@@ -158,6 +158,7 @@ const MultiKeyword = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [open, setOpen] = useState<boolean>(false);
   const { updateResponse } = useMultiKeywordResponse();
+  const { checkMasterPswd } = useAccountApi();
 
   const [keyword, setKeyword] = useState<MultiUsageResponse>();
 
@@ -183,20 +184,18 @@ const MultiKeyword = () => {
   };
 
   const validatePassword = async (password: number[]): Promise<boolean> => {
-    // try {
-    //   const response = await fetch('/api/validate-password', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ password }),
-    //   });
-    //   const data = await response.json();
-    //   return data.isValid; // Assume API returns { isValid: boolean }
-    // } catch (error) {
-    //   console.error('Error validating password:', error);
-    //   return false; // Default to invalid on error
-    // }
-    if (JSON.stringify(password) === JSON.stringify([1, 2, 3, 4])) return true;
-    else return false;
+    if (keyword && keyword.user.name) {
+      try {
+        await checkMasterPswd({
+          password: password.join(''),
+          id: keyword?.user.id,
+        });
+        return true;
+      } catch {
+        return false;
+      }
+    }
+    return false;
   };
 
   const { transfer } = useAccountApi();

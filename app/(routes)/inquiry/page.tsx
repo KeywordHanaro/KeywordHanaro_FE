@@ -105,9 +105,6 @@ export default function InquiryPage() {
             적용
           </p>
         </div>
-        {/* {transactionList.length > 0 && (
-          <TransactionList keyword={keyword} tranactions={transactionList} />
-        )} */}
         <TransactionList tranactions={transactionList} />
       </div>
     </div>

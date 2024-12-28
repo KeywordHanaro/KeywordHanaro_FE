@@ -67,7 +67,7 @@ export default function SelectKeywords({
   useEffect(() => {
     const fetchKeywordList = async () => {
       const response = await getAllKeywords();
-      setKeywordList(response);
+      setKeywordList(response.filter((keyword) => keyword.type !== 'MULTI'));
     };
     fetchKeywordList();
     // eslint-disable-next-line react-hooks/exhaustive-deps

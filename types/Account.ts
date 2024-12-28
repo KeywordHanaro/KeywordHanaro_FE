@@ -14,6 +14,11 @@ export type Account = {
   status: string;
 };
 
+export type masterPswdReq = {
+  id: string;
+  password: string;
+};
+
 export type pswdReq = {
   accountNumber: string;
   password: string;

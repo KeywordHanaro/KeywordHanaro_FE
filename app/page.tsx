@@ -105,7 +105,7 @@ export default function Home() {
           {/* 헤더 시작 */}
           <div className='w-full h-[60px] flex px-[30px] items-center justify-between bg-white'>
             <a href='#'>
-              <p>디지털 하나로</p>
+              <p className='font-pretendard font-bold text-xl'>키워드 하나로</p>
             </a>
             <div className='flex items-center'>
               <Toggle className='mr-[15px]' />
@@ -151,7 +151,7 @@ export default function Home() {
             {/* 나의 키워드 */}
             <div className='w-full flex flex-col gap-[8px] mb-[120px] mt-[20px]'>
               {/* 나의 키워드 헤더 */}
-              <div className='flex w-full justify-between'>
+              <div className='flex w-full justify-between items-center'>
                 <p className='text-[18px] font-semibold'>나의 키워드</p>
                 <a href='/keyword'>
                   <SlArrowRight className='cursor-pointer' />

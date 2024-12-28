@@ -5,16 +5,8 @@ import type { OthersAccount } from '@/types/Account';
 import { MyAccount } from '@/types/Account';
 import { FaCheck } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
-// import { BsStarFill } from 'react-icons/bs';
 import { BankLogoImg } from '../atoms/BankLogoImg';
 
-// import { useState } from 'react';
-// import { cn } from '@/lib/utils';
-
-// type AccountItemFavoriteProps = (
-//   | MyAccountItemProps
-//   | OthersAccountItemProps
-// ) & { isFavorite: boolean };
 
 export type AccountListType = {
   account: MyAccount | OthersAccount;
@@ -30,32 +22,19 @@ export default function AccountListItem({
 }: AccountListType) {
   const { bankId, accountNumber } = account;
 
-  // const name =
-  //   'accountName' in account
-  //     ? account.accountName
-  //     : 'name' in account
-  //       ? account.name
-  //       : undefined;
-
   const name =
     account.type === 'MyAccount' ? account.accountName : account.name;
 
-  // const isFavorite = 'isFavorite' in account ? account.isFavorite : undefined;
-
-  // const [favoriteState, setFavoriteState] = useState(isFavorite);
-
-  // const toggleFavorite = () => {
-  //   setFavoriteState((prev) => !prev);
-  // };
   const bank = bankList.find((i) => i.id === bankId);
   return (
     <div
+      onClick={onclick}
       className={cn(
         'flex flex-row justify-between w-full h-fit py-[12px]',
         isSelected ? 'border-y border-y-hanaPrimary text-white' : 'bg-white'
       )}
     >
-      <div className='flex gap-[16px]' onClick={onclick}>
+      <div className='flex gap-[16px]'>
         {bank ? (
           <div className='relative w-11 h-11'>
             <div
