@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Card } from '../atoms/Card';
 import { AIInputRef } from '../atoms/Inputs';
+import { Skeleton } from '../ui/skeleton';
 
 type Query = {
   question: string;
@@ -48,9 +49,9 @@ export default function QnA() {
   }, [query]);
   return (
     <>
-      <div className='w-full h-full relative'>
+      <div className='w-full h-full relative font-pretendard'>
         <div className='h-full overflow-y-auto'>
-          <div className='flex flex-col gap-3 mb-[60px]'>
+          <div className='flex flex-col gap-4 mb-[60px]'>
             {query.map((item, index) => (
               <div
                 key={index}
@@ -67,6 +68,13 @@ export default function QnA() {
                 </Card>
               </div>
             ))}
+            {loading && (
+              <div className='space-y-2'>
+                <Skeleton className='h-4 w-[250px]' />
+                <Skeleton className='h-4 w-[200px]' />
+                <Skeleton className='h-4 w-[150px]' />
+              </div>
+            )}
           </div>
 
           <AIInputRef
