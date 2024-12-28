@@ -97,11 +97,9 @@ export default function Home() {
             <a href='#'>
               <p className='font-pretendard font-bold text-xl'>키워드 하나로</p>
             </a>
-            <div className='flex items-center'>
-              <Toggle className='mr-[15px]' />
-              <a href='#' className='mr-[15px]'>
-                지갑
-              </a>
+            <div className='flex items-center gap-[15px]'>
+              <Toggle />
+              <a href='#'>지갑</a>
               <a href='#'>알림</a>
               <CustomSidebarTrigger />
               {/* <IoReorderThree size={30} /> */}
