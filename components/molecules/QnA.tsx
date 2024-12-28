@@ -59,7 +59,7 @@ export default function QnA() {
               >
                 <Card
                   className={cn(
-                    'w-1/2 break-words',
+                    'max-w-[80%] break-words',
                     !(index % 2) && 'bg-hanaPrimary text-white'
                   )}
                 >
