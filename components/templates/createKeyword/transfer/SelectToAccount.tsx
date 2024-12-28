@@ -41,12 +41,22 @@ export default function SelectToAccount({
   const { showMyAccounts, showRecentAccountsbyAccountId } = useAccountApi();
   useEffect(() => {
     const fetchAccounts = async () => {
-      try {
-        const accounts = await showMyAccounts();
-        setAccounts(accounts);
-      } catch (error) {
-        console.error('Failed to fetch accounts:', error);
-      }
+      console.log('isOpen : ', isOpen);
+      await showMyAccounts().then((response) => {
+        setAccounts(response);
+        if (response.length === 1) {
+          // 계좌가 1개라면 선택한 내 계좌라는 뜻. 비활성화
+          setIsOpen(false);
+        }
+      });
+
+      // try {
+      //   const accounts = await showMyAccounts();
+      //   setAccounts(accounts);
+
+      // } catch (error) {
+      //   console.error('Failed to fetch accounts:', error);
+      // }
     };
 
     fetchAccounts();
@@ -161,11 +171,17 @@ export default function SelectToAccount({
         <div>
           <div className='font-bold text-[18px] mt-8'>최근 보낸 계좌</div>
           <div>
-            <RecentAccountList
-              accounts={myRecentAccounts}
-              onUpdate={onUpdate}
-              onNext={handleListClick}
-            />
+            {myRecentAccounts.length === 0 ? (
+              <div className='text-black font-semibold text-[18px] text-center mt-[24px]'>
+                최근 보낸 계좌가 없습니다.
+              </div>
+            ) : (
+              <RecentAccountList
+                accounts={myRecentAccounts}
+                onUpdate={onUpdate}
+                onNext={handleListClick}
+              />
+            )}
           </div>
         </div>
       </div>
