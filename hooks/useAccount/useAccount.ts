@@ -1,5 +1,5 @@
 import { useApi } from '@/hooks/useApi';
-import { Account, pswdReq } from '@/types/Account';
+import { Account, masterPswdReq, pswdReq } from '@/types/Account';
 import { Transaction } from '@/types/Keyword';
 import { TransferData, TransferResponse } from '@/types/Transfer';
 
@@ -29,12 +29,14 @@ export const useAccountApi = () => {
     return response;
   };
 
-  const checkMasterPswd = async (paswdData: pswdReq): Promise<boolean> => {
+  const checkMasterPswd = async (
+    paswdData: masterPswdReq
+  ): Promise<boolean> => {
     const options: RequestInit = {
       method: 'POST',
       body: JSON.stringify(paswdData),
     };
-    const response = await fetchApi(`/account/checkPassword`, options);
+    const response = await fetchApi(`/user/auth-master`, options);
 
     return response;
   };
@@ -84,6 +86,7 @@ export const useAccountApi = () => {
     checkPswd,
     showMyAccounts,
     showMyTransactions,
+    checkMasterPswd,
     showRecentAccountsbyAccountId,
   };
 };
