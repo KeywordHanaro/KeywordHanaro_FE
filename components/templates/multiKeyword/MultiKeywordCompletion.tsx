@@ -21,7 +21,7 @@ export default function MultiKeywordCompletion({
 
     if ('keyword' in data) {
       // { keyword: UseKeywordResponse; amount?: number } 타입인 경우
-      if (data.keyword.type === 'SETTLEMENT') {
+      if (data.keyword.type === 'SETTLEMENT' || data.keyword.type === 'DUES') {
         return <MultiKeywordSettlement data={data} />;
       }
     }

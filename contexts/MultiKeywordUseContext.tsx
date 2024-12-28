@@ -2,8 +2,6 @@
 
 import {
   SettlementUsageResponse,
-  TicketUsageResponse,
-  UseKeywordResponse,
 } from '@/types/Keyword';
 import { IssueTicketResponse } from '@/types/Ticket';
 import { TransferResponse } from '@/types/Transfer';

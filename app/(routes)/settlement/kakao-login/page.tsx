@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 
 export default function GetKakao() {
   const searchParams = useSearchParams();
-  const { updateFormData } = useSettlementContext();
+  const { updateFormData, updateResponse } = useSettlementContext();
   const [progress, setProgress] = useState<number>(0);
   const router = useRouter();
   const { sendMessage } = useSettlementApi();
@@ -57,9 +57,16 @@ export default function GetKakao() {
           type: data.category,
         };
         const response = await sendMessage(reqBody);
+        console.log(response);
         setProgress(90);
         if (!response.ok) {
           throw new Error('Network response was not ok');
+        }
+        const jsonInit = localStorage.getItem('initialData');
+        if (jsonInit) {
+          if (updateResponse) {
+            updateResponse(JSON.parse(jsonInit));
+          }
         }
         setProgress(100);
         router.replace('/settlement/step2');

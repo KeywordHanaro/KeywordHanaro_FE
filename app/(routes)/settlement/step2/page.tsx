@@ -1,12 +1,12 @@
 'use client';
 
 import { Button } from '@/components/atoms/Button';
-// import SettlementMSG from '@/components/molecules/SettlementMSG';
+import SettlementMSG from '@/components/molecules/SettlementMSG';
 import { useSettlementContext } from '@/contexts/SettlementContext';
 import { useRouter } from 'next/navigation';
 
 export default function SettlementUsageStep2() {
-  const { formData } = useSettlementContext();
+  const { formData, response } = useSettlementContext();
   const router = useRouter();
 
   const handleSubmit = () => {
@@ -21,7 +21,9 @@ export default function SettlementUsageStep2() {
           {formData.category === 'Settlement' ? '정산' : '회비'} 요청이
           완료되었어요
         </p>
-        {/* <SettlementMSG data={formData} /> */}
+        <SettlementMSG
+          data={{ keyword: response, amount: Number(formData.amount) }}
+        />
       </div>
 
       <Button className='w-full ' onClick={handleSubmit}>
