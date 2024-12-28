@@ -21,6 +21,7 @@ const KeywordPageTemplate = () => {
   const [normalItems, setNormalItems] = useState<number[]>([]);
 
   const { result, resetResult } = useVoiceInputSession();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleFavoriteChange = async (id: number, favorite: boolean) => {
     if (favorite && favoriteItems.length === 5) {
@@ -63,11 +64,13 @@ const KeywordPageTemplate = () => {
     setNormalItems(newOrder);
   };
   useEffect(() => {
+    setIsLoading(true);
     const fetchKeywordList = async () => {
       const response = await getAllKeywords();
       setKeywordList(response);
       setFavoriteItems(response.filter((k) => k.favorite).map((k) => k.id));
       setNormalItems(response.filter((k) => !k.favorite).map((k) => k.id));
+      setIsLoading(false);
     };
     fetchKeywordList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -75,7 +78,6 @@ const KeywordPageTemplate = () => {
 
   useEffect(() => {
     if (result) {
-      console.log('result', result);
       const similarKeywords = findSimilarKeywords(keywordList, result);
       if (similarKeywords.length > 0) {
         const keywordElement = document.querySelector(
@@ -168,11 +170,11 @@ const KeywordPageTemplate = () => {
             })}
           </Reorder.Group>
         )}
-        {
+        {!isLoading && (
           <motion.li variants={liVariants} custom={keywordList.length + 1}>
             {keywordList && <AddNewKeyword />}
           </motion.li>
-        }
+        )}
       </motion.ul>
 
       <SpeechToText placeholder='키워드를 선택해주세요.' />
