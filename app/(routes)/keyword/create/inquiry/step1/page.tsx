@@ -5,24 +5,31 @@ import SpeechToText from '@/components/SpeechToText';
 import SelectAccount from '@/components/templates/SelectAccount';
 import { useInquiry } from '@/contexts/InquiryContext';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
-import { MyAccounts } from '@/data/account';
-import { MyAccount } from '@/types/Account';
+import { useAccountApi } from '@/hooks/useAccount/useAccount';
+import { Account, MyAccount } from '@/types/Account';
 // import { useAccountApi } from '@/hooks/useAccount/useAccount';
 // import { Account } from '@/types/Account';
 import { MyAccountWithBalance } from '@/types/Transfer';
 import { useRouter } from 'next/navigation';
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { levenshtein } from '@/lib/utils';
 
 export default function Step1() {
   const router = useRouter();
   const { updateFormData, resetFormData } = useInquiry();
   const { result, setResult } = useVoiceInputSession();
+  const { showMyAccounts } = useAccountApi();
+  const [myAccounts, setMyAccounts] = useState<Account[]>([]);
   // const [myAccounts, setMyAccounts] = useState<Account[]>();
   // const { showMyAccounts } = useAccountApi();
 
   useEffect(() => {
     resetFormData();
+    const fetchMyAccounts = async () => {
+      const response = await showMyAccounts();
+      setMyAccounts(response);
+    };
+    fetchMyAccounts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
 
     // const fetchMyAccounts = async () => {
@@ -48,22 +55,29 @@ export default function Step1() {
   );
 
   useEffect(() => {
+    console.log('result : ', result);
     if (result) {
       const threshold = 1; // 허용할 최대 편집 거리
       let bestMatch = null;
       let minDistance = Infinity;
 
-      for (const account of MyAccounts) {
+      for (const account of myAccounts) {
         const distance = levenshtein(
-          account.accountName.toLowerCase(),
-          result.toLowerCase()
+          account.name.toLowerCase(),
+          result.replaceAll(' ', '').toLowerCase()
         );
         if (distance < minDistance && distance <= threshold) {
           minDistance = distance;
-          bestMatch = account;
+          bestMatch = {
+            type: 'MyAccount',
+            accountName: account.name,
+            bankId: account.bank.id,
+            accountId: account.id,
+            accountNumber: account.accountNumber,
+            balance: account.balance.toString(),
+          } as MyAccountWithBalance;
         }
       }
-
       if (bestMatch) {
         setResult('');
         handleAccountClick(bestMatch);

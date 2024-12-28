@@ -11,7 +11,6 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import { useAccountApi } from '@/hooks/useAccount/useAccount';
-// import { MyAccounts } from '@/data/account';
 import { Account, MyAccount } from '@/types/Account';
 import { FaAngleDown } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
