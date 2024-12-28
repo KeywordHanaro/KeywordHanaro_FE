@@ -23,6 +23,7 @@ export default function SelectAccount({
     onNext();
   };
   const [accountList, setAccountList] = useState<Account[]>([]);
+  console.log('🚀  accountList:', accountList);
   const { showMyAccounts } = useAccountApi();
   useEffect(() => {
     const fetchAccounts = async () => {

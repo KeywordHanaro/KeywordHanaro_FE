@@ -65,12 +65,12 @@ export default function SelectToAccount({
   const [recentAccounts, setRecentAccounts] = useState<Account[]>([]);
   useEffect(() => {
     const fetchAccounts = async () => {
-      try {
-        const accounts = await showRecentAccountsbyAccountId(selectedAccountId);
-        setRecentAccounts(accounts);
-      } catch (error) {
-        console.error('Failed to fetch accounts:', error);
-      }
+      console.log(selectedAccountId);
+      await showRecentAccountsbyAccountId(selectedAccountId).then(
+        (response) => {
+          setRecentAccounts(response);
+        }
+      );
     };
 
     fetchAccounts();
@@ -78,6 +78,7 @@ export default function SelectToAccount({
 
   const myRecentAccounts: RecentAccount[] = recentAccounts.map((account) => {
     return {
+      user: account.user,
       balance: account.balance.toString(),
       type: 'OthersAccount',
       name: account.name,

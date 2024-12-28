@@ -4,7 +4,7 @@ import SpeechToText from '@/components/SpeechToText';
 import { CustomSidebarTrigger } from '@/components/atoms/CustomSidebarTrigger';
 import LoadingDot from '@/components/atoms/LoadingDot';
 import AccountCard from '@/components/molecules/AccountCard';
-import Keyword from '@/components/molecules/Keyword';
+import FavoriteKeyword from '@/components/molecules/FavoriteKeyword';
 import { AppSidebar } from '@/components/organisms/AppSidebar';
 import {
   Carousel,
@@ -14,20 +14,16 @@ import {
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Toggle } from '@/components/ui/toggle';
-import { useVoiceInputSession } from '@/contexts/VoiceContext';
+import { VoiceInputProvider } from '@/contexts/VoiceContext';
 import { useAccountApi } from '@/hooks/useAccount/useAccount';
-// import { keywordList } from '@/data/keyword';
 import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
 import { Account } from '@/types/Account';
 import { UseKeywordResponse } from '@/types/Keyword';
-// import { useApi } from '@/hooks/useApi';
 import { motion } from 'motion/react';
 import { useSession } from 'next-auth/react';
-// import { signOut } from 'next-auth/react';
 import { SlArrowRight } from 'react-icons/sl';
 import { useEffect, useState } from 'react';
-import { ulVariants, liVariants } from '@/lib/motionVariable';
-import { findSimilarKeywords } from '@/lib/utils';
+import { ulVariants } from '@/lib/motionVariable';
 
 export default function Home() {
   const { getAllKeywords } = useKeywordApi();
@@ -36,13 +32,7 @@ export default function Home() {
   const [keywordList, setKeywordList] = useState<UseKeywordResponse[]>([]);
   const [accountList, setAccountList] = useState<Account[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const { result, resetResult } = useVoiceInputSession();
   const { status } = useSession();
-  console.log(loading);
-  // if (status !== 'authenticated') {
-  //   window.location.reload();
-  // }
-  // console.log(status);
 
   useEffect(() => {
     const fetchKeywordList = async () => {
@@ -71,24 +61,24 @@ export default function Home() {
     }
   }, [status]);
 
-  useEffect(() => {
-    if (result) {
-      const similarKeywords = findSimilarKeywords(
-        keywordList.slice(0, 5),
-        result
-      );
-      if (similarKeywords.length > 0) {
-        const keywordElement = document.querySelector(
-          `[data-keyword-id="${similarKeywords[0].id}"]`
-        );
-        if (keywordElement) {
-          (keywordElement as HTMLElement).click();
-        }
-      }
-      resetResult();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [result]);
+  // useEffect(() => {
+  //   if (result) {
+  //     const similarKeywords = findSimilarKeywords(
+  //       keywordList.slice(0, 5),
+  //       result
+  //     );
+  //     if (similarKeywords.length > 0) {
+  //       const keywordElement = document.querySelector(
+  //         `[data-keyword-id="${similarKeywords[0].id}"]`
+  //       );
+  //       if (keywordElement) {
+  //         (keywordElement as HTMLElement).click();
+  //       }
+  //     }
+  //     resetResult();
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [result]);
 
   return (
     <>
@@ -149,50 +139,29 @@ export default function Home() {
             {/* 카드 끝 */}
 
             {/* 나의 키워드 */}
-            <div className='w-full flex flex-col gap-[8px] mb-[120px] mt-[20px]'>
-              {/* 나의 키워드 헤더 */}
-              <div className='flex w-full justify-between items-center'>
-                <p className='text-[18px] font-semibold'>나의 키워드</p>
-                <a href='/keyword'>
-                  <SlArrowRight className='cursor-pointer' />
-                </a>
-              </div>
-              {/* 나의 키워드 헤더 끝 */}
+            <VoiceInputProvider>
+              <div className='w-full flex flex-col gap-[8px] mb-[120px] mt-[20px]'>
+                {/* 나의 키워드 헤더 */}
+                <div className='flex w-full justify-between items-center'>
+                  <p className='text-[18px] font-semibold'>나의 키워드</p>
+                  <a href='/keyword'>
+                    <SlArrowRight className='cursor-pointer' />
+                  </a>
+                </div>
+                {/* 나의 키워드 헤더 끝 */}
 
-              <motion.ul
-                variants={ulVariants}
-                initial='hidden'
-                animate='visible'
-                className='flex flex-col  gap-2.5'
-              >
-                {keywordList.length > 0 ? (
-                  keywordList.slice(0, 5).map((each, index) => (
-                    <motion.li
-                      key={each.id}
-                      variants={liVariants}
-                      custom={index}
-                    >
-                      <Keyword
-                        key={each.id}
-                        data={each}
-                        data-keyword-id={each.id}
-                      ></Keyword>
-                    </motion.li>
-                  ))
-                ) : (
-                  <div className='flex-col flex justify-center'>
-                    <p className='text-center font-bold text-[20px] mt-[20px]'>
-                      등록된 키워드가 없어요!
-                    </p>
-                    <p className='text-center'>
-                      키워드를 등록하여 사용해보세요!
-                    </p>
-                  </div>
-                )}
-              </motion.ul>
-            </div>
+                <motion.ul
+                  variants={ulVariants}
+                  initial='hidden'
+                  animate='visible'
+                  className='flex flex-col  gap-2.5'
+                >
+                  <FavoriteKeyword keywordList={keywordList}></FavoriteKeyword>
+                </motion.ul>
+              </div>
+              <SpeechToText placeholder='키워드를 선택해주세요.' />
+            </VoiceInputProvider>
             {/* 나의 키워드 끝 */}
-            <SpeechToText placeholder='키워드를 선택해주세요.' />
           </div>
         </div>
       </SidebarProvider>

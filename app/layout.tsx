@@ -1,5 +1,5 @@
 import { Toaster } from '@/components/ui/toaster';
-import { VoiceInputProvider } from '@/contexts/VoiceContext';
+// import { VoiceInputProvider } from '@/contexts/VoiceContext';
 import { SessionProvider } from 'next-auth/react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
@@ -26,16 +26,14 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <SessionProvider session={session}>
-      <VoiceInputProvider>
-        <html>
-          <body
-            className={`font-pretendard ${pretendard.variable} antialiased`}
-          >
-            {children}
-            <Toaster />
-          </body>
-        </html>
-      </VoiceInputProvider>
+      {/* <VoiceInputProvider> */}
+      <html>
+        <body className={`font-pretendard ${pretendard.variable} antialiased`}>
+          {children}
+          <Toaster />
+        </body>
+      </html>
+      {/* </VoiceInputProvider> */}
     </SessionProvider>
   );
 }

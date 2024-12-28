@@ -20,7 +20,7 @@ export const TransactionHistory = ({
           <BankLogoImg bankId={+data.subAccount.bank.id} />
           <div>
             <div className='text-[15px] font-medium'>
-              {data.subAccount.name}
+              {data.subAccount.user.name}
             </div>
             <p className='text-[14px] text-iconGray'>
               {formatTime(new Date(data.createAt))}
@@ -33,7 +33,7 @@ export const TransactionHistory = ({
               data.amount < 0 ? 'text-fontBlack' : 'text-hanaPrimary'
             }`}
           >
-            {data.amount < 0
+            {data.type === 'WITHDRAW'
               ? `- ${Math.abs(data.amount).toLocaleString()}원`
               : `${data.amount.toLocaleString()}원`}
           </p>

@@ -34,10 +34,25 @@ export type MyAccount = {
 };
 
 export type OthersAccount = {
+  user?: user;
   type: 'OthersAccount';
   name: string;
   bankId: number;
   accountNumber: string;
+};
+
+type user = {
+  id: string;
+  name: string;
+};
+
+export type AccountUserNameRequest = {
+  accountNumber: string;
+  bankId: number;
+};
+
+export type AccountUserNameResponse = {
+  name: string;
 };
 
 export type RecentAccount = MyAccount | OthersAccount;

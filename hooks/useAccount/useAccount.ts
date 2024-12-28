@@ -1,5 +1,11 @@
 import { useApi } from '@/hooks/useApi';
-import { Account, masterPswdReq, pswdReq } from '@/types/Account';
+import {
+  Account,
+  AccountUserNameRequest,
+  AccountUserNameResponse,
+  masterPswdReq,
+  pswdReq,
+} from '@/types/Account';
 import { Transaction } from '@/types/Keyword';
 import { TransferData, TransferResponse } from '@/types/Transfer';
 
@@ -41,6 +47,18 @@ export const useAccountApi = () => {
     return response;
   };
 
+  const checkAccountUserName = async (
+    data: AccountUserNameRequest
+  ): Promise<AccountUserNameResponse> => {
+    const options: RequestInit = {
+      method: 'POST',
+      body: JSON.stringify(data),
+    };
+    const response = await fetchApi(`/account/checkDepositor`, options);
+
+    return response;
+  };
+
   const showMyAccounts = async (): Promise<Account[]> => {
     const response = await fetchApi(`/account/myaccounts`);
 
@@ -49,7 +67,7 @@ export const useAccountApi = () => {
   const showRecentAccountsbyAccountId = async (
     id: number
   ): Promise<Account[]> => {
-    const response = await fetchApi(`/recentAccounts?accountId=${id}`);
+    const response = await fetchApi(`/acccount/recentAccounts?accountId=${id}`);
 
     return response;
   };
@@ -88,5 +106,6 @@ export const useAccountApi = () => {
     showMyTransactions,
     checkMasterPswd,
     showRecentAccountsbyAccountId,
+    checkAccountUserName,
   };
 };
