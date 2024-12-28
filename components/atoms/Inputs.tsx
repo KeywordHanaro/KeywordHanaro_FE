@@ -299,7 +299,8 @@ function AIInput(
             'peer ',
             className
           )}
-          placeholder={placeHolder}
+          placeholder={isLoading ? '답변을 생성중이에요' : placeHolder}
+          disabled={isLoading}
           ref={ref}
           required
           {...props}
