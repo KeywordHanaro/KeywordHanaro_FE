@@ -101,7 +101,7 @@ export const bankList: Bank[] = [
   },
   {
     id: 81,
-    bankname: 'KEB하나은행',
+    bankname: '하나은행',
     image: '/images/banks/Hana.jpg',
   },
   {

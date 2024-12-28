@@ -5,6 +5,7 @@ import { AccountInputRef } from '@/components/atoms/Inputs';
 import SelectBank from '@/components/molecules/SelectBank';
 import { TransferForm } from '@/contexts/TransferContext';
 import { useVoiceInputSession } from '@/contexts/VoiceContext';
+import { useAccountApi } from '@/hooks/useAccount/useAccount';
 import { MyAccount, OthersAccount } from '@/types/Account';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { formatAccountNumber } from '@/lib/utils';
@@ -26,6 +27,7 @@ export default function InputToAccount({
   const [selectedID, setSelectedID] = useState<number>(
     formData.toAccount.bankId
   );
+  const { checkAccountUserName } = useAccountApi();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -38,14 +40,21 @@ export default function InputToAccount({
   const isInputFilled = inputValue.length > 0 && selectedID > 0;
 
   const handleAccountClick = () => {
+    console.log(selectedID);
     const formattedAccountNum = formatAccountNumber(selectedID, inputValue);
-    onUpdate({
-      type: 'OthersAccount',
-      bankId: selectedID,
+    checkAccountUserName({
       accountNumber: formattedAccountNum,
-      name: 'OOO', //TODO: 예금주성명 조회 api 필요
+      bankId: selectedID,
+    }).then((res) => {
+      const othersAccount: OthersAccount = {
+        type: 'OthersAccount',
+        bankId: selectedID,
+        accountNumber: formattedAccountNum,
+        name: res.name,
+      };
+      onUpdate(othersAccount);
+      onNext();
     });
-    onNext();
   };
 
   const accountRef = useRef<HTMLInputElement>(null);
@@ -64,14 +73,20 @@ export default function InputToAccount({
           selectedID,
           cleanedResult
         );
-        const othersAccount: OthersAccount = {
-          type: 'OthersAccount',
-          bankId: selectedID,
+        checkAccountUserName({
           accountNumber: formattedAccountNum,
-          name: 'OOO', //TODO: 예금주성명 조회 api 필요
-        };
-        setInputValue(cleanedResult);
-        onUpdate(othersAccount);
+          bankId: selectedID,
+        }).then((res) => {
+          console.log('🚀  useEffect  res:', res);
+          const othersAccount: OthersAccount = {
+            type: 'OthersAccount',
+            bankId: selectedID,
+            accountNumber: formattedAccountNum,
+            name: res.name,
+          };
+          setInputValue(cleanedResult);
+          onUpdate(othersAccount);
+        });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,7 +104,11 @@ export default function InputToAccount({
           placeHolder='계좌번호 입력'
           value={inputValue}
         />
-        <SelectBank onSelect={handleSelect} value={formData.toAccount.bankId} />
+        <SelectBank
+          onSelect={handleSelect}
+          value={formData.toAccount.bankId}
+          useStt={true}
+        />
       </div>
       <Button
         onClick={handleAccountClick}

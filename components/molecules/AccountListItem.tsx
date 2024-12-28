@@ -7,7 +7,6 @@ import { FaCheck } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
 import { BankLogoImg } from '../atoms/BankLogoImg';
 
-
 export type AccountListType = {
   account: MyAccount | OthersAccount;
   isSelected?: boolean;
@@ -23,7 +22,7 @@ export default function AccountListItem({
   const { bankId, accountNumber } = account;
 
   const name =
-    account.type === 'MyAccount' ? account.accountName : account.name;
+    account.type === 'MyAccount' ? account.accountName : account.user?.name;
 
   const bank = bankList.find((i) => i.id === bankId);
   return (
