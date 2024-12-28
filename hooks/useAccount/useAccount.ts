@@ -67,8 +67,7 @@ export const useAccountApi = () => {
   const showRecentAccountsbyAccountId = async (
     id: number
   ): Promise<Account[]> => {
-    const response = await fetchApi(`/acccount/recentAccounts?accountId=${id}`);
-
+    const response = await fetchApi(`/account/recentAccounts?accountId=${id}`);
     return response;
   };
 
