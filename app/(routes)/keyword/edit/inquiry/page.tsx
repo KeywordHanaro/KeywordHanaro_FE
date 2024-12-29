@@ -84,7 +84,7 @@ export default function EditInquiryPage() {
         desc: myAccount?.accountName + '에서 조회 > ' + searchKeyword,
       });
 
-      router.back();
+      router.push('/keyword');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keywordTitle, myAccount, searchKeyword, keyword]);

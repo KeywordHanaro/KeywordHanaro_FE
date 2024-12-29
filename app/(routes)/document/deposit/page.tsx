@@ -86,7 +86,7 @@ export default function DepositDocumentPage() {
             완료
           </Button>
         </div>
-        <SpeechToText autoStart placeholder='금액을 말씀해주세요' />
+        <SpeechToText placeholder='금액을 말씀해주세요' />
       </div>
     </>
   );
