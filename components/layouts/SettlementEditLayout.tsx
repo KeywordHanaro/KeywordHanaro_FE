@@ -25,7 +25,7 @@ export default function SettlementEditLayout({ children }: PropsWithChildren) {
         <Header
           text='키워드 수정하기'
           onBack={() => {
-            router.back();
+            router.push('/keyword/edit');
           }}
           actionLabel='다음'
           onAction={() => {

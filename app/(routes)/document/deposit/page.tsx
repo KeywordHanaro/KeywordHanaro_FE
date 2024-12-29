@@ -21,35 +21,39 @@ export default function DepositDocumentPage() {
     setMyAccount(account);
   };
 
-  const { result } = useVoiceInputSession();
-
+  const { result, resetResult } = useVoiceInputSession();
   const onChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value.replace(/[^\d]/g, '');
-    const numericValue = parseInt(inputValue, 10);
-    if (
-      !isNaN(numericValue) &&
-      numericValue <= Number.MAX_SAFE_INTEGER &&
-      amountRef.current
-    ) {
-      const formattedValue = new Intl.NumberFormat('ko-KR').format(
-        numericValue
-      );
-      amountRef.current.value = formattedValue;
-    }
-    setIsValid(numericValue > 0 && myAccount !== undefined);
+    const money = e.target.value;
+    setIsValid(Number(money.replaceAll(',', '')) > 0);
   };
+  // const onChangeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const inputValue = e.target.value.replace(/[^\d]/g, '');
+  //   const numericValue = parseInt(inputValue, 10);
+  //   if (
+  //     !isNaN(numericValue) &&
+  //     numericValue <= Number.MAX_SAFE_INTEGER &&
+  //     amountRef.current
+  //   ) {
+  //     const formattedValue = new Intl.NumberFormat('ko-KR').format(
+  //       numericValue
+  //     );
+  //     amountRef.current.value = formattedValue;
+  //   }
+  //   setIsValid(numericValue > 0 && myAccount !== undefined);
+  // };
 
   useEffect(() => {
-    if (result && amountRef.current) {
+    if (result) {
       const cleanedResult = result.replace(/[\s-]/g, '');
       const amountVal = convertKorToNum(cleanedResult);
-      if (amountVal) {
+      if (amountRef && 'current' in amountRef && amountRef.current) {
         amountRef.current.value = amountVal.toLocaleString();
-        setIsValid(amountVal > 0 && myAccount !== undefined);
       }
+      setIsValid(amountVal > 0);
+      resetResult();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [result]);
+  }, [result, resetResult]);
 
   return (
     <>
@@ -82,7 +86,7 @@ export default function DepositDocumentPage() {
             완료
           </Button>
         </div>
-        <SpeechToText placeholder='금액을 말씀해주세요' />
+        <SpeechToText autoStart placeholder='금액을 말씀해주세요' />
       </div>
     </>
   );

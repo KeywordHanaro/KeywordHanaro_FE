@@ -14,5 +14,5 @@ export default function CreateTicketStep2Page() {
     router.push('/keyword/create/ticket/step3');
   };
 
-  return <SelectBranch handleSetBranch={handleSetBranch} />;
+  return <SelectBranch handleSetBranch={handleSetBranch} autoStart={true} />;
 }

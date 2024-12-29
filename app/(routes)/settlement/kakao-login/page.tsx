@@ -23,6 +23,7 @@ export default function GetKakao() {
       }
     };
     const data = loadLocalStorage('settlement');
+    console.log('🚀  useEffect  data:', data);
     setProgress(25);
     if (data) {
       updateFormData(data);
@@ -56,7 +57,9 @@ export default function GetKakao() {
           groupMember: groupMembers,
           type: data.category,
         };
+        console.log('🚀  send  reqBody:', reqBody);
 
+        console.log('🚀  send  groupMembers:', groupMembers);
         await sendMessage(reqBody)
           .then(() => {
             setProgress(90);

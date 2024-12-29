@@ -218,7 +218,10 @@ export default function SettlementUsageStep1() {
           다음
         </Button>
         {keyword?.type === 'SETTLEMENT' && (
-          <SpeechToText autoStart placeholder='얼마를 요청할까요?' />
+          <SpeechToText
+            autoStart={keyword.checkEveryTime}
+            placeholder='얼마를 요청할까요?'
+          />
         )}
       </div>
     </Suspense>

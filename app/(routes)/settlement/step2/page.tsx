@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 export default function SettlementUsageStep2() {
   const { formData, response } = useSettlementContext();
   const router = useRouter();
-
+  console.log(response);
   const handleSubmit = () => {
     // console.log('데이터 제출됨', formData.members, formData.amount);
     router.push('/');
@@ -22,7 +22,11 @@ export default function SettlementUsageStep2() {
           완료되었어요
         </p>
         <SettlementMSG
-          data={{ keyword: response, amount: Number(formData.amount) }}
+          data={{
+            keyword: response,
+            amount: Number(formData.amount),
+            members: formData.members,
+          }}
         />
       </div>
 

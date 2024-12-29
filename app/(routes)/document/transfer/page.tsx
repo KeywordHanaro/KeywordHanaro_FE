@@ -55,7 +55,8 @@ export default function TransferDocumentPage() {
         },
       }));
     } else if (activeInput === 'amount' && amountRef.current) {
-      const numericAmount = result.replace(/[^0-9]/g, '');
+      const numericAmount = result.replace(/[\s-]/g, '');
+
       const amountVal = convertKorToNum(numericAmount);
       amountRef.current.value = amountVal.toLocaleString();
       const amount = parseInt(numericAmount, 10);
@@ -67,6 +68,7 @@ export default function TransferDocumentPage() {
   }, [result]);
 
   const handleInputFocus = (inputType: 'account' | 'amount') => {
+    console.log(inputType);
     setActiveInput(inputType);
   };
 
@@ -101,7 +103,7 @@ export default function TransferDocumentPage() {
 
   const onChangeAmount = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const amount = parseInt(e.target.value.replace(/[^0-9]/g, ''), 10);
+      const amount = Number(e.target.value.replaceAll(',', ''));
       setTransferDocument((prev) => ({ ...prev, amount }));
     },
     []

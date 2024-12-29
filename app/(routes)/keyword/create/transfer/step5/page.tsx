@@ -13,30 +13,28 @@ export default function Step5() {
   const { createKeyword } = useKeywordApi();
 
   const handleComplete = async () => {
-    await createKeyword({
-      type: 'TRANSFER',
-      name: formData.keyword,
-      desc: formData.checkEverytime
-        ? formData.fromAccount.accountName +
-          ' > ' +
-          formData.toAccount.accountNumber +
-          ' > 금액 미정'
-        : formData.fromAccount.accountName +
-          ' > ' +
-          formData.toAccount.accountNumber +
-          ' > ' +
-          formData.amount,
-      account: { id: formData.fromAccount.accountId },
-      subAccount: { accountNumber: formData.toAccount.accountNumber },
-      checkEveryTime: formData.checkEverytime,
-      amount: formData.amount,
-    })
-      .then(() => {
-        router.push('/keyword/create/transfer/step6');
-      })
-      .catch((err) => {
-        alert(err);
+    const toAccountName =
+      formData.toAccount.type === 'MyAccount'
+        ? formData.toAccount.accountName
+        : formData.toAccount.name;
+
+    const amountText = formData.checkEverytime ? '금액 미정' : formData.amount;
+
+    const desc = `${formData.fromAccount.accountName} > ${toAccountName} > ${amountText}`;
+    try {
+      await createKeyword({
+        type: 'TRANSFER',
+        name: formData.keyword,
+        desc,
+        account: { id: formData.fromAccount.accountId },
+        subAccount: { accountNumber: formData.toAccount.accountNumber },
+        checkEveryTime: formData.checkEverytime,
+        amount: formData.amount,
       });
+      router.push('/keyword/create/transfer/step6');
+    } catch (err) {
+      alert(err);
+    }
   };
 
   return (

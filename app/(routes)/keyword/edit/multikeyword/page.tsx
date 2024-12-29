@@ -38,6 +38,7 @@ export default function EditMultiKeywordPage() {
 
   const [allKeywords, setAllKeywords] = useState<UseKeywordResponse[]>([]);
   const [items, setItems] = useState<number[]>([]);
+  const { updateKeyword } = useKeywordApi();
 
   useEffect(() => {
     if (id) {
@@ -47,7 +48,7 @@ export default function EditMultiKeywordPage() {
           if (res.type !== 'MULTI') return;
           setMultiKeywordData(res);
           setCurrentKeyword(res);
-          setItems(res.multiKeyword.map((item) => item.id));
+          setItems(res.multiKeyword.map((item) => item.keyword.id));
         })
         .catch((error) => {
           console.error('키워드 가져오기 실패:', error);
@@ -67,12 +68,12 @@ export default function EditMultiKeywordPage() {
         desc: multiKeywordData.desc,
         multiKeywordIds: items,
       });
-      // updateKeyword(Number(id), {
-      //   name: inputRef.current.value || multiKeywordData.name,
-      //   type: 'MULTI',
-      //   desc: multiKeywordData.desc,
-      //   multiKeywordIds: items,
-      // });
+      updateKeyword(Number(id), {
+        name: inputRef.current.value || multiKeywordData.name,
+        type: 'MULTI',
+        desc: multiKeywordData.desc,
+        multiKeywordIds: items,
+      });
     }
     router.push('/keyword');
   };
@@ -122,9 +123,11 @@ export default function EditMultiKeywordPage() {
       } else {
         setItems([...items, id]);
       }
+      console.log(items);
     },
     [toast, items, setItems]
   );
+  console.log('🚀  EditMultiKeywordPage  items:', items);
 
   useEffect(() => {
     if (multiKeywordData && currentKeyword) {
@@ -170,16 +173,14 @@ export default function EditMultiKeywordPage() {
             onReorder={handleReorder}
             className='flex flex-col gap-2.5'
           >
-            {items.map((id, index) => {
-              const data = multiKeywordData?.multiKeyword.find(
-                (el) => el.id === id
-              );
+            {items.map((id: number, index) => {
+              const data = allKeywords.find((el) => el.id === id);
               if (!data) return null;
               return (
                 <motion.li key={id} variants={liVariants} custom={index}>
                   <Reorder.Item key={id} value={id} drag='y'>
                     <Keyword
-                      data={data.keyword}
+                      data={data}
                       canDelete={true}
                       onDelete={handleDelete}
                     ></Keyword>
@@ -222,12 +223,11 @@ export default function EditMultiKeywordPage() {
                 multiKeywordData &&
                 allKeywords
                   .filter((keyword) => {
-                    multiKeywordData.multiKeyword.forEach((item) => {
-                      if (item.id === keyword.id) {
-                        return false;
-                      }
-                    });
-                    return keyword.id !== Number(id);
+                    const isNotInMultiKeyword =
+                      !multiKeywordData.multiKeyword.some(
+                        (item) => item.keyword.id === keyword.id
+                      );
+                    return isNotInMultiKeyword && keyword.id !== Number(id);
                   })
                   .map((keyword) => (
                     <MultiKeyword

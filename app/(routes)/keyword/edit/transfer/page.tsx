@@ -183,15 +183,7 @@ export default function EditTransferKeyword() {
       });
       router.back();
     }
-  }, [
-    keywordTitle,
-    myAccount,
-    otherAccount,
-    checkEverytime,
-    amount,
-    // initialKeyword.id,
-    router,
-  ]);
+  }, [keywordTitle, myAccount, otherAccount, checkEverytime, amount, router]);
 
   const isButtonDisabled = useMemo(() => {
     const isDataChanged =
@@ -215,6 +207,11 @@ export default function EditTransferKeyword() {
 
     const isAmountValid =
       checkEverytime || (!checkEverytime && amount !== '' && isValid);
+
+    console.log('isDataChanged:', isDataChanged);
+    console.log('isAccountValid:', isAccountValid);
+    console.log('isAmountValid:', isAmountValid);
+
     return !(isDataChanged && isAccountValid && isAmountValid);
   }, [
     keywordTitle,
