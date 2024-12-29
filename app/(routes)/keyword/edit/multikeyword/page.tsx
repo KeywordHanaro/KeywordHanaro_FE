@@ -62,20 +62,21 @@ export default function EditMultiKeywordPage() {
   // seqOrder 업데이트 후 이동
   const onComplete = () => {
     if (inputRef.current && multiKeywordData) {
-      console.log({
-        name: inputRef.current.value || multiKeywordData.name,
-        type: 'MULTI',
-        desc: multiKeywordData.desc,
-        multiKeywordIds: items,
-      });
+      const keywordNames = items
+        .map((id) => allKeywords.find((keyword) => keyword.id === id)?.name)
+        .filter((name) => name !== undefined);
+
+      // 키워드 이름들을 쉼표로 구분하여 하나의 문자열로 만듭니다
+      const desc = keywordNames.join(', ');
       updateKeyword(Number(id), {
         name: inputRef.current.value || multiKeywordData.name,
         type: 'MULTI',
-        desc: multiKeywordData.desc,
+        desc: desc,
         multiKeywordIds: items,
+      }).then(() => {
+        router.push('/keyword');
       });
     }
-    router.push('/keyword');
   };
 
   const handleReorder = (newOrder: number[]) => {
@@ -127,7 +128,6 @@ export default function EditMultiKeywordPage() {
     },
     [toast, items, setItems]
   );
-  console.log('🚀  EditMultiKeywordPage  items:', items);
 
   useEffect(() => {
     if (multiKeywordData && currentKeyword) {

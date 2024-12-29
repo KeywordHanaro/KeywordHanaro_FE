@@ -29,7 +29,7 @@ const EditKeyword = ({ data, onEdit, onDelete }: EditKeywordProps) => {
               <span className='text-hanaPrimary'>
                 {data.subAccount.type === 'MyAccount'
                   ? data.subAccount.name
-                  : `${data.subAccount.name}님`}
+                  : `${data.subAccount.user.name}님`}
               </span>
               &nbsp;로
             </span>

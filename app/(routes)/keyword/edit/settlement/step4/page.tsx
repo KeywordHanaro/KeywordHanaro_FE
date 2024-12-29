@@ -15,11 +15,11 @@ export default function SettlementStep4() {
       name: member.name,
       tel: member.tel,
     }));
-    const desc = `${formData.category === 'Settlement' ? '정산' : '회비'} > ${formData.checkEveryTime ? '' : formData.amount + ' >'} ${groupMembers.map(
+    const desc = `${formData.category === 'Settlement' ? '정산' : '회비'} > ${formData.checkEveryTime ? '금액 미정 >' : formData.amount + ' >'} ${groupMembers.map(
       (member) => member.name
     )}`;
+    console.log(desc);
     try {
-      console.log(formData);
       updateKeyword(id, {
         type: formData.category === 'Settlement' ? 'SETTLEMENT' : 'DUES',
         name: formData.keywordName,
@@ -32,11 +32,12 @@ export default function SettlementStep4() {
         checkEveryTime: formData.checkEveryTime,
         amount: parseInt(formData.amount.replace(/,/g, ''), 10),
         groupMember: JSON.stringify(groupMembers),
+      }).then(() => {
+        router.push('/keyword/edit/settlement/step5');
       });
     } catch {
       throw new Error('Fetching Error');
     }
-    router.push('/keyword/edit/settlement/step5');
   };
   return (
     <KeywordInputButton
