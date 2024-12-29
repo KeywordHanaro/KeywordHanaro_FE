@@ -68,6 +68,7 @@ const KeywordPageTemplate = () => {
     const fetchKeywordList = async () => {
       const response = await getAllKeywords();
       setKeywordList(response);
+      console.log(response);
       setFavoriteItems(response.filter((k) => k.favorite).map((k) => k.id));
       setNormalItems(response.filter((k) => !k.favorite).map((k) => k.id));
       setIsLoading(false);

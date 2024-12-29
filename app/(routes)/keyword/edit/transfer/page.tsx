@@ -60,6 +60,7 @@ export default function EditTransferKeyword() {
               name: res.subAccount.name,
               bankId: res.subAccount.bank.id,
               accountNumber: res.subAccount.accountNumber,
+              user: res.subAccount.user,
             });
             setTransferToMe(false);
           }
@@ -147,22 +148,32 @@ export default function EditTransferKeyword() {
     checkEveryTime: boolean,
     amount?: number
   ): string => {
-    if (checkEveryTime) {
-      return (
-        myAccount?.accountName +
-        ' > ' +
-        otherAccount.accountNumber +
-        ' > 금액 미정'
-      );
-    } else {
-      return (
-        myAccount?.accountName +
-        ' > ' +
-        otherAccount.accountNumber +
-        ' > ' +
-        amount
-      );
-    }
+    console.log(otherAccount);
+    const toAccountName =
+      otherAccount.type === 'MyAccount'
+        ? otherAccount.accountName
+        : otherAccount.user?.name;
+
+    const amountText = checkEverytime ? '금액 미정' : amount;
+
+    const desc = `${myAccount.accountName} > ${toAccountName} > ${amountText}`;
+    return desc;
+    // if (checkEveryTime) {
+    //   return (
+    //     myAccount?.accountName +
+    //     ' > ' +
+    //     otherAccount.accountNumber +
+    //     ' > 금액 미정'
+    //   );
+    // } else {
+    //   return (
+    //     myAccount?.accountName +
+    //     ' > ' +
+    //     otherAccount.accountNumber +
+    //     ' > ' +
+    //     amount
+    //   );
+    // }
   };
 
   const onComplete = useCallback(async () => {
@@ -180,8 +191,9 @@ export default function EditTransferKeyword() {
           checkEverytime,
           Number(amount.replace(/,/g, ''))
         ),
+      }).then(() => {
+        router.push('/keyword');
       });
-      router.back();
     }
   }, [keywordTitle, myAccount, otherAccount, checkEverytime, amount, router]);
 
@@ -205,14 +217,10 @@ export default function EditTransferKeyword() {
           otherAccount.bankId !== 0 &&
           otherAccount.accountNumber !== ''));
 
-    const isAmountValid =
-      checkEverytime || (!checkEverytime && amount !== '' && isValid);
-
-    console.log('isDataChanged:', isDataChanged);
-    console.log('isAccountValid:', isAccountValid);
-    console.log('isAmountValid:', isAmountValid);
+    const isAmountValid = checkEverytime || (!checkEverytime && amount !== '');
 
     return !(isDataChanged && isAccountValid && isAmountValid);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     keywordTitle,
     myAccount,
