@@ -5,6 +5,7 @@ import { useState } from 'react';
 const meta: Meta = {
   title: 'Components/Atoms/Modal',
   component: Modal,
+  tags: ['autodocs'],
 };
 
 export default meta;

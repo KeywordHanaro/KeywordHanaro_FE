@@ -4,6 +4,7 @@ import { Meta, StoryObj } from '@storybook/react';
 const meta: Meta<typeof ColorChip> = {
   title: 'Components/Atoms/ColorChip',
   component: ColorChip,
+  tags: ['autodocs'],
 };
 
 export default meta;

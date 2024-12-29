@@ -4,6 +4,7 @@ import { Meta, StoryObj } from '@storybook/react';
 const meta: Meta<typeof BankLogoImg> = {
   title: 'Components/Atoms/BankLogoImg',
   component: BankLogoImg,
+  tags: ['autodocs'],
   decorators: [
     (Story) => (
       <div style={{ width: '375px', height: '700px' }}>

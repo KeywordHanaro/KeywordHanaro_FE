@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react';
 const meta: Meta = {
   title: 'Components/Atoms/MoneyInput',
   component: MoneyInputRef,
+  tags: ['autodocs'],
   decorators: [
     (Story) => (
       <div style={{ border: '1px solid black', padding: '20px' }}>

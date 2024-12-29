@@ -84,7 +84,7 @@ export default function Home() {
     <>
       <SidebarProvider className=''>
         {loading && (
-          <div className='absolute'>
+          <div className='absolute w-full'>
             <LoadingDot />
           </div>
         )}
