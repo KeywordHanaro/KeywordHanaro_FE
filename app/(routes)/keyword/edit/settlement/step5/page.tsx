@@ -10,7 +10,7 @@ export default function SettlementStep5() {
   const router = useRouter();
 
   return (
-    <KeywordCompletion onClick={() => router.push('/keyword/edit')}>
+    <KeywordCompletion onClick={() => router.push('/keyword')}>
       <SetKeywordComplete formData={formData} />
     </KeywordCompletion>
   );

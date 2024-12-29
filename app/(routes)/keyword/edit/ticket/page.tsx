@@ -5,6 +5,7 @@ import { KeywordInputRef } from '@/components/atoms/Inputs';
 import BankInfoItem from '@/components/molecules/BankInfoItem';
 import SelectBranch from '@/components/templates/createKeyword/ticket/SelectBranch';
 import { useTicket } from '@/contexts/TicketContext';
+import { VoiceInputProvider } from '@/contexts/VoiceContext';
 import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
 import { TBranch } from '@/types/Bank';
 import { TicketKeywordRequest } from '@/types/Keyword';
@@ -65,8 +66,9 @@ export default function EditTicketKeywordPage() {
       branch: selectedBranch,
       name: keywordName,
     } as TicketKeywordRequest;
-    updateKeyword(Number(id), updatedFormData);
-    router.back();
+    updateKeyword(Number(id), updatedFormData).then(() => {
+      router.push('/keyword');
+    });
   }, [keywordName, selectedBranch, router]);
 
   const isBtnDisabled = useMemo(() => {
@@ -102,8 +104,9 @@ export default function EditTicketKeywordPage() {
           <div className='pb-6'>
             {!!selectedBranch && <BankInfoItem data={selectedBranch} />}
           </div>
-
-          <SelectBranch handleSetBranch={handleSetBranch} autoStart={false} />
+          <VoiceInputProvider>
+            <SelectBranch handleSetBranch={handleSetBranch} autoStart={false} />
+          </VoiceInputProvider>
         </div>
       </div>
     </>
