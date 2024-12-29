@@ -14,6 +14,7 @@ const mockMember: groupMember = {
 const meta: Meta<typeof Chip> = {
   title: 'Components/Atoms/Chips',
   component: Chip,
+  tags: ['autodocs'],
 };
 
 export default meta;

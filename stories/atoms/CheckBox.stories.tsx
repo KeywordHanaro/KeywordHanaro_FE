@@ -5,6 +5,7 @@ import { useState } from 'react';
 const meta: Meta = {
   title: 'Components/Atoms/CheckBox',
   component: CheckBox,
+  tags: ['autodocs'],
 };
 
 export default meta;

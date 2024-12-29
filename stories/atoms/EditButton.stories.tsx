@@ -4,6 +4,7 @@ import { Meta, StoryObj } from '@storybook/react';
 const meta: Meta = {
   title: 'Components/Atoms/EditButton',
   component: EditButton,
+  tags: ['autodocs'],
 };
 
 export default meta;

@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react';
 const meta: Meta = {
   title: 'Components/Atoms/KeywordInput',
   component: KeywordInputRef,
+  tags: ['autodocs'],
 };
 
 export default meta;

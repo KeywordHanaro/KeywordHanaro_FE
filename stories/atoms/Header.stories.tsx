@@ -4,6 +4,7 @@ import { Meta, StoryObj } from '@storybook/react';
 const meta: Meta<typeof Header> = {
   title: 'Components/Atoms/Header',
   component: Header,
+  tags: ['autodocs'],
   decorators: [
     (Story) => (
       <div
