@@ -1,0 +1,123 @@
+name: KeywordHanaro FE CI/CD
+on:
+  pull_request:
+    branches: [develop]
+  push:
+    branches: [develop]
+
+jobs:
+  test-build:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: setup node pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21
+
+      - name: Install dependencies
+        working-directory: .
+        run: pnpm install
+
+      - name: set .env
+        working-directory: .
+        run: echo "${{ secrets.ENV }}" > .env
+
+      - name: Build with Next.js
+        working-directory: .
+        run: pnpm next build
+
+  deploy:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: setup node pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21
+
+      - name: Install dependencies
+        working-directory: .
+        run: pnpm install
+      
+      - name: set .env
+        working-directory: .
+        run: |
+          echo "${{ secrets.ENV }}"
+          echo "${{ secrets.ENV }}" > .env
+          echo .env
+
+      - name: Build with Next.js
+        working-directory: .
+        run: pnpm next build
+
+      - name: Check directories before zipping
+        working-directory: .
+        run: |
+          echo "Workspace contents:"
+          ls -l
+          echo "Checking .next directory:"
+          ls -l .next || echo ".next directory not found"
+          echo "Checking KeywordHanaro_FE directory:"
+          ls -l ./KeywordHanaro_FE || echo "KeywordHanaro_FE directory not found"
+          
+      - name: Ensure output directory exists
+        working-directory: .
+        run: mkdir -p ./KeywordHanaro_FE
+
+      - name: zip next
+        working-directory: .
+        run: zip -rq ./KeywordHanaro_FE/next.zip .next
+
+      - name: Verify next.zip exists
+        working-directory: .
+        run: ls -l ./KeywordHanaro_FE/next.zip
+
+      - name: Debug next.zip path
+        working-directory: .
+        run: |
+          echo "Looking for next.zip in:"
+          ls -l ./KeywordHanaro_FE/
+
+      - name: setup ssh
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
+          ssh-keyscan ${{ secrets.WAS }} >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: scp next to was
+        working-directory: .
+        run: |
+          scp ./KeywordHanaro_FE/next.zip ec2-user@${{ secrets.WAS }}:/home/ec2-user/workspace/
+          scp -r ./public ec2-user@${{ secrets.WAS }}:/home/ec2-user/workspace/KeywordHanaro_FE/
+
+      - name: restart next
+        run: |
+          ssh ec2-user@${{ secrets.WAS }} '
+            cd /home/ec2-user/workspace &&
+            rm -rf KeywordHanaro_FE/.next
+            unzip next.zip -d KeywordHanaro_FE
+            echo "${{ secrets.ENV }}" > KeywordHanaro_FE/.env
+            pm2 reload keyword-next
+          
+          '

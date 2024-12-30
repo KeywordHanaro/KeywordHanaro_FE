@@ -6,6 +6,10 @@
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:react/jsx-runtime"
+    // "plugin:storybook/recommended"
   ],
-  "plugins": ["react", "react-hooks"]
+  "plugins": ["react", "react-hooks"],
+  "rules": {
+    "react/prop-types": "off"
+  }
 }

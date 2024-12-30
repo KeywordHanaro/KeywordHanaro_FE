@@ -2,16 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -39,6 +29,14 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -65,6 +63,261 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply flex justify-center w-full h-screen text-fontBlack font-pretendard;
+  }
+  body {
+    @apply bg-background text-foreground sm:max-w-[640px] w-full h-full font-pretendard;
+  }
+  input {
+    @apply focus:outline-none;
+  }
+  button {
+    @apply outline-none;
+  }
+}
+
+@layer components {
+  .input-box {
+    @apply flex flex-col text-right relative;
+  }
+  .btn-sm {
+    @apply text-center text-sm font-bold w-[116px];
+  }
+  .btn-md {
+    @apply text-center text-sm font-bold w-[150px];
+  }
+  .btn-lg {
+    @apply text-center text-sm font-bold w-[300px];
+  }
+  .btn-edit {
+    @apply text-[11px] text-subGray border-subGray bg-white  border-[0.5px];
+  }
+  .btn-del {
+    @apply text-[11px] text-errorRed border-errorRed bg-white border-[0.5px];
+  }
+  /* L->R white underline animation*/
+  .animate-underline {
+    @apply after:transform-left after:absolute after:left-auto after:right-0 after:block after:w-0 after:transform after:border-b-2 after:border-white after:duration-300 after:ease-out hover:after:left-0 hover:after:right-auto hover:after:w-full;
+  }
+  /* L->R white background animation*/
+  .animate-bg {
+    @apply after:transform-left flex after:absolute after:left-auto after:right-0 after:block after:h-full after:w-0 after:transform after:overflow-hidden after:bg-white after:duration-700 after:ease-out hover:after:left-0 hover:after:right-auto hover:after:w-full;
+  }
+
+  .main-container {
+    @apply flex h-full w-full justify-center rounded-md px-4 pt-20;
+  }
+
+  .recipe-item {
+    @apply border p-2 border-gray-600 rounded-xl justify-center flex hover:bg-white hover:text-black transition-all duration-200 cursor-pointer h-52;
+  }
+
+  .btn {
+    @apply border-spacing-1.5 rounded-md border px-4 py-2 uppercase shadow-md transition duration-300 hover:bg-slate-100 hover:text-black focus:ring focus:ring-opacity-75;
+  }
+
+  .inp {
+    @apply bg-gray-400 p-4 rounded-md text-black max-w-5xl w-full;
+  }
+
+  .root {
+    @apply max-w-7xl w-full text-center;
+  }
+
+  .hover-floating {
+    @apply hover:border hover:p-4 p-2 hover:bg-neutral-500 hover:bg-opacity-50 transition-all duration-700 rounded-xl ease-out;
+  }
+
+  .login-input-box {
+    @apply relative mt-8 h-12 w-1/2 min-w-96 border-b-2 border-b-black;
+  }
+  .login-input-icon {
+    @apply absolute right-2 top-4 h-6 w-6;
+  }
+  .login-input-box input {
+    @apply h-full w-full border-none bg-transparent px-2 outline-none;
+  }
+  .login-input-box label {
+    @apply pointer-events-none absolute left-1 top-1/2 -translate-y-1/2 text-sm font-medium duration-500;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .zigzag-border {
+    background: linear-gradient(-45deg, #b9b9b9 10px, transparent 0),
+      linear-gradient(45deg, #b9b9b9 10px, transparent 0);
+    background-position: left bottom;
+    background-repeat: repeat-x;
+    background-size: 12px 32px;
+    content: ' ';
+    display: block;
+    position: absolute;
+    bottom: -12px;
+    left: 0px;
+    width: 100%;
+    height: 25px;
+  }
+  .zigzag-border-cover:after {
+    background: linear-gradient(-45deg, #fff 10px, transparent 0),
+      linear-gradient(45deg, #fff 10px, transparent 0);
+    background-position: left bottom;
+    background-repeat: repeat-x;
+    background-size: 12px 32px;
+    content: ' ';
+    display: block;
+    position: absolute;
+    bottom: -14.5px;
+    left: 0px;
+    width: 100%;
+    height: 25px;
+  }
+  /*animate css*/
+  .transform-left {
+    transform-origin: left;
+  }
+  .transform-right {
+    transform-origin: right;
+  }
+  .transform-bottom {
+    transform-origin: bottom;
+  }
+  .transform-bottom {
+    transform-origin: top;
+  }
+  .gradient-border {
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background-image: linear-gradient(#fff, #fff),
+      linear-gradient(90deg, #068298 0%, #e523e2 100%);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+  }
+
+  .dot-loading {
+    position: relative;
+  }
+  .middle-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: #069894;
+    color: #069894;
+    animation: dot-loading 3.6s infinite ease-in-out;
+  }
+  .dot-loading::before,
+  .dot-loading::after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 0;
+  }
+  .dot-loading::before {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: #069894;
+    color: #069894;
+    animation: dot-loading-before 3.6s infinite ease-in-out;
+  }
+  .dot-loading::after {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: #069894;
+    color: #069894;
+    animation: dot-loading-after 3.6s infinite ease-in-out;
+  }
+
+  @keyframes dot-loading {
+    0%,
+    25%,
+    100% {
+      transform: translate(0, 0);
+    }
+    33.3%,
+    58.3% {
+      transform: translate(0, -20px);
+    }
+    41.6%,
+    50% {
+      background-color: #6634ed;
+      transform: translate(0, 0);
+    }
+    25%,
+    66.6% {
+      background-color: #069894;
+      transform: translate(0, 0);
+    }
+  }
+  @keyframes dot-loading-before {
+    0%,
+    91.6%,
+    100% {
+      transform: translate(0, 0);
+    }
+    8.3%,
+    75%,
+    83.3% {
+      transform: translate(-20px, 0);
+    }
+    25%,
+    50% {
+      transform: translate(-20px, -20px);
+    }
+    33.3%,
+    41.6% {
+      background-color: #6634ed;
+      transform: translate(-20px, 0);
+    }
+    16.6%,
+    58.3% {
+      background-color: #069894;
+      transform: translate(-20px, 0);
+    }
+  }
+  @keyframes dot-loading-after {
+    0%,
+    8.3%,
+    83.3%,
+    100% {
+      transform: translate(0, 0);
+    }
+    16.6% {
+      transform: translate(20px, 0);
+    }
+    41.6%,
+    66.6% {
+      transform: translate(20px, -20px);
+    }
+    50%,
+    58.3% {
+      background-color: #6634ed;
+      transform: translate(20px, 0);
+    }
+    33.3%,
+    75% {
+      background-color: #069894;
+      transform: translate(20px, 0);
+    }
   }
 }
 
@@ -75,4 +328,13 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+* {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }

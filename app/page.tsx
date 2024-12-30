@@ -1,101 +1,168 @@
-import Image from "next/image";
+'use client';
+
+import SpeechToText from '@/components/SpeechToText';
+import { CustomSidebarTrigger } from '@/components/atoms/CustomSidebarTrigger';
+import LoadingDot from '@/components/atoms/LoadingDot';
+import AccountCard from '@/components/molecules/AccountCard';
+import FavoriteKeyword from '@/components/molecules/FavoriteKeyword';
+import { AppSidebar } from '@/components/organisms/AppSidebar';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from '@/components/ui/carousel';
+import { SidebarProvider } from '@/components/ui/sidebar';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Toggle } from '@/components/ui/toggle';
+import { VoiceInputProvider } from '@/contexts/VoiceContext';
+import { useAccountApi } from '@/hooks/useAccount/useAccount';
+import { useKeywordApi } from '@/hooks/useKeyword/useKeyword';
+import { Account } from '@/types/Account';
+import { UseKeywordResponse } from '@/types/Keyword';
+import { motion } from 'motion/react';
+import { useSession } from 'next-auth/react';
+import { SlArrowRight } from 'react-icons/sl';
+import { useEffect, useState } from 'react';
+import { ulVariants } from '@/lib/motionVariable';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const { getAllKeywords } = useKeywordApi();
+  const { showMyAccounts } = useAccountApi();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const [keywordList, setKeywordList] = useState<UseKeywordResponse[]>([]);
+  const [accountList, setAccountList] = useState<Account[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const { status } = useSession();
+
+  useEffect(() => {
+    const fetchKeywordList = async () => {
+      const keywordResponse = await getAllKeywords();
+      const favoriteKeywords = keywordResponse.filter((k) => k.favorite);
+      const nonFavoriteKeywords = keywordResponse.filter((k) => !k.favorite);
+
+      if (favoriteKeywords.length > 0) {
+        setKeywordList(favoriteKeywords.slice(0, 5));
+      } else if (nonFavoriteKeywords.length > 0) {
+        setKeywordList(nonFavoriteKeywords.slice(0, 5));
+      }
+    };
+    const fetchAccountList = async () => {
+      const accountResponse = await showMyAccounts();
+      setAccountList(accountResponse);
+    };
+    try {
+      if (status === 'authenticated') {
+        fetchAccountList();
+        fetchKeywordList();
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [status]);
+
+  // useEffect(() => {
+  //   if (result) {
+  //     const similarKeywords = findSimilarKeywords(
+  //       keywordList.slice(0, 5),
+  //       result
+  //     );
+  //     if (similarKeywords.length > 0) {
+  //       const keywordElement = document.querySelector(
+  //         `[data-keyword-id="${similarKeywords[0].id}"]`
+  //       );
+  //       if (keywordElement) {
+  //         (keywordElement as HTMLElement).click();
+  //       }
+  //     }
+  //     resetResult();
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [result]);
+
+  return (
+    <>
+      <SidebarProvider className=''>
+        {loading && (
+          <div className='absolute w-full'>
+            <LoadingDot />
+          </div>
+        )}
+        <div className='absolute'>
+          <AppSidebar />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        <div className='h-screen relative bg-[#F6F7F9]'>
+          {/* 헤더 시작 */}
+          <div className='w-full h-[60px] flex px-[30px] items-center justify-between bg-white'>
+            <a href='#'>
+              <p className='font-pretendard font-bold text-xl'>키워드 하나로</p>
+            </a>
+            <div className='flex items-center gap-[15px]'>
+              <Toggle />
+              <a href='#'>지갑</a>
+              <a href='#'>알림</a>
+              <CustomSidebarTrigger />
+              {/* <IoReorderThree size={30} /> */}
+            </div>
+          </div>
+          {/* 헤더 끝 */}
+
+          <div className='px-[20px] flex flex-col items-center py-[10px]'>
+            {/* 카드 */}
+            {accountList.length > 0 ? (
+              <Carousel className='w-[calc(100%+20px)] h-[221px]'>
+                <CarouselContent className=''>
+                  {accountList.map((account) => (
+                    <CarouselItem
+                      key={account.id}
+                      className='rounded-xl h-[221px] flex justify-center items-center'
+                    >
+                      <AccountCard
+                        title={account.name}
+                        accountNumber={account.accountNumber}
+                        balance={account.balance.toString()}
+                      />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
+            ) : (
+              <>
+                <div className='flex flex-col w-full h-[221px] py-[10px]'>
+                  <Skeleton className='h-[201px] w-full rounded-xl' />
+                </div>
+              </>
+            )}
+
+            {/* 카드 끝 */}
+
+            {/* 나의 키워드 */}
+            <VoiceInputProvider>
+              <div className='w-full flex flex-col gap-[8px] mb-[120px] mt-[20px]'>
+                {/* 나의 키워드 헤더 */}
+                <div className='flex w-full justify-between items-center'>
+                  <p className='text-[18px] font-semibold'>나의 키워드</p>
+                  <a href='/keyword'>
+                    <SlArrowRight className='cursor-pointer' />
+                  </a>
+                </div>
+                {/* 나의 키워드 헤더 끝 */}
+
+                <motion.ul
+                  variants={ulVariants}
+                  initial='hidden'
+                  animate='visible'
+                  className='flex flex-col  gap-2.5'
+                >
+                  <FavoriteKeyword keywordList={keywordList}></FavoriteKeyword>
+                </motion.ul>
+              </div>
+              <SpeechToText placeholder='키워드를 선택해주세요.' />
+            </VoiceInputProvider>
+            {/* 나의 키워드 끝 */}
+          </div>
+        </div>
+      </SidebarProvider>
+    </>
   );
 }
