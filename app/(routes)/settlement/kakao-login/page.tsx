@@ -52,7 +52,7 @@ export default function GetKakao() {
         }
         const reqBody = {
           code: code,
-          amount: parseInt(data.amount),
+          amount: parseInt(data.amount.replaceAll(',', '')),
           account: account,
           groupMember: groupMembers,
           type: data.category,
@@ -73,7 +73,7 @@ export default function GetKakao() {
           })
           .catch(() => {});
 
-        router.replace('/settlement/step2');
+        router.push('/settlement/step2');
       } catch (error) {
         console.error('Error fetching data:', error);
       }
